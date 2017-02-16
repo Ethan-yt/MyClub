@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:orientation="horizontal"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:id="@+id/ll_dongtai"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1.0"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:background="@drawable/bg_white_ripple"
+        android:layout_margin="1dp"
+        android:clickable="true"
+        android:padding="10dp">
+
+        <TextView
+            android:id="@+id/tv_dongtai_num"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="11"
+            android:textColor="@color/colorPrimary"
+            android:textSize="14.0sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="动态"
+            android:textColor="@color/black_info_tittle"
+
+            android:textSize="14.0sp" />
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/ll_friends"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1.0"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:layout_margin="1dp"
+        android:background="@drawable/bg_white_ripple"
+        android:clickable="true"
+        android:padding="10dp">
+
+        <TextView
+            android:id="@+id/tv_friends_num"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="121"
+            android:textColor="@color/colorPrimary"
+            android:textSize="14.0sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="好友"
+            android:textColor="@color/black_info_tittle"
+            android:textSize="14.0sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_guanzhu"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1.0"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:layout_margin="1dp"
+        android:background="@drawable/bg_white_ripple"
+        android:clickable="true"
+        android:padding="10dp">
+
+        <TextView
+            android:id="@+id/tv_guanzhu_num"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="31"
+            android:textColor="@color/colorPrimary"
+            android:textSize="14.0sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="关注"
+            android:textColor="@color/black_info_tittle"
+            android:textSize="14.0sp" />
+    </LinearLayout>
+</LinearLayout>

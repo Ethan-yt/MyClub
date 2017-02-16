@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/action_setCurrentWeek"
+        android:icon="@drawable/ic_access_time_white_24dp"
+        android:title="设置当前周"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/action_inputCurriculum"
+        android:icon="@drawable/ic_cloud_download_white_24dp"
+        android:title="导入课程"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/action_settings"
+        android:icon="@drawable/ic_settings_white_24dp"
+        android:title="设置"
+        app:showAsAction="always" />
+</menu>

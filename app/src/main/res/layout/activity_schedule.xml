@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_schedule"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.ethan.myclub.user.Schedule.ScheduleActivity"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:elevation="6dp"
+        android:background="@color/colorPrimary"
+        app:titleTextColor="#FFFFFF"
+        android:theme="@style/AppTheme"
+        app:navigationIcon="@drawable/ic_chevron_left_white_32dp"
+        app:title="时间管理">
+        <!--toolbar:logo="@mipmap/ic_launcher"-->
+        <!--toolbar:subtitle="456"-->
+        <!--自定义控件-->
+        <!--<TextView-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="Clock" />-->
+    </android.support.v7.widget.Toolbar>
+    <com.ethan.myclub.user.Schedule.ScheduleView
+        android:id="@+id/scheduleView"
+        android:layout_below="@id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+</RelativeLayout>

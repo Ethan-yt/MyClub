@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <!--<item-->
+        <!--android:id="@+id/menu_activity"-->
+        <!--android:title="活动"-->
+        <!--android:icon="@drawable/ic_activity" />-->
+
+    <!--<item-->
+        <!--android:id="@+id/menu_message"-->
+        <!--android:title="消息"-->
+        <!--android:icon="@drawable/ic_message" />-->
+
+    <item
+        android:id="@+id/menu_club"
+        android:title="社团"
+        android:icon="@drawable/ic_club" />
+
+    <item
+        android:id="@+id/menu_discovery"
+        android:title="发现"
+        android:icon="@drawable/ic_discovery" />
+
+    <item
+        android:id="@+id/menu_user"
+        android:title="我的"
+        android:icon="@drawable/ic_user" />
+</menu>

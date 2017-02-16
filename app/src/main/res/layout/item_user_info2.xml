@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <TextView
+            android:id="@+id/basicInfo"
+            android:layout_height="45dp"
+            android:background="@drawable/bg_white_ripple"
+            android:gravity="center_vertical"
+            android:padding="10dp"
+            android:layout_margin="1dp"
+            android:text="基本信息"
+            android:textSize="16sp"
+            android:layout_width="match_parent"
+            android:drawableLeft="@drawable/ic_account_circle_black_24dp"
+            android:drawablePadding="10dp"
+            android:clickable="true"
+            />
+        <TextView
+            android:id="@+id/timeManagement"
+            android:layout_height="45dp"
+            android:background="@drawable/bg_white_ripple"
+            android:gravity="center_vertical"
+            android:padding="10dp"
+            android:layout_margin="1dp"
+            android:textSize="16sp"
+            android:text="时间管理"
+            android:layout_width="match_parent"
+            android:drawableLeft="@drawable/ic_timer_24dp"
+            android:drawablePadding="10dp"
+            android:clickable="true"
+            />
+        <TextView
+            android:id="@+id/myCollection"
+            android:layout_height="45dp"
+            android:background="@drawable/bg_white_ripple"
+            android:gravity="center_vertical"
+            android:padding="10dp"
+            android:layout_margin="1dp"
+            android:text="我的收藏"
+            android:textSize="16sp"
+            android:layout_width="match_parent"
+            android:drawableLeft="@drawable/ic_apps_black_24dp"
+            android:drawablePadding="10dp"
+            android:clickable="true"
+            />
+
+
+    </LinearLayout>
+
+
+    <TextView
+        android:id="@+id/settings"
+        android:layout_height="45dp"
+        android:background="@drawable/bg_white_ripple"
+        android:text="设置"
+        android:textSize="16sp"
+        android:layout_width="match_parent"
+        android:gravity="center_vertical"
+        android:layout_gravity="bottom"
+        android:drawableLeft="@drawable/ic_settings_black_24dp"
+        android:drawablePadding="10dp"
+        android:padding="10dp"
+        android:layout_marginBottom="58dp"
+        android:clickable="true"
+
+        />
+
+</FrameLayout>
