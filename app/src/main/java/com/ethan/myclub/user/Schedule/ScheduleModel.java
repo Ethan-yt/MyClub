@@ -12,12 +12,12 @@ import java.util.List;
 
 class ScheduleModel implements Parcelable{
     final private String year;
-    final private int term;
+    final private String term;
     final private List<CourseModel> courses;
 
-    protected ScheduleModel(Parcel in) {
+    private ScheduleModel(Parcel in) {
         year = in.readString();
-        term = in.readInt();
+        term = in.readString();
         courses = new ArrayList<>();
         in.readList(courses, CourseModel.class.getClassLoader());
     }
@@ -48,31 +48,31 @@ class ScheduleModel implements Parcelable{
     @Override
     public void writeToParcel(Parcel parcel, int i) {
         parcel.writeString(year);
-        parcel.writeInt(term);
+        parcel.writeString(term);
         parcel.writeList(courses);
     }
 
-    public String getYear() {
+    String getYear() {
         return year;
     }
 
-    public int getTerm() {
+    String getTerm() {
         return term;
     }
 
-    public List<CourseModel> getCourses() {
+    List<CourseModel> getCourses() {
         return courses;
     }
 
     /**
      * {@code ScheduleModel} builder static inner class.
      */
-    public static final class Builder {
+    static final class Builder {
         private String year;
-        private int term;
+        private String term;
         private List<CourseModel> courses;
 
-        public Builder() {
+        Builder() {
             courses = new ArrayList<>();
         }
 
@@ -82,7 +82,7 @@ class ScheduleModel implements Parcelable{
          * @param val the {@code year} to set
          * @return a reference to this Builder
          */
-        public Builder year(String val) {
+        Builder year(String val) {
             year = val;
             return this;
         }
@@ -93,7 +93,7 @@ class ScheduleModel implements Parcelable{
          * @param val the {@code term} to set
          * @return a reference to this Builder
          */
-        public Builder term(int val) {
+        Builder term(String val) {
             term = val;
             return this;
         }
@@ -104,7 +104,7 @@ class ScheduleModel implements Parcelable{
          * @param val the {@code courses} to set
          * @return a reference to this Builder
          */
-        public Builder courses(List<CourseModel> val) {
+        Builder courses(List<CourseModel> val) {
             courses = val;
             return this;
         }
@@ -114,7 +114,7 @@ class ScheduleModel implements Parcelable{
          *
          * @return a {@code ScheduleModel} built with parameters of this {@code ScheduleModel.Builder}
          */
-        public ScheduleModel build() {
+        ScheduleModel build() {
             return new ScheduleModel(this);
         }
     }
@@ -126,7 +126,7 @@ class CourseModel implements Parcelable {
     final private String teacher;// 教师 孔军
     final private List<CourseTime> time;//时间
 
-    CourseModel(Parcel in) {
+    private CourseModel(Parcel in) {
         name = in.readString();
         type = in.readString();
         teacher = in.readString();
@@ -188,13 +188,13 @@ class CourseModel implements Parcelable {
      * {@code CourseModel} builder static inner class.
      */
 
-    public static final class Builder {
+    static final class Builder {
         private String name;
         private String type;
         private String teacher;
         private List<CourseTime> time;
 
-        public Builder() {
+        Builder() {
             time = new ArrayList<>();
         }
 
@@ -215,7 +215,7 @@ class CourseModel implements Parcelable {
          * @param val the {@code type} to set
          * @return a reference to this Builder
          */
-        public Builder type(String val) {
+        Builder type(String val) {
             type = val;
             return this;
         }
@@ -226,7 +226,7 @@ class CourseModel implements Parcelable {
          * @param val the {@code teacher} to set
          * @return a reference to this Builder
          */
-        public Builder teacher(String val) {
+        Builder teacher(String val) {
             teacher = val;
             return this;
         }
@@ -247,7 +247,7 @@ class CourseModel implements Parcelable {
          *
          * @return a {@code CourseModel} built with parameters of this {@code CourseModel.Builder}
          */
-        public CourseModel build() {
+        CourseModel build() {
             return new CourseModel(this);
         }
     }
@@ -265,7 +265,7 @@ class CourseTime implements Parcelable {
     final private int timeEnd; // 节数
     final private String location;// 教室 1教1B411
 
-    public int getDay() {
+    int getDay() {
         return day;
     }
 
@@ -277,20 +277,20 @@ class CourseTime implements Parcelable {
         return weekEnd;
     }
 
-    public int getTimeBegin() {
+    int getTimeBegin() {
         return timeBegin;
     }
 
-    public int getTimeEnd() {
+    int getTimeEnd() {
         return timeEnd;
     }
 
 
-    public String getLocation() {
+    String getLocation() {
         return location;
     }
 
-    protected CourseTime(Parcel in) {
+    private CourseTime(Parcel in) {
         day = in.readInt();
         weekBegin = in.readInt();
         weekEnd = in.readInt();
@@ -343,7 +343,7 @@ class CourseTime implements Parcelable {
     /**
      * {@code CourseTime} builder static inner class.
      */
-    public static final class Builder {
+    static final class Builder {
         private int day;
         private int weekBegin;
         private int weekEnd;
@@ -352,7 +352,7 @@ class CourseTime implements Parcelable {
         private int timeEnd;
         private String location;
 
-        public Builder() {
+        Builder() {
         }
 
         /**
@@ -361,7 +361,7 @@ class CourseTime implements Parcelable {
          * @param val the {@code day} to set
          * @return a reference to this Builder
          */
-        public Builder day(int val) {
+        Builder day(int val) {
             day = val;
             return this;
         }
@@ -372,7 +372,7 @@ class CourseTime implements Parcelable {
          * @param val the {@code weekBegin} to set
          * @return a reference to this Builder
          */
-        public Builder weekBegin(int val) {
+        Builder weekBegin(int val) {
             weekBegin = val;
             return this;
         }
@@ -383,7 +383,7 @@ class CourseTime implements Parcelable {
          * @param val the {@code weekEnd} to set
          * @return a reference to this Builder
          */
-        public Builder weekEnd(int val) {
+        Builder weekEnd(int val) {
             weekEnd = val;
             return this;
         }
@@ -394,7 +394,7 @@ class CourseTime implements Parcelable {
          * @param val the {@code weekFlag} to set
          * @return a reference to this Builder
          */
-        public Builder weekFlag(int val) {
+        Builder weekFlag(int val) {
             weekFlag = val;
             return this;
         }
@@ -405,7 +405,7 @@ class CourseTime implements Parcelable {
          * @param val the {@code timeBegin} to set
          * @return a reference to this Builder
          */
-        public Builder timeBegin(int val) {
+        Builder timeBegin(int val) {
             timeBegin = val;
             return this;
         }
@@ -416,7 +416,7 @@ class CourseTime implements Parcelable {
          * @param val the {@code timeEnd} to set
          * @return a reference to this Builder
          */
-        public Builder timeEnd(int val) {
+        Builder timeEnd(int val) {
             timeEnd = val;
             return this;
         }
@@ -428,7 +428,7 @@ class CourseTime implements Parcelable {
          * @param val the {@code location} to set
          * @return a reference to this Builder
          */
-        public Builder location(String val) {
+        Builder location(String val) {
             location = val;
             return this;
         }
@@ -438,7 +438,7 @@ class CourseTime implements Parcelable {
          *
          * @return a {@code CourseTime} built with parameters of this {@code CourseTime.Builder}
          */
-        public CourseTime build() {
+        CourseTime build() {
             return new CourseTime(this);
         }
     }

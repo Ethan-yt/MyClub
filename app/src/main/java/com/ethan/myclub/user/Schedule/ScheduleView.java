@@ -20,6 +20,8 @@ import java.util.List;
  * Created by ethan on 2017/1/19.
  */
 
+// TODO: 2017/2/17 对每一个课程的增删改
+
 public class ScheduleView extends LinearLayout {
 
     List<FrameLayout> mDayViews;
