@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Parcel;
 import android.support.design.widget.BottomSheetDialog;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -20,6 +21,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Currency;
 import java.util.List;
@@ -27,9 +29,10 @@ import java.util.List;
 public class ScheduleActivity extends AppCompatActivity {
 
     ScheduleView mScheduleView;
-    List<ScheduleModel> mScheduleModels;
+    ArrayList<ScheduleModel> mScheduleModels = new ArrayList<>();
     String mCurrentYear;
-    int mCurrentTerm;
+    String mCurrentTerm;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,8 +51,7 @@ public class ScheduleActivity extends AppCompatActivity {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
                 int menuItemId = item.getItemId();
-                switch (menuItemId)
-                {
+                switch (menuItemId) {
                     case R.id.action_inputCurriculum:
                         downloadSchedule();
                         break;
@@ -57,6 +59,7 @@ public class ScheduleActivity extends AppCompatActivity {
                         setCurrentWeek();
                         break;
                     case R.id.action_settings:
+                        // TODO: 2017/2/17 目前仅仅是设置当前学期，要增加其他设置，例如开学日期
                         setCurrentSchedule();
                         break;
                 }
@@ -66,23 +69,35 @@ public class ScheduleActivity extends AppCompatActivity {
 
         mScheduleView = (ScheduleView) findViewById(R.id.scheduleView);
 
-        mScheduleModels = read();
-
-        SharedPreferences sharedPreferences = getSharedPreferences("schedule", MODE_PRIVATE);
-
-        mCurrentYear = sharedPreferences.getString("CurrentYear","");
-        mCurrentTerm = sharedPreferences.getInt("CurrentTerm",0);
-
-        for (ScheduleModel scheduleModel : mScheduleModels) {
-            if(scheduleModel.getYear().equals(mCurrentYear) &&
-                    scheduleModel.getTerm() == mCurrentTerm)
-                mScheduleView.setScheduleModel(scheduleModel);
-        }
-
+        read();
+        refreshScheduleView();
     }
 
     private void setCurrentSchedule() {
+        final SchedulePickerView v = new SchedulePickerView(this);
+        v.setSchedules(mScheduleModels);
+        v.setYear(mCurrentYear);
+        v.setTerm(mCurrentTerm);
 
+        new AlertDialog.Builder(this)
+                .setTitle("请选择当前的学年学期")
+                .setView(v)
+                .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        mCurrentYear = v.getYear();
+                        mCurrentTerm = v.getTerm();
+                        savePreferances();
+                        refreshScheduleView();
+                    }
+                })
+                .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+
+                    }
+                })
+                .show();
     }
 
     private void downloadSchedule() {
@@ -95,27 +110,16 @@ public class ScheduleActivity extends AppCompatActivity {
         super.onNewIntent(intent);
         mScheduleModels = intent.getParcelableArrayListExtra("Schedules");
         mCurrentYear = intent.getStringExtra("Year");
-        mCurrentTerm = intent.getIntExtra("Term",-1);
+        mCurrentTerm = intent.getStringExtra("Term");
 
-        save(mScheduleModels);
-        SharedPreferences sharedPreferences = getSharedPreferences("schedule", MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString("CurrentYear", mCurrentYear);
-        editor.putInt("CurrentTerm", mCurrentTerm);
-        editor.apply();
+        save();
 
-        for (ScheduleModel scheduleModel : mScheduleModels) {
-            if(scheduleModel.getYear().equals(mCurrentYear) &&
-                    scheduleModel.getTerm() == mCurrentTerm)
-                mScheduleView.setScheduleModel(scheduleModel);
-        }
-
+        refreshScheduleView();
     }
 
     private BottomSheetDialog mBottomSheetDialog;
 
-    public void save(List<ScheduleModel> mScheduleModels) {
-
+    public void save() {
         try {
             FileOutputStream outStream = openFileOutput("Schedules.txt", Context.MODE_PRIVATE);
 
@@ -128,14 +132,33 @@ public class ScheduleActivity extends AppCompatActivity {
             outStream.write(bytes);
             outStream.close();
 
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        savePreferances();
     }
 
-    public List<ScheduleModel> read() {
+    public void savePreferances()
+    {
+        SharedPreferences sharedPreferences = getSharedPreferences("schedule", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("CurrentYear", mCurrentYear);
+        editor.putString("CurrentTerm", mCurrentTerm);
+        editor.apply();
+    }
+    public void refreshScheduleView() {
+
+        for (ScheduleModel scheduleModel : mScheduleModels) {
+            if (scheduleModel.getYear().equals(mCurrentYear) &&
+                    scheduleModel.getTerm().equals(mCurrentTerm)) {
+                mScheduleView.setScheduleModel(scheduleModel);
+                return;
+            }
+        }
+    }
+
+    public void read() {
         try {
 
             FileInputStream fin = openFileInput("Schedules.txt");
@@ -147,26 +170,24 @@ public class ScheduleActivity extends AppCompatActivity {
             parcel.unmarshall(buffer, 0, buffer.length);
             parcel.setDataPosition(0); // This is extremely important!
 
-            List mScheduleModels = new ArrayList();
             parcel.readList(mScheduleModels, ScheduleModel.class.getClassLoader());
             parcel.recycle();
             fin.close();
-            return mScheduleModels;
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return new ArrayList();
+        SharedPreferences sharedPreferences = getSharedPreferences("schedule", MODE_PRIVATE);
+
+        mCurrentYear = sharedPreferences.getString("CurrentYear", "");
+        mCurrentTerm = sharedPreferences.getString("CurrentTerm", "");
     }
 
     private void setCurrentWeek() {
 
         NumberPicker np = new NumberPicker(this);
         String[] week_id = new String[20];
-        for(int i = 0;i<20;i++)
-        {
-            week_id[i] = "第"+(i+1)+"周";
+        for (int i = 0; i < 20; i++) {
+            week_id[i] = "第" + (i + 1) + "周";
         }
 
         np.setDisplayedValues(week_id);

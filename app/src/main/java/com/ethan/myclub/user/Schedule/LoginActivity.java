@@ -226,9 +226,8 @@ public class LoginActivity extends AppCompatActivity {
                         Elements content = doc.getElementsByAttributeValue("name", "__VIEWSTATE");
                         if (content.size() != 1)
                             throw new Exception("获取不到ViewState");
-                        String viewState = content.get(0).attr("value");
                         //viewState = URLEncoder.encode(viewState, "UTF-8");
-                        return viewState;
+                        return content.get(0).attr("value");
                     }
 
                 })
@@ -370,7 +369,7 @@ public class LoginActivity extends AppCompatActivity {
                         for (String year : years) {
                             for (int term = 1; term <= 2; term++) {
                                 if (year.equals(currentSchedule.getYear()))
-                                    if (term >= currentSchedule.getTerm())
+                                    if (term >= Integer.parseInt(currentSchedule.getTerm()))
                                         continue;
                                 scheduleIDs.add(new ScheduleParam(year, term));
                             }
@@ -462,78 +461,20 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void showNumberPicker() {
-        Map<String,List<String>> tempMap = new TreeMap<>();
 
-        for (ScheduleModel schedule : schedules) {
-            List<String> terms = tempMap.get(schedule.getYear());
-            if(terms == null)
-            {
-                terms = new ArrayList<>();
-                terms.add(String.valueOf(schedule.getTerm()));
-                tempMap.put(schedule.getYear(),terms);
-            }
-            else
-            {
-                terms.add(String.valueOf(schedule.getTerm()));
-            }
-        }
-        final Map<String,String[]> map = new TreeMap<>();
-
-        for (String key : tempMap.keySet()) {
-            List<String> list = tempMap.get(key);
-            Collections.sort(list);
-            map.put(key,list.toArray(new String[0]));
-        }
-
-
-        View view = LayoutInflater.from(this).inflate(R.layout.dialog_schedule_picker, null);
-
-
-        final NumberPicker np1 = (NumberPicker) view.findViewById(R.id.np_year);
-        np1.setDescendantFocusability(ViewGroup.FOCUS_BLOCK_DESCENDANTS);
-
-        final String[] years = map.keySet().toArray(new String[0]);
-        np1.setDisplayedValues(years);
-        np1.setMinValue(0);
-        np1.setMaxValue(years.length - 1);
-        np1.setValue(years.length - 1);
-
-        final NumberPicker np2 = (NumberPicker) view.findViewById(R.id.np_term);
-        np2.setDescendantFocusability(ViewGroup.FOCUS_BLOCK_DESCENDANTS);
-
-        final String[][] terms = {map.get(years[years.length - 1])};
-
-        np2.setDisplayedValues(terms[0]);
-        np2.setMinValue(0);
-        np2.setMaxValue(terms[0].length - 1);
-        np2.setValue(terms[0].length - 1);
-
-        np1.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
-            @Override
-            public void onValueChange(NumberPicker numberPicker, int i, int i1) {
-
-                terms[0] = map.get(years[i1]);
-
-                np2.setDisplayedValues(null);
-                np2.setMinValue(0);
-                np2.setMaxValue(terms[0].length - 1);
-                np2.setValue(terms[0].length - 1);
-                np2.setDisplayedValues(terms[0]);
-
-            }
-        });
-
+        final SchedulePickerView v = new SchedulePickerView(this);
+        v.setSchedules(schedules);
 
         new AlertDialog.Builder(this)
                 .setTitle("请选择当前的学年学期")
-                .setView(view)
+                .setView(v)
                 .setPositiveButton("确定", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         Intent intent = new Intent(LoginActivity.this, ScheduleActivity.class);
                         intent.putParcelableArrayListExtra("Schedules",schedules);
-                        intent.putExtra("Year",years[np1.getValue()]);
-                        intent.putExtra("Term",Integer.parseInt(terms[0][np2.getValue()]));
+                        intent.putExtra("Year",v.getYear());
+                        intent.putExtra("Term",v.getTerm());
                         startActivity(intent);
                     }
                 })
@@ -563,10 +504,10 @@ public class LoginActivity extends AppCompatActivity {
         Elements termContent = doc.getElementById("xqd")
                 .getElementsByTag("option");
 
-        int currentTerm = 0;
+        String currentTerm = "";
         for (Element term : termContent) {
             if (term.attr("selected").equals("selected"))
-                currentTerm = Integer.parseInt(term.text());
+                currentTerm = term.text();
         }
 
 
