@@ -14,12 +14,27 @@ android {
             //enabled true
         }
     }
-    buildTypes {
+    signingConfigs {
         release {
+            storeFile file("key.jks")
+            storePassword "heihei"
+            keyAlias "myclub"
+            keyPassword "heihei"
+        }
+    }
+    buildTypes {
+        debug {
+            signingConfig signingConfigs.release
+        }
+        release {
+            signingConfig signingConfigs.release
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+
+
     compileOptions {
         //targetCompatibility 1.8
         //sourceCompatibility 1.8
