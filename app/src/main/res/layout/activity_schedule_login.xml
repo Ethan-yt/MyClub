@@ -6,21 +6,25 @@
     android:id="@+id/activity_download_schedule"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.ethan.myclub.user.Schedule.LoginActivity"
     android:focusable="true"
-    android:focusableInTouchMode="true">
+    android:focusableInTouchMode="true"
+    tools:context="com.ethan.myclub.user.schedule.LoginActivity">
 
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar"
+    <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/colorPrimary"
-        android:elevation="6dp"
-        android:theme="@style/AppTheme"
-        app:navigationIcon="@drawable/ic_chevron_left_white_32dp"
-        app:title="导入课程"
-        app:titleTextColor="#FFFFFF">
-    </android.support.v7.widget.Toolbar>
+        android:theme="@style/AppTheme.AppBarOverlay">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            app:navigationIcon="@drawable/ic_chevron_left_white_32dp"
+            app:popupTheme="@style/AppTheme.PopupOverlay"
+            app:title="导入课程"/>
+
+    </android.support.design.widget.AppBarLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -35,9 +39,9 @@
 
         <android.support.design.widget.TextInputLayout
             android:id="@+id/idWrapper"
-            android:layout_marginTop="50dp"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginTop="50dp">
 
             <android.support.design.widget.TextInputEditText
                 android:id="@+id/id"
@@ -73,7 +77,6 @@
 
         <Button
             android:id="@+id/sign_in_button"
-
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"

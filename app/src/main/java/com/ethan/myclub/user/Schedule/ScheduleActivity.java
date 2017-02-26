@@ -1,4 +1,4 @@
-package com.ethan.myclub.user.Schedule;
+package com.ethan.myclub.user.schedule;
 
 import android.content.Context;
 import android.content.DialogInterface;
@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Parcel;
 import android.support.design.widget.BottomSheetDialog;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -18,13 +19,9 @@ import android.widget.NumberPicker;
 import com.ethan.myclub.R;
 
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Currency;
-import java.util.List;
 
 public class ScheduleActivity extends AppCompatActivity {
 
@@ -40,13 +37,13 @@ public class ScheduleActivity extends AppCompatActivity {
         setContentView(R.layout.activity_schedule);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.inflateMenu(R.menu.menu_toolbar_schedule);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
+            public void onClick(View v) {
                 finish();
             }
         });
-        toolbar.inflateMenu(R.menu.menu_toolbar_schedule);
         toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
@@ -139,14 +136,14 @@ public class ScheduleActivity extends AppCompatActivity {
         savePreferances();
     }
 
-    public void savePreferances()
-    {
+    public void savePreferances() {
         SharedPreferences sharedPreferences = getSharedPreferences("schedule", MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString("CurrentYear", mCurrentYear);
         editor.putString("CurrentTerm", mCurrentTerm);
         editor.apply();
     }
+
     public void refreshScheduleView() {
 
         for (ScheduleModel scheduleModel : mScheduleModels) {
@@ -170,7 +167,7 @@ public class ScheduleActivity extends AppCompatActivity {
             parcel.unmarshall(buffer, 0, buffer.length);
             parcel.setDataPosition(0); // This is extremely important!
 
-            parcel.readList(mScheduleModels, ScheduleModel.class.getClassLoader());
+            parcel.readList(mScheduleModels, com.ethan.myclub.user.schedule.ScheduleModel.class.getClassLoader());
             parcel.recycle();
             fin.close();
         } catch (IOException e) {

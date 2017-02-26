@@ -1,4 +1,4 @@
-package com.ethan.myclub.user.Schedule;
+package com.ethan.myclub.user.schedule;
 
 /**
  * Created by ethan on 2017/2/11.

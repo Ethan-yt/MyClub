@@ -12,6 +12,7 @@ import com.aurelhubert.ahbottomnavigation.AHBottomNavigationViewPager;
 import com.ethan.myclub.R;
 
 
+
 public class MainActivity extends AppCompatActivity {
 
     private BaseFragment currentFragment;

@@ -1,4 +1,4 @@
-package com.ethan.myclub.user.Schedule;
+package com.ethan.myclub.user.schedule;
 
 import android.content.Context;
 import android.util.AttributeSet;

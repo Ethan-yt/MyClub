@@ -1,4 +1,4 @@
-package com.ethan.myclub.user.Schedule;
+package com.ethan.myclub.user.schedule;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -60,11 +60,12 @@ public class ScheduleView extends LinearLayout {
                 TextView tv = new TextView(getContext());
                 tv.setGravity(Gravity.CENTER);
                 tv.setTextSize(12);
-                tv.setTextColor(Color.parseColor("#000000"));
+                tv.setTextColor(Color.BLACK);
                 tv.setText(courseModel.getName() + "\n @" + courseTime.getLocation());
 
                 cv.setLayoutParams(cvLp);
                 cv.addView(tv);
+                cv.setBackgroundColor(Color.WHITE);
                 cv.setContentPadding(5,5,5,5);
 
                 cv.setRadius(getResources().getDimensionPixelSize(R.dimen.ScheduleCourseRadius));
