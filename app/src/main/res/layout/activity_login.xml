@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    android:id="@+id/container"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorPrimaryDark"
+    tools:context=".views.user.login.LoginActivity">
+
+
+    <TextView
+        android:id="@+id/btn_findback"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="找回密码"
+        android:textColor="#ffffff"
+        app:layout_constraintLeft_toLeftOf="@+id/btn_login"
+        app:layout_constraintTop_toBottomOf="@+id/btn_login"/>
+
+
+    <TextView
+        android:id="@+id/btn_register"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="立即注册"
+        android:textColor="#ffffff"
+        app:layout_constraintRight_toRightOf="@+id/btn_login"
+        app:layout_constraintTop_toTopOf="@+id/btn_findback"/>
+
+    <TextView
+        android:id="@+id/tv_3rdLogin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="48dp"
+        android:gravity="center"
+        android:text="第三方登录"
+        android:textColor="@android:color/white"
+        android:textSize="14sp"
+        app:layout_constraintLeft_toLeftOf="@+id/btn_findback"
+        app:layout_constraintTop_toBottomOf="@+id/btn_register"/>
+
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/cv_input"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="24dp"
+        app:cardCornerRadius="10dp"
+        app:contentPadding="10dp"
+        app:layout_constraintBottom_toTopOf="@+id/btn_login"
+        app:layout_constraintLeft_toLeftOf="@+id/btn_login"
+        app:layout_constraintRight_toRightOf="@+id/btn_login">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="用户名/手机号"
+
+                android:textColorHint="?android:attr/textColorHint"
+                android:id="@+id/et_username"/>
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="密码"
+                android:inputType="textPassword"
+                android:id="@+id/et_password"/>
+        </LinearLayout>
+    </android.support.v7.widget.CardView>
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/btn_login"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="32dp"
+        android:layout_marginLeft="32dp"
+        android:layout_marginRight="32dp"
+        android:layout_marginStart="32dp"
+        android:clickable="true"
+        android:foreground="?android:attr/selectableItemBackground"
+        android:onClick="onLogin"
+        app:cardBackgroundColor="@color/colorPrimary"
+        app:cardCornerRadius="10dp"
+        app:contentPadding="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        >
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/cv_input"
+            android:text="登  录"
+            android:textAlignment="center"
+            android:textSize="25sp"
+
+            />
+    </android.support.v7.widget.CardView>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:divider="@drawable/bg_divider"
+        android:dividerPadding="5dp"
+        android:orientation="horizontal"
+        android:showDividers="middle"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_3rdLogin"
+        app:layout_constraintTop_toTopOf="@+id/tv_3rdLogin"
+        app:layout_constraintRight_toRightOf="@+id/btn_register">
+
+        <ImageView
+            android:id="@+id/btn_qq"
+            android:layout_width="50dp"
+            android:layout_height="40dp"
+            android:layout_weight="1"
+            app:srcCompat="@drawable/ic_login_qq"/>
+
+        <ImageView
+            android:id="@+id/btn_wechat"
+            android:layout_width="50dp"
+            android:layout_height="40dp"
+            android:layout_weight="1"
+            app:srcCompat="@drawable/ic_login_wechat"/>
+
+        <ImageView
+            android:id="@+id/btn_facebook"
+            android:layout_width="50dp"
+            android:layout_height="40dp"
+            android:layout_weight="1"
+            app:srcCompat="@drawable/ic_login_facebook"/>
+
+    </LinearLayout>
+
+
+</android.support.constraint.ConstraintLayout>
