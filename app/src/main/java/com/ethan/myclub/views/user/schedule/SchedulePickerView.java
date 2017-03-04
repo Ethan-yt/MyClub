@@ -1,4 +1,4 @@
-package com.ethan.myclub.user.schedule;
+package com.ethan.myclub.views.user.schedule;
 
 import android.content.Context;
 import android.util.AttributeSet;
@@ -6,18 +6,17 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.NumberPicker;
 
+import com.ethan.myclub.models.schedule.Schedule;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-/**
- * TODO: document your custom view class.
- */
 public class SchedulePickerView extends LinearLayout {
 
-    private List<ScheduleModel> mSchedules;
+    private List<Schedule> mSchedules;
     private String mYear;
     private String mTerm;
     private String[] mYears;
@@ -91,11 +90,11 @@ public class SchedulePickerView extends LinearLayout {
         super(context, attrs, defStyle);
     }
 
-    public List<ScheduleModel> getSchedules() {
+    public List<Schedule> getSchedules() {
         return mSchedules;
     }
 
-    public void setSchedules(List<ScheduleModel> schedules) {
+    public void setSchedules(List<Schedule> schedules) {
         mSchedules = schedules;
         init();
     }
@@ -106,7 +105,7 @@ public class SchedulePickerView extends LinearLayout {
         //建立一个map，key为年份，value为学期数组
         Map<String, List<String>> tempMap = new TreeMap<>();
 
-        for (ScheduleModel schedule : mSchedules) {
+        for (Schedule schedule : mSchedules) {
             List<String> terms = tempMap.get(schedule.getYear());
             if (terms == null) {
                 terms = new ArrayList<>();

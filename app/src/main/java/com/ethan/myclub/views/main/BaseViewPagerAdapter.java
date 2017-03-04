@@ -1,10 +1,10 @@
-package com.ethan.myclub.main;
+package com.ethan.myclub.views.main;
 
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.view.ViewGroup;
 
-import com.ethan.myclub.user.UserFragment;
+import com.ethan.myclub.views.user.UserFragment;
 
 import java.util.ArrayList;
 

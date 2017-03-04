@@ -1,20 +1,17 @@
-package com.ethan.myclub.user;
+package com.ethan.myclub.views.user;
 
 
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.ethan.myclub.R;
-import com.ethan.myclub.main.BaseFragment;
-import com.ethan.myclub.user.login.LoginActivity;
-import com.ethan.myclub.user.schedule.ScheduleActivity;
+import com.ethan.myclub.views.main.BaseFragment;
+import com.ethan.myclub.views.user.login.LoginActivity;
+import com.ethan.myclub.views.user.schedule.ScheduleActivity;
 
 
 public class UserFragment extends BaseFragment {

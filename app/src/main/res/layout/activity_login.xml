@@ -1,16 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout
+    android:id="@+id/container"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorPrimaryDark"
-    tools:context="com.ethan.myclub.user.login.LoginActivity">
+    tools:context=".views.user.login.LoginActivity">
 
 
     <TextView
-        android:id="@+id/findBackBtn"
+        android:id="@+id/btn_findback"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
@@ -21,13 +22,13 @@
 
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/btn_register"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="立即注册"
         android:textColor="#ffffff"
         app:layout_constraintRight_toRightOf="@+id/btn_login"
-        app:layout_constraintTop_toTopOf="@+id/findBackBtn"/>
+        app:layout_constraintTop_toTopOf="@+id/btn_findback"/>
 
     <TextView
         android:id="@+id/tv_3rdLogin"
@@ -38,8 +39,8 @@
         android:text="第三方登录"
         android:textColor="@android:color/white"
         android:textSize="14sp"
-        app:layout_constraintLeft_toLeftOf="@+id/findBackBtn"
-        app:layout_constraintTop_toBottomOf="@+id/textView"/>
+        app:layout_constraintLeft_toLeftOf="@+id/btn_findback"
+        app:layout_constraintTop_toBottomOf="@+id/btn_register"/>
 
 
     <android.support.v7.widget.CardView
@@ -63,13 +64,15 @@
                 android:layout_height="wrap_content"
                 android:hint="用户名/手机号"
 
-                android:textColorHint="?android:attr/textColorHint"/>
+                android:textColorHint="?android:attr/textColorHint"
+                android:id="@+id/et_username"/>
 
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="密码"
-                android:inputType="textPassword"/>
+                android:inputType="textPassword"
+                android:id="@+id/et_password"/>
         </LinearLayout>
     </android.support.v7.widget.CardView>
 
@@ -112,8 +115,8 @@
         android:orientation="horizontal"
         android:showDividers="middle"
         app:layout_constraintBottom_toBottomOf="@+id/tv_3rdLogin"
-        app:layout_constraintRight_toRightOf="@+id/textView"
-        app:layout_constraintTop_toTopOf="@+id/tv_3rdLogin">
+        app:layout_constraintTop_toTopOf="@+id/tv_3rdLogin"
+        app:layout_constraintRight_toRightOf="@+id/btn_register">
 
         <ImageView
             android:id="@+id/btn_qq"

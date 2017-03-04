@@ -1,10 +1,9 @@
-package com.ethan.myclub.main;
+package com.ethan.myclub.views.main;
 
 import android.support.v4.app.Fragment;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.FrameLayout;
 
 import com.ethan.myclub.R;
 

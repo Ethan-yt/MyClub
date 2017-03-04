@@ -6,7 +6,7 @@
     android:id="@+id/activity_schedule"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.ethan.myclub.user.schedule.ScheduleActivity">
+    tools:context=".views.user.schedule.ScheduleActivity">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
@@ -18,9 +18,10 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorPrimary"
-            app:navigationIcon="@drawable/ic_chevron_left_white_32dp"
+            app:navigationIcon="?attr/homeAsUpIndicator"
             app:popupTheme="@style/AppTheme.PopupOverlay"
             app:title="时间管理"/>
+        <!--app:navigationIcon="@drawable/ic_chevron_left_white_32dp"-->
     </android.support.design.widget.AppBarLayout>
 
     <!--toolbar:logo="@mipmap/ic_launcher"-->
@@ -30,7 +31,7 @@
     <!--android:layout_width="wrap_content"-->
     <!--android:layout_height="wrap_content"-->
     <!--android:text="Clock" />-->
-    <com.ethan.myclub.user.schedule.ScheduleView
+    <com.ethan.myclub.views.user.schedule.ScheduleView
         android:id="@+id/scheduleView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

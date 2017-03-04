@@ -1,4 +1,4 @@
-package com.ethan.myclub.user.schedule;
+package com.ethan.myclub.views.user.schedule;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -12,6 +12,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ethan.myclub.R;
+import com.ethan.myclub.models.schedule.Course;
+import com.ethan.myclub.models.schedule.CourseTime;
+import com.ethan.myclub.models.schedule.Schedule;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +28,7 @@ import java.util.List;
 public class ScheduleView extends LinearLayout {
 
     List<FrameLayout> mDayViews;
-    ScheduleModel mScheduleModel;
+    Schedule mSchedule;
 
 
     public ScheduleView(Context context, AttributeSet attrs) {
@@ -42,9 +45,9 @@ public class ScheduleView extends LinearLayout {
     }
 
     private void initScheduleModels() {
-        for (final CourseModel courseModel : mScheduleModel.getCourses()) {
+        for (final Course course : mSchedule.getCourses()) {
 
-            List<CourseTime> courseTimes = courseModel.getTime();
+            List<CourseTime> courseTimes = course.getTime();
 
             for (CourseTime courseTime : courseTimes) {
 
@@ -61,7 +64,7 @@ public class ScheduleView extends LinearLayout {
                 tv.setGravity(Gravity.CENTER);
                 tv.setTextSize(12);
                 tv.setTextColor(Color.BLACK);
-                tv.setText(courseModel.getName() + "\n @" + courseTime.getLocation());
+                tv.setText(course.getName() + "\n @" + courseTime.getLocation());
 
                 cv.setLayoutParams(cvLp);
                 cv.addView(tv);
@@ -74,7 +77,7 @@ public class ScheduleView extends LinearLayout {
                 tv.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        Toast.makeText(getContext(), courseModel.getName(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), course.getName(), Toast.LENGTH_SHORT).show();
                     }
                 });
 
@@ -101,12 +104,12 @@ public class ScheduleView extends LinearLayout {
     }
 
 
-    public ScheduleModel getScheduleModel() {
-        return mScheduleModel;
+    public Schedule getSchedule() {
+        return mSchedule;
     }
 
-    public void setScheduleModel(ScheduleModel scheduleModel) {
-        mScheduleModel = scheduleModel;
+    public void setSchedule(Schedule schedule) {
+        mSchedule = schedule;
         initDayView();
         initScheduleModels();
     }

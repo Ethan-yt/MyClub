@@ -1,4 +1,4 @@
-package com.ethan.myclub.main;
+package com.ethan.myclub.views.main;
 
 import android.graphics.Color;
 

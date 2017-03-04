@@ -8,7 +8,7 @@
     android:layout_height="match_parent"
     android:focusable="true"
     android:focusableInTouchMode="true"
-    tools:context="com.ethan.myclub.user.schedule.LoginActivity">
+    tools:context=".views.user.schedule.LoginActivity">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
@@ -20,7 +20,7 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorPrimary"
-            app:navigationIcon="@drawable/ic_chevron_left_white_32dp"
+            app:navigationIcon="?attr/homeAsUpIndicator"
             app:popupTheme="@style/AppTheme.PopupOverlay"
             app:title="导入课程"/>
 

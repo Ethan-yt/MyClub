@@ -1,8 +1,7 @@
-package com.ethan.myclub.user.schedule;
+package com.ethan.myclub.views.user.schedule;
 
 
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -15,12 +14,16 @@ import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
 import com.ethan.myclub.R;
+import com.ethan.myclub.network.services.ScheduleService;
+import com.ethan.myclub.models.schedule.Course;
+import com.ethan.myclub.models.schedule.CourseTime;
+import com.ethan.myclub.models.schedule.Schedule;
+import com.ethan.myclub.utils.Utils;
 import com.jakewharton.retrofit2.adapter.rxjava2.HttpException;
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 
@@ -56,8 +59,10 @@ public class LoginActivity extends AppCompatActivity {
 
 
     private static final String TAG = "LoginActivity";
+    public static final int ACTIVITY_CODE = 2; //为了标识Activity result和Activity request
+
     public static final String BASE_URL = "http://202.195.144.163/";
-    private static final boolean DEBUG = false;
+    private static final boolean DEBUG = false; //模拟网络延迟
     private EditText mPwView, mIdView;
     private TextInputLayout mIdWrapper, mPwWrapper;
 
@@ -66,7 +71,7 @@ public class LoginActivity extends AppCompatActivity {
     private Disposable mDisposable;
 
 
-    final private ArrayList<ScheduleModel> schedules = new ArrayList<>();
+    final private ArrayList<Schedule> schedules = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -106,7 +111,6 @@ public class LoginActivity extends AppCompatActivity {
         });
 
 
-
         CookieJar cookieJar = new CookieJar() {
             private List<Cookie> cookieStore = new ArrayList<>();
 
@@ -140,10 +144,10 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void doOnLogin() {
-        hideKeyboard();
+        Utils.hideKeyboard(this);
+
         mIdWrapper.setErrorEnabled(false);
         mPwWrapper.setErrorEnabled(false);
-
 
         final String username = mIdView.getText().toString();
         final String password = mPwView.getText().toString();
@@ -288,8 +292,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void delay() {
-        if(DEBUG)
-        {
+        if (DEBUG) {
             try {
                 Thread.sleep(1000);
             } catch (InterruptedException ignored) {
@@ -348,7 +351,7 @@ public class LoginActivity extends AppCompatActivity {
 
                         //获取课程表
 
-                        ScheduleModel currentSchedule = parseSchedule(doc);
+                        Schedule currentSchedule = parseSchedule(doc);
                         schedules.clear();
                         schedules.add(currentSchedule);
 
@@ -395,9 +398,9 @@ public class LoginActivity extends AppCompatActivity {
                                 .subscribeOn(Schedulers.io());
                     }
                 })
-                .map(new Function<ResponseBody, ScheduleModel>() {
+                .map(new Function<ResponseBody, Schedule>() {
                     @Override
-                    public ScheduleModel apply(ResponseBody responseBody) throws Exception {
+                    public Schedule apply(ResponseBody responseBody) throws Exception {
 
                         String html = responseBody.string();
 
@@ -406,17 +409,17 @@ public class LoginActivity extends AppCompatActivity {
                         return parseSchedule(doc);
                     }
                 })
-                .filter(new Predicate<ScheduleModel>() {
+                .filter(new Predicate<Schedule>() {
                     @Override
-                    public boolean test(ScheduleModel scheduleModel) throws Exception {
-                        return scheduleModel.getCourses().size() > 0;
+                    public boolean test(Schedule schedule) throws Exception {
+                        return schedule.getCourses().size() > 0;
                     }
                 })
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
-                        new Consumer<ScheduleModel>() {
+                        new Consumer<Schedule>() {
                             @Override
-                            public void accept(ScheduleModel s) throws Exception {
+                            public void accept(Schedule s) throws Exception {
                                 //OnNext 获取到一个课程表
                                 schedules.add(s);
                                 mProgressDialog.incrementProgressBy(1);
@@ -461,10 +464,12 @@ public class LoginActivity extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         Intent intent = new Intent(LoginActivity.this, ScheduleActivity.class);
-                        intent.putParcelableArrayListExtra("Schedules",schedules);
-                        intent.putExtra("Year",v.getYear());
-                        intent.putExtra("Term",v.getTerm());
-                        startActivity(intent);
+                        intent.putParcelableArrayListExtra("Schedules", schedules);
+                        intent.putExtra("Year", v.getYear());
+                        intent.putExtra("Term", v.getTerm());
+                        //startActivity(intent);
+                        setResult(ACTIVITY_CODE, intent);
+                        finish();
                     }
                 })
                 .setNegativeButton("取消", new DialogInterface.OnClickListener() {
@@ -477,7 +482,7 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
-    private ScheduleModel parseSchedule(Element doc) throws Exception {
+    private Schedule parseSchedule(Element doc) throws Exception {
 
         //获取当前学年
         Elements yearContent = doc.getElementById("xnd")
@@ -500,7 +505,7 @@ public class LoginActivity extends AppCompatActivity {
         }
 
 
-        Map<String, CourseModel> scheduleMap = new HashMap<>();
+        Map<String, Course> scheduleMap = new HashMap<>();
 
         Elements rows = doc.getElementById("Table1").getElementsByTag("tr");
         if (rows.size() < 14)
@@ -515,9 +520,9 @@ public class LoginActivity extends AppCompatActivity {
                     continue;
 
                 for (int j = 0; j < (info.length / 5); j++) {
-                    CourseModel course = scheduleMap.get(info[0]);
+                    Course course = scheduleMap.get(info[0]);
                     if (course == null) {
-                        course = new CourseModel.Builder()
+                        course = new Course.Builder()
                                 .name(info[j * 5 + 0])
                                 .teacher(info[j * 5 + 3])
                                 .type(info[j * 5 + 1])
@@ -554,7 +559,7 @@ public class LoginActivity extends AppCompatActivity {
 
             }
         }
-        return new ScheduleModel.Builder()
+        return new Schedule.Builder()
                 .term(currentTerm)
                 .year(currentYear)
                 .courses(new ArrayList<>(scheduleMap.values()))
@@ -562,11 +567,5 @@ public class LoginActivity extends AppCompatActivity {
     }
 
 
-    private void hideKeyboard() {
-        View view = getCurrentFocus();
-        if (view != null) {
-            ((InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE)).
-                    hideSoftInputFromWindow(view.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
-        }
-    }
+
 }
