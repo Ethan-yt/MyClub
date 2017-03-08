@@ -86,7 +86,6 @@
         android:layout_marginStart="32dp"
         android:clickable="true"
         android:foreground="?android:attr/selectableItemBackground"
-        android:onClick="onLogin"
         app:cardBackgroundColor="@color/colorPrimary"
         app:cardCornerRadius="10dp"
         app:contentPadding="10dp"

@@ -16,26 +16,22 @@ import retrofit2.http.Query;
 public interface ScheduleService {
 
     //@Headers({"key:value","key:value","key:value"})
-    @Headers("Referer:http://202.195.144.163")
     @GET("jndx/default5.aspx")
     Observable<ResponseBody> getViewState();
 
-    @Headers("Referer:http://202.195.144.163")
     @FormUrlEncoded
     @POST("jndx/default5.aspx")
     Observable<ResponseBody> login(
             @Field("__VIEWSTATE") String viewState,
             @Field("TextBox1") String username,
             @Field("TextBox2") String password,
-            @Field(value = "RadioButtonList1" ,encoded = true) String r,
+            @Field(value = "RadioButtonList1", encoded = true) String r,
             @Field("Button1") String b);
 
     @Headers("Referer:http://202.195.144.163")
     @GET("jndx/xskbcx.aspx")
-
     Observable<ResponseBody> getCurrentSchedule(@Query("xh") String username);
 
-    @Headers("Referer:http://202.195.144.163")
     @FormUrlEncoded
     @POST("jndx/xskbcx.aspx")
     Observable<ResponseBody> getOtherSchedule(
