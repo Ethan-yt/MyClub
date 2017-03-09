@@ -1,8 +1,12 @@
 package com.ethan.myclub.views.user.login;
 
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityOptionsCompat;
+import android.support.v4.util.Pair;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
@@ -14,6 +18,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.ethan.myclub.R;
+import com.ethan.myclub.network.ApiHelper;
+import com.ethan.myclub.utils.Utils;
 import com.ethan.myclub.utils.dialogs.WaitingDialogHelper;
 
 import org.json.JSONObject;
@@ -45,6 +51,7 @@ public class RegisterActivity extends AppCompatActivity {
     private EditText mEtPhoneNumber;
     private CardView mBtnNext;
     private TextView mVerifyCode;
+    private CardView mCvInput;
 
 
     @Override
@@ -58,6 +65,7 @@ public class RegisterActivity extends AppCompatActivity {
         mEtPhoneNumber = (EditText) findViewById(R.id.et_phone_number);
         mBtnSendSMS = (Button) findViewById(R.id.btn_sendSMS);
         mBtnNext = (CardView) findViewById(R.id.btn_next);
+        mCvInput = (CardView) findViewById(R.id.cv_input);
         //Init SMSSDK
         SMSSDK.initSDK(this, "1b8ee6770f538", "3f490908a071256b009580392a5b312a");
         initCountry();
@@ -73,6 +81,7 @@ public class RegisterActivity extends AppCompatActivity {
                 Observable.create(new ObservableOnSubscribe<Object>() {
                     @Override
                     public void subscribe(final ObservableEmitter<Object> e) throws Exception {
+                        //mBtnNext.setClickable(false);
                         SMSSDK.registerEventHandler(new EventHandler() {
                             @Override
                             public void afterEvent(int event, int result, Object data) {
@@ -83,25 +92,31 @@ public class RegisterActivity extends AppCompatActivity {
                                 } else {
                                     e.onError((Throwable) data);
                                 }
+                                SMSSDK.unregisterAllEventHandler();//防止内存泄漏
                             }
                         });
                         SMSSDK.submitVerificationCode(mTvCountryCode.getText().toString(), mEtPhoneNumber.getText().toString(), mVerifyCode.getText().toString());
                     }
                 })
                         .subscribeOn(Schedulers.io())
-                        .observeOn(Schedulers.io())
-                        .doOnNext(new Consumer<Object>() {
-                            @Override
-                            public void accept(Object arrayList) throws Exception {
-                                SMSSDK.unregisterAllEventHandler();//防止内存泄漏
-                            }
-                        })
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(new Consumer<Object>() {
                             @Override
                             public void accept(final Object o) throws Exception {
-                                //Todo: 成功，继续注册
+                                //成功验证
+                                Intent intent = new Intent();
+                                intent.putExtra("username", mEtPhoneNumber.getText().toString());
+                                intent.setClass(RegisterActivity.this, RegisterActivity2.class);
 
+                                ActivityOptionsCompat options = ActivityOptionsCompat
+                                        .makeSceneTransitionAnimation(RegisterActivity.this,
+                                                Pair.create((View) mCvInput, "trans_cv_input"),
+                                                Pair.create((View) mBtnNext,"trans_cv_next"));
+                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                                    startActivity(intent, options.toBundle());
+                                } else {
+                                    startActivity(intent);
+                                }
                             }
                         }, new Consumer<Throwable>() {
                             @Override
@@ -109,7 +124,7 @@ public class RegisterActivity extends AppCompatActivity {
                                 //失败
                                 Snackbar.make(findViewById(R.id.activity_login_register), parseErrorMessage(throwable), Snackbar.LENGTH_LONG)
                                         .show();
-
+                                mBtnNext.setClickable(true);
                             }
                         });
             }
@@ -122,10 +137,10 @@ public class RegisterActivity extends AppCompatActivity {
         mBtnSendSMS.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 Observable.create(new ObservableOnSubscribe<Boolean>() {
                     @Override
                     public void subscribe(final ObservableEmitter<Boolean> e) throws Exception {
+                        Utils.hideKeyboard(RegisterActivity.this);
                         SMSSDK.registerEventHandler(new EventHandler() {
                             @Override
                             public void afterEvent(int event, int result, Object data) {
@@ -136,6 +151,7 @@ public class RegisterActivity extends AppCompatActivity {
                                 } else {
                                     e.onError((Throwable) data);
                                 }
+                                SMSSDK.unregisterAllEventHandler();//防止内存泄漏
                             }
                         });
                         //Log.e("1","-------线程:" + Thread.currentThread().getName());
@@ -143,17 +159,16 @@ public class RegisterActivity extends AppCompatActivity {
                     }
                 })
                         .subscribeOn(Schedulers.io())
-                        .observeOn(Schedulers.io())
-                        .doOnNext(new Consumer<Boolean>() {
-                            @Override
-                            public void accept(Boolean a) throws Exception {
-                                SMSSDK.unregisterAllEventHandler();//防止内存泄漏
-                            }
-                        })
                         .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(new Consumer<Boolean>() {
+                        .subscribe(new Observer<Boolean>() {
                             @Override
-                            public void accept(final Boolean b) throws Exception {
+                            public void onSubscribe(Disposable d) {
+                                mBtnSendSMS.setClickable(false);
+                                Snackbar.make(findViewById(R.id.activity_login_register), "正在发送短信...", Snackbar.LENGTH_LONG).show();
+                            }
+
+                            @Override
+                            public void onNext(Boolean aBoolean) {
                                 //成功
                                 Snackbar.make(findViewById(R.id.activity_login_register), "短信已发送，请注意查收", Snackbar.LENGTH_LONG).show();
                                 startCounting();
@@ -163,12 +178,18 @@ public class RegisterActivity extends AppCompatActivity {
 //                                    //依然走短信验证
 //                                }
                             }
-                        }, new Consumer<Throwable>() {
+
                             @Override
-                            public void accept(Throwable throwable) throws Exception {
+                            public void onError(Throwable e) {
                                 //失败
-                                Snackbar.make(findViewById(R.id.activity_login_register), parseErrorMessage(throwable), Snackbar.LENGTH_LONG)
+                                Snackbar.make(findViewById(R.id.activity_login_register), parseErrorMessage(e), Snackbar.LENGTH_LONG)
                                         .show();
+                                mBtnSendSMS.setClickable(true);
+
+                            }
+
+                            @Override
+                            public void onComplete() {
 
                             }
                         });
@@ -217,19 +238,13 @@ public class RegisterActivity extends AppCompatActivity {
                                 } else {
                                     e.onError((Throwable) data);
                                 }
+                                SMSSDK.unregisterAllEventHandler();//防止内存泄漏
                             }
                         });
                         SMSSDK.getSupportedCountries();
                     }
                 })
                         .subscribeOn(Schedulers.io())
-                        .observeOn(Schedulers.io())
-                        .doOnNext(new Consumer<ArrayList>() {
-                            @Override
-                            public void accept(ArrayList arrayList) throws Exception {
-                                SMSSDK.unregisterAllEventHandler();//防止内存泄漏
-                            }
-                        })
                         .map(new Function<ArrayList, HashMap>() {
                             @Override
                             public HashMap apply(ArrayList arrayList) throws Exception {
@@ -308,7 +323,6 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     private void startCounting() {
-        mBtnSendSMS.setClickable(false);
         final int countTime = 60;
         Observable.interval(0, 1, TimeUnit.SECONDS)
                 .subscribeOn(AndroidSchedulers.mainThread())

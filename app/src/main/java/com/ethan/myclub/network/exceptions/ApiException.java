@@ -29,4 +29,9 @@ public class ApiException extends Exception {
         super(throwable);
         this.code = code;
     }
+
+    @Override
+    public String getMessage() {
+        return message;
+    }
 }

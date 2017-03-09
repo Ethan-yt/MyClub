@@ -8,6 +8,7 @@ import com.jakewharton.retrofit2.adapter.rxjava2.HttpException;
 import org.json.JSONException;
 
 import java.net.ConnectException;
+import java.net.UnknownHostException;
 
 /**
  * Created by ethan on 2017/3/4.
@@ -54,7 +55,8 @@ public class ExceptionEngine extends Throwable {
             ex = new ApiException(e, ApiException.PARSE_ERROR);
             ex.message = "解析错误";            //均视为解析错误
             return ex;
-        } else if (e instanceof ConnectException) {
+        } else if (e instanceof ConnectException
+                || e instanceof UnknownHostException) {
             ex = new ApiException(e, ApiException.NETWORD_ERROR);
             ex.message = "连接失败";  //均视为网络错误
             return ex;
