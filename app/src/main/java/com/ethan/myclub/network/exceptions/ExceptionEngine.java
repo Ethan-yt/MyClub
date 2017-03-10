@@ -27,6 +27,7 @@ public class ExceptionEngine extends Throwable {
 
     public static ApiException handleException(Throwable e) {
         ApiException ex;
+
         if (e instanceof HttpException) {             //HTTP错误
             HttpException httpException = (HttpException) e;
             ex = new ApiException(e, ApiException.HTTP_ERROR);
