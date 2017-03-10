@@ -19,4 +19,8 @@ public interface ApiService {
     Observable<Response<Token>> login(@Field("username") String username,
                                       @Field("password") String password);
 
+    @FormUrlEncoded
+    @POST("api/user/register/")
+    Observable<Response<Token>> register(@Field("username") String username,
+                                         @Field("password") String password);
 }

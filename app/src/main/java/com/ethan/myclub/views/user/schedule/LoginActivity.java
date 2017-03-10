@@ -19,10 +19,10 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.ethan.myclub.R;
-import com.ethan.myclub.network.services.ScheduleService;
 import com.ethan.myclub.models.schedule.Course;
 import com.ethan.myclub.models.schedule.CourseTime;
 import com.ethan.myclub.models.schedule.Schedule;
+import com.ethan.myclub.network.services.ScheduleService;
 import com.ethan.myclub.utils.Utils;
 import com.jakewharton.retrofit2.adapter.rxjava2.HttpException;
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
@@ -32,6 +32,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -50,7 +51,9 @@ import io.reactivex.schedulers.Schedulers;
 import okhttp3.Cookie;
 import okhttp3.CookieJar;
 import okhttp3.HttpUrl;
+import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
+import okhttp3.Request;
 import okhttp3.ResponseBody;
 import retrofit2.Response;
 import retrofit2.Retrofit;
@@ -62,7 +65,6 @@ public class LoginActivity extends AppCompatActivity {
     public static final int ACTIVITY_CODE = 2; //为了标识Activity result和Activity request
 
     public static final String BASE_URL = "http://202.195.144.163/";
-    private static final boolean DEBUG = false; //模拟网络延迟
     private EditText mPwView, mIdView;
     private TextInputLayout mIdWrapper, mPwWrapper;
 
@@ -128,7 +130,17 @@ public class LoginActivity extends AppCompatActivity {
         OkHttpClient client = new OkHttpClient
                 .Builder()
                 .followRedirects(false)
-
+                //设置拦截器，添加headers
+                .addInterceptor(new Interceptor() {
+                    @Override
+                    public okhttp3.Response intercept(Chain chain) throws IOException {
+                        Request request = chain.request()
+                                .newBuilder()
+                                .addHeader("Referer", "http://202.195.144.163")
+                                .build();
+                        return chain.proceed(request);
+                    }
+                })
                 .cookieJar(cookieJar)
                 .build();
 
@@ -224,11 +236,11 @@ public class LoginActivity extends AppCompatActivity {
                     }
 
                 })
+                //.delay(1, TimeUnit.SECONDS)
                 //利用获取到的ViewState登录，返回null，cookie自动保存到cookieJar中
                 .flatMap(new Function<String, Observable<String>>() {
                              @Override
                              public Observable<String> apply(String viewState) throws Exception {
-                                 delay();
                                  return mScheduleService.login(
                                          viewState,
                                          username,
@@ -260,10 +272,12 @@ public class LoginActivity extends AppCompatActivity {
                     public Observable<String> apply(Throwable throwable) throws Exception {
                         if (throwable instanceof HttpException) {
                             HttpException exception = (HttpException) throwable;
-                            Response response = exception.response();
-                            String html = response.errorBody().string();
-                            if (html.contains("Object moved to <a href='/jndx/xs_main.aspx?xh=")) {
-                                return Observable.just("success");
+                            if (exception.code() == 302) {
+                                Response response = exception.response();
+                                String html = response.errorBody().string();
+                                if (html.contains("Object moved to <a href='/jndx/xs_main.aspx?xh=")) {
+                                    return Observable.just("success");
+                                }
                             }
                         }
                         return Observable.error(throwable);
@@ -291,16 +305,6 @@ public class LoginActivity extends AppCompatActivity {
                         });
     }
 
-    private void delay() {
-        if (DEBUG) {
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException ignored) {
-
-            }
-        }
-    }
-
     private class ScheduleParam {
         private final String year;
         private final int term;
@@ -319,12 +323,7 @@ public class LoginActivity extends AppCompatActivity {
 
         mDisposable = mScheduleService.getCurrentSchedule(username)
                 .subscribeOn(Schedulers.io())
-                .doOnNext(new Consumer<ResponseBody>() {
-                    @Override
-                    public void accept(ResponseBody responseBody) throws Exception {
-                        delay();
-                    }
-                })
+//                .delay(1, TimeUnit.SECONDS)
                 .observeOn(AndroidSchedulers.mainThread())
                 //将Html解析，获取当前学期课表以及必要参数
                 .flatMap(new Function<ResponseBody, Observable<ScheduleParam>>() {
@@ -380,22 +379,17 @@ public class LoginActivity extends AppCompatActivity {
                 .observeOn(Schedulers.io())
                 .flatMap(new Function<ScheduleParam, Observable<ResponseBody>>() {
                     @Override
-                    public Observable<ResponseBody> apply(ScheduleParam patameter) throws Exception {
+                    public Observable<ResponseBody> apply(ScheduleParam parameter) throws Exception {
 
                         return mScheduleService.getOtherSchedule(
                                 username,
-                                patameter.year,
-                                String.valueOf(patameter.term),
+                                parameter.year,
+                                String.valueOf(parameter.term),
                                 viewState[0],
                                 "xqd",
                                 "")
-                                .doOnNext(new Consumer<ResponseBody>() {
-                                    @Override
-                                    public void accept(ResponseBody responseBody) {
-                                        delay();
-                                    }
-                                })
-                                .subscribeOn(Schedulers.io());
+//                                .delay(1, TimeUnit.SECONDS)
+                                .subscribeOn(Schedulers.io());//这行很重要，为每个课表单独创建一个线程，实现同步下载。
                     }
                 })
                 .map(new Function<ResponseBody, Schedule>() {
@@ -565,7 +559,6 @@ public class LoginActivity extends AppCompatActivity {
                 .courses(new ArrayList<>(scheduleMap.values()))
                 .build();
     }
-
 
 
 }
