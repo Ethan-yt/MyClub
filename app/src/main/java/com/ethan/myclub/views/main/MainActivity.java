@@ -1,6 +1,5 @@
 package com.ethan.myclub.views.main;
 
-import android.content.Intent;
 import android.graphics.Color;
 
 import android.support.v7.app.AppCompatActivity;
@@ -11,7 +10,6 @@ import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationAdapter;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationViewPager;
 import com.ethan.myclub.R;
-import com.ethan.myclub.views.test;
 
 
 
@@ -50,9 +48,6 @@ public class MainActivity extends AppCompatActivity {
 
                 if (currentFragment == null) {
                     currentFragment = adapter.getCurrentFragment();
-                    Intent intent=new Intent();
-                    intent.setClass(MainActivity.this, test.class);
-                    startActivity(intent);
                 }
 
                 if (wasSelected) {
