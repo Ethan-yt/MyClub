@@ -32,12 +32,16 @@ public class Transformers {
             return upstream.map(new Function<Response<T>, T>() {
                 @Override
                 public T apply(Response<T> tResponse) throws Exception {
-                    if (tResponse.code != 0)
-                    {
+                    if (tResponse.code != 0) {
                         List<Error> errors = tResponse.errors;
-                        if(errors != null && errors.size() != 0)
-                            throw new ServerException(tResponse.code, errors.get(0).message);
-                        else
+                        if (errors != null && errors.size() != 0) {
+                            Error firstError = errors.get(0);
+                            //只显示第一个错误
+                            if (firstError.field != null && !firstError.field.isEmpty())
+                                throw new ServerException(tResponse.code, firstError.field + " " + firstError.message);
+                            else
+                                throw new ServerException(tResponse.code, firstError.message);
+                        } else
                             throw new ServerException(tResponse.code, tResponse.message);
                     }
 
