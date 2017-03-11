@@ -2,6 +2,7 @@ package com.ethan.myclub.network.services;
 
 import com.ethan.myclub.models.network.Response;
 import com.ethan.myclub.models.network.Token;
+import com.ethan.myclub.models.network.Valid;
 
 import io.reactivex.Observable;
 import retrofit2.http.Field;
@@ -23,4 +24,9 @@ public interface ApiService {
     @POST("api/user/register/")
     Observable<Response<Token>> register(@Field("username") String username,
                                          @Field("password") String password);
+
+    @FormUrlEncoded
+    @POST("api/user/account-valid/")
+    Observable<Response<Valid>> accountValid(@Field("username") String username);
+
 }

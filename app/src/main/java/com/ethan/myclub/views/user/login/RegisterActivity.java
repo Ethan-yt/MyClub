@@ -10,6 +10,7 @@ import android.support.v4.util.Pair;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
+import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -18,7 +19,11 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.ethan.myclub.R;
+import com.ethan.myclub.models.network.Response;
+import com.ethan.myclub.models.network.Token;
+import com.ethan.myclub.models.network.Valid;
 import com.ethan.myclub.network.ApiHelper;
+import com.ethan.myclub.network.Transformers;
 import com.ethan.myclub.utils.Utils;
 import com.ethan.myclub.utils.dialogs.WaitingDialogHelper;
 
@@ -36,6 +41,7 @@ import cn.smssdk.gui.GroupListView;
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
+import io.reactivex.ObservableSource;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
@@ -58,6 +64,17 @@ public class RegisterActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login_register);
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+                    finishAfterTransition();
+                else
+                    finish();
+            }
+        });
 
         mTvCountryCode = (TextView) findViewById(R.id.tv_country_code);
         mTvCountryName = (TextView) findViewById(R.id.tv_country_name);
@@ -111,7 +128,7 @@ public class RegisterActivity extends AppCompatActivity {
                                 ActivityOptionsCompat options = ActivityOptionsCompat
                                         .makeSceneTransitionAnimation(RegisterActivity.this,
                                                 Pair.create((View) mCvInput, "trans_cv_input"),
-                                                Pair.create((View) mBtnNext,"trans_cv_next"));
+                                                Pair.create((View) mBtnNext, "trans_cv_next"));
                                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                                     startActivity(intent, options.toBundle());
                                 } else {
@@ -137,33 +154,43 @@ public class RegisterActivity extends AppCompatActivity {
         mBtnSendSMS.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Observable.create(new ObservableOnSubscribe<Boolean>() {
-                    @Override
-                    public void subscribe(final ObservableEmitter<Boolean> e) throws Exception {
-                        Utils.hideKeyboard(RegisterActivity.this);
-                        SMSSDK.registerEventHandler(new EventHandler() {
-                            @Override
-                            public void afterEvent(int event, int result, Object data) {
-                                if (result == SMSSDK.RESULT_COMPLETE) {
-                                    if (event == SMSSDK.EVENT_GET_VERIFICATION_CODE) {
-                                        e.onNext((Boolean) data);
-                                    }
-                                } else {
-                                    e.onError((Throwable) data);
-                                }
-                                SMSSDK.unregisterAllEventHandler();//防止内存泄漏
-                            }
-                        });
-                        //Log.e("1","-------线程:" + Thread.currentThread().getName());
-                        SMSSDK.getVerificationCode(mTvCountryCode.getText().toString(), mEtPhoneNumber.getText().toString());
-                    }
-                })
+                Utils.hideKeyboard(RegisterActivity.this);
+                mBtnSendSMS.setClickable(false);
+                final String phoneNumber = mEtPhoneNumber.getText().toString();
+                ApiHelper.getInstance().accountValid(phoneNumber)
                         .subscribeOn(Schedulers.io())
+                        .compose(new Transformers.sTransformer<Valid>())
+                        .flatMap(new Function<Valid, ObservableSource<Boolean>>() {
+                            @Override
+                            public ObservableSource<Boolean> apply(Valid valid) throws Exception {
+                                if (valid.valid) {
+                                    return Observable.create(new ObservableOnSubscribe<Boolean>() {
+                                        @Override
+                                        public void subscribe(final ObservableEmitter<Boolean> e) throws Exception {
+                                            SMSSDK.registerEventHandler(new EventHandler() {
+                                                @Override
+                                                public void afterEvent(int event, int result, Object data) {
+                                                    if (result == SMSSDK.RESULT_COMPLETE) {
+                                                        if (event == SMSSDK.EVENT_GET_VERIFICATION_CODE) {
+                                                            e.onNext((Boolean) data);
+                                                        }
+                                                    } else {
+                                                        e.onError((Throwable) data);
+                                                    }
+                                                    SMSSDK.unregisterAllEventHandler();//防止内存泄漏
+                                                }
+                                            });
+                                            SMSSDK.getVerificationCode(mTvCountryCode.getText().toString(), phoneNumber);
+                                        }
+                                    });
+                                } else
+                                    return Observable.error(new Exception("当前手机号已经注册过了"));
+                            }
+                        })
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(new Observer<Boolean>() {
                             @Override
                             public void onSubscribe(Disposable d) {
-                                mBtnSendSMS.setClickable(false);
                                 Snackbar.make(findViewById(R.id.activity_login_register), "正在发送短信...", Snackbar.LENGTH_LONG).show();
                             }
 
