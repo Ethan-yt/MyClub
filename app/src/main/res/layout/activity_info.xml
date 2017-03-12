@@ -37,8 +37,10 @@
             android:orientation="vertical">
 
             <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="100dp"
+                android:id="@+id/iv_avatar_bg"
+                android:layout_gravity="center_horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="10dp">
 
                 <com.ethan.myclub.views.user.AvatarImageView
@@ -46,7 +48,6 @@
                     android:layout_width="100dp"
                     android:layout_height="100dp"
                     android:layout_centerHorizontal="true"
-                    android:layout_gravity="center"
                     android:background="@drawable/bg_avatar_oval_shape"
                     android:src="@drawable/img_default_avater"
                     android:transitionName="trans_iv_avatar" />

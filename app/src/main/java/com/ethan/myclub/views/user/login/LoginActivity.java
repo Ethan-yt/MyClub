@@ -85,7 +85,7 @@ public class LoginActivity extends AppCompatActivity {
 
                                     @Override
                                     public void onNext(Token token) {
-                                        Preferences.token = token.token;
+                                        Preferences.sToken = token.token;
                                         finish();
                                     }
 

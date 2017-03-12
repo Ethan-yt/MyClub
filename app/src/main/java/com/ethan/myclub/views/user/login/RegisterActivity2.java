@@ -63,7 +63,7 @@ public class RegisterActivity2 extends AppCompatActivity {
 
                                     @Override
                                     public void onNext(Token token) {
-                                        Preferences.token = token.token;
+                                        Preferences.sToken = token.token;
                                         Intent intent = new Intent();
                                         intent.setClass(RegisterActivity2.this, MainActivity.class);
                                         startActivity(intent);
