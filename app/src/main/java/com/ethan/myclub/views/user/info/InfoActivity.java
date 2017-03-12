@@ -3,10 +3,13 @@ package com.ethan.myclub.views.user.info;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.provider.MediaStore;
 import android.support.design.widget.BottomSheetDialog;
+import android.support.design.widget.Snackbar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -15,10 +18,23 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.ethan.myclub.R;
-import com.ethan.myclub.global.Instances;
+import com.ethan.myclub.global.Preferences;
+import com.ethan.myclub.models.network.Response;
+import com.ethan.myclub.models.network.Token;
+import com.ethan.myclub.network.ApiHelper;
+import com.ethan.myclub.network.Transformers;
+import com.ethan.myclub.utils.dialogs.WaitingDialogHelper;
 import com.ethan.myclub.views.user.AvatarImageView;
+import com.ethan.myclub.views.user.login.LoginActivity;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+
+import io.reactivex.Observer;
+import io.reactivex.disposables.Disposable;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 
 public class InfoActivity extends AppCompatActivity {
 
@@ -29,7 +45,9 @@ public class InfoActivity extends AppCompatActivity {
     private BottomSheetDialog mBottomSheetDialog;
     private AvatarImageView mIvAvatar;
     private File mAvatarFile;
-
+    private Uri mAvatarUri;
+    private boolean mIsAvatarEdited = false;
+    private boolean mIsInfoEdited = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,7 +61,7 @@ public class InfoActivity extends AppCompatActivity {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                     finishAfterTransition();
                 } else
-                    finish();
+                    onBackPressed();
             }
         });
 
@@ -84,13 +102,15 @@ public class InfoActivity extends AppCompatActivity {
 
         mBottomSheetDialog.show();
 
+        mAvatarFile = new File(getExternalCacheDir(), "avatar.temp.png");
+        mAvatarUri = Uri.fromFile(mAvatarFile);
+
         view.findViewById(R.id.btn_camera).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mAvatarFile = new File(Instances.sExternalStorageDirectory(), "avatar.temp.png");
                 Intent takeIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                 //下面这句指定调用相机拍照后的照片存储的路径
-                takeIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(mAvatarFile));
+                takeIntent.putExtra(MediaStore.EXTRA_OUTPUT, mAvatarUri);
                 startActivityForResult(takeIntent, REQUESTCODE_CAMERA);
                 mBottomSheetDialog.dismiss();
             }
@@ -110,21 +130,20 @@ public class InfoActivity extends AppCompatActivity {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-
+        if(resultCode != RESULT_OK)// 用户点击取消操作
+            return;
         switch (requestCode) {
             case REQUESTCODE_PICK:// 直接从相册获取
-                if (data == null)// 用户点击取消操作
+                if (data == null)
                     return;
                 else
                     startPhotoCrop(data.getData());
                 break;
             case REQUESTCODE_CAMERA:// 调用相机拍照
-                startPhotoCrop(Uri.fromFile(mAvatarFile));
+                startPhotoCrop(mAvatarUri);
                 break;
             case REQUESTCODE_CROP:// 取得裁剪后的图片
-                if (data != null) {
                     setPicToView(data);
-                }
                 break;
         }
         super.onActivityResult(requestCode, resultCode, data);
@@ -141,23 +160,108 @@ public class InfoActivity extends AppCompatActivity {
         // outputX outputY 是裁剪图片宽高
         intent.putExtra("outputX", 300);
         intent.putExtra("outputY", 300);
-        intent.putExtra("return-data", true);
+        intent.putExtra("scale", true);
+        intent.putExtra("return-data", false);
+        intent.putExtra("outputFormat", Bitmap.CompressFormat.JPEG.toString());
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, mAvatarUri);
+        intent.putExtra("scaleUpIfNeeded", true); //黑边
+        intent.putExtra("noFaceDetection", true); // no face detection
         startActivityForResult(intent, REQUESTCODE_CROP);
     }
 
-    private void setPicToView(Intent picdata) {
-        Bundle extras = picdata.getExtras();
+    private void setPicToView(Intent picData) {
+        if(picData == null)
+            return;
+        Bundle extras = picData.getExtras();
         if (extras != null) {
-            // 取得SDCard图片路径做显示
-            Bitmap photo = extras.getParcelable("data");
-            //Drawable drawable = new BitmapDrawable(null, photo);
-            //urlpath = FileUtil.saveFile(mContext, "temphead.jpg", photo);
-            mIvAvatar.setImageBitmap(photo);
-            // 新线程后台上传服务端
+            Bitmap bitmap = null;
+            try {
+                bitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(mAvatarUri));
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+            mIvAvatar.setImageBitmap(bitmap);
+            mIsAvatarEdited = true;
         }
     }
 
     private void saveChanges() {
+        if(mIsAvatarEdited)
+            saveAvatar();
+        if(mIsInfoEdited)
+            saveInfo();
+    }
 
+    private void saveInfo() {
+
+    }
+
+    private void saveAvatar() {
+        RequestBody requestFile =
+                RequestBody.create(MediaType.parse("multipart/form-data"), mAvatarFile);
+        MultipartBody.Part body =
+                MultipartBody.Part.createFormData("avatar", mAvatarFile.getName(), requestFile);
+        ApiHelper.getInstance()
+                .uploadAvatar(body)
+                .compose(new Transformers.SchedulersSwitcher<Response<Object>>())
+                .compose(new Transformers.sTransformer<>())
+                .subscribe(
+                        new Observer<Object>() {
+                            @Override
+                            public void onSubscribe(Disposable d) {
+                                WaitingDialogHelper.show(InfoActivity.this,"上传头像中");
+                            }
+
+                            @Override
+                            public void onNext(Object o) {
+
+                            }
+
+                            @Override
+                            public void onError(Throwable e) {
+                                Snackbar.make(findViewById(R.id.container), "上传头像失败！"+e.getMessage(), Snackbar.LENGTH_LONG).show();
+                                e.printStackTrace();
+                                WaitingDialogHelper.dismiss();
+                            }
+
+                            @Override
+                            public void onComplete() {
+                                WaitingDialogHelper.dismiss();
+                            }
+                        });
+    }
+
+    @Override
+    public void onBackPressed() {
+        if(mIsAvatarEdited || mIsInfoEdited)
+            showAlertDialog();
+        else
+            super.onBackPressed();
+
+    }
+
+    private void showAlertDialog() {
+        new AlertDialog.Builder(this)
+                .setTitle("提示")
+                .setMessage("您的修改还未保存，是否保存？")
+                .setPositiveButton("是", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        saveChanges();
+                    }
+                })
+                .setNeutralButton("取消", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                })
+                .setNegativeButton("否", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        finish();
+                    }
+                })
+                .show();
     }
 }
