@@ -57,6 +57,9 @@ public class MainActivity extends AppCompatActivity {
 
                 if (wasSelected) {
                     currentFragment.refresh();
+                    Intent intent=new Intent();
+                    intent.setClass(MainActivity.this, test.class);
+                    startActivity(intent);
                     return true;
                 }
 
