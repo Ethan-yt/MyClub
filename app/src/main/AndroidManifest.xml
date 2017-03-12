@@ -32,6 +32,7 @@
             android:theme="@android:style/Theme.Translucent.NoTitleBar"
             android:windowSoftInputMode="stateHidden|adjustResize" />
         <activity android:name=".views.user.login.RegisterActivity2" />
+        <activity android:name=".views.user.info.InfoActivity"></activity>
     </application>
 
 </manifest>

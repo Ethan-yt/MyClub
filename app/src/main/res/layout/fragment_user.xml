@@ -28,26 +28,20 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 >
-
-                <RelativeLayout
-                    android:id="@+id/iv_avart_bg"
-                    android:layout_width="108.0dp"
-                    android:layout_height="108.0dp"
+                <com.ethan.myclub.views.user.AvatarImageView
+                    android:id="@+id/iv_avatar"
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="10.0dp"
-                    android:background="@drawable/avarat_small_bg">
-
-                    <ImageView
-                        android:id="@+id/iv_avart"
-                        android:layout_width="105dp"
-                        android:layout_height="105dp"/>
-                </RelativeLayout>
+                    android:layout_width="105dp"
+                    android:layout_height="105dp"
+                    android:background="@drawable/bg_avatar_oval_shape"
+                    android:src="@drawable/img_default_avater" />
 
                 <TextView
                     android:id="@+id/tv_user_name"
                     android:layout_width="200.0dip"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/iv_avart_bg"
+                    android:layout_below="@+id/iv_avatar"
                     android:layout_centerHorizontal="true"
                     android:layout_marginBottom="10dp"
                     android:layout_marginTop="12.0dip"
