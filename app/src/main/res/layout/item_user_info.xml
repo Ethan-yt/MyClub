@@ -12,8 +12,8 @@
 
     <LinearLayout
         android:id="@+id/ll_dongtai"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_height="56dp"
         android:layout_weight="1.0"
         android:background="?android:attr/selectableItemBackground"
         android:clickable="true"
@@ -28,21 +28,22 @@
             android:layout_height="wrap_content"
             android:text="11"
             android:textColor="@color/colorPrimary"
-            android:textSize="14.0sp"/>
+            android:textSize="14.0sp"
+            android:textStyle="bold"
+            />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="动态"
+            android:text="讨论组"
 
-            android:textSize="14.0sp"/>
+            android:textSize="14.0sp" />
     </LinearLayout>
-
 
     <LinearLayout
         android:id="@+id/ll_friends"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_height="56dp"
         android:layout_weight="1.0"
         android:background="?android:attr/selectableItemBackground"
         android:clickable="true"
@@ -56,19 +57,21 @@
             android:layout_height="wrap_content"
             android:text="121"
             android:textColor="@color/colorPrimary"
-            android:textSize="14.0sp"/>
+            android:textSize="14.0sp"
+            android:textStyle="bold"
+            android:visibility="gone"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="好友"
+            android:text="通知"
             android:textSize="14.0sp"/>
     </LinearLayout>
 
     <LinearLayout
         android:id="@+id/ll_guanzhu"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_height="56dp"
         android:layout_weight="1.0"
         android:background="?android:attr/selectableItemBackground"
         android:clickable="true"
@@ -82,12 +85,14 @@
             android:layout_height="wrap_content"
             android:text="31"
             android:textColor="@color/colorPrimary"
-            android:textSize="14.0sp"/>
+            android:textSize="14.0sp"
+            android:textStyle="bold"
+            android:visibility="gone"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="关注"
+            android:text="评论"
             android:textSize="14.0sp"/>
     </LinearLayout>
 </LinearLayout>

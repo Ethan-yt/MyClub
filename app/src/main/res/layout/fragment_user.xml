@@ -1,5 +1,4 @@
-<FrameLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -15,65 +14,62 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorPrimary"
-            app:title="个人中心"
-            app:popupTheme="@style/AppTheme.PopupOverlay" />
+            app:popupTheme="@style/AppTheme.PopupOverlay"
+            app:title="个人中心" />
     </android.support.design.widget.AppBarLayout>
-        <LinearLayout
-            android:layout_marginTop="?android:attr/actionBarSize"
-            android:orientation="vertical"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/fragment_container">
-            <RelativeLayout
-                android:layout_width="fill_parent"
+
+    <LinearLayout
+        android:id="@+id/fragment_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="?android:attr/actionBarSize"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content">
+
+            <com.ethan.myclub.views.user.AvatarImageView
+                android:id="@+id/iv_avatar"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="10.0dp"
+                android:background="@drawable/bg_avatar_oval_shape"
+                android:src="@drawable/img_default_avater"
+                android:transitionName="trans_iv_avatar"/>
+
+            <TextView
+                android:id="@+id/tv_user_name"
+                android:layout_width="200.0dip"
                 android:layout_height="wrap_content"
-                >
+                android:layout_below="@+id/iv_avatar"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="12.0dip"
+                android:ellipsize="end"
+                android:gravity="center_horizontal"
+                android:textColor="#ff545454"
+                android:textSize="24sp"
+                android:visibility="gone" />
 
-                <RelativeLayout
-                    android:id="@+id/iv_avart_bg"
-                    android:layout_width="108.0dp"
-                    android:layout_height="108.0dp"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginTop="10.0dp"
-                    android:background="@drawable/avarat_small_bg">
-
-                    <ImageView
-                        android:id="@+id/iv_avart"
-                        android:layout_width="105dp"
-                        android:layout_height="105dp"/>
-                </RelativeLayout>
-
-                <TextView
-                    android:id="@+id/tv_user_name"
-                    android:layout_width="200.0dip"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/iv_avart_bg"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginBottom="10dp"
-                    android:layout_marginTop="12.0dip"
-                    android:ellipsize="end"
-                    android:gravity="center_horizontal"
-                    android:textColor="#ff545454"
-                    android:textSize="24sp"
-                    android:visibility="gone"/>
-
-                <TextView
-                    android:id="@+id/tv_loginBtn"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/tv_user_name"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginBottom="10dp"
-                    android:layout_marginTop="10.0dip"
-                    android:gravity="center_horizontal"
-                    android:text="点击登录"
-                    android:textColor="#ff0596eb"
-                    android:textSize="14sp"/>
-            </RelativeLayout>
+            <TextView
+                android:id="@+id/tv_loginBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tv_user_name"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="10.0dip"
+                android:gravity="center_horizontal"
+                android:text="点击登录"
+                android:textColor="#ff0596eb"
+                android:textSize="14sp" />
+        </RelativeLayout>
 
 
-            <include layout="@layout/item_user_info2"/>
-        </LinearLayout>
+        <include layout="@layout/item_user_info2" />
+    </LinearLayout>
 </FrameLayout>
 
 

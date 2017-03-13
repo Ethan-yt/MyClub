@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    android:divider="@drawable/bg_divider"
+    android:orientation="vertical"
+    android:showDividers="middle">
+
+    <TextView
+        android:id="@+id/btn_camera"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:background="?android:attr/selectableItemBackground"
+        android:clickable="true"
+        android:gravity="center"
+        android:padding="10dp"
+        android:text="拍照"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/btn_pick"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:background="?android:attr/selectableItemBackground"
+        android:clickable="true"
+        android:gravity="center"
+        android:padding="10dp"
+        android:text="图库"
+        android:textSize="16sp" />
+
+</LinearLayout>
