@@ -105,5 +105,4 @@
         tools:layout_conversion_absoluteX="310dp"
         tools:layout_conversion_absoluteY="50dp" />
 
-
 </android.support.constraint.ConstraintLayout>
