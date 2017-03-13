@@ -30,7 +30,7 @@ public class ExceptionEngine extends Throwable {
 
         if (e instanceof HttpException) {             //HTTP错误
             HttpException httpException = (HttpException) e;
-            ex = new ApiException(e, ApiException.HTTP_ERROR);
+
             switch (httpException.code()) {
 
                 case FORBIDDEN:
@@ -41,9 +41,11 @@ public class ExceptionEngine extends Throwable {
                 case BAD_GATEWAY:
                 case SERVICE_UNAVAILABLE:
                 default:
+                    ex = new ApiException(e, ApiException.HTTP_ERROR);
                     ex.message = "网络错误";  //均视为网络错误
                     break;
                 case UNAUTHORIZED:
+                    ex = new ApiException(e, ApiException.HTTP_FORBIDDEN);
                     ex.message = "token过期";  //均视为网络错误
                     break;
             }

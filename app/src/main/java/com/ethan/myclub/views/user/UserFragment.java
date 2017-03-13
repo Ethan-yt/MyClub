@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.ethan.myclub.R;
+import com.ethan.myclub.global.Preferences;
 import com.ethan.myclub.views.main.BaseFragment;
 import com.ethan.myclub.views.user.info.InfoActivity;
 import com.ethan.myclub.views.user.login.LoginActivity;
@@ -48,6 +49,7 @@ public class UserFragment extends BaseFragment {
             }
         });
 
+        // 登录按钮
         View btnLogin = view.findViewById(R.id.tv_loginBtn);
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -57,6 +59,7 @@ public class UserFragment extends BaseFragment {
             }
         });
 
+        // 个人信息按钮
         View btnInfo = view.findViewById(R.id.basicInfo);
         btnInfo.setOnClickListener(new View.OnClickListener() {
             @Override

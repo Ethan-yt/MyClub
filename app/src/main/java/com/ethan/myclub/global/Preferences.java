@@ -11,4 +11,5 @@ import java.io.File;
 public class Preferences {
 
     static public String sToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluIiwib3JpZ19pYXQiOjE0ODkzMjQwNTIsInVzZXJfaWQiOjEsImVtYWlsIjpudWxsLCJleHAiOjE0ODk5Mjg4NTJ9.SpcW7VSQ38cZYiIZOl4JF4ZNWjbkicXuAoQYESXQ9oU";
+
 }

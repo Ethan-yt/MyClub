@@ -102,7 +102,7 @@ public class InfoActivity extends AppCompatActivity {
 
         mBottomSheetDialog.show();
 
-        mAvatarFile = new File(getExternalCacheDir(), "avatar.temp.png");
+        mAvatarFile = new File(getExternalCacheDir(), "avatar.temp.jpg");
         mAvatarUri = Uri.fromFile(mAvatarFile);
 
         view.findViewById(R.id.btn_camera).setOnClickListener(new View.OnClickListener() {
