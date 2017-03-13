@@ -11,8 +11,6 @@ import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationAdapter;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationViewPager;
 import com.ethan.myclub.R;
-import com.ethan.myclub.views.test;
-
 
 
 public class MainActivity extends AppCompatActivity {
@@ -50,16 +48,10 @@ public class MainActivity extends AppCompatActivity {
 
                 if (currentFragment == null) {
                     currentFragment = adapter.getCurrentFragment();
-                    Intent intent=new Intent();
-                    intent.setClass(MainActivity.this, test.class);
-                    startActivity(intent);
                 }
 
                 if (wasSelected) {
                     currentFragment.refresh();
-                    Intent intent=new Intent();
-                    intent.setClass(MainActivity.this, test.class);
-                    startActivity(intent);
                     return true;
                 }
 

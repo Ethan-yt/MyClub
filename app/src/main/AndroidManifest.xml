@@ -27,7 +27,6 @@
         <activity android:name=".views.user.login.LoginActivity"/>
         <activity android:name=".views.user.login.RegisterActivity"/>
         <activity android:name=".views.user.login.CheckActivity"/>
-        <activity android:name=".views.test"/>
         <activity
             android:name="com.mob.tools.MobUIShell"
             android:configChanges="keyboardHidden|orientation|screenSize"
