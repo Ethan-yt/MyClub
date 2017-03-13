@@ -36,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
         bottomNavigation = (AHBottomNavigation) findViewById(R.id.bottom_navigation);
         viewPager = (AHBottomNavigationViewPager) findViewById(R.id.view_pager);
 
-        navigationAdapter = new AHBottomNavigationAdapter(this, R.menu.bottom_navigation_menu_5);
+        navigationAdapter = new AHBottomNavigationAdapter(this, R.menu.bottom_navigation_menu);
         navigationAdapter.setupWithBottomNavigation(bottomNavigation);
 
         bottomNavigation.setAccentColor(Color.parseColor("#80be58"));
@@ -63,10 +63,10 @@ public class MainActivity extends AppCompatActivity {
                 currentFragment = adapter.getCurrentFragment();
                 currentFragment.willBeDisplayed();
 
-                if (position == 1) {
-                    bottomNavigation.setNotification("", 1);
-
-                }
+//                if (position == 1) {
+//                    bottomNavigation.setNotification("", 1);
+//
+//                }
 
                 return true;
             }
@@ -77,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
         viewPager.setAdapter(adapter);
 
         currentFragment = adapter.getCurrentFragment();
-
+        viewPager.setCurrentItem(2);// TODO: 2017/3/13  删除这行测试语句
     }
 
 }

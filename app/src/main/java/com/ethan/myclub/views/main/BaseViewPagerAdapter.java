@@ -4,6 +4,8 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.view.ViewGroup;
 
+import com.ethan.myclub.views.club.ClubFragment;
+import com.ethan.myclub.views.discover.DiscoverFragment;
 import com.ethan.myclub.views.user.UserFragment;
 
 import java.util.ArrayList;
@@ -20,8 +22,8 @@ public class BaseViewPagerAdapter extends FragmentPagerAdapter {
 		super(fm);
 
 		fragments.clear();
-		fragments.add(new UserFragment());
-		fragments.add(new UserFragment());
+		fragments.add(new DiscoverFragment());
+		fragments.add(new ClubFragment());
 		fragments.add(new UserFragment());
 	}
 
