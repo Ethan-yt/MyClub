@@ -24,6 +24,7 @@ import com.ethan.myclub.models.schedule.CourseTime;
 import com.ethan.myclub.models.schedule.Schedule;
 import com.ethan.myclub.network.services.ScheduleService;
 import com.ethan.myclub.utils.Utils;
+import com.ethan.myclub.views.main.SnackbarActivity;
 import com.jakewharton.retrofit2.adapter.rxjava2.HttpException;
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 
@@ -58,7 +59,7 @@ import okhttp3.ResponseBody;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends SnackbarActivity {
 
 
     private static final String TAG = "LoginActivity";
@@ -298,9 +299,7 @@ public class LoginActivity extends AppCompatActivity {
                             public void accept(Throwable throwable) throws Exception {
                                 //OnError 登录失败
                                 mProgressDialog.dismiss();
-
-                                Snackbar.make(findViewById(R.id.activity_download_schedule), throwable.getMessage(), Snackbar.LENGTH_LONG)
-                                        .show();
+                                showSnackbar(throwable.getMessage());
                             }
                         });
     }
@@ -425,9 +424,7 @@ public class LoginActivity extends AppCompatActivity {
                             public void accept(Throwable throwable) throws Exception {
                                 //OnError 获取失败
                                 mProgressDialog.dismiss();
-
-                                Snackbar.make(findViewById(R.id.activity_download_schedule), throwable.getMessage(), Snackbar.LENGTH_LONG)
-                                        .show();
+                                showSnackbar(throwable.getMessage());
                             }
                         },
                         new Action() {
@@ -435,9 +432,7 @@ public class LoginActivity extends AppCompatActivity {
                             public void run() throws Exception {
                                 //OnComplate 获取完成
                                 mProgressDialog.dismiss();
-
-                                Snackbar.make(findViewById(R.id.activity_download_schedule), "课表下载完成！", Snackbar.LENGTH_LONG)
-                                        .show();
+                                showSnackbar("课表下载完成！");
                                 showNumberPicker();
                             }
                         }
@@ -560,5 +555,9 @@ public class LoginActivity extends AppCompatActivity {
                 .build();
     }
 
+    @Override
+    protected void setRootLayout() {
+        mRootLayout = findViewById(R.id.container);
+    }
 
 }

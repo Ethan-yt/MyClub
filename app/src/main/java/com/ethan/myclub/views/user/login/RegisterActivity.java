@@ -26,6 +26,7 @@ import com.ethan.myclub.network.ApiHelper;
 import com.ethan.myclub.network.Transformers;
 import com.ethan.myclub.utils.Utils;
 import com.ethan.myclub.utils.dialogs.WaitingDialogHelper;
+import com.ethan.myclub.views.main.SnackbarActivity;
 
 import org.json.JSONObject;
 
@@ -49,7 +50,7 @@ import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 
-public class RegisterActivity extends AppCompatActivity {
+public class RegisterActivity extends SnackbarActivity {
     //private ProgressDialog mProgressDialog;
     private TextView mTvCountryCode;
     private TextView mTvCountryName;
@@ -139,8 +140,7 @@ public class RegisterActivity extends AppCompatActivity {
                             @Override
                             public void accept(Throwable throwable) throws Exception {
                                 //失败
-                                Snackbar.make(findViewById(R.id.activity_login_register), parseErrorMessage(throwable), Snackbar.LENGTH_LONG)
-                                        .show();
+                                showSnackbar(parseErrorMessage(throwable));
                                 mBtnNext.setClickable(true);
                             }
                         });
@@ -191,13 +191,13 @@ public class RegisterActivity extends AppCompatActivity {
                         .subscribe(new Observer<Boolean>() {
                             @Override
                             public void onSubscribe(Disposable d) {
-                                Snackbar.make(findViewById(R.id.activity_login_register), "正在发送短信...", Snackbar.LENGTH_LONG).show();
+                                showSnackbar("正在发送短信...");
                             }
 
                             @Override
                             public void onNext(Boolean aBoolean) {
                                 //成功
-                                Snackbar.make(findViewById(R.id.activity_login_register), "短信已发送，请注意查收", Snackbar.LENGTH_LONG).show();
+                                showSnackbar("短信已发送，请注意查收");
                                 startCounting();
 //                                if (b) {
 //                                    //通过智能验证
@@ -209,8 +209,7 @@ public class RegisterActivity extends AppCompatActivity {
                             @Override
                             public void onError(Throwable e) {
                                 //失败
-                                Snackbar.make(findViewById(R.id.activity_login_register), parseErrorMessage(e), Snackbar.LENGTH_LONG)
-                                        .show();
+                                showSnackbar(parseErrorMessage(e));
                                 mBtnSendSMS.setClickable(true);
 
                             }
@@ -317,14 +316,14 @@ public class RegisterActivity extends AppCompatActivity {
                                         if (position >= 0) {
                                             String[] country = countryListView.getCountry(group, position);
                                             if (hashMap != null && hashMap.containsKey(country[1])) {
-                                                Snackbar.make(findViewById(R.id.activity_login_register), "已经设置您的国家代码为：" + country[1], Snackbar.LENGTH_LONG).show();
+                                                showSnackbar("已经设置您的国家代码为：" + country[1]);
                                                 String countryCode = country[1];
                                                 String countryName = country[0];
                                                 mTvCountryCode.setText(countryCode);
                                                 mTvCountryName.setText(countryName);
                                                 dialog.dismiss();
                                             } else {
-                                                Snackbar.make(findViewById(R.id.activity_login_register), "暂时不支持这个国家或地区", Snackbar.LENGTH_LONG).show();
+                                                showSnackbar("暂时不支持这个国家或地区");
                                             }
                                         }
                                     }
@@ -340,9 +339,7 @@ public class RegisterActivity extends AppCompatActivity {
                             public void accept(Throwable throwable) throws Exception {
                                 //失败
                                 throwable.printStackTrace();
-                                Snackbar.make(findViewById(R.id.activity_login_register), parseErrorMessage(throwable), Snackbar.LENGTH_LONG)
-                                        .show();
-
+                                showSnackbar(parseErrorMessage(throwable));
                             }
                         });
             }
@@ -391,5 +388,10 @@ public class RegisterActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         SMSSDK.unregisterAllEventHandler();
+    }
+
+    @Override
+    protected void setRootLayout() {
+        mRootLayout = findViewById(R.id.container);
     }
 }

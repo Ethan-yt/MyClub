@@ -18,11 +18,12 @@ import com.ethan.myclub.network.ApiHelper;
 import com.ethan.myclub.network.Transformers;
 import com.ethan.myclub.utils.dialogs.WaitingDialogHelper;
 import com.ethan.myclub.views.main.MainActivity;
+import com.ethan.myclub.views.main.SnackbarActivity;
 
 import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
 
-public class RegisterActivity2 extends AppCompatActivity {
+public class RegisterActivity2 extends SnackbarActivity {
 
     private String mUsername;
     private CardView mBtnNext;
@@ -71,7 +72,7 @@ public class RegisterActivity2 extends AppCompatActivity {
 
                                     @Override
                                     public void onError(Throwable e) {
-                                        Snackbar.make(findViewById(R.id.container), "注册失败！" + e.getMessage(), Snackbar.LENGTH_LONG).show();
+                                        showSnackbar("注册失败！" + e.getMessage());
                                         e.printStackTrace();
                                         WaitingDialogHelper.dismiss();
                                     }
@@ -84,5 +85,10 @@ public class RegisterActivity2 extends AppCompatActivity {
 
             }
         });
+    }
+
+    @Override
+    protected void setRootLayout() {
+        mRootLayout = findViewById(R.id.container);
     }
 }

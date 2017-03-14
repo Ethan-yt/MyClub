@@ -16,6 +16,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 
 import com.ethan.myclub.R;
 import com.ethan.myclub.global.Preferences;
@@ -24,6 +25,7 @@ import com.ethan.myclub.models.network.Token;
 import com.ethan.myclub.network.ApiHelper;
 import com.ethan.myclub.network.Transformers;
 import com.ethan.myclub.utils.dialogs.WaitingDialogHelper;
+import com.ethan.myclub.views.main.SnackbarActivity;
 import com.ethan.myclub.views.user.AvatarImageView;
 import com.ethan.myclub.views.user.login.LoginActivity;
 
@@ -36,7 +38,7 @@ import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 
-public class InfoActivity extends AppCompatActivity {
+public class InfoActivity extends SnackbarActivity {
 
     private static final int REQUESTCODE_CAMERA = 1;
     private static final int REQUESTCODE_PICK = 2;
@@ -90,7 +92,7 @@ public class InfoActivity extends AppCompatActivity {
     }
 
     private void editAvatar() {
-        final View view = LayoutInflater.from(InfoActivity.this).inflate(R.layout.item_select_photo, null);
+        final View view = LayoutInflater.from(InfoActivity.this).inflate(R.layout.item_select_photo, (ViewGroup) mRootLayout);
         mBottomSheetDialog = new BottomSheetDialog(InfoActivity.this);
         mBottomSheetDialog.setContentView(view);
         mBottomSheetDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
@@ -219,7 +221,7 @@ public class InfoActivity extends AppCompatActivity {
 
                             @Override
                             public void onError(Throwable e) {
-                                Snackbar.make(findViewById(R.id.container), "上传头像失败！"+e.getMessage(), Snackbar.LENGTH_LONG).show();
+                                InfoActivity.this.showSnackbar("上传头像失败！"+e.getMessage());
                                 e.printStackTrace();
                                 WaitingDialogHelper.dismiss();
                             }
@@ -263,5 +265,10 @@ public class InfoActivity extends AppCompatActivity {
                     }
                 })
                 .show();
+    }
+
+    @Override
+    protected void setRootLayout() {
+        mRootLayout = findViewById(R.id.container);
     }
 }

@@ -19,11 +19,12 @@ import com.ethan.myclub.network.Transformers;
 import com.ethan.myclub.models.network.Response;
 import com.ethan.myclub.models.network.Token;
 import com.ethan.myclub.utils.dialogs.WaitingDialogHelper;
+import com.ethan.myclub.views.main.SnackbarActivity;
 
 import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
 
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends SnackbarActivity {
 
     private TextView mBtnRegister;
     private CardView mCvInput;
@@ -79,7 +80,7 @@ public class LoginActivity extends AppCompatActivity {
                                     @Override
                                     public void onSubscribe(Disposable d) {
 
-                                        WaitingDialogHelper.show(LoginActivity.this,"登录中");
+                                        WaitingDialogHelper.show(LoginActivity.this, "登录中");
 
                                     }
 
@@ -91,7 +92,7 @@ public class LoginActivity extends AppCompatActivity {
 
                                     @Override
                                     public void onError(Throwable e) {
-                                        Snackbar.make(findViewById(R.id.container), "登录失败！"+e.getMessage(), Snackbar.LENGTH_LONG).show();
+                                        showSnackbar("登录失败！" + e.getMessage());
                                         e.printStackTrace();
                                         WaitingDialogHelper.dismiss();
                                     }
@@ -104,5 +105,10 @@ public class LoginActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    @Override
+    protected void setRootLayout() {
+        mRootLayout = findViewById(R.id.container);
     }
 }
