@@ -12,7 +12,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.ethan.myclub.R;
-import com.ethan.myclub.global.Preferences;
 import com.ethan.myclub.views.main.BaseFragment;
 import com.ethan.myclub.views.user.info.InfoActivity;
 import com.ethan.myclub.views.user.login.LoginActivity;
@@ -77,5 +76,12 @@ public class UserFragment extends BaseFragment {
         });
 
         return view;
+    }
+
+    @Override
+    protected void setFragmentContainer() {
+        View view = getView();
+        if(view != null)
+            mFragmentContainer = (ViewGroup) view.findViewById(R.id.fragment_container);
     }
 }

@@ -35,4 +35,12 @@ public class ClubFragment extends BaseFragment {
 
         return view;
     }
+
+    @Override
+    protected void setFragmentContainer() {
+        View view = getView();
+        if(view != null)
+            mFragmentContainer = (ViewGroup) view.findViewById(R.id.fragment_container);
+    }
+
 }
