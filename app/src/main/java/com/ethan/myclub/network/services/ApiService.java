@@ -1,6 +1,6 @@
 package com.ethan.myclub.network.services;
 
-import com.ethan.myclub.models.network.Response;
+import com.ethan.myclub.models.network.ApiResponse;
 import com.ethan.myclub.models.network.Token;
 import com.ethan.myclub.models.network.Valid;
 
@@ -20,21 +20,21 @@ public interface ApiService {
 
     @FormUrlEncoded
     @POST("api/user/login/")
-    Observable<Response<Token>> login(@Field("username") String username,
-                                      @Field("password") String password);
-
-    @FormUrlEncoded
-    @POST("api/user/register/")
-    Observable<Response<Token>> register(@Field("username") String username,
+    Observable<Token> login(@Field("username") String username,
                                          @Field("password") String password);
 
     @FormUrlEncoded
+    @POST("api/user/register/")
+    Observable<Token> register(@Field("username") String username,
+                                            @Field("password") String password);
+
+    @FormUrlEncoded
     @POST("api/user/account-valid/")
-    Observable<Response<Valid>> accountValid(@Field("username") String username);
+    Observable<Valid> accountValid(@Field("username") String username);
 
     @Multipart
     @POST("/api/user/avatar/")
-    Observable<Response<Object>> uploadAvatar(@Part MultipartBody.Part file);
+    Observable<Object> uploadAvatar(@Part MultipartBody.Part file);
 
 
 }

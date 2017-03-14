@@ -8,9 +8,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.provider.MediaStore;
 import android.support.design.widget.BottomSheetDialog;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
@@ -19,21 +17,19 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.ethan.myclub.R;
-import com.ethan.myclub.global.Preferences;
-import com.ethan.myclub.models.network.Response;
-import com.ethan.myclub.models.network.Token;
+import com.ethan.myclub.models.network.ApiResponse;
 import com.ethan.myclub.network.ApiHelper;
-import com.ethan.myclub.network.Transformers;
 import com.ethan.myclub.utils.dialogs.WaitingDialogHelper;
 import com.ethan.myclub.views.main.SnackbarActivity;
 import com.ethan.myclub.views.user.AvatarImageView;
-import com.ethan.myclub.views.user.login.LoginActivity;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 
 import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -50,6 +46,7 @@ public class InfoActivity extends SnackbarActivity {
     private Uri mAvatarUri;
     private boolean mIsAvatarEdited = false;
     private boolean mIsInfoEdited = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -132,7 +129,7 @@ public class InfoActivity extends SnackbarActivity {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if(resultCode != RESULT_OK)// 用户点击取消操作
+        if (resultCode != RESULT_OK)// 用户点击取消操作
             return;
         switch (requestCode) {
             case REQUESTCODE_PICK:// 直接从相册获取
@@ -145,7 +142,7 @@ public class InfoActivity extends SnackbarActivity {
                 startPhotoCrop(mAvatarUri);
                 break;
             case REQUESTCODE_CROP:// 取得裁剪后的图片
-                    setPicToView(data);
+                setPicToView(data);
                 break;
         }
         super.onActivityResult(requestCode, resultCode, data);
@@ -172,7 +169,7 @@ public class InfoActivity extends SnackbarActivity {
     }
 
     private void setPicToView(Intent picData) {
-        if(picData == null)
+        if (picData == null)
             return;
         Bundle extras = picData.getExtras();
         if (extras != null) {
@@ -188,9 +185,9 @@ public class InfoActivity extends SnackbarActivity {
     }
 
     private void saveChanges() {
-        if(mIsAvatarEdited)
+        if (mIsAvatarEdited)
             saveAvatar();
-        if(mIsInfoEdited)
+        if (mIsInfoEdited)
             saveInfo();
     }
 
@@ -203,39 +200,37 @@ public class InfoActivity extends SnackbarActivity {
                 RequestBody.create(MediaType.parse("multipart/form-data"), mAvatarFile);
         MultipartBody.Part body =
                 MultipartBody.Part.createFormData("avatar", mAvatarFile.getName(), requestFile);
-        ApiHelper.getInstance()
+        ApiHelper.getProxy(this)
                 .uploadAvatar(body)
-                .compose(new Transformers.SchedulersSwitcher<Response<Object>>())
-                .compose(new Transformers.sTransformer<>())
                 .subscribe(
-                        new Observer<Object>() {
-                            @Override
-                            public void onSubscribe(Disposable d) {
-                                WaitingDialogHelper.show(InfoActivity.this,"上传头像中");
-                            }
+                new Observer<Object>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                        WaitingDialogHelper.show(InfoActivity.this, "上传头像中");
+                    }
 
-                            @Override
-                            public void onNext(Object o) {
+                    @Override
+                    public void onNext(Object o) {
 
-                            }
+                    }
 
-                            @Override
-                            public void onError(Throwable e) {
-                                InfoActivity.this.showSnackbar("上传头像失败！"+e.getMessage());
-                                e.printStackTrace();
-                                WaitingDialogHelper.dismiss();
-                            }
+                    @Override
+                    public void onError(Throwable e) {
+                        InfoActivity.this.showSnackbar("上传头像失败！" + e.getMessage());
+                        e.printStackTrace();
+                        WaitingDialogHelper.dismiss();
+                    }
 
-                            @Override
-                            public void onComplete() {
-                                WaitingDialogHelper.dismiss();
-                            }
-                        });
+                    @Override
+                    public void onComplete() {
+                        WaitingDialogHelper.dismiss();
+                    }
+                });
     }
 
     @Override
     public void onBackPressed() {
-        if(mIsAvatarEdited || mIsInfoEdited)
+        if (mIsAvatarEdited || mIsInfoEdited)
             showAlertDialog();
         else
             super.onBackPressed();

@@ -45,18 +45,4 @@ public class Utils {
         throw new Exception("数字转换失败");
     }
 
-    public static void showLoginAlert(View rootLayout) {
-        final Context context = rootLayout.getContext();
-        Snackbar.make(rootLayout, "您还没有登录", Snackbar.LENGTH_LONG)
-                .setAction("登录", new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Intent intent = new Intent();
-                        intent.setClass(context, LoginActivity.class);
-                        context.startActivity(intent);
-                    }
-                })
-                .show();
-
-    }
 }

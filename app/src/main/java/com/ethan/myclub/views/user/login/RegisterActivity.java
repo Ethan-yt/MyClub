@@ -4,11 +4,9 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.util.Pair;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
@@ -19,11 +17,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.ethan.myclub.R;
-import com.ethan.myclub.models.network.Response;
-import com.ethan.myclub.models.network.Token;
 import com.ethan.myclub.models.network.Valid;
 import com.ethan.myclub.network.ApiHelper;
-import com.ethan.myclub.network.Transformers;
 import com.ethan.myclub.utils.Utils;
 import com.ethan.myclub.utils.dialogs.WaitingDialogHelper;
 import com.ethan.myclub.views.main.SnackbarActivity;
@@ -157,9 +152,8 @@ public class RegisterActivity extends SnackbarActivity {
                 Utils.hideKeyboard(RegisterActivity.this);
                 mBtnSendSMS.setClickable(false);
                 final String phoneNumber = mEtPhoneNumber.getText().toString();
-                ApiHelper.getInstance().accountValid(phoneNumber)
-                        .subscribeOn(Schedulers.io())
-                        .compose(new Transformers.sTransformer<Valid>())
+                ApiHelper.getProxyWithoutToken(RegisterActivity.this)
+                        .accountValid(phoneNumber)
                         .flatMap(new Function<Valid, ObservableSource<Boolean>>() {
                             @Override
                             public ObservableSource<Boolean> apply(Valid valid) throws Exception {

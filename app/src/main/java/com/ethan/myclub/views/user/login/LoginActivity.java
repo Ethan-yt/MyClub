@@ -3,9 +3,7 @@ package com.ethan.myclub.views.user.login;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityOptionsCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v4.util.Pair;
 import android.view.View;
@@ -15,8 +13,7 @@ import android.widget.TextView;
 import com.ethan.myclub.R;
 import com.ethan.myclub.global.Preferences;
 import com.ethan.myclub.network.ApiHelper;
-import com.ethan.myclub.network.Transformers;
-import com.ethan.myclub.models.network.Response;
+import com.ethan.myclub.models.network.ApiResponse;
 import com.ethan.myclub.models.network.Token;
 import com.ethan.myclub.utils.dialogs.WaitingDialogHelper;
 import com.ethan.myclub.views.main.SnackbarActivity;
@@ -71,10 +68,8 @@ public class LoginActivity extends SnackbarActivity {
             @Override
             public void onClick(View v) {
 
-                ApiHelper.getInstance()
+                ApiHelper.getProxyWithoutToken(LoginActivity.this)
                         .login(mEtUsername.getText().toString(), mEtPassword.getText().toString())
-                        .compose(new Transformers.SchedulersSwitcher<Response<Token>>())
-                        .compose(new Transformers.sTransformer<Token>())
                         .subscribe(
                                 new Observer<Token>() {
                                     @Override
@@ -87,6 +82,7 @@ public class LoginActivity extends SnackbarActivity {
                                     @Override
                                     public void onNext(Token token) {
                                         Preferences.sToken = token.token;
+                                        setResult(RESULT_OK);
                                         finish();
                                     }
 

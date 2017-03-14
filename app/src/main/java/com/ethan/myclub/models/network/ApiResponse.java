@@ -10,7 +10,7 @@ import java.util.List;
  * 标准数据格式
  * @param <T>
  */
-public class Response<T> {
+public class ApiResponse<T> {
     public int code;
     public String message;
     public T data;

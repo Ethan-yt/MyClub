@@ -63,7 +63,6 @@ public class LoginActivity extends SnackbarActivity {
 
 
     private static final String TAG = "LoginActivity";
-    public static final int ACTIVITY_CODE = 2; //为了标识Activity result和Activity request
 
     public static final String BASE_URL = "http://202.195.144.163/";
     private EditText mPwView, mIdView;
@@ -457,7 +456,7 @@ public class LoginActivity extends SnackbarActivity {
                         intent.putExtra("Year", v.getYear());
                         intent.putExtra("Term", v.getTerm());
                         //startActivity(intent);
-                        setResult(ACTIVITY_CODE, intent);
+                        setResult(RESULT_OK, intent);
                         finish();
                     }
                 })

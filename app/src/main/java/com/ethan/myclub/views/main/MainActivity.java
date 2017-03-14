@@ -13,7 +13,7 @@ import com.ethan.myclub.R;
 
 
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends SnackbarActivity {
 
     private BaseFragment currentFragment;
     private BaseViewPagerAdapter adapter;
@@ -80,4 +80,8 @@ public class MainActivity extends AppCompatActivity {
         viewPager.setCurrentItem(2);// TODO: 2017/3/13  删除这行测试语句
     }
 
+    @Override
+    protected void setRootLayout() {
+        mRootLayout = findViewById(R.id.container);
+    }
 }

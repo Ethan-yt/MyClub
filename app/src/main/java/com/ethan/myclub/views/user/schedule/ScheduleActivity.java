@@ -24,7 +24,7 @@ import java.util.ArrayList;
 
 public class ScheduleActivity extends AppCompatActivity {
 
-    public static final int ACTIVITY_CODE = 1; //为了标识Activity result和Activity request
+    public static final int REQUEST_LOGIN = 1;
     ScheduleView mScheduleView;
     ArrayList<Schedule> mSchedules = new ArrayList<>();
     String mCurrentYear;
@@ -100,13 +100,13 @@ public class ScheduleActivity extends AppCompatActivity {
     private void downloadSchedule() {
         Intent intent = new Intent(this, LoginActivity.class);
         //startActivity(intent);
-        startActivityForResult(intent, ACTIVITY_CODE);
+        startActivityForResult(intent, REQUEST_LOGIN);
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == ScheduleActivity.ACTIVITY_CODE && resultCode == LoginActivity.ACTIVITY_CODE)
+        if(requestCode == ScheduleActivity.REQUEST_LOGIN && resultCode == RESULT_OK)
         {
             mSchedules = data.getParcelableArrayListExtra("Schedules");
             mCurrentYear = data.getStringExtra("Year");

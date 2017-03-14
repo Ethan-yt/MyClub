@@ -28,12 +28,18 @@ public class ExceptionEngine extends Throwable {
     public static ApiException handleException(Throwable e) {
         ApiException ex;
 
-        if (e instanceof HttpException) {             //HTTP错误
+        if (e instanceof HttpException) {
             HttpException httpException = (HttpException) e;
 
             switch (httpException.code()) {
-
+                case UNAUTHORIZED:
+                    ex = new ApiException(e, ApiException.HTTP_UNAUTHORIZED);
+                    ex.message = "token过期";
+                    break;
                 case FORBIDDEN:
+                    ex = new ApiException(e, ApiException.HTTP_FORBIDDEN);
+                    ex.message = "权限不足";
+                    break;
                 case NOT_FOUND:
                 case REQUEST_TIMEOUT:
                 case GATEWAY_TIMEOUT:
@@ -44,10 +50,7 @@ public class ExceptionEngine extends Throwable {
                     ex = new ApiException(e, ApiException.HTTP_ERROR);
                     ex.message = "网络错误";  //均视为网络错误
                     break;
-                case UNAUTHORIZED:
-                    ex = new ApiException(e, ApiException.HTTP_FORBIDDEN);
-                    ex.message = "token过期";  //均视为网络错误
-                    break;
+
             }
             return ex;
         } else if (e instanceof ServerException) {    //服务器返回的错误
@@ -59,16 +62,17 @@ public class ExceptionEngine extends Throwable {
                 || e instanceof JSONException
                 || e instanceof ParseException) {
             ex = new ApiException(e, ApiException.PARSE_ERROR);
-            ex.message = "解析错误";            //均视为解析错误
+            ex.message = "解析错误";
             return ex;
         } else if (e instanceof ConnectException
                 || e instanceof UnknownHostException) {
             ex = new ApiException(e, ApiException.NETWORD_ERROR);
-            ex.message = "连接失败";  //均视为网络错误
+            ex.message = "连接失败";
             return ex;
         } else {
             ex = new ApiException(e, ApiException.UNKNOWN);
-            ex.message = "未知错误";          //未知错误
+            ex.message = "未知错误";
+            e.printStackTrace();
             return ex;
         }
     }

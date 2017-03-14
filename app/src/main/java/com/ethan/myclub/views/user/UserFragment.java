@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 
 import com.ethan.myclub.R;
 import com.ethan.myclub.views.main.BaseFragment;
+import com.ethan.myclub.views.main.SnackbarActivity;
 import com.ethan.myclub.views.user.info.InfoActivity;
 import com.ethan.myclub.views.user.login.LoginActivity;
 import com.ethan.myclub.views.user.schedule.ScheduleActivity;
@@ -53,7 +54,7 @@ public class UserFragment extends BaseFragment {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), LoginActivity.class);
-                startActivity(intent);
+                getActivity().startActivityForResult(intent, SnackbarActivity.REQUEST_LOGIN);
             }
         });
 
