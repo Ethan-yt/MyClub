@@ -31,7 +31,7 @@ public class ClubFragment extends BaseFragment {
                              Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_club, container, false);
-        fragmentContainer = (ViewGroup) view.findViewById(R.id.fragment_container);
+
 
         return view;
     }

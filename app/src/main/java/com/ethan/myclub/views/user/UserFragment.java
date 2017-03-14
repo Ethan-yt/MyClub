@@ -26,7 +26,7 @@ public class UserFragment extends BaseFragment {
     private AvatarImageView mIvAvatar;
 
     public UserFragment() {
-        // Required empty public constructor
+
     }
 
 
@@ -35,7 +35,6 @@ public class UserFragment extends BaseFragment {
                              Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_user, container, false);
-        fragmentContainer = (ViewGroup) view.findViewById(R.id.fragment_container);
 
         mIvAvatar = (AvatarImageView) view.findViewById(R.id.iv_avatar);
 
