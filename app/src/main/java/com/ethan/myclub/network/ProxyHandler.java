@@ -45,7 +45,7 @@ class ProxyHandler implements InvocationHandler {
     @Override
     public Object invoke(final Object proxy, final Method method, final Object[] args) throws Throwable {
         //先检查需要Token但是没有登录的情况
-        if(mIsNeedToken && (Preferences.sToken == null || Preferences.sToken.isEmpty()))
+        if(mIsNeedToken && !Preferences.isLogined())
         {
             //弹出登录提示
             return Observable.create(new ObservableOnSubscribe<Object>() {

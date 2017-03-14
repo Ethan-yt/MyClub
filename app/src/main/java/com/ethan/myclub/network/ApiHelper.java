@@ -39,11 +39,11 @@ public class ApiHelper {
                     .addInterceptor(new Interceptor() {
                         @Override
                         public okhttp3.Response intercept(Chain chain) throws IOException {
-                            Request request = chain.request()
-                                    .newBuilder()
-                                    .addHeader("Authorization", "JWT " + Preferences.sToken)
-                                    .build();
-                            return chain.proceed(request);
+                            Request.Builder request = chain.request()
+                                    .newBuilder();
+                            if (Preferences.isLogined())
+                                request.addHeader("Authorization", "JWT " + Preferences.sToken);
+                            return chain.proceed(request.build());
                         }
                     })
                     .build();
