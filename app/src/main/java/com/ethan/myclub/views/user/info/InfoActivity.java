@@ -203,29 +203,29 @@ public class InfoActivity extends SnackbarActivity {
         ApiHelper.getProxy(this)
                 .uploadAvatar(body)
                 .subscribe(
-                new Observer<Object>() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
-                        WaitingDialogHelper.show(InfoActivity.this, "上传头像中");
-                    }
+                        new Observer<Object>() {
+                            @Override
+                            public void onSubscribe(Disposable d) {
+                                WaitingDialogHelper.show(InfoActivity.this, "上传头像中");
+                            }
 
-                    @Override
-                    public void onNext(Object o) {
+                            @Override
+                            public void onNext(Object o) {
 
-                    }
+                            }
 
-                    @Override
-                    public void onError(Throwable e) {
-                        InfoActivity.this.showSnackbar("上传头像失败！" + e.getMessage());
-                        e.printStackTrace();
-                        WaitingDialogHelper.dismiss();
-                    }
+                            @Override
+                            public void onError(Throwable e) {
+                                InfoActivity.this.showSnackbar("上传头像失败！" + e.getMessage());
+                                e.printStackTrace();
+                                WaitingDialogHelper.dismiss();
+                            }
 
-                    @Override
-                    public void onComplete() {
-                        WaitingDialogHelper.dismiss();
-                    }
-                });
+                            @Override
+                            public void onComplete() {
+                                WaitingDialogHelper.dismiss();
+                            }
+                        });
     }
 
     @Override
