@@ -23,6 +23,7 @@ import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.ObservableSource;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 
@@ -71,7 +72,6 @@ class ProxyHandler implements InvocationHandler {
                         });
                     }
                 })
-                //.doOnError()  TODO: 2017/3/15 错误的时候自动弹出snackbar 增加doOnError操作符
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }

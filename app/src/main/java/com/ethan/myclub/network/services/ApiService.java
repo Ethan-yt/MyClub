@@ -1,6 +1,5 @@
 package com.ethan.myclub.network.services;
 
-import com.ethan.myclub.models.network.ApiResponse;
 import com.ethan.myclub.models.network.Token;
 import com.ethan.myclub.models.network.Valid;
 
