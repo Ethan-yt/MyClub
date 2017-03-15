@@ -20,7 +20,6 @@ import com.ethan.myclub.R;
 import com.ethan.myclub.models.network.Valid;
 import com.ethan.myclub.network.ApiHelper;
 import com.ethan.myclub.utils.Utils;
-import com.ethan.myclub.utils.dialogs.WaitingDialogHelper;
 import com.ethan.myclub.views.main.SnackbarActivity;
 
 import org.json.JSONObject;
@@ -149,7 +148,7 @@ public class RegisterActivity extends SnackbarActivity {
         mBtnSendSMS.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Utils.hideKeyboard(RegisterActivity.this);
+                hideKeyboard();
                 mBtnSendSMS.setClickable(false);
                 final String phoneNumber = mEtPhoneNumber.getText().toString();
                 ApiHelper.getProxyWithoutToken(RegisterActivity.this)
@@ -239,7 +238,7 @@ public class RegisterActivity extends SnackbarActivity {
         mTvCountryName.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                WaitingDialogHelper.show(RegisterActivity.this, "正在获取国家列表");
+                showWaitingDialog("请稍候", "正在获取国家列表");
 
                 //Log.e("0", "-------线程:" + Thread.currentThread().getName());
                 Observable.create(new ObservableOnSubscribe<ArrayList>() {
@@ -323,7 +322,7 @@ public class RegisterActivity extends SnackbarActivity {
                                     }
                                 });
 
-                                WaitingDialogHelper.dismiss();
+                                dismissDialog();
                                 dialog.show();
 
 
@@ -334,6 +333,7 @@ public class RegisterActivity extends SnackbarActivity {
                                 //失败
                                 throwable.printStackTrace();
                                 showSnackbar(parseErrorMessage(throwable));
+                                dismissDialog();
                             }
                         });
             }

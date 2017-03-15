@@ -19,7 +19,6 @@ import android.view.ViewGroup;
 import com.ethan.myclub.R;
 import com.ethan.myclub.models.network.ApiResponse;
 import com.ethan.myclub.network.ApiHelper;
-import com.ethan.myclub.utils.dialogs.WaitingDialogHelper;
 import com.ethan.myclub.views.main.SnackbarActivity;
 import com.ethan.myclub.views.user.AvatarImageView;
 
@@ -184,6 +183,9 @@ public class InfoActivity extends SnackbarActivity {
         }
     }
 
+    boolean mIsAvatarSaved = false;
+    boolean mIsInfoSaved = false;
+
     private void saveChanges() {
         if (mIsAvatarEdited)
             saveAvatar();
@@ -206,24 +208,27 @@ public class InfoActivity extends SnackbarActivity {
                         new Observer<Object>() {
                             @Override
                             public void onSubscribe(Disposable d) {
-                                WaitingDialogHelper.show(InfoActivity.this, "上传头像中");
+                                showWaitingDialog("请稍候", "上传头像中", d);
                             }
 
                             @Override
                             public void onNext(Object o) {
-
+                                if (!mIsInfoEdited || mIsInfoSaved)
+                                    InfoActivity.this.finish();
+                                else
+                                    mIsAvatarSaved = true;
                             }
 
                             @Override
                             public void onError(Throwable e) {
                                 InfoActivity.this.showSnackbar("上传头像失败！" + e.getMessage());
                                 e.printStackTrace();
-                                WaitingDialogHelper.dismiss();
+                                dismissDialog();
                             }
 
                             @Override
                             public void onComplete() {
-                                WaitingDialogHelper.dismiss();
+                                dismissDialog();
                             }
                         });
     }

@@ -42,6 +42,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import io.reactivex.Observable;
+import io.reactivex.ObservableSource;
+import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Action;
@@ -68,9 +70,7 @@ public class LoginActivity extends SnackbarActivity {
     private EditText mPwView, mIdView;
     private TextInputLayout mIdWrapper, mPwWrapper;
 
-    private ProgressDialog mProgressDialog;
     private ScheduleService mScheduleService;
-    private Disposable mDisposable;
 
 
     final private ArrayList<Schedule> schedules = new ArrayList<>();
@@ -156,7 +156,6 @@ public class LoginActivity extends SnackbarActivity {
     }
 
     private void doOnLogin() {
-        Utils.hideKeyboard(this);
 
         mIdWrapper.setErrorEnabled(false);
         mPwWrapper.setErrorEnabled(false);
@@ -173,53 +172,14 @@ public class LoginActivity extends SnackbarActivity {
             return;
         }
 
-        showProgressDialog("登录中", "正在登录...", ProgressDialog.STYLE_SPINNER);
-
         Login(username, password);
 
     }
 
-    private void showProgressDialog(String tittle, String message, int style) {
-        mProgressDialog = new ProgressDialog(this);
-        mProgressDialog.setProgressStyle(style);// 设置进度条的形式为圆形转动的进度条
-        mProgressDialog.setCancelable(true);// 设置是否可以通过点击Back键取消
-        mProgressDialog.setCanceledOnTouchOutside(false);// 设置在点击Dialog外是否取消Dialog进度条
-
-        mProgressDialog.setTitle(tittle);
-
-        // 监听cancel事件
-        mProgressDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
-
-            @Override
-            public void onCancel(DialogInterface dialog) {
-                cancelCurrentProgress();
-                //点击back
-            }
-        });
-
-        mProgressDialog.setButton(DialogInterface.BUTTON_NEGATIVE, "取消",
-                new DialogInterface.OnClickListener() {
-
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        cancelCurrentProgress();
-                        //点击取消
-                    }
-                });
-
-        mProgressDialog.setMessage(message);
-        mProgressDialog.show();
-    }
-
-    private void cancelCurrentProgress() {
-        if (mDisposable != null)
-            if (!mDisposable.isDisposed())
-                mDisposable.dispose();
-    }
 
     private void Login(final String username, final String password) {
 
-        mDisposable = mScheduleService.getViewState()
+        mScheduleService.getViewState()
                 .subscribeOn(Schedulers.io())
                 //将Html解析，获取ViewState
                 .map(new Function<ResponseBody, String>() {
@@ -285,20 +245,29 @@ public class LoginActivity extends SnackbarActivity {
                 })
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
-                        new Consumer<String>() {
+                        new Observer<String>() {
                             @Override
-                            public void accept(String s) throws Exception {
+                            public void onSubscribe(Disposable d) {
+                                showWaitingDialog("登录中", "正在登录...", d);
+                            }
+
+                            @Override
+                            public void onNext(String s) {
                                 //OnNext 登录成功
-                                mProgressDialog.dismiss();
+                                dismissDialog();
                                 getSchedule(username);
                             }
-                        },
-                        new Consumer<Throwable>() {
+
                             @Override
-                            public void accept(Throwable throwable) throws Exception {
+                            public void onError(Throwable e) {
                                 //OnError 登录失败
-                                mProgressDialog.dismiss();
-                                showSnackbar(throwable.getMessage());
+                                dismissDialog();
+                                showSnackbar(e.getMessage());
+                            }
+
+                            @Override
+                            public void onComplete() {
+
                             }
                         });
     }
@@ -315,11 +284,11 @@ public class LoginActivity extends SnackbarActivity {
 
     private void getSchedule(final String username) {
 
-        showProgressDialog("下载中", "正在下载课程表...", ProgressDialog.STYLE_SPINNER);
+
         final String[] viewState = new String[1];
 
 
-        mDisposable = mScheduleService.getCurrentSchedule(username)
+        mScheduleService.getCurrentSchedule(username)
                 .subscribeOn(Schedulers.io())
 //                .delay(1, TimeUnit.SECONDS)
                 .observeOn(AndroidSchedulers.mainThread())
@@ -366,13 +335,27 @@ public class LoginActivity extends SnackbarActivity {
 
                         mProgressDialog.dismiss();
 
-                        showProgressDialog("下载中", "正在下载课程表...", ProgressDialog.STYLE_HORIZONTAL);
+                        showProgressDialog("下载中", "正在下载课程表...");
 
                         mProgressDialog.setMax(scheduleIDs.size());
 
                         return Observable.fromIterable(scheduleIDs);
                     }
 
+                })
+                .onErrorResumeNext(new Function<Throwable, ObservableSource<? extends ScheduleParam>>() {
+                    @Override
+                    public ObservableSource<? extends ScheduleParam> apply(Throwable throwable) throws Exception {
+                        if (throwable instanceof HttpException) {
+                            HttpException exception = (HttpException) throwable;
+                            if (exception.code() == 302) {
+                                Response response = exception.response();
+                                String html = response.errorBody().string();
+                                return Observable.error(throwable);
+                            }
+                        }
+                        return Observable.error(throwable);
+                    }
                 })
                 .observeOn(Schedulers.io())
                 .flatMap(new Function<ScheduleParam, Observable<ResponseBody>>() {
@@ -409,28 +392,29 @@ public class LoginActivity extends SnackbarActivity {
                 })
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
-                        new Consumer<Schedule>() {
+                        new Observer<Schedule>() {
                             @Override
-                            public void accept(Schedule s) throws Exception {
-                                //OnNext 获取到一个课程表
-                                schedules.add(s);
-                                mProgressDialog.incrementProgressBy(1);
+                            public void onSubscribe(Disposable d) {
+                                showWaitingDialog("下载中", "正在下载课程表...", d);
+                            }
 
-                            }
-                        },
-                        new Consumer<Throwable>() {
                             @Override
-                            public void accept(Throwable throwable) throws Exception {
+                            public void onNext(Schedule schedule) {
+                                //OnNext 获取到一个课程表
+                                schedules.add(schedule);
+                                mProgressDialog.incrementProgressBy(1);
+                            }
+
+                            @Override
+                            public void onError(Throwable e) {
                                 //OnError 获取失败
-                                mProgressDialog.dismiss();
-                                showSnackbar(throwable.getMessage());
+                                dismissDialog();
+                                showSnackbar(e.getMessage());
                             }
-                        },
-                        new Action() {
+
                             @Override
-                            public void run() throws Exception {
-                                //OnComplate 获取完成
-                                mProgressDialog.dismiss();
+                            public void onComplete() {
+                                dismissDialog();
                                 showSnackbar("课表下载完成！");
                                 showNumberPicker();
                             }

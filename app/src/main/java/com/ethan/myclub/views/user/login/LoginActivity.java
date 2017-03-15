@@ -15,7 +15,6 @@ import com.ethan.myclub.global.Preferences;
 import com.ethan.myclub.network.ApiHelper;
 import com.ethan.myclub.models.network.ApiResponse;
 import com.ethan.myclub.models.network.Token;
-import com.ethan.myclub.utils.dialogs.WaitingDialogHelper;
 import com.ethan.myclub.views.main.SnackbarActivity;
 
 import io.reactivex.Observer;
@@ -74,9 +73,7 @@ public class LoginActivity extends SnackbarActivity {
                                 new Observer<Token>() {
                                     @Override
                                     public void onSubscribe(Disposable d) {
-
-                                        WaitingDialogHelper.show(LoginActivity.this, "登录中");
-
+                                        showWaitingDialog("请稍候", "登录中");
                                     }
 
                                     @Override
@@ -90,12 +87,12 @@ public class LoginActivity extends SnackbarActivity {
                                     public void onError(Throwable e) {
                                         showSnackbar("登录失败！" + e.getMessage());
                                         e.printStackTrace();
-                                        WaitingDialogHelper.dismiss();
+                                        dismissDialog();
                                     }
 
                                     @Override
                                     public void onComplete() {
-                                        WaitingDialogHelper.dismiss();
+                                        dismissDialog();
                                     }
                                 });
 

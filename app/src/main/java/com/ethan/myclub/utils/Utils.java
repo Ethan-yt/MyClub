@@ -16,16 +16,6 @@ import com.ethan.myclub.views.user.login.RegisterActivity;
  */
 
 public class Utils {
-    static public void hideKeyboard(Context context) {
-        if (context instanceof Activity) {
-            Activity activity = (Activity) context;
-            View view = activity.getCurrentFocus();
-            if (view != null) {
-                ((InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE)).
-                        hideSoftInputFromWindow(view.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
-            }
-        }
-    }
 
     public static int Str2Int(String s) throws Exception {
         java.util.Map<String, Integer> numMap = new java.util.HashMap<String, Integer>();
