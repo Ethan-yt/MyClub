@@ -8,8 +8,10 @@ import android.support.design.widget.Snackbar;
 import android.view.View;
 
 import com.ethan.myclub.global.Preferences;
+import com.ethan.myclub.models.network.Token;
 import com.ethan.myclub.network.exceptions.ApiException;
 import com.ethan.myclub.network.exceptions.ExceptionEngine;
+import com.ethan.myclub.network.services.ApiService;
 import com.ethan.myclub.views.main.SnackbarActivity;
 import com.ethan.myclub.views.user.login.LoginActivity;
 
@@ -45,23 +47,9 @@ class ProxyHandler implements InvocationHandler {
     @Override
     public Object invoke(final Object proxy, final Method method, final Object[] args) throws Throwable {
         //先检查需要Token但是没有登录的情况
-        if(mIsNeedToken && !Preferences.isLogined())
-        {
+        if (mIsNeedToken && !Preferences.isLogined()) {
             //弹出登录提示
-            return Observable.create(new ObservableOnSubscribe<Object>() {
-                @Override
-                public void subscribe(ObservableEmitter<Object> e) throws Exception {
-                    mActivity.showSnackbar("您还没有登录","登录",new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            Intent intent = new Intent();
-                            intent.setClass(mActivity, LoginActivity.class);
-                            mActivity.startActivityForResult(intent,SnackbarActivity.REQUEST_LOGIN);
-                        }
-                    });
-                    e.onComplete();
-                }
-            });
+            return getLoginObservable();
         }
 
         return ((Observable<?>) method.invoke(mProxyObject, args))
@@ -74,12 +62,10 @@ class ProxyHandler implements InvocationHandler {
 
                                 ApiException apiException = ExceptionEngine.handleException(throwable);
 
-                                // TODO: 2017/3/15 增加token过期的判断 获取token后重试一次 如果还不行就清空token要求登录
-
-//                                switch (apiException.code) {
-//                                    case ApiException.HTTP_UNAUTHORIZED://token过期时
-//
-//                                }
+                                switch (apiException.code) {
+                                    case ApiException.HTTP_UNAUTHORIZED://token过期时
+                                        return getLoginObservable();
+                                }
                                 return Observable.error(apiException);
                             }
                         });
@@ -88,5 +74,22 @@ class ProxyHandler implements InvocationHandler {
                 //.doOnError()  TODO: 2017/3/15 错误的时候自动弹出snackbar 增加doOnError操作符
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
+    }
+
+    private Observable<Object> getLoginObservable() {
+        return Observable.create(new ObservableOnSubscribe<Object>() {
+            @Override
+            public void subscribe(ObservableEmitter<Object> e) throws Exception {
+                mActivity.showSnackbar("您还没有登录", "登录", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent();
+                        intent.setClass(mActivity, LoginActivity.class);
+                        mActivity.startActivityForResult(intent, SnackbarActivity.REQUEST_LOGIN);
+                    }
+                });
+                e.onComplete();
+            }
+        });
     }
 }
