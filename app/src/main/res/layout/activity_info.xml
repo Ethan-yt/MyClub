@@ -5,7 +5,7 @@
     android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.ethan.myclub.views.user.info.InfoActivity">
+    tools:context="com.ethan.myclub.user.info.InfoActivity">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
@@ -44,7 +44,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp">
 
-                <com.ethan.myclub.views.user.AvatarImageView
+                <com.ethan.myclub.user.AvatarImageView
                     android:id="@+id/iv_avatar"
                     android:layout_width="100dp"
                     android:layout_height="100dp"

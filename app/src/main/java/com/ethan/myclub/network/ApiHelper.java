@@ -3,7 +3,7 @@ package com.ethan.myclub.network;
 import com.ethan.myclub.global.Preferences;
 import com.ethan.myclub.network.converter.ApiExceptionConverterFactory;
 import com.ethan.myclub.network.services.ApiService;
-import com.ethan.myclub.views.main.SnackbarActivity;
+import com.ethan.myclub.main.SnackbarActivity;
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 
 import java.io.IOException;

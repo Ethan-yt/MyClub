@@ -6,7 +6,7 @@
     android:id="@+id/activity_schedule"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".views.user.schedule.ScheduleActivity">
+    tools:context=".user.schedule.ScheduleActivity">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
@@ -31,7 +31,7 @@
     <!--android:layout_width="wrap_content"-->
     <!--android:layout_height="wrap_content"-->
     <!--android:text="Clock" />-->
-    <com.ethan.myclub.views.user.schedule.ScheduleView
+    <com.ethan.myclub.user.schedule.ScheduleView
         android:id="@+id/scheduleView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

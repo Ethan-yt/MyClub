@@ -1,19 +1,13 @@
 package com.ethan.myclub.network;
 
-import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
-import android.provider.Settings;
-import android.support.design.widget.Snackbar;
 import android.view.View;
 
 import com.ethan.myclub.global.Preferences;
-import com.ethan.myclub.models.network.Token;
 import com.ethan.myclub.network.exceptions.ApiException;
 import com.ethan.myclub.network.exceptions.ExceptionEngine;
-import com.ethan.myclub.network.services.ApiService;
-import com.ethan.myclub.views.main.SnackbarActivity;
-import com.ethan.myclub.views.user.login.LoginActivity;
+import com.ethan.myclub.main.SnackbarActivity;
+import com.ethan.myclub.user.login.LoginActivity;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
@@ -23,7 +17,6 @@ import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.ObservableSource;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 
