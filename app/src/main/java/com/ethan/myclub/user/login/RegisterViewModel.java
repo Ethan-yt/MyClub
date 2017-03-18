@@ -47,11 +47,11 @@ public class RegisterViewModel {
 
 
     private final RegisterActivity mView;
-    public ObservableField<String> mCountryName = new ObservableField<>();
-    public ObservableField<String> mCountryCode = new ObservableField<>();
+    public ObservableField<String> mCountryName = new ObservableField<>("台湾");
+    public ObservableField<String> mCountryCode = new ObservableField<>("886");
     public ObservableField<String> mPhoneNumber = new ObservableField<>();
-    public ObservableBoolean mIsSendBtnClickable = new ObservableBoolean();
-    public ObservableField<String> mSendBtnText = new ObservableField<>();
+    public ObservableBoolean mIsSendBtnClickable = new ObservableBoolean(true);
+    public ObservableField<String> mSendBtnText = new ObservableField<>("发送验证码");
     public ObservableField<String> mVerifyCode = new ObservableField<>();
 
     public RegisterViewModel(RegisterActivity registerActivity) {
@@ -70,7 +70,7 @@ public class RegisterViewModel {
         SMSSDK.initSDK(mView, "1b8ee6770f538", "3f490908a071256b009580392a5b312a");
     }
 
-    public void selectCountry(){
+    public void selectCountry() {
         mView.showWaitingDialog("请稍候", "正在获取国家列表");
 
         //Log.e("0", "-------线程:" + Thread.currentThread().getName());
@@ -171,7 +171,7 @@ public class RegisterViewModel {
                 });
     }
 
-    public void sendSMS(){
+    public void sendSMS() {
 
         ApiHelper.getProxyWithoutToken(mView)
                 .accountValid(mPhoneNumber.get())
