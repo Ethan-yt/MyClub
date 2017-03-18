@@ -18,7 +18,6 @@
         <activity android:name=".main.WelcomeActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -31,6 +30,7 @@
         <activity android:name=".user.login.RegisterActivity" />
         <activity android:name=".user.login.RegisterActivity2" />
         <activity android:name=".user.info.InfoActivity" />
+        <activity android:name=".user.message.messageActivity" />
 
     </application>
 
