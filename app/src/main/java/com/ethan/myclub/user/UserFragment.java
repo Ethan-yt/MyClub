@@ -15,7 +15,7 @@ import com.ethan.myclub.R;
 import com.ethan.myclub.main.BaseFragment;
 import com.ethan.myclub.main.SnackbarActivity;
 import com.ethan.myclub.user.info.InfoActivity;
-import com.ethan.myclub.user.login.LoginActivity;
+import com.ethan.myclub.user.login.view.LoginActivity;
 import com.ethan.myclub.user.schedule.ScheduleActivity;
 
 

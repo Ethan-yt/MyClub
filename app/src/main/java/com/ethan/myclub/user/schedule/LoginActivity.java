@@ -16,10 +16,10 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.ethan.myclub.R;
-import com.ethan.myclub.user.schedule.models.Course;
-import com.ethan.myclub.user.schedule.models.CourseTime;
-import com.ethan.myclub.user.schedule.models.Schedule;
-import com.ethan.myclub.user.schedule.services.ScheduleService;
+import com.ethan.myclub.user.schedule.model.Course;
+import com.ethan.myclub.user.schedule.model.CourseTime;
+import com.ethan.myclub.user.schedule.model.Schedule;
+import com.ethan.myclub.user.schedule.service.ScheduleService;
 import com.ethan.myclub.utils.Utils;
 import com.ethan.myclub.main.SnackbarActivity;
 import com.jakewharton.retrofit2.adapter.rxjava2.HttpException;

@@ -26,9 +26,9 @@
             android:launchMode="singleTask" />
         <activity android:name=".user.schedule.ScheduleActivity" />
         <activity android:name=".user.schedule.LoginActivity" />
-        <activity android:name=".user.login.LoginActivity" />
-        <activity android:name=".user.login.RegisterActivity" />
-        <activity android:name=".user.login.RegisterActivity2" />
+        <activity android:name=".user.login.view.LoginActivity" />
+        <activity android:name=".user.login.view.RegisterActivity" />
+        <activity android:name=".user.login.view.RegisterActivity2" />
         <activity android:name=".user.info.InfoActivity" />
         <activity android:name=".user.message.messageActivity" />
 

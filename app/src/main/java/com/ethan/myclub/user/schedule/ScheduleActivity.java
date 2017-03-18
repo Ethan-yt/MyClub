@@ -15,7 +15,7 @@ import android.view.View;
 import android.widget.NumberPicker;
 
 import com.ethan.myclub.R;
-import com.ethan.myclub.user.schedule.models.Schedule;
+import com.ethan.myclub.user.schedule.model.Schedule;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;

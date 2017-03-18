@@ -1,6 +1,6 @@
 package com.ethan.myclub.network.converter;
 
-import com.ethan.myclub.network.models.ApiResponse;
+import com.ethan.myclub.network.model.ApiResponse;
 import com.google.gson.Gson;
 import com.google.gson.TypeAdapter;
 import com.google.gson.reflect.TypeToken;

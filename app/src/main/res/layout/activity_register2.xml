@@ -6,7 +6,7 @@
     android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.ethan.myclub.user.login.RegisterActivity2">
+    tools:context="com.ethan.myclub.user.login.view.RegisterActivity2">
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/appBarLayout"

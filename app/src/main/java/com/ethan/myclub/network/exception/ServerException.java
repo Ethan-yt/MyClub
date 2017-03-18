@@ -1,4 +1,4 @@
-package com.ethan.myclub.network.exceptions;
+package com.ethan.myclub.network.exception;
 
 /**
  * Created by ethan on 2017/3/4.

@@ -1,4 +1,4 @@
-package com.ethan.myclub.user.login;
+package com.ethan.myclub.user.login.view;
 
 import android.content.Intent;
 import android.os.Build;
@@ -10,7 +10,7 @@ import android.widget.EditText;
 
 import com.ethan.myclub.R;
 import com.ethan.myclub.global.Preferences;
-import com.ethan.myclub.user.login.models.Token;
+import com.ethan.myclub.user.login.model.Token;
 import com.ethan.myclub.network.ApiHelper;
 import com.ethan.myclub.main.MainActivity;
 import com.ethan.myclub.main.SnackbarActivity;

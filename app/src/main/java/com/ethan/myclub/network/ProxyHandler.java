@@ -4,10 +4,10 @@ import android.content.Intent;
 import android.view.View;
 
 import com.ethan.myclub.global.Preferences;
-import com.ethan.myclub.network.exceptions.ApiException;
-import com.ethan.myclub.network.exceptions.ExceptionEngine;
+import com.ethan.myclub.network.exception.ApiException;
+import com.ethan.myclub.network.exception.ExceptionEngine;
 import com.ethan.myclub.main.SnackbarActivity;
-import com.ethan.myclub.user.login.LoginActivity;
+import com.ethan.myclub.user.login.view.LoginActivity;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;

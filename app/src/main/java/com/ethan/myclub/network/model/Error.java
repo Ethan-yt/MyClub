@@ -1,4 +1,4 @@
-package com.ethan.myclub.network.models;
+package com.ethan.myclub.network.model;
 
 /**
  * Created by ethan on 2017/3/11.

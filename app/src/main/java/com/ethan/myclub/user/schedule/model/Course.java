@@ -1,4 +1,4 @@
-package com.ethan.myclub.user.schedule.models;
+package com.ethan.myclub.user.schedule.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;

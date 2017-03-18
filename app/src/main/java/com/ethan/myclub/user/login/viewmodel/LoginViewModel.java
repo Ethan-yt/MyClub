@@ -1,10 +1,7 @@
-package com.ethan.myclub.user.login;
+package com.ethan.myclub.user.login.viewmodel;
 
 import android.content.Intent;
-import android.databinding.BaseObservable;
-import android.databinding.Observable;
 import android.databinding.ObservableField;
-import android.os.Build;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.util.Pair;
@@ -12,10 +9,13 @@ import android.view.View;
 
 import com.ethan.myclub.global.Preferences;
 import com.ethan.myclub.network.ApiHelper;
-import com.ethan.myclub.user.login.models.Token;
+import com.ethan.myclub.user.login.model.Token;
+import com.ethan.myclub.user.login.view.LoginActivity;
+import com.ethan.myclub.user.login.view.RegisterActivity;
 
 import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
+import okhttp3.Credentials;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -23,7 +23,7 @@ import static android.app.Activity.RESULT_OK;
  * Created by ethan on 2017/3/18.
  */
 
-public class LoginViewModel extends BaseObservable {
+public class LoginViewModel{
 
     private LoginActivity mView;
     public ObservableField<String> userName = new ObservableField<>();
@@ -48,7 +48,7 @@ public class LoginViewModel extends BaseObservable {
 
     public void login() {
         ApiHelper.getProxyWithoutToken(mView)
-                .login(userName.get(), password.get())
+                .login("password",userName.get(), password.get(), Preferences.CLIENT_CREDENTIALS)
                 .subscribe(
                         new Observer<Token>() {
                             @Override

@@ -1,8 +1,8 @@
 package com.ethan.myclub.network.converter;
 
-import com.ethan.myclub.network.models.ApiResponse;
-import com.ethan.myclub.network.models.Error;
-import com.ethan.myclub.network.exceptions.ServerException;
+import com.ethan.myclub.network.model.ApiResponse;
+import com.ethan.myclub.network.model.Error;
+import com.ethan.myclub.network.exception.ServerException;
 import com.google.gson.TypeAdapter;
 
 import java.io.IOException;

@@ -1,4 +1,4 @@
-package com.ethan.myclub.network.exceptions;
+package com.ethan.myclub.network.exception;
 
 import android.net.ParseException;
 

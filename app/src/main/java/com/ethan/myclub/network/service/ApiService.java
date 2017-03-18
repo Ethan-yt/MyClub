@@ -1,12 +1,13 @@
-package com.ethan.myclub.network.services;
+package com.ethan.myclub.network.service;
 
-import com.ethan.myclub.user.login.models.Token;
-import com.ethan.myclub.user.login.models.Valid;
+import com.ethan.myclub.user.login.model.Token;
+import com.ethan.myclub.user.login.model.Valid;
 
 import io.reactivex.Observable;
 import okhttp3.MultipartBody;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
+import retrofit2.http.Header;
 import retrofit2.http.Multipart;
 import retrofit2.http.PATCH;
 import retrofit2.http.POST;
@@ -19,9 +20,11 @@ import retrofit2.http.Part;
 public interface ApiService {
 
     @FormUrlEncoded
-    @POST("api/user/login/")
-    Observable<Token> login(@Field("username") String username,
-                            @Field("password") String password);
+    @POST("api/o/token/")
+    Observable<Token> login(@Field("grant_type") String grantType,
+                            @Field("username") String username,
+                            @Field("password") String password,
+                            @Header("Authentication") String s);
 
     @FormUrlEncoded
     @POST("api/user/register/")

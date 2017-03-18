@@ -1,4 +1,4 @@
-package com.ethan.myclub.user.login;
+package com.ethan.myclub.user.login.viewmodel;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -10,12 +10,13 @@ import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.util.Pair;
 import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
-import android.text.style.ClickableSpan;
 import android.util.Log;
 import android.view.View;
 
 import com.ethan.myclub.network.ApiHelper;
-import com.ethan.myclub.user.login.models.Valid;
+import com.ethan.myclub.user.login.model.Valid;
+import com.ethan.myclub.user.login.view.RegisterActivity;
+import com.ethan.myclub.user.login.view.RegisterActivity2;
 
 import org.json.JSONObject;
 

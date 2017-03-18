@@ -12,9 +12,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ethan.myclub.R;
-import com.ethan.myclub.user.schedule.models.Course;
-import com.ethan.myclub.user.schedule.models.CourseTime;
-import com.ethan.myclub.user.schedule.models.Schedule;
+import com.ethan.myclub.user.schedule.model.Course;
+import com.ethan.myclub.user.schedule.model.CourseTime;
+import com.ethan.myclub.user.schedule.model.Schedule;
 
 import java.util.ArrayList;
 import java.util.List;

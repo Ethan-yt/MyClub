@@ -6,7 +6,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.NumberPicker;
 
-import com.ethan.myclub.user.schedule.models.Schedule;
+import com.ethan.myclub.user.schedule.model.Schedule;
 
 import java.util.ArrayList;
 import java.util.Collections;
