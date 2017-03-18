@@ -1,16 +1,18 @@
 package com.ethan.myclub.network;
 
 import com.ethan.myclub.global.Preferences;
+import com.ethan.myclub.network.converter.ApiExceptionConverterFactory;
 import com.ethan.myclub.network.services.ApiService;
+import com.ethan.myclub.main.SnackbarActivity;
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 
 import java.io.IOException;
+import java.lang.reflect.Proxy;
 
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
  * Created by ethan on 2017/3/2.
@@ -22,9 +24,9 @@ public class ApiHelper {
 
     }
 
-    public static ApiService getInstance() {
-        return ApiServiceHolder.mApiService;
-    }
+//    public static ApiService getInstance() {
+//        return ApiServiceHolder.mApiService;
+//    }
 
     private static class ApiServiceHolder {
         private static ApiService mApiService;
@@ -37,11 +39,11 @@ public class ApiHelper {
                     .addInterceptor(new Interceptor() {
                         @Override
                         public okhttp3.Response intercept(Chain chain) throws IOException {
-                            Request request = chain.request()
-                                    .newBuilder()
-                                    .addHeader("Authorization", "JWT " + Preferences.sToken)
-                                    .build();
-                            return chain.proceed(request);
+                            Request.Builder request = chain.request()
+                                    .newBuilder();
+                            if (Preferences.isLogined())
+                                request.addHeader("Authorization", "JWT " + Preferences.sToken);
+                            return chain.proceed(request.build());
                         }
                     })
                     .build();
@@ -50,12 +52,21 @@ public class ApiHelper {
 
             Retrofit retrofit = new Retrofit.Builder()
                     .baseUrl(BASE_URL)
-                    .addConverterFactory(GsonConverterFactory.create())
+                    .addConverterFactory(ApiExceptionConverterFactory.create())
                     .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                     .client(client)
                     .build();
 
             mApiService = retrofit.create(ApiService.class);
         }
+    }
+
+
+    public static ApiService getProxy(SnackbarActivity activity) {
+        return (ApiService) Proxy.newProxyInstance(ApiService.class.getClassLoader(), new Class<?>[]{ApiService.class}, new ProxyHandler(ApiServiceHolder.mApiService, activity, true));
+    }
+
+    public static ApiService getProxyWithoutToken(SnackbarActivity activity) {
+        return (ApiService) Proxy.newProxyInstance(ApiService.class.getClassLoader(), new Class<?>[]{ApiService.class}, new ProxyHandler(ApiServiceHolder.mApiService, activity, false));
     }
 }

@@ -24,6 +24,14 @@ public class ApiException extends Exception {
      * 协议出错
      */
     public static final int HTTP_ERROR = 1003;
+    /**
+     * 401
+     */
+    public static final int HTTP_UNAUTHORIZED = 1004;
+    /**
+     * 403 权限错误
+     */
+    public static final int HTTP_FORBIDDEN = 1005;
 
     public ApiException(Throwable throwable, int code) {
         super(throwable);

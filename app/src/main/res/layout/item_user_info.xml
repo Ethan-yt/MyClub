@@ -1,17 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@android:color/white"
     android:divider="@drawable/bg_divider"
     android:orientation="horizontal"
-    android:showDividers="middle"
-    android:background="@android:color/white"
-    >
+    android:showDividers="middle">
 
     <LinearLayout
-        android:id="@+id/ll_dongtai"
+        android:id="@+id/ll_discuss"
         android:layout_width="0dp"
         android:layout_height="56dp"
         android:layout_weight="1.0"
@@ -23,25 +21,24 @@
         android:padding="10dp">
 
         <TextView
-            android:id="@+id/tv_dongtai_num"
+            android:id="@+id/tv_discuss_num"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="11"
+            android:text="0"
             android:textColor="@color/colorPrimary"
             android:textSize="14.0sp"
             android:textStyle="bold"
-            />
+            android:visibility="gone" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="讨论组"
-
             android:textSize="14.0sp" />
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/ll_friends"
+        android:id="@+id/ll_notification"
         android:layout_width="0dp"
         android:layout_height="56dp"
         android:layout_weight="1.0"
@@ -52,24 +49,24 @@
         android:padding="10dp">
 
         <TextView
-            android:id="@+id/tv_friends_num"
+            android:id="@+id/tv_notification_num"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="121"
+            android:text="0"
             android:textColor="@color/colorPrimary"
             android:textSize="14.0sp"
             android:textStyle="bold"
-            android:visibility="gone"/>
+            android:visibility="gone" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="通知"
-            android:textSize="14.0sp"/>
+            android:textSize="14.0sp" />
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/ll_guanzhu"
+        android:id="@+id/ll_review"
         android:layout_width="0dp"
         android:layout_height="56dp"
         android:layout_weight="1.0"
@@ -80,19 +77,19 @@
         android:padding="10dp">
 
         <TextView
-            android:id="@+id/tv_guanzhu_num"
+            android:id="@+id/tv_review_num"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="31"
+            android:text="0"
             android:textColor="@color/colorPrimary"
             android:textSize="14.0sp"
             android:textStyle="bold"
-            android:visibility="gone"/>
+            android:visibility="gone" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="评论"
-            android:textSize="14.0sp"/>
+            android:textSize="14.0sp" />
     </LinearLayout>
 </LinearLayout>
