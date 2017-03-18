@@ -9,16 +9,16 @@
         <!--android:id="@+id/menu_message"-->
         <!--android:title="消息"-->
         <!--android:icon="@drawable/ic_message" />-->
+    <item
+        android:id="@+id/menu_discovery"
+        android:title="发现"
+        android:icon="@drawable/ic_discovery" />
 
     <item
         android:id="@+id/menu_club"
         android:title="社团"
         android:icon="@drawable/ic_club" />
 
-    <item
-        android:id="@+id/menu_discovery"
-        android:title="发现"
-        android:icon="@drawable/ic_discovery" />
 
     <item
         android:id="@+id/menu_user"

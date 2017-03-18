@@ -1,6 +1,5 @@
 package com.ethan.myclub.views.main;
 
-import android.content.Intent;
 import android.graphics.Color;
 
 import android.support.v7.app.AppCompatActivity;
@@ -11,6 +10,7 @@ import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationAdapter;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationViewPager;
 import com.ethan.myclub.R;
+
 
 
 public class MainActivity extends AppCompatActivity {
@@ -36,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
         bottomNavigation = (AHBottomNavigation) findViewById(R.id.bottom_navigation);
         viewPager = (AHBottomNavigationViewPager) findViewById(R.id.view_pager);
 
-        navigationAdapter = new AHBottomNavigationAdapter(this, R.menu.bottom_navigation_menu_5);
+        navigationAdapter = new AHBottomNavigationAdapter(this, R.menu.bottom_navigation_menu);
         navigationAdapter.setupWithBottomNavigation(bottomNavigation);
 
         bottomNavigation.setAccentColor(Color.parseColor("#80be58"));
@@ -63,10 +63,10 @@ public class MainActivity extends AppCompatActivity {
                 currentFragment = adapter.getCurrentFragment();
                 currentFragment.willBeDisplayed();
 
-                if (position == 1) {
-                    bottomNavigation.setNotification("", 1);
-
-                }
+//                if (position == 1) {
+//                    bottomNavigation.setNotification("", 1);
+//
+//                }
 
                 return true;
             }
@@ -77,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
         viewPager.setAdapter(adapter);
 
         currentFragment = adapter.getCurrentFragment();
-
+        viewPager.setCurrentItem(2);// TODO: 2017/3/13  删除这行测试语句
     }
 
 }

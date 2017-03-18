@@ -32,7 +32,7 @@ public class ExceptionEngine extends Throwable {
             HttpException httpException = (HttpException) e;
             ex = new ApiException(e, ApiException.HTTP_ERROR);
             switch (httpException.code()) {
-                case UNAUTHORIZED:
+
                 case FORBIDDEN:
                 case NOT_FOUND:
                 case REQUEST_TIMEOUT:
@@ -42,6 +42,9 @@ public class ExceptionEngine extends Throwable {
                 case SERVICE_UNAVAILABLE:
                 default:
                     ex.message = "网络错误";  //均视为网络错误
+                    break;
+                case UNAUTHORIZED:
+                    ex.message = "token过期";  //均视为网络错误
                     break;
             }
             return ex;
