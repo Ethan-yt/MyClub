@@ -30,6 +30,7 @@
         <activity android:name=".user.login.RegisterActivity" />
         <activity android:name=".user.login.RegisterActivity2" />
         <activity android:name=".user.info.InfoActivity" />
+        <activity android:name=".user.message.messageActivity" />
 
     </application>
 
