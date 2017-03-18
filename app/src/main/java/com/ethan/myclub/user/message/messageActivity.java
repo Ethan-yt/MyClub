@@ -1,4 +1,4 @@
-package com.ethan.myclub.views.user.message;
+package com.ethan.myclub.user.message;
 
 import android.content.Intent;
 import android.graphics.Color;
