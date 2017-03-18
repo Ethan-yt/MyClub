@@ -48,8 +48,8 @@ public abstract class SnackbarActivity extends AppCompatActivity {
         }
     }
 
-    protected ProgressDialog mProgressDialog;
-    protected Disposable mDisposable;
+    public ProgressDialog mProgressDialog;
+    public Disposable mDisposable;
 
     private void showDialog(String tittle, String message, Disposable disposable, int style) {
 
@@ -90,35 +90,35 @@ public abstract class SnackbarActivity extends AppCompatActivity {
     }
 
 
-    protected void showWaitingDialog(String tittle, String message, Disposable d) {
+    public void showWaitingDialog(String tittle, String message, Disposable d) {
         showDialog(tittle, message, d, ProgressDialog.STYLE_SPINNER);
     }
 
-    protected void showWaitingDialog(String tittle, String message) {
+    public void showWaitingDialog(String tittle, String message) {
         showWaitingDialog(tittle, message, null);
     }
 
-    protected void showProgressDialog(String tittle, String message, Disposable d) {
+    public void showProgressDialog(String tittle, String message, Disposable d) {
         showDialog(tittle, message, d, ProgressDialog.STYLE_HORIZONTAL);
     }
 
-    protected void showProgressDialog(String tittle, String message) {
+    public void showProgressDialog(String tittle, String message) {
         showProgressDialog(tittle, message, null);
     }
 
-    protected void dismissDialog() {
+    public void dismissDialog() {
         mProgressDialog.dismiss();
         mProgressDialog = null;
         mDisposable = null;
     }
 
-    protected void cancelCurrentProgress() {
+    public void cancelCurrentProgress() {
         if (mDisposable != null)
             if (!mDisposable.isDisposed())
                 mDisposable.dispose();
     }
 
-    protected void hideKeyboard() {
+    public void hideKeyboard() {
         View view = getCurrentFocus();
         if (view != null) {
             ((InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE)).
