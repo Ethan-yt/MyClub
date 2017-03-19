@@ -107,9 +107,12 @@ public abstract class SnackbarActivity extends AppCompatActivity {
     }
 
     public void dismissDialog() {
-        mProgressDialog.dismiss();
-        mProgressDialog = null;
-        mDisposable = null;
+        if(mProgressDialog != null)
+        {
+            mProgressDialog.dismiss();
+            mProgressDialog = null;
+            mDisposable = null;
+        }
     }
 
     public void cancelCurrentProgress() {

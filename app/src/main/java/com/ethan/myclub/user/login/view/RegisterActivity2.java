@@ -10,6 +10,7 @@ import android.widget.EditText;
 
 import com.ethan.myclub.R;
 import com.ethan.myclub.global.Preferences;
+import com.ethan.myclub.network.OAuthHelper;
 import com.ethan.myclub.user.login.model.Token;
 import com.ethan.myclub.network.ApiHelper;
 import com.ethan.myclub.main.MainActivity;
@@ -46,7 +47,7 @@ public class RegisterActivity2 extends SnackbarActivity {
         mBtnNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ApiHelper.getProxyWithoutToken(RegisterActivity2.this)
+                OAuthHelper.getProxy(RegisterActivity2.this)
                         .register(mUsername, mEtPassword.getText().toString())
                         .subscribe(
                                 new Observer<Token>() {
@@ -57,7 +58,7 @@ public class RegisterActivity2 extends SnackbarActivity {
 
                                     @Override
                                     public void onNext(Token token) {
-                                        Preferences.sToken = token.token;
+                                        Preferences.sToken = token;
                                         Intent intent = new Intent();
                                         intent.setClass(RegisterActivity2.this, MainActivity.class);
                                         startActivity(intent);

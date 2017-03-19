@@ -80,7 +80,7 @@
                     android:id="@+id/et_password"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@{viewModel.password}"
+                    android:text="@={viewModel.password}"
                     android:hint="密码"
                     android:inputType="textPassword" />
             </LinearLayout>

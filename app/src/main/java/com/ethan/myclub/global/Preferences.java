@@ -1,8 +1,8 @@
 package com.ethan.myclub.global;
 
-import android.os.Environment;
+import com.ethan.myclub.user.login.model.Token;
 
-import java.io.File;
+import okhttp3.Credentials;
 
 /**
  * Created by ethan on 2017/3/5.
@@ -10,11 +10,17 @@ import java.io.File;
 
 public class Preferences {
 
-    static public String sToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjA5MDk3NDc2ODMiLCJvcmlnX2lhdCI6MTQ4OTU0MzQxOCwidXNlcl9pZCI6NiwiZW1haWwiOm51bGwsImV4cCI6MTQ5MDE0ODIxOH0.iqqu5FUDZF_BECi9ljzygdC0KW8cGEQ_SMHKhzJXSi8";
+    static public Token sToken;
     //static public String sToken;
 
     static public boolean isLogined() {
-        return (sToken != null && !sToken.isEmpty());
+        return (sToken != null);
     }
+
+    final static private String CLIENT_ID = "N4KeCoCo530CIotQW9QL7LaOxudoOs5a7STrrb4Q";
+
+    final static private String CLIENT_SECRET = "sSrIu0NTlCtljOBRcv0otpHZmdDpbpNq4l1svvTIYbXDXHcEsq8ujuFIhuUWwSQ24hmdu3ou3LWGQ1vLqTJaiZxJ33LiZbxh7dWLCdzgi6taCEp0DmjTBNYXKAIHOlvu";
+
+    final static public String CLIENT_CREDENTIALS = Credentials.basic(CLIENT_ID,CLIENT_SECRET);
 
 }

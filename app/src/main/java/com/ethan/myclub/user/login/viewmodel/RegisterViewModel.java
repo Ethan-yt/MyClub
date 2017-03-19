@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.View;
 
 import com.ethan.myclub.network.ApiHelper;
+import com.ethan.myclub.network.OAuthHelper;
 import com.ethan.myclub.user.login.model.Valid;
 import com.ethan.myclub.user.login.view.RegisterActivity;
 import com.ethan.myclub.user.login.view.RegisterActivity2;

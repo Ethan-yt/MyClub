@@ -5,13 +5,13 @@ package com.ethan.myclub.network.exception;
  */
 public class ApiException extends Exception {
 
-    public int code;
-    public String message;
+    private int mCode;
+    private String mMessage;
 
     /**
      * 未知错误
      */
-    public static final int UNKNOWN = 1000;
+    public static final int UNKNOWN_ERROR = 1000;
     /**
      * 解析错误
      */
@@ -19,7 +19,7 @@ public class ApiException extends Exception {
     /**
      * 网络错误
      */
-    public static final int NETWORD_ERROR = 1002;
+    public static final int NETWORK_ERROR = 1002;
     /**
      * 协议出错
      */
@@ -33,13 +33,29 @@ public class ApiException extends Exception {
      */
     public static final int HTTP_FORBIDDEN = 1005;
 
-    public ApiException(Throwable throwable, int code) {
+    /**
+     * API错误
+     */
+    public static final int API_ERROR = 2000;
+
+
+    public ApiException(Throwable throwable, int code, String message) {
         super(throwable);
-        this.code = code;
+        mCode = code;
+        mMessage = message;
+    }
+
+    public ApiException(Throwable throwable, int code) {
+        this(throwable, code, throwable.getMessage());
     }
 
     @Override
     public String getMessage() {
-        return message;
+        return mMessage;
+    }
+
+
+    public int getCode() {
+        return mCode;
     }
 }

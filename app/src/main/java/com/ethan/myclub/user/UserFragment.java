@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.util.Pair;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,9 +15,14 @@ import android.view.ViewGroup;
 import com.ethan.myclub.R;
 import com.ethan.myclub.main.BaseFragment;
 import com.ethan.myclub.main.SnackbarActivity;
+import com.ethan.myclub.network.ApiHelper;
 import com.ethan.myclub.user.info.InfoActivity;
 import com.ethan.myclub.user.login.view.LoginActivity;
 import com.ethan.myclub.user.schedule.ScheduleActivity;
+
+import io.reactivex.Observer;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
 
 
 public class UserFragment extends BaseFragment {
@@ -75,14 +81,42 @@ public class UserFragment extends BaseFragment {
                 }
             }
         });
+        View btnTest = view.findViewById(R.id.settings);
+        btnTest.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ApiHelper.getProxy((SnackbarActivity) getActivity())
+                        .test()
+                        .subscribe(new Observer<Object>() {
+                            @Override
+                            public void onSubscribe(Disposable d) {
 
+                            }
+
+                            @Override
+                            public void onNext(Object o) {
+                                Log.e("成功", "accept: " +o);
+                            }
+
+                            @Override
+                            public void onError(Throwable e) {
+                                Log.e("失败", "accept: ", e);
+                            }
+
+                            @Override
+                            public void onComplete() {
+                                Log.e("完成", "accept: ");
+                            }
+                        });
+            }
+        });
         return view;
     }
 
     @Override
     protected void setFragmentContainer() {
         View view = getView();
-        if(view != null)
+        if (view != null)
             mFragmentContainer = (ViewGroup) view.findViewById(R.id.fragment_container);
     }
 }

@@ -262,7 +262,7 @@ public class LoginActivity extends SnackbarActivity {
 
                             @Override
                             public void onComplete() {
-
+                                dismissDialog();
                             }
                         });
     }

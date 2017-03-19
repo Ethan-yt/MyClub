@@ -9,6 +9,7 @@ import android.view.View;
 
 import com.ethan.myclub.global.Preferences;
 import com.ethan.myclub.network.ApiHelper;
+import com.ethan.myclub.network.OAuthHelper;
 import com.ethan.myclub.user.login.model.Token;
 import com.ethan.myclub.user.login.view.LoginActivity;
 import com.ethan.myclub.user.login.view.RegisterActivity;
@@ -23,11 +24,11 @@ import static android.app.Activity.RESULT_OK;
  * Created by ethan on 2017/3/18.
  */
 
-public class LoginViewModel{
+public class LoginViewModel {
 
     private LoginActivity mView;
-    public ObservableField<String> userName = new ObservableField<>();
-    public ObservableField<String> password = new ObservableField<>();
+    public ObservableField<String> userName = new ObservableField<>("admin");
+    public ObservableField<String> password = new ObservableField<>("123456");
 
 
     public LoginViewModel(LoginActivity loginActivity) {
@@ -47,18 +48,18 @@ public class LoginViewModel{
     }
 
     public void login() {
-        ApiHelper.getProxyWithoutToken(mView)
-                .login("password",userName.get(), password.get(), Preferences.CLIENT_CREDENTIALS)
+        OAuthHelper.getProxy(mView)
+                .login("password", userName.get(), password.get())
                 .subscribe(
                         new Observer<Token>() {
                             @Override
                             public void onSubscribe(Disposable d) {
-                                mView.showWaitingDialog("请稍候", "登录中");
+                                mView.showWaitingDialog("请稍候", "登录中", d);
                             }
 
                             @Override
                             public void onNext(Token token) {
-                                Preferences.sToken = token.token;
+                                Preferences.sToken = token;
                                 mView.setResult(RESULT_OK);
                                 mView.finish();
                             }

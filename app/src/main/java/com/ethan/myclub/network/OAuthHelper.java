@@ -1,9 +1,10 @@
 package com.ethan.myclub.network;
 
 import com.ethan.myclub.global.Preferences;
+import com.ethan.myclub.main.SnackbarActivity;
 import com.ethan.myclub.network.converter.ApiExceptionConverterFactory;
 import com.ethan.myclub.network.service.ApiService;
-import com.ethan.myclub.main.SnackbarActivity;
+import com.ethan.myclub.network.service.OAuthService;
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 
 import java.io.IOException;
@@ -13,24 +14,23 @@ import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
- * Created by ethan on 2017/3/2.
+ * Created by ethan on 2017/3/19.
  */
 
-public class ApiHelper {
+public class OAuthHelper {
 
-    private ApiHelper() {
+    private OAuthHelper() {
 
     }
 
-    public static ApiService getInstance() {
-        return ApiServiceHolder.sApiService;
+    public static OAuthService getInstance() {
+        return OAuthServiceHolder.sOAuthService;
     }
 
-    private static class ApiServiceHolder {
-        private static ApiService sApiService;
+    private static class OAuthServiceHolder {
+        private static OAuthService sOAuthService;
 
         static {
             OkHttpClient client = new OkHttpClient
@@ -42,8 +42,8 @@ public class ApiHelper {
                         public okhttp3.Response intercept(Chain chain) throws IOException {
                             Request.Builder request = chain.request()
                                     .newBuilder();
-                            if (Preferences.isLogined())
-                                request.addHeader("Authorization", Preferences.sToken.mTokenType + " " + Preferences.sToken.mAccessToken);
+
+                            request.addHeader("Authorization", Preferences.CLIENT_CREDENTIALS);
                             return chain.proceed(request.build());
                         }
                     })
@@ -58,16 +58,12 @@ public class ApiHelper {
                     .client(client)
                     .build();
 
-            sApiService = retrofit.create(ApiService.class);
+            sOAuthService = retrofit.create(OAuthService.class);
         }
     }
 
 
-    public static ApiService getProxy(SnackbarActivity activity) {
-        return (ApiService) Proxy.newProxyInstance(ApiService.class.getClassLoader(), new Class<?>[]{ApiService.class}, new ProxyHandler(ApiServiceHolder.sApiService, activity, true));
-    }
-
-    public static ApiService getProxyWithoutToken(SnackbarActivity activity) {
-        return (ApiService) Proxy.newProxyInstance(ApiService.class.getClassLoader(), new Class<?>[]{ApiService.class}, new ProxyHandler(ApiServiceHolder.sApiService, activity, false));
+    public static OAuthService getProxy(SnackbarActivity activity) {
+        return (OAuthService) Proxy.newProxyInstance(OAuthService.class.getClassLoader(), new Class<?>[]{OAuthService.class}, new ProxyHandler(OAuthServiceHolder.sOAuthService, activity, false));
     }
 }
