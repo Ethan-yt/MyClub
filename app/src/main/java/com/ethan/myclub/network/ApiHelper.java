@@ -42,8 +42,8 @@ public class ApiHelper {
                         public okhttp3.Response intercept(Chain chain) throws IOException {
                             Request.Builder request = chain.request()
                                     .newBuilder();
-                            if (Preferences.isLogined())
-                                request.addHeader("Authorization", Preferences.sToken.mTokenType + " " + Preferences.sToken.mAccessToken);
+                            if (Preferences.isLogin())
+                                request.addHeader("Authorization", Preferences.getToken().mTokenType + " " + Preferences.getToken().mAccessToken);
                             return chain.proceed(request.build());
                         }
                     })

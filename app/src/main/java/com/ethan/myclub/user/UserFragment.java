@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.ethan.myclub.R;
+import com.ethan.myclub.global.Preferences;
 import com.ethan.myclub.main.BaseFragment;
 import com.ethan.myclub.main.SnackbarActivity;
 import com.ethan.myclub.network.ApiHelper;
@@ -96,6 +97,7 @@ public class UserFragment extends BaseFragment {
                             @Override
                             public void onNext(Object o) {
                                 Log.e("成功", "accept: " +o);
+
                             }
 
                             @Override
@@ -110,6 +112,16 @@ public class UserFragment extends BaseFragment {
                         });
             }
         });
+
+        View btnTest2 = view.findViewById(R.id.myCollection);
+        btnTest2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Preferences.setToken(getActivity(),null);
+            }
+        });
+
+
         return view;
     }
 

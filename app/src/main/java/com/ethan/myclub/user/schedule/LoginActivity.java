@@ -20,7 +20,7 @@ import com.ethan.myclub.user.schedule.model.Course;
 import com.ethan.myclub.user.schedule.model.CourseTime;
 import com.ethan.myclub.user.schedule.model.Schedule;
 import com.ethan.myclub.user.schedule.service.ScheduleService;
-import com.ethan.myclub.utils.Utils;
+import com.ethan.myclub.util.Utils;
 import com.ethan.myclub.main.SnackbarActivity;
 import com.jakewharton.retrofit2.adapter.rxjava2.HttpException;
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
@@ -248,9 +248,7 @@ public class LoginActivity extends SnackbarActivity {
 
                             @Override
                             public void onNext(String s) {
-                                //OnNext 登录成功
-                                dismissDialog();
-                                getSchedule(username);
+
                             }
 
                             @Override
@@ -262,7 +260,9 @@ public class LoginActivity extends SnackbarActivity {
 
                             @Override
                             public void onComplete() {
+                                //OnNext 登录成功
                                 dismissDialog();
+                                getSchedule(username);
                             }
                         });
     }

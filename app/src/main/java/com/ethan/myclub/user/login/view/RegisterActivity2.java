@@ -58,7 +58,7 @@ public class RegisterActivity2 extends SnackbarActivity {
 
                                     @Override
                                     public void onNext(Token token) {
-                                        Preferences.sToken = token;
+                                        Preferences.setToken(RegisterActivity2.this, token);
                                         Intent intent = new Intent();
                                         intent.setClass(RegisterActivity2.this, MainActivity.class);
                                         startActivity(intent);

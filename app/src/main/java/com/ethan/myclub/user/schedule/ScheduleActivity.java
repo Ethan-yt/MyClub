@@ -1,6 +1,5 @@
 package com.ethan.myclub.user.schedule;
 
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -16,15 +15,14 @@ import android.widget.NumberPicker;
 
 import com.ethan.myclub.R;
 import com.ethan.myclub.user.schedule.model.Schedule;
+import com.ethan.myclub.util.Utils;
 
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.ArrayList;
 
 public class ScheduleActivity extends AppCompatActivity {
 
     public static final int REQUEST_LOGIN = 1;
+    public static final String FILE_NAME_SCHEDULE = "Schedules.dat";
     ScheduleView mScheduleView;
     ArrayList<Schedule> mSchedules = new ArrayList<>();
     String mCurrentYear;
@@ -132,22 +130,9 @@ public class ScheduleActivity extends AppCompatActivity {
     private BottomSheetDialog mBottomSheetDialog;
 
     public void save() {
-        try {
-            FileOutputStream outStream = openFileOutput("Schedules.txt", Context.MODE_PRIVATE);
-
-            Parcel parcel = Parcel.obtain();
-            parcel.writeList(mSchedules);
-
-            byte[] bytes = parcel.marshall();
-            parcel.recycle();
-
-            outStream.write(bytes);
-            outStream.close();
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
+        Parcel parcel = Parcel.obtain();
+        parcel.writeList(mSchedules);
+        Utils.saveParcelToFile(this, FILE_NAME_SCHEDULE,parcel);
         savePreferences();
     }
 
@@ -171,28 +156,19 @@ public class ScheduleActivity extends AppCompatActivity {
     }
 
     public void read() {
-        try {
-
-            FileInputStream fin = openFileInput("Schedules.txt");
-            int length = fin.available();
-            byte[] buffer = new byte[length];
-            fin.read(buffer);
-
-            Parcel parcel = Parcel.obtain();
-            parcel.unmarshall(buffer, 0, buffer.length);
-            parcel.setDataPosition(0); // This is extremely important!
-
+        Parcel parcel = Utils.readParcelFromFile(this,FILE_NAME_SCHEDULE);
+        if (parcel != null) {
             parcel.readList(mSchedules, Schedule.class.getClassLoader());
             parcel.recycle();
-            fin.close();
-        } catch (IOException e) {
-            e.printStackTrace();
         }
+
         SharedPreferences sharedPreferences = getSharedPreferences("schedule", MODE_PRIVATE);
 
         mCurrentYear = sharedPreferences.getString("CurrentYear", "");
         mCurrentTerm = sharedPreferences.getString("CurrentTerm", "");
     }
+
+
 
     private void setCurrentWeek() {
 

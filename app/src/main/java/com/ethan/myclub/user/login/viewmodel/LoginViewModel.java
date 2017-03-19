@@ -59,7 +59,7 @@ public class LoginViewModel {
 
                             @Override
                             public void onNext(Token token) {
-                                Preferences.sToken = token;
+                                Preferences.setToken(mView, token);
                                 mView.setResult(RESULT_OK);
                                 mView.finish();
                             }
