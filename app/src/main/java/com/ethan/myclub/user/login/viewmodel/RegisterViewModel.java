@@ -210,6 +210,7 @@ public class RegisterViewModel {
                     public void onSubscribe(Disposable d) {
                         mIsSendBtnClickable.set(false);
                         mView.showSnackbar("正在发送短信...");
+                        mView.hideKeyboard();
                     }
 
                     @Override
