@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout
-    xmlns:bind="http://schemas.android.com/apk/res-auto">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:bind="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -9,11 +12,9 @@
             type="com.ethan.myclub.user.main.viewmodel.UserViewModel"/>
     </data>
 
-    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                 xmlns:app="http://schemas.android.com/apk/res-auto"
-                 xmlns:tools="http://schemas.android.com/tools"
-                 android:layout_width="match_parent"
-                 android:layout_height="match_parent">
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
         <android.support.design.widget.AppBarLayout
             android:layout_width="match_parent"
@@ -40,7 +41,7 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content">
 
-                <com.ethan.myclub.user.main.view.AvatarImageView
+                <com.ethan.myclub.user.main.view.CircleImageView
                     android:id="@+id/iv_avatar"
                     android:layout_width="100dp"
                     android:layout_height="100dp"
@@ -48,7 +49,9 @@
                     android:layout_marginTop="10.0dp"
                     android:background="@drawable/bg_avatar_oval_shape"
                     android:src="@drawable/img_default_avater"
-                    android:transitionName="trans_iv_avatar"/>
+                    android:transitionName="trans_iv_avatar"
+                    app:civ_border_color="@android:color/darker_gray"
+                    app:civ_border_width="1dp"/>
 
                 <TextView
                     android:id="@+id/tv_user_name"
@@ -73,8 +76,8 @@
                     android:layout_marginBottom="10dp"
                     android:layout_marginTop="10.0dip"
                     android:gravity="center_horizontal"
-                    android:text="点击登录"
                     android:onClick="@{()->viewModel.login()}"
+                    android:text="点击登录"
                     android:textColor="#ff0596eb"
                     android:textSize="14sp"/>
             </RelativeLayout>

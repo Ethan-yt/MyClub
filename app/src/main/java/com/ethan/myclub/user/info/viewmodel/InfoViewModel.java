@@ -2,10 +2,7 @@ package com.ethan.myclub.user.info.viewmodel;
 
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.databinding.BindingAdapter;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -13,21 +10,16 @@ import android.support.design.widget.BottomSheetDialog;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageView;
 
 import com.ethan.myclub.R;
 import com.ethan.myclub.network.ApiHelper;
 import com.ethan.myclub.user.info.view.InfoActivity;
-import com.ethan.myclub.user.main.view.AvatarImageView;
-import com.ethan.myclub.user.schedule.model.Schedule;
 import com.ethan.myclub.util.Utils;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
@@ -40,7 +32,6 @@ import io.reactivex.schedulers.Schedulers;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
-import okhttp3.internal.Util;
 
 /**
  * Created by ethan on 2017/3/20.
