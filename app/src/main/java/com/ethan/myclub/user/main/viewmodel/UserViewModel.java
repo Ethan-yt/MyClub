@@ -10,7 +10,7 @@ import android.view.View;
 import com.ethan.myclub.global.Preferences;
 import com.ethan.myclub.main.SnackbarActivity;
 import com.ethan.myclub.network.ApiHelper;
-import com.ethan.myclub.user.info.InfoActivity;
+import com.ethan.myclub.user.info.view.InfoActivity;
 import com.ethan.myclub.user.login.view.LoginActivity;
 import com.ethan.myclub.user.main.view.UserFragment;
 import com.ethan.myclub.user.schedule.ScheduleActivity;
