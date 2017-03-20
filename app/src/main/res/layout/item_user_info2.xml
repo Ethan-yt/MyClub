@@ -1,106 +1,118 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:divider="@drawable/bg_divider"
-    android:orientation="vertical"
-    android:showDividers="middle|end|beginning">
+<layout>
 
-    <include layout="@layout/item_user_info"/>
+    <data>
 
-    <android.support.v4.widget.Space
-        android:layout_width="match_parent"
-        android:layout_height="24dp"
-        />
+        <variable
+            name="viewModel"
+            type="com.ethan.myclub.user.main.viewmodel.UserViewModel"/>
+    </data>
 
     <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@android:color/white"
+        android:layout_height="match_parent"
         android:divider="@drawable/bg_divider"
         android:orientation="vertical"
-        android:showDividers="middle">
+        android:showDividers="middle|end|beginning">
 
-        <TextView
-            android:id="@+id/basicInfo"
+        <include layout="@layout/item_user_info"/>
+
+        <android.support.v4.widget.Space
             android:layout_width="match_parent"
-            android:layout_height="45dp"
-            android:background="?android:attr/selectableItemBackground"
-            android:clickable="true"
-            android:drawableLeft="@drawable/ic_account_circle_black_24dp"
-            android:drawablePadding="10dp"
-            android:drawableStart="@drawable/ic_account_circle_black_24dp"
-            android:gravity="center_vertical"
-            android:padding="10dp"
-            android:text="基本信息"
-            android:textSize="16sp"
+            android:layout_height="24dp"
             />
 
-        <TextView
-            android:id="@+id/timeManagement"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="45dp"
-            android:background="?android:attr/selectableItemBackground"
-            android:clickable="true"
-            android:drawableLeft="@drawable/ic_timer_24dp"
-            android:drawablePadding="10dp"
-            android:drawableStart="@drawable/ic_timer_24dp"
-            android:gravity="center_vertical"
-            android:padding="10dp"
-            android:text="时间管理"
-            android:textSize="16sp"
+            android:layout_height="wrap_content"
+            android:background="@android:color/white"
+            android:divider="@drawable/bg_divider"
+            android:orientation="vertical"
+            android:showDividers="middle">
+
+            <TextView
+                android:id="@+id/basicInfo"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:background="?android:attr/selectableItemBackground"
+                android:clickable="true"
+                android:drawableLeft="@drawable/ic_account_circle_black_24dp"
+                android:drawablePadding="10dp"
+                android:drawableStart="@drawable/ic_account_circle_black_24dp"
+                android:gravity="center_vertical"
+                android:onClick="@{()->viewModel.info()}"
+                android:padding="10dp"
+                android:text="基本信息"
+                android:textSize="16sp"
+                />
+
+            <TextView
+                android:id="@+id/timeManagement"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:background="?android:attr/selectableItemBackground"
+                android:clickable="true"
+                android:drawableLeft="@drawable/ic_timer_24dp"
+                android:drawablePadding="10dp"
+                android:drawableStart="@drawable/ic_timer_24dp"
+                android:gravity="center_vertical"
+                android:onClick="@{()->viewModel.timeManagement()}"
+                android:padding="10dp"
+                android:text="时间管理"
+                android:textSize="16sp"
+                />
+
+            <TextView
+                android:id="@+id/myCollection"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:background="?android:attr/selectableItemBackground"
+                android:clickable="true"
+                android:drawableLeft="@drawable/ic_apps_black_24dp"
+                android:drawablePadding="10dp"
+                android:drawableStart="@drawable/ic_apps_black_24dp"
+                android:gravity="center_vertical"
+                android:onClick="@{()->viewModel.collection()}"
+                android:padding="10dp"
+                android:text="我的收藏"
+                android:textSize="16sp"
+                />
+
+        </LinearLayout>
+
+
+        <android.support.v4.widget.Space
+            android:layout_width="match_parent"
+            android:layout_height="24dp"
             />
 
-        <TextView
-            android:id="@+id/myCollection"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="45dp"
-            android:background="?android:attr/selectableItemBackground"
-            android:clickable="true"
-            android:drawableLeft="@drawable/ic_apps_black_24dp"
-            android:drawablePadding="10dp"
-            android:drawableStart="@drawable/ic_apps_black_24dp"
-            android:gravity="center_vertical"
-            android:padding="10dp"
-            android:text="我的收藏"
-            android:textSize="16sp"
-            />
+            android:layout_height="wrap_content"
+            android:background="@android:color/white"
+            android:divider="@drawable/bg_divider"
+            android:orientation="vertical"
+            android:showDividers="middle">
+
+            <TextView
+                android:id="@+id/settings"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:background="?android:attr/selectableItemBackground"
+                android:clickable="true"
+                android:drawableLeft="@drawable/ic_settings_black_24dp"
+                android:drawablePadding="10dp"
+                android:drawableStart="@drawable/ic_settings_black_24dp"
+                android:gravity="center_vertical"
+                android:onClick="@{()->viewModel.settings()}"
+                android:padding="10dp"
+                android:text="设置"
+                android:textSize="16sp"
+                />
+        </LinearLayout>
+
 
     </LinearLayout>
 
-
-    <android.support.v4.widget.Space
-        android:layout_width="match_parent"
-        android:layout_height="24dp"
-        />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@android:color/white"
-        android:divider="@drawable/bg_divider"
-        android:orientation="vertical"
-        android:showDividers="middle">
-
-        <TextView
-            android:id="@+id/settings"
-            android:layout_width="match_parent"
-            android:layout_height="45dp"
-            android:background="?android:attr/selectableItemBackground"
-            android:clickable="true"
-            android:drawableLeft="@drawable/ic_settings_black_24dp"
-            android:drawablePadding="10dp"
-
-            android:drawableStart="@drawable/ic_settings_black_24dp"
-            android:gravity="center_vertical"
-            android:padding="10dp"
-            android:text="设置"
-
-            android:textSize="16sp"
-            />
-    </LinearLayout>
-
-
-</LinearLayout>
-
+</layout>

@@ -13,7 +13,7 @@ import io.reactivex.disposables.Disposable;
 
 public abstract class SnackbarActivity extends AppCompatActivity {
 
-    public static final int REQUEST_LOGIN = 1;
+    public static final int REQUEST_LOGIN = 10304;
 
     protected View mRootLayout;
 

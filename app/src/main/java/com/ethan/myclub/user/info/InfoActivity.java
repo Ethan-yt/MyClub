@@ -18,7 +18,7 @@ import android.view.View;
 import com.ethan.myclub.R;
 import com.ethan.myclub.network.ApiHelper;
 import com.ethan.myclub.main.SnackbarActivity;
-import com.ethan.myclub.user.AvatarImageView;
+import com.ethan.myclub.user.main.view.AvatarImageView;
 
 import java.io.File;
 import java.io.FileNotFoundException;

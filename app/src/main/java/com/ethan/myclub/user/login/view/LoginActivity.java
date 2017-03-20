@@ -20,6 +20,6 @@ public class LoginActivity extends SnackbarActivity {
 
     @Override
     protected void setRootLayout() {
-        mRootLayout = findViewById(R.id.container);
+        mRootLayout = mBinding.container;
     }
 }

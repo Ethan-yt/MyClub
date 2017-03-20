@@ -6,7 +6,7 @@ import android.view.ViewGroup;
 
 import com.ethan.myclub.club.ClubFragment;
 import com.ethan.myclub.discover.DiscoverFragment;
-import com.ethan.myclub.user.UserFragment;
+import com.ethan.myclub.user.main.view.UserFragment;
 
 import java.util.ArrayList;
 

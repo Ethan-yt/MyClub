@@ -1,4 +1,4 @@
-package com.ethan.myclub.user;
+package com.ethan.myclub.user.main.view;
 
 import android.content.Context;
 import android.graphics.Bitmap;
