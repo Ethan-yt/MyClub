@@ -182,29 +182,12 @@ public class InfoViewModel {
     }
 
     private void saveAvatar() {
-        Observable
-                .create(new ObservableOnSubscribe<MultipartBody.Part>() {
-                    @Override
-                    public void subscribe(ObservableEmitter<MultipartBody.Part> e) throws Exception {
-                        String md5 = Utils.getFileMd5(mAvatarFile);
-                        RequestBody requestFile =
-                                RequestBody.create(MediaType.parse("multipart/form-data"), mAvatarFile);
-                        MultipartBody.Part body =
-                                MultipartBody.Part.createFormData("avatar", md5 + ".jpg", requestFile);
-                        e.onNext(body);
-                        e.onComplete();
-
-                    }
-                })
-                .subscribeOn(Schedulers.io())
-                .flatMap(new Function<MultipartBody.Part, ObservableSource<?>>() {
-                    @Override
-                    public ObservableSource<?> apply(MultipartBody.Part body) throws Exception {
-                        return ApiHelper.getProxy(mActivity)
-                                .uploadAvatar(body);
-                    }
-                })
-                .observeOn(AndroidSchedulers.mainThread())
+        RequestBody requestFile =
+                RequestBody.create(MediaType.parse("multipart/form-data"), mAvatarFile);
+        MultipartBody.Part body =
+                MultipartBody.Part.createFormData("avatar",mAvatarFile.getName(), requestFile);
+        ApiHelper.getProxy(mActivity)
+                .uploadAvatar(body)
                 .subscribe(
                         new Observer<Object>() {
                             @Override
