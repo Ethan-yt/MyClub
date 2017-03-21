@@ -33,3 +33,6 @@ Thumbs.db
 build/
 /captures
 .externalNativeBuild
+freeline.py
+freeline/
+freeline_project_description.json
