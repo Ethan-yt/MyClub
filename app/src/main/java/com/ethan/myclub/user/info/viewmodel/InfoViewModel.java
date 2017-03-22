@@ -2,6 +2,7 @@ package com.ethan.myclub.user.info.viewmodel;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.databinding.BindingAdapter;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
@@ -10,14 +11,24 @@ import android.support.design.widget.BottomSheetDialog;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 import com.ethan.myclub.R;
+import com.ethan.myclub.databinding.ActivityInfoBinding;
+import com.ethan.myclub.global.Preferences;
 import com.ethan.myclub.network.ApiHelper;
 import com.ethan.myclub.user.info.view.InfoActivity;
+import com.ethan.myclub.util.CacheUtil;
 import com.ethan.myclub.util.Utils;
 
 import java.io.File;
@@ -31,6 +42,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
+import jp.wasabeef.glide.transformations.CropCircleTransformation;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -43,10 +55,17 @@ public class InfoViewModel {
 
     private static final String TAG = "InfoViewModel";
     private InfoActivity mActivity;
+    public ActivityInfoBinding mBinding;
 
-    public InfoViewModel(InfoActivity infoActivity) {
+    public InfoViewModel(InfoActivity infoActivity, ActivityInfoBinding binding) {
         mActivity = infoActivity;
-        Toolbar toolbar = infoActivity.mDataBinding.toolbar;
+        mBinding = binding;
+        mBinding.setViewModel(this);
+        String imageUrl = mActivity.getIntent().getStringExtra("ImageUrl");
+        if (!TextUtils.isEmpty(imageUrl))
+            mBinding.setImageUri(Uri.parse(ApiHelper.BASE_URL + imageUrl));
+
+        Toolbar toolbar = mBinding.toolbar;
         toolbar.inflateMenu(R.menu.menu_toolbar_user_info);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -76,6 +95,8 @@ public class InfoViewModel {
     private boolean mIsInfoEdited = false;
 
     private void saveChanges() {
+        //先清空缓存
+        CacheUtil.get(mActivity).remove(Preferences.CACHE_USER_INFO);
         if (mIsAvatarEdited)
             saveAvatar();
         else if (mIsInfoEdited)
@@ -150,7 +171,8 @@ public class InfoViewModel {
             return;
         Bundle extras = picData.getExtras();
         if (extras != null) {
-            mActivity.mDataBinding.ivAvatar.setImageURI(mAvatarUri);
+            //mBinding.ivAvatar.setImageURI(mAvatarUri);
+            mBinding.setImageUri(mAvatarUri);
             mIsAvatarEdited = true;
         }
     }
@@ -185,7 +207,7 @@ public class InfoViewModel {
         RequestBody requestFile =
                 RequestBody.create(MediaType.parse("multipart/form-data"), mAvatarFile);
         MultipartBody.Part body =
-                MultipartBody.Part.createFormData("avatar",mAvatarFile.getName(), requestFile);
+                MultipartBody.Part.createFormData("avatar", mAvatarFile.getName(), requestFile);
         ApiHelper.getProxy(mActivity)
                 .uploadAvatar(body)
                 .subscribe(
@@ -246,5 +268,35 @@ public class InfoViewModel {
             showAlertDialog();
         else
             ActivityCompat.finishAfterTransition(mActivity);
+    }
+
+    @BindingAdapter({"imageUri"})
+    public static void loadImage(final ImageView view, Uri imageUri) {
+        Object target;
+        if (imageUri == null) {
+            target = R.drawable.img_default_avater;
+        } else {
+            target = imageUri;
+        }
+        Glide.with(view.getContext())
+                .load(target)
+                .listener(new RequestListener<Object, GlideDrawable>() {
+                    @Override
+                    public boolean onException(Exception e, Object model, Target<GlideDrawable> target, boolean isFirstResource) {
+                        e.printStackTrace();
+                        return false;
+                    }
+
+                    @Override
+                    public boolean onResourceReady(GlideDrawable resource, Object model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
+                        return false;
+                    }
+                })
+                .error(R.drawable.img_default_avater)
+                .crossFade()
+                .skipMemoryCache(true)
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                .bitmapTransform(new CropCircleTransformation(view.getContext()))
+                .into(view);
     }
 }

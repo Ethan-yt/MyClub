@@ -19,6 +19,8 @@ public class WelcomeActivity extends AppCompatActivity {
         //读取配置项
         Preferences.initPreferencesEngine(this);
 
+
+
         Intent intent = new Intent(WelcomeActivity.this, MainActivity.class);
         //Thread.sleep(2000);
         startActivity(intent);

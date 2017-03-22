@@ -9,11 +9,15 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
+import com.ethan.myclub.global.Preferences;
+import com.ethan.myclub.util.CacheUtil;
+
 import io.reactivex.disposables.Disposable;
 
 public abstract class SnackbarActivity extends AppCompatActivity {
 
     public static final int REQUEST_LOGIN = 10304;
+    public static final int REQUEST_REGESTER = 10305;
 
     protected View mRootLayout;
 
@@ -36,10 +40,16 @@ public abstract class SnackbarActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == REQUEST_LOGIN) {
-            if (resultCode == RESULT_OK) {
+        if (resultCode == RESULT_OK) {
+            if (requestCode == REQUEST_LOGIN) {
                 showSnackbar("登录成功！");
             }
+            if (requestCode == REQUEST_REGESTER) {
+                showSnackbar("注册成功！已经帮您自动登录！");
+            }
+            if (requestCode == REQUEST_REGESTER || requestCode == REQUEST_LOGIN)
+                //清除缓存
+                CacheUtil.get(this).remove(Preferences.CACHE_USER_INFO);
         }
     }
 
@@ -58,8 +68,7 @@ public abstract class SnackbarActivity extends AppCompatActivity {
             mDisposable = disposable;
         }
 
-        if(mDisposable != null)
-        {
+        if (mDisposable != null) {
             dialog.setCancelable(true);// 设置是否可以通过点击Back键取消
             dialog.setButton(DialogInterface.BUTTON_NEGATIVE, "取消", new DialogInterface.OnClickListener() {
                 @Override
@@ -76,8 +85,7 @@ public abstract class SnackbarActivity extends AppCompatActivity {
                     //点击back
                 }
             });
-        }
-        else
+        } else
             dialog.setCancelable(false);
 
         mProgressDialog = dialog;
@@ -102,8 +110,7 @@ public abstract class SnackbarActivity extends AppCompatActivity {
     }
 
     public void dismissDialog() {
-        if(mProgressDialog != null)
-        {
+        if (mProgressDialog != null) {
             mProgressDialog.dismiss();
             mProgressDialog = null;
             mDisposable = null;

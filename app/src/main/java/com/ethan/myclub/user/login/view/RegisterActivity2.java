@@ -60,6 +60,8 @@ public class RegisterActivity2 extends SnackbarActivity {
                                     public void onNext(Token token) {
                                         Preferences.setToken(RegisterActivity2.this, token);
                                         Intent intent = new Intent();
+                                        intent.putExtra("RequestCode",SnackbarActivity.REQUEST_REGESTER);
+                                        intent.putExtra("ResultCode",SnackbarActivity.RESULT_OK);
                                         intent.setClass(RegisterActivity2.this, MainActivity.class);
                                         startActivity(intent);
                                     }

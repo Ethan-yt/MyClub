@@ -1,8 +1,10 @@
 package com.ethan.myclub.user.main.view;
 
 
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,7 +17,6 @@ import com.ethan.myclub.user.main.viewmodel.UserViewModel;
 
 public class UserFragment extends BaseFragment {
 
-    public FragmentUserBinding mBinding;
     public UserViewModel mViewModel;
 
     public UserFragment() {
@@ -25,13 +26,9 @@ public class UserFragment extends BaseFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_user, container, false);
-        mViewModel = new UserViewModel(this);
-        mBinding.setViewModel(mViewModel);
-        mViewModel.updateUserInfomation();
-
-
-        return mBinding.getRoot();
+        final FragmentUserBinding viewDataBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_user, container, false);
+        mViewModel = new UserViewModel(this, viewDataBinding);
+        return viewDataBinding.getRoot();
     }
 
     @Override
@@ -44,6 +41,12 @@ public class UserFragment extends BaseFragment {
     @Override
     public void refresh() {
         super.refresh();
-        mViewModel.updateUserInfomation();
+        mViewModel.updateUserInfo();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mViewModel.getUserInfoCache();
     }
 }

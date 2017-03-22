@@ -9,6 +9,11 @@
         <variable
             name="viewModel"
             type="com.ethan.myclub.user.info.viewmodel.InfoViewModel"/>
+
+        <variable
+            name="imageUri"
+            type="android.net.Uri"/>
+
     </data>
 
     <android.support.design.widget.CoordinatorLayout
@@ -56,16 +61,14 @@
                     android:layout_marginTop="10dp"
                     android:onClick="@{()->viewModel.editAvatar()}">
 
-                    <com.ethan.myclub.user.main.view.CircleImageView
+                    <ImageView
                         android:id="@+id/iv_avatar"
                         android:layout_width="100dp"
                         android:layout_height="100dp"
                         android:layout_centerHorizontal="true"
-                        android:background="@drawable/bg_avatar_oval_shape"
                         android:src="@drawable/img_default_avater"
                         android:transitionName="trans_iv_avatar"
-                        app:civ_border_color="@android:color/darker_gray"
-                        app:civ_border_width="1dp"/>
+                        app:imageUri="@{imageUri}"/>
 
                     <ImageView
                         android:layout_width="25dp"

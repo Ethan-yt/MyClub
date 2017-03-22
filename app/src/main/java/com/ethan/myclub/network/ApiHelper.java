@@ -20,6 +20,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
  */
 
 public class ApiHelper {
+    public static final String BASE_URL = "http://zhujian.nghuyong.top/";
 
     private ApiHelper() {
 
@@ -42,14 +43,13 @@ public class ApiHelper {
                         public okhttp3.Response intercept(Chain chain) throws IOException {
                             Request.Builder request = chain.request()
                                     .newBuilder();
-                            if (Preferences.isLogin())
+                            if (Preferences.sIsLogin.get())
                                 request.addHeader("Authorization", Preferences.getToken().mTokenType + " " + Preferences.getToken().mAccessToken);
                             return chain.proceed(request.build());
                         }
                     })
                     .build();
 
-            final String BASE_URL = "http://zhujian.nghuyong.top/";
 
             Retrofit retrofit = new Retrofit.Builder()
                     .baseUrl(BASE_URL)

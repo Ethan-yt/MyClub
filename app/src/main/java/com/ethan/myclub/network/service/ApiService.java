@@ -1,5 +1,6 @@
 package com.ethan.myclub.network.service;
 
+import com.ethan.myclub.user.info.model.Profile;
 import com.ethan.myclub.user.login.model.Token;
 import com.ethan.myclub.user.login.model.Valid;
 
@@ -30,5 +31,8 @@ public interface ApiService {
 
     @GET("api/activity/classify/")
     Observable<Object> test();
+
+    @GET("api/user/profile/")
+    Observable<Profile> getAccountProfile();
 
 }

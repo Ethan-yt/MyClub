@@ -25,6 +25,7 @@ public class BaseViewPagerAdapter extends FragmentPagerAdapter {
 		fragments.add(new DiscoverFragment());
 		fragments.add(new ClubFragment());
 		fragments.add(new UserFragment());
+		currentFragment = fragments.get(0);
 	}
 
 	@Override

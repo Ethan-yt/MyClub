@@ -49,7 +49,7 @@ class ProxyHandler implements InvocationHandler {
     @Override
     public Object invoke(final Object proxy, final Method method, final Object[] args) throws Throwable {
         //先检查需要Token但是没有登录的情况
-        if (mIsNeedToken && !Preferences.isLogin()) {
+        if (mIsNeedToken && !Preferences.sIsLogin.get()) {
             //弹出登录提示
             showLoginSnackbar("您还没有登录");
             return Observable.empty();

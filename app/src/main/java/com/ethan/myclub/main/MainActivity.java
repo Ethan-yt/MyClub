@@ -1,5 +1,6 @@
 package com.ethan.myclub.main;
 
+import android.content.Intent;
 import android.graphics.Color;
 
 import android.os.Bundle;
@@ -9,7 +10,7 @@ import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationAdapter;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationViewPager;
 import com.ethan.myclub.R;
-
+import com.ethan.myclub.util.CacheUtil;
 
 
 public class MainActivity extends SnackbarActivity {
@@ -59,7 +60,8 @@ public class MainActivity extends SnackbarActivity {
                 }
 
                 viewPager.setCurrentItem(position, false);
-                currentFragment = adapter.getCurrentFragment();
+                //currentFragment = adapter.getCurrentFragment();
+                currentFragment = adapter.getItem(position);
                 currentFragment.willBeDisplayed();
 
 //                if (position == 1) {
@@ -76,11 +78,28 @@ public class MainActivity extends SnackbarActivity {
         viewPager.setAdapter(adapter);
 
         currentFragment = adapter.getCurrentFragment();
-        viewPager.setCurrentItem(2);// TODO: 2017/3/13  删除这行测试语句
+        bottomNavigation.setCurrentItem(2);// TODO: 2017/3/13  删除这行测试语句
     }
 
     @Override
     protected void setRootLayout() {
         mRootLayout = findViewById(R.id.container);
+    }
+
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        //如果登录/注册成功，刷新个人信息
+        if (resultCode == RESULT_OK) {
+            if (viewPager.getCurrentItem() == 2) {
+                adapter.getItem(2).willBeDisplayed();
+            }
+        }
+
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        onActivityResult(intent.getIntExtra("RequestCode", 0), intent.getIntExtra("ResultCode", 0), intent);
     }
 }

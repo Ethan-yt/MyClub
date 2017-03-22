@@ -21,3 +21,14 @@
 
 -dontwarn com.mob.**
 -dontwarn cn.smssdk.**
+#Glide
+-keep public class * implements com.bumptech.glide.module.GlideModule
+-keep public enum com.bumptech.glide.load.resource.bitmap.ImageHeaderParser$** {
+  **[] $VALUES;
+  public *;
+}
+
+# for DexGuard only
+-keepresourcexmlelements manifest/application/meta-data@value=GlideModule
+#Glide and OKHttp
+-keep class com.bumptech.glide.integration.okhttp3.OkHttpGlideModule
