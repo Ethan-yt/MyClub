@@ -57,15 +57,20 @@ public class UserViewModel {
     }
 
     public void info() {
-        Intent intent = new Intent(mFragment.getActivity(), InfoActivity.class);
+        if (Preferences.sIsLogin.get()) {
+            Intent intent = new Intent(mFragment.getActivity(), InfoActivity.class);
 
-        intent.putExtra("ImageUrl", mBinding.getProfile().avatarThumbnailUrl);
+            intent.putExtra("ImageUrl", mBinding.getProfile().avatarThumbnailUrl);
 
-        @SuppressWarnings("unchecked")
-        ActivityOptionsCompat options = ActivityOptionsCompat
-                .makeSceneTransitionAnimation(mFragment.getActivity(),
-                        Pair.create((View) mBinding.ivAvatar, "trans_iv_avatar"));
-        ActivityCompat.startActivityForResult(mFragment.getActivity(), intent, REQUEST_EDIT_INFO, options.toBundle());
+            @SuppressWarnings("unchecked")
+            ActivityOptionsCompat options = ActivityOptionsCompat
+                    .makeSceneTransitionAnimation(mFragment.getActivity(),
+                            Pair.create((View) mBinding.ivAvatar, "trans_iv_avatar"));
+            ActivityCompat.startActivityForResult(mFragment.getActivity(), intent, REQUEST_EDIT_INFO, options.toBundle());
+        } else
+            ((SnackbarActivity) mFragment.getActivity()).showLoginSnackbar("您还没有登录！");
+
+
     }
 
     public void settings() {
@@ -104,11 +109,11 @@ public class UserViewModel {
 
         Object infoObj = CacheUtil.get(mFragment.getActivity()).getAsObject(Preferences.CACHE_USER_INFO);
         if (infoObj == null || !(infoObj instanceof Profile)) {
-            Log.d(TAG, "getUserInfoCache: 读取UserInfo缓存失败，强制获取更新");
+            Log.i(TAG, "getUserInfoCache: 读取UserInfo缓存失败，强制获取更新");
             updateUserInfo();
         } else {
             notifyInfoObservable((Profile) infoObj);
-            Log.d(TAG, "getUserInfoCache: 读取UserInfo缓存成功");
+            Log.i(TAG, "getUserInfoCache: 读取UserInfo缓存成功");
         }
 
     }
@@ -121,7 +126,7 @@ public class UserViewModel {
 
     public void updateUserInfo() {
         if (!Preferences.sIsLogin.get()) {
-            Log.d(TAG, "updateUserInfo: 无法获取更新，用户没有登录");
+            Log.i(TAG, "updateUserInfo: 无法获取更新，用户没有登录");
             notifyInfoObservable(null);
             return;
         }
@@ -135,9 +140,9 @@ public class UserViewModel {
 
                     @Override
                     public void onNext(Profile profile) {
-                        Log.d(TAG, "updateUserInfo: 获取UserInfo完成");
-                        Log.e(TAG, "onNext: "+ profile.avatarThumbnailUrl);
-                        Log.e(TAG, "onNext: "+ profile.avatarUrl);
+                        Log.i(TAG, "updateUserInfo: 获取UserInfo完成");
+                        Log.e(TAG, "onNext: " + profile.avatarThumbnailUrl);
+                        Log.e(TAG, "onNext: " + profile.avatarUrl);
                         notifyInfoObservable(profile);
                         CacheUtil.get(mFragment.getActivity())
                                 .put(Preferences.CACHE_USER_INFO, profile, Preferences.CACHE_TIME_USER_INFO);
@@ -145,7 +150,7 @@ public class UserViewModel {
 
                     @Override
                     public void onError(Throwable e) {
-                        Log.d(TAG, "updateUserInfo: 获取UserInfo失败");
+                        Log.i(TAG, "updateUserInfo: 获取UserInfo失败");
                         ((SnackbarActivity) mFragment.getActivity()).showSnackbar("获取用户信息失败：" + e.getMessage(),
                                 "重试",
                                 new View.OnClickListener() {

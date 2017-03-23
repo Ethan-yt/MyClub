@@ -25,7 +25,9 @@ public class Preferences {
     public static final int CACHE_TIME_USER_INFO = CacheUtil.TIME_DAY;
 
     public static final String FILE_NAME_TOKEN = "Token.dat";
+
     private static final String TAG = "Preferences";
+
     public static final String CACHE_USER_INFO = "userInfo";
 
 
@@ -42,7 +44,8 @@ public class Preferences {
 
         if (sToken != null && !TextUtils.isEmpty(sToken.mAccessToken))
             sIsLogin.set(true);
-        Log.d(TAG, "initPreferencesEngine: is login :" + sIsLogin.get());
+        Log.i(TAG, "initPreferencesEngine: is login: " + sIsLogin.get());
+        Log.i(TAG, "initPreferencesEngine: token is: " + sToken.mAccessToken);
     }
 
     final static private String CLIENT_ID = "N4KeCoCo530CIotQW9QL7LaOxudoOs5a7STrrb4Q";

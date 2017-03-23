@@ -1,10 +1,14 @@
 package com.ethan.myclub.util;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.AnyThread;
+import android.view.View;
 
+import com.ethan.myclub.main.SnackbarActivity;
+import com.ethan.myclub.user.login.view.LoginActivity;
 import com.ethan.myclub.user.schedule.model.Schedule;
 
 import java.io.File;

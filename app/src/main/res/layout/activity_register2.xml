@@ -50,7 +50,16 @@
             android:layout_height="match_parent">
 
             <EditText
+                android:id="@+id/et_nickname"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:hint="昵称"/>
+
+            <EditText
                 android:id="@+id/et_password"
+                android:layout_below="@id/et_nickname"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"

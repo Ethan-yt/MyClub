@@ -15,6 +15,12 @@ public class Profile implements Serializable {
     @SerializedName("user_id")
     @Expose
     public Integer userId;
+    @SerializedName("username")
+    @Expose
+    public String username;
+    @SerializedName("nickname")
+    @Expose
+    public String nickname;
     @SerializedName("student_number")
     @Expose
     public String studentNumber;

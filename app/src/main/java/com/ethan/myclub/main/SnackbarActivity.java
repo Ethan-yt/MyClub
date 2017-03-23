@@ -1,5 +1,6 @@
 package com.ethan.myclub.main;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -10,6 +11,7 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
 import com.ethan.myclub.global.Preferences;
+import com.ethan.myclub.user.login.view.LoginActivity;
 import com.ethan.myclub.util.CacheUtil;
 
 import io.reactivex.disposables.Disposable;
@@ -129,5 +131,16 @@ public abstract class SnackbarActivity extends AppCompatActivity {
             ((InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE)).
                     hideSoftInputFromWindow(view.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
         }
+    }
+
+    public void showLoginSnackbar(String message) {
+        showSnackbar(message, "登录", new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent();
+                intent.setClass(SnackbarActivity.this, LoginActivity.class);
+                startActivityForResult(intent, SnackbarActivity.REQUEST_LOGIN);
+            }
+        });
     }
 }

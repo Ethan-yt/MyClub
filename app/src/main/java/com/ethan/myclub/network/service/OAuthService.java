@@ -33,6 +33,7 @@ public interface OAuthService {
     @FormUrlEncoded
     @POST("api/user/register/")
     Observable<Token> register(@Field("username") String username,
-                               @Field("password") String password);
+                               @Field("password") String password,
+                               @Field("nickname") String nickname);
 
 }

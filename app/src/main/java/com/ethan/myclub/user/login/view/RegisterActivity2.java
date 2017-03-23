@@ -24,6 +24,7 @@ public class RegisterActivity2 extends SnackbarActivity {
     private String mUsername;
     private CardView mBtnNext;
     private EditText mEtPassword;
+    private EditText mEtNickname;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,12 +44,13 @@ public class RegisterActivity2 extends SnackbarActivity {
 
         mUsername = this.getIntent().getStringExtra("username");
         mEtPassword = (EditText) findViewById(R.id.et_password);
+        mEtNickname = (EditText) findViewById(R.id.et_nickname);
         mBtnNext = (CardView) findViewById(R.id.btn_next);
         mBtnNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 OAuthHelper.getProxy(RegisterActivity2.this)
-                        .register(mUsername, mEtPassword.getText().toString())
+                        .register(mUsername, mEtPassword.getText().toString(),mEtNickname.getText().toString())
                         .subscribe(
                                 new Observer<Token>() {
                                     @Override

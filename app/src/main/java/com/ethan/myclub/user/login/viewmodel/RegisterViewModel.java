@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.databinding.ObservableBoolean;
 import android.databinding.ObservableField;
 import android.os.Build;
+import android.os.Handler;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.util.Pair;
@@ -36,6 +37,7 @@ import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.ObservableSource;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
@@ -216,13 +218,18 @@ public class RegisterViewModel {
                     @Override
                     public void onNext(Boolean aBoolean) {
                         //成功
-                        mView.showSnackbar("短信已发送，请注意查收");
-                        startCounting();
-//                                if (b) {
-//                                    //通过智能验证
-//                                } else {
-//                                    //依然走短信验证
-//                                }
+                        if (aBoolean) {
+                            mView.showSnackbar("您已通过智能验证");
+                            Observable.timer(2, TimeUnit.SECONDS, AndroidSchedulers.mainThread()).subscribe(new Consumer<Long>() {
+                                @Override
+                                public void accept(@NonNull Long aLong) throws Exception {
+                                    startRegisterActivity2();
+                                }
+                            });
+                        } else {
+                            mView.showSnackbar("短信已发送，请注意查收");
+                            startCounting();
+                        }
                     }
 
                     @Override
@@ -304,16 +311,8 @@ public class RegisterViewModel {
                     @Override
                     public void accept(final Object o) throws Exception {
                         //成功验证
-                        Intent intent = new Intent();
-                        intent.putExtra("username", mPhoneNumber.get());
-                        intent.setClass(mView, RegisterActivity2.class);
+                        startRegisterActivity2();
 
-                        @SuppressWarnings("unchecked")
-                        ActivityOptionsCompat options = ActivityOptionsCompat
-                                .makeSceneTransitionAnimation(mView,
-                                        Pair.create((View) mView.mBinding.cvInput, "trans_cv_input"),
-                                        Pair.create((View) mView.mBinding.btnNext, "trans_cv_next"));
-                        ActivityCompat.startActivity(mView, intent, options.toBundle());
                     }
                 }, new Consumer<Throwable>() {
                     @Override
@@ -325,7 +324,19 @@ public class RegisterViewModel {
                 });
 
     }
+    private void startRegisterActivity2()
+    {
+        Intent intent = new Intent();
+        intent.putExtra("username", mPhoneNumber.get());
+        intent.setClass(mView, RegisterActivity2.class);
 
+        @SuppressWarnings("unchecked")
+        ActivityOptionsCompat options = ActivityOptionsCompat
+                .makeSceneTransitionAnimation(mView,
+                        Pair.create((View) mView.mBinding.cvInput, "trans_cv_input"),
+                        Pair.create((View) mView.mBinding.btnNext, "trans_cv_next"));
+        ActivityCompat.startActivity(mView, intent, options.toBundle());
+    }
 
     private String parseErrorMessage(Throwable throwable) {
         String str = throwable.getMessage();

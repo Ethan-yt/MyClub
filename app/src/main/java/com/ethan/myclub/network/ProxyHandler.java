@@ -51,7 +51,8 @@ class ProxyHandler implements InvocationHandler {
         //先检查需要Token但是没有登录的情况
         if (mIsNeedToken && !Preferences.sIsLogin.get()) {
             //弹出登录提示
-            showLoginSnackbar("您还没有登录");
+            mActivity.showLoginSnackbar("您还没有登录");
+            mActivity = null;
             return Observable.empty();
         }
 
@@ -87,14 +88,13 @@ class ProxyHandler implements InvocationHandler {
                                     @Override
                                     public boolean test(Object o) throws Exception {
                                         if (++count > 2) {
-                                            showLoginSnackbar("您的登录状态失效，需要重新登录");
+                                            mActivity.showLoginSnackbar("您的登录状态失效，需要重新登录");
+                                            mActivity = null;
                                             return false;//多次获取Token失败
                                         }
                                         if (o instanceof Token) {
                                             Token token = (Token) o;
                                             if (TextUtils.isEmpty(token.mAccessToken)) {
-                                                //showLoginSnackbar("您的登录状态失效，需要重新登录");
-                                                //Preferences.setToken(mActivity, null);
                                                 return true;//TOKEN refresh也失败了！再试一次！
                                             } else {
                                                 Preferences.setToken(mActivity, token);
@@ -111,15 +111,5 @@ class ProxyHandler implements InvocationHandler {
     }
 
 
-    private void showLoginSnackbar(String message) {
-        mActivity.showSnackbar(message, "登录", new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent();
-                intent.setClass(mActivity, LoginActivity.class);
-                mActivity.startActivityForResult(intent, SnackbarActivity.REQUEST_LOGIN);
-                mActivity = null;
-            }
-        });
-    }
+
 }
