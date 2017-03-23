@@ -86,10 +86,13 @@ public class InfoViewModel {
                 return true;
             }
         });
+        mAvatarFile = new File(mActivity.getExternalCacheDir(), "avatar.camera.jpg");;
+        mAvatarUri = Uri.fromFile(mAvatarFile);
     }
 
-    private File mAvatarFile;
-    private Uri mAvatarUri;
+    final private File mAvatarFile;
+    final private Uri mAvatarUri;
+
 
     private boolean mIsAvatarEdited = false;
     private boolean mIsInfoEdited = false;
@@ -119,8 +122,6 @@ public class InfoViewModel {
 
         mBottomSheetDialog.show();
 
-        mAvatarFile = new File(mActivity.getExternalCacheDir(), "avatar.camera.jpg");
-        mAvatarUri = Uri.fromFile(mAvatarFile);
 
         view.findViewById(R.id.btn_camera).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -292,7 +293,6 @@ public class InfoViewModel {
                         return false;
                     }
                 })
-                .error(R.drawable.img_default_avater)
                 .crossFade()
                 .skipMemoryCache(true)
                 .diskCacheStrategy(DiskCacheStrategy.NONE)
