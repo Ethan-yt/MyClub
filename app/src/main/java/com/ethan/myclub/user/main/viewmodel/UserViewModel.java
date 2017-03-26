@@ -14,7 +14,8 @@ import com.bumptech.glide.Glide;
 import com.ethan.myclub.R;
 import com.ethan.myclub.databinding.FragmentUserBinding;
 import com.ethan.myclub.global.Preferences;
-import com.ethan.myclub.main.SnackbarActivity;
+import com.ethan.myclub.main.BaseActivity;
+import com.ethan.myclub.main.BaseFragment;
 import com.ethan.myclub.network.ApiHelper;
 import com.ethan.myclub.user.info.model.Profile;
 import com.ethan.myclub.user.info.view.InfoActivity;
@@ -44,6 +45,7 @@ public class UserViewModel {
         mFragment = fragment;
         mBinding = binding;
         mBinding.setViewModel(this);
+        new BaseFragment.ToolbarWrapper(mFragment,"个人中心").show();
     }
 
     public void timeManagement() {
@@ -53,7 +55,7 @@ public class UserViewModel {
 
     public void login() {
         Intent intent = new Intent(mFragment.getActivity(), LoginActivity.class);
-        mFragment.getActivity().startActivityForResult(intent, SnackbarActivity.REQUEST_LOGIN);
+        mFragment.getActivity().startActivityForResult(intent, BaseActivity.REQUEST_LOGIN);
     }
 
     public void info() {
@@ -68,13 +70,13 @@ public class UserViewModel {
                             Pair.create((View) mBinding.ivAvatar, "trans_iv_avatar"));
             ActivityCompat.startActivityForResult(mFragment.getActivity(), intent, REQUEST_EDIT_INFO, options.toBundle());
         } else
-            ((SnackbarActivity) mFragment.getActivity()).showLoginSnackbar("您还没有登录！");
+            ((BaseActivity) mFragment.getActivity()).showLoginSnackbar("您还没有登录！");
 
 
     }
 
     public void settings() {
-        ApiHelper.getProxy((SnackbarActivity) mFragment.getActivity())
+        ApiHelper.getProxy((BaseActivity) mFragment.getActivity())
                 .test()
                 .subscribe(new Observer<Object>() {
                     @Override
@@ -130,7 +132,7 @@ public class UserViewModel {
             notifyInfoObservable(null);
             return;
         }
-        ApiHelper.getProxy((SnackbarActivity) mFragment.getActivity())
+        ApiHelper.getProxy((BaseActivity) mFragment.getActivity())
                 .getAccountProfile()
                 .subscribe(new Observer<Profile>() {
                     @Override
@@ -151,7 +153,7 @@ public class UserViewModel {
                     @Override
                     public void onError(Throwable e) {
                         Log.i(TAG, "updateUserInfo: 获取UserInfo失败");
-                        ((SnackbarActivity) mFragment.getActivity()).showSnackbar("获取用户信息失败：" + e.getMessage(),
+                        ((BaseActivity) mFragment.getActivity()).showSnackbar("获取用户信息失败：" + e.getMessage(),
                                 "重试",
                                 new View.OnClickListener() {
                                     @Override

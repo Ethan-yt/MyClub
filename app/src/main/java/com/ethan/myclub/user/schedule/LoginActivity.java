@@ -21,7 +21,7 @@ import com.ethan.myclub.user.schedule.model.CourseTime;
 import com.ethan.myclub.user.schedule.model.Schedule;
 import com.ethan.myclub.user.schedule.service.ScheduleService;
 import com.ethan.myclub.util.Utils;
-import com.ethan.myclub.main.SnackbarActivity;
+import com.ethan.myclub.main.BaseActivity;
 import com.jakewharton.retrofit2.adapter.rxjava2.HttpException;
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 
@@ -56,7 +56,7 @@ import okhttp3.ResponseBody;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 
-public class LoginActivity extends SnackbarActivity {
+public class LoginActivity extends BaseActivity {
 
 
     private static final String TAG = "LoginActivity";
@@ -75,13 +75,10 @@ public class LoginActivity extends SnackbarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_schedule_login);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-            }
-        });
+        new ToolbarWrapper(this, "导入课程")
+                .showBackIcon()
+                .moveFirstChildDown()
+                .show();
 
         mPwView = (EditText) findViewById(R.id.pw);
         mIdView = (EditText) findViewById(R.id.id);
@@ -531,11 +528,6 @@ public class LoginActivity extends SnackbarActivity {
                 .year(currentYear)
                 .courses(new ArrayList<>(scheduleMap.values()))
                 .build();
-    }
-
-    @Override
-    protected void setRootLayout() {
-        mRootLayout = findViewById(R.id.container);
     }
 
 }

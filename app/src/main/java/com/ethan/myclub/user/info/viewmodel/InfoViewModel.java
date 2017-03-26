@@ -26,6 +26,7 @@ import com.bumptech.glide.request.target.Target;
 import com.ethan.myclub.R;
 import com.ethan.myclub.databinding.ActivityInfoBinding;
 import com.ethan.myclub.global.Preferences;
+import com.ethan.myclub.main.BaseActivity;
 import com.ethan.myclub.network.ApiHelper;
 import com.ethan.myclub.user.info.view.InfoActivity;
 import com.ethan.myclub.util.CacheUtil;
@@ -65,28 +66,25 @@ public class InfoViewModel {
         if (!TextUtils.isEmpty(imageUrl))
             mBinding.setImageUri(Uri.parse(ApiHelper.BASE_URL + imageUrl));
 
-        Toolbar toolbar = mBinding.toolbar;
-        toolbar.inflateMenu(R.menu.menu_toolbar_user_info);
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mActivity.onBackPressed();
-            }
-        });
+        new BaseActivity.ToolbarWrapper(mActivity, "编辑个人资料")
+                .moveFirstChildDown()
+                .setMenuAndListener(R.menu.menu_toolbar_user_info, new Toolbar.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+                        int menuItemId = item.getItemId();
+                        switch (menuItemId) {
+                            case R.id.action_confirm:
+                                saveChanges();
+                                break;
+                        }
+                        return true;
+                    }
+                })
+                .showBackIcon()
+                .show();
 
-        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                int menuItemId = item.getItemId();
-                switch (menuItemId) {
-                    case R.id.action_confirm:
-                        saveChanges();
-                        break;
-                }
-                return true;
-            }
-        });
-        mAvatarFile = new File(mActivity.getExternalCacheDir(), "avatar.camera.jpg");;
+        mAvatarFile = new File(mActivity.getExternalCacheDir(), "avatar.camera.jpg");
+        ;
         mAvatarUri = Uri.fromFile(mAvatarFile);
     }
 

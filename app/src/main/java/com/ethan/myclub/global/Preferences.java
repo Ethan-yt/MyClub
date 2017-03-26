@@ -45,7 +45,8 @@ public class Preferences {
         if (sToken != null && !TextUtils.isEmpty(sToken.mAccessToken))
             sIsLogin.set(true);
         Log.i(TAG, "initPreferencesEngine: is login: " + sIsLogin.get());
-        Log.i(TAG, "initPreferencesEngine: token is: " + sToken.mAccessToken);
+        if(sIsLogin.get())
+            Log.i(TAG, "initPreferencesEngine: token is: " + sToken.mAccessToken);
     }
 
     final static private String CLIENT_ID = "N4KeCoCo530CIotQW9QL7LaOxudoOs5a7STrrb4Q";

@@ -6,10 +6,10 @@ import android.os.Bundle;
 
 import com.ethan.myclub.R;
 import com.ethan.myclub.databinding.ActivityInfoBinding;
-import com.ethan.myclub.main.SnackbarActivity;
+import com.ethan.myclub.main.BaseActivity;
 import com.ethan.myclub.user.info.viewmodel.InfoViewModel;
 
-public class InfoActivity extends SnackbarActivity {
+public class InfoActivity extends BaseActivity {
 
     public static final int REQUEST_CODE_CAMERA = 1;
     public static final int REQUEST_CODE_PICK = 2;
@@ -36,9 +36,4 @@ public class InfoActivity extends SnackbarActivity {
         mViewModel.onBackPressed();
     }
 
-
-    @Override
-    protected void setRootLayout() {
-        mRootLayout = mViewModel.mBinding.container;
-    }
 }

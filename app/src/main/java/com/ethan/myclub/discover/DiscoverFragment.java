@@ -24,16 +24,9 @@ public class DiscoverFragment extends BaseFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
-        View view = inflater.inflate(R.layout.fragment_discover, container, false);
-
+        View view = onCreateView(inflater, R.layout.fragment_discover, container);
+        new ToolbarWrapper(this,"发现").show();
         return view;
     }
 
-    @Override
-    protected void setFragmentContainer() {
-        View view = getView();
-        if(view != null)
-            mFragmentContainer = (ViewGroup) view.findViewById(R.id.fragment_container);
-    }
 }

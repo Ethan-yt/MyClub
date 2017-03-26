@@ -5,10 +5,10 @@ import android.os.Bundle;
 
 import com.ethan.myclub.R;
 import com.ethan.myclub.databinding.ActivityLoginBinding;
-import com.ethan.myclub.main.SnackbarActivity;
+import com.ethan.myclub.main.BaseActivity;
 import com.ethan.myclub.user.login.viewmodel.LoginViewModel;
 
-public class LoginActivity extends SnackbarActivity {
+public class LoginActivity extends BaseActivity {
     public ActivityLoginBinding mBinding;
 
     @Override
@@ -18,8 +18,4 @@ public class LoginActivity extends SnackbarActivity {
         mBinding.setViewModel(new LoginViewModel(this));
     }
 
-    @Override
-    protected void setRootLayout() {
-        mRootLayout = mBinding.container;
-    }
 }

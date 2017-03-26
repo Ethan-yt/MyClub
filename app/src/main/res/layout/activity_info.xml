@@ -17,32 +17,13 @@
     </data>
 
     <android.support.design.widget.CoordinatorLayout
-
-        android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context="com.ethan.myclub.user.info.view.InfoActivity">
 
-        <android.support.design.widget.AppBarLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:theme="@style/AppTheme.AppBarOverlay">
-
-            <android.support.v7.widget.Toolbar
-                android:id="@+id/toolbar"
-                android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                android:background="?attr/colorPrimary"
-                app:navigationIcon="@drawable/ic_clear_white_24dp"
-                app:popupTheme="@style/AppTheme.PopupOverlay"
-                app:title="编辑个人资料"/>
-            <!--app:navigationIcon="@drawable/ic_chevron_left_white_32dp"-->
-        </android.support.design.widget.AppBarLayout>
-
         <android.support.v4.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="?attr/actionBarSize"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"

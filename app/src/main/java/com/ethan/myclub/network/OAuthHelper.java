@@ -1,9 +1,8 @@
 package com.ethan.myclub.network;
 
 import com.ethan.myclub.global.Preferences;
-import com.ethan.myclub.main.SnackbarActivity;
+import com.ethan.myclub.main.BaseActivity;
 import com.ethan.myclub.network.converter.ApiExceptionConverterFactory;
-import com.ethan.myclub.network.service.ApiService;
 import com.ethan.myclub.network.service.OAuthService;
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 
@@ -63,7 +62,7 @@ public class OAuthHelper {
     }
 
 
-    public static OAuthService getProxy(SnackbarActivity activity) {
+    public static OAuthService getProxy(BaseActivity activity) {
         return (OAuthService) Proxy.newProxyInstance(OAuthService.class.getClassLoader(), new Class<?>[]{OAuthService.class}, new ProxyHandler(OAuthServiceHolder.sOAuthService, activity, false));
     }
 }

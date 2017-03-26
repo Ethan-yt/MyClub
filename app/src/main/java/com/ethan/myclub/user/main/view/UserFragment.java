@@ -3,6 +3,7 @@ package com.ethan.myclub.user.main.view;
 
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
+import android.databinding.ViewDataBinding;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -26,16 +27,9 @@ public class UserFragment extends BaseFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        final FragmentUserBinding viewDataBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_user, container, false);
+        FragmentUserBinding viewDataBinding = (FragmentUserBinding) onCreateDataBindingView(inflater, R.layout.fragment_user, container);
         mViewModel = new UserViewModel(this, viewDataBinding);
         return viewDataBinding.getRoot();
-    }
-
-    @Override
-    protected void setFragmentContainer() {
-        View view = getView();
-        if (view != null)
-            mFragmentContainer = (ViewGroup) view.findViewById(R.id.fragment_container);
     }
 
     @Override

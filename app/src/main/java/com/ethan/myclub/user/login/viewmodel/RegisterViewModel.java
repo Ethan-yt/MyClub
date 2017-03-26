@@ -14,6 +14,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 
+import com.ethan.myclub.main.BaseActivity;
 import com.ethan.myclub.network.ApiHelper;
 import com.ethan.myclub.network.OAuthHelper;
 import com.ethan.myclub.user.login.model.Valid;
@@ -60,16 +61,9 @@ public class RegisterViewModel {
 
     public RegisterViewModel(RegisterActivity registerActivity) {
         mView = registerActivity;
-
-        mView.mBinding.toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
-                    mView.finishAfterTransition();
-                else
-                    mView.finish();
-            }
-        });
+        new BaseActivity.ToolbarWrapper(mView,"验证手机号")
+                .showBackIcon()
+                .show();
         //Init SMSSDK
         SMSSDK.initSDK(mView, "1b8ee6770f538", "3f490908a071256b009580392a5b312a");
     }
@@ -324,8 +318,8 @@ public class RegisterViewModel {
                 });
 
     }
-    private void startRegisterActivity2()
-    {
+
+    private void startRegisterActivity2() {
         Intent intent = new Intent();
         intent.putExtra("username", mPhoneNumber.get());
         intent.setClass(mView, RegisterActivity2.class);

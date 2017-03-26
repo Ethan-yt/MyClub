@@ -3,7 +3,7 @@ package com.ethan.myclub.network;
 import com.ethan.myclub.global.Preferences;
 import com.ethan.myclub.network.converter.ApiExceptionConverterFactory;
 import com.ethan.myclub.network.service.ApiService;
-import com.ethan.myclub.main.SnackbarActivity;
+import com.ethan.myclub.main.BaseActivity;
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 
 import java.io.IOException;
@@ -13,7 +13,6 @@ import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
  * Created by ethan on 2017/3/2.
@@ -63,11 +62,11 @@ public class ApiHelper {
     }
 
 
-    public static ApiService getProxy(SnackbarActivity activity) {
+    public static ApiService getProxy(BaseActivity activity) {
         return (ApiService) Proxy.newProxyInstance(ApiService.class.getClassLoader(), new Class<?>[]{ApiService.class}, new ProxyHandler(ApiServiceHolder.sApiService, activity, true));
     }
 
-    public static ApiService getProxyWithoutToken(SnackbarActivity activity) {
+    public static ApiService getProxyWithoutToken(BaseActivity activity) {
         return (ApiService) Proxy.newProxyInstance(ApiService.class.getClassLoader(), new Class<?>[]{ApiService.class}, new ProxyHandler(ApiServiceHolder.sApiService, activity, false));
     }
 }

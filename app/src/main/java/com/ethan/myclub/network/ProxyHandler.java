@@ -1,17 +1,13 @@
 package com.ethan.myclub.network;
 
-import android.content.Intent;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.View;
 
 import com.ethan.myclub.global.Preferences;
 import com.ethan.myclub.network.exception.ApiException;
 import com.ethan.myclub.network.exception.ExceptionEngine;
-import com.ethan.myclub.main.SnackbarActivity;
-import com.ethan.myclub.network.service.OAuthService;
+import com.ethan.myclub.main.BaseActivity;
 import com.ethan.myclub.user.login.model.Token;
-import com.ethan.myclub.user.login.view.LoginActivity;
 import com.jakewharton.retrofit2.adapter.rxjava2.HttpException;
 
 import java.lang.reflect.InvocationHandler;
@@ -19,10 +15,7 @@ import java.lang.reflect.Method;
 
 import io.reactivex.Observable;
 import io.reactivex.ObservableSource;
-import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.functions.Action;
-import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 import io.reactivex.functions.Predicate;
 import io.reactivex.schedulers.Schedulers;
@@ -36,10 +29,10 @@ class ProxyHandler implements InvocationHandler {
     private static final String TAG = "ProxyHandler";
     private Object mProxyObject;
 
-    private SnackbarActivity mActivity;
+    private BaseActivity mActivity;
     private boolean mIsNeedToken;
 
-    public ProxyHandler(Object proxyObject, SnackbarActivity activity, boolean isNeedToken) {
+    public ProxyHandler(Object proxyObject, BaseActivity activity, boolean isNeedToken) {
         mProxyObject = proxyObject;
         mActivity = activity;
         mIsNeedToken = isNeedToken;

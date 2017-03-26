@@ -9,17 +9,19 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.TypedValue;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.NumberPicker;
 
 import com.ethan.myclub.R;
+import com.ethan.myclub.main.BaseActivity;
 import com.ethan.myclub.user.schedule.model.Schedule;
 import com.ethan.myclub.util.Utils;
 
 import java.util.ArrayList;
 
-public class ScheduleActivity extends AppCompatActivity {
+public class ScheduleActivity extends BaseActivity {
 
     public static final int REQUEST_LOGIN = 1;
     public static final String FILE_NAME_SCHEDULE = "Schedules.dat";
@@ -31,36 +33,31 @@ public class ScheduleActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_schedule);
-
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.inflateMenu(R.menu.menu_toolbar_schedule);
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
-        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                int menuItemId = item.getItemId();
-                switch (menuItemId) {
-                    case R.id.action_inputCurriculum:
-                        downloadSchedule();
-                        break;
-                    case R.id.action_setCurrentWeek:
-                        setCurrentWeek();
-                        break;
-                    case R.id.action_settings:
-                        // TODO: 2017/2/17 目前仅仅是设置当前学期，要增加其他设置，例如开学日期
-                        setCurrentSchedule();
-                        break;
-                }
-                return true;
-            }
-        });
+        new ToolbarWrapper(this, "时间管理")
+                .showBackIcon()
+                .setMenuAndListener(R.menu.menu_toolbar_schedule,
+                        new Toolbar.OnMenuItemClickListener() {
+                            @Override
+                            public boolean onMenuItemClick(MenuItem item) {
+                                int menuItemId = item.getItemId();
+                                switch (menuItemId) {
+                                    case R.id.action_inputCurriculum:
+                                        downloadSchedule();
+                                        break;
+                                    case R.id.action_setCurrentWeek:
+                                        setCurrentWeek();
+                                        break;
+                                    case R.id.action_settings:
+                                        // TODO: 2017/2/17 目前仅仅是设置当前学期，要增加其他设置，例如开学日期
+                                        setCurrentSchedule();
+                                        break;
+                                }
+                                return true;
+                            }
+                        })
+                .moveFirstChildDown()
+                .show();
 
         mScheduleView = (ScheduleView) findViewById(R.id.scheduleView);
 
@@ -104,8 +101,7 @@ public class ScheduleActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == ScheduleActivity.REQUEST_LOGIN && resultCode == RESULT_OK)
-        {
+        if (requestCode == ScheduleActivity.REQUEST_LOGIN && resultCode == RESULT_OK) {
             mSchedules = data.getParcelableArrayListExtra("Schedules");
             mCurrentYear = data.getStringExtra("Year");
             mCurrentTerm = data.getStringExtra("Term");
@@ -132,7 +128,7 @@ public class ScheduleActivity extends AppCompatActivity {
     public void save() {
         Parcel parcel = Parcel.obtain();
         parcel.writeList(mSchedules);
-        Utils.saveParcelToFile(this, FILE_NAME_SCHEDULE,parcel);
+        Utils.saveParcelToFile(this, FILE_NAME_SCHEDULE, parcel);
         savePreferences();
     }
 
@@ -156,7 +152,7 @@ public class ScheduleActivity extends AppCompatActivity {
     }
 
     public void read() {
-        Parcel parcel = Utils.readParcelFromFile(this,FILE_NAME_SCHEDULE);
+        Parcel parcel = Utils.readParcelFromFile(this, FILE_NAME_SCHEDULE);
         if (parcel != null) {
             parcel.readList(mSchedules, Schedule.class.getClassLoader());
             parcel.recycle();
@@ -167,7 +163,6 @@ public class ScheduleActivity extends AppCompatActivity {
         mCurrentYear = sharedPreferences.getString("CurrentYear", "");
         mCurrentTerm = sharedPreferences.getString("CurrentTerm", "");
     }
-
 
 
     private void setCurrentWeek() {

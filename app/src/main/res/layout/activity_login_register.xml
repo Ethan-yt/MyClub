@@ -5,36 +5,16 @@
 
         <variable
             name="viewModel"
-            type="com.ethan.myclub.user.login.viewmodel.RegisterViewModel" />
+            type="com.ethan.myclub.user.login.viewmodel.RegisterViewModel"/>
     </data>
 
-    <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <android.support.constraint.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
-        android:id="@+id/container"
         style="@style/Login"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
-        <android.support.design.widget.AppBarLayout
-            android:id="@+id/appBarLayout"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:theme="@style/AppTheme.AppBarOverlay"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <android.support.v7.widget.Toolbar
-                android:id="@+id/toolbar"
-                android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                android:background="?attr/colorPrimary"
-                app:navigationIcon="?attr/homeAsUpIndicator"
-                app:popupTheme="@style/AppTheme.PopupOverlay"
-                app:title="验证手机号" />
-
-        </android.support.design.widget.AppBarLayout>
 
         <android.support.v7.widget.CardView
             android:id="@+id/cv_input"
@@ -65,7 +45,7 @@
                     android:layout_alignBaseline="@+id/tv_country_name"
                     android:layout_alignBottom="@+id/tv_country_name"
                     android:gravity="center"
-                    android:text="国家和地区" />
+                    android:text="国家和地区"/>
 
                 <TextView
                     android:id="@id/tv_country_name"
@@ -78,7 +58,7 @@
                     android:onClick="@{()->viewModel.selectCountry()}"
                     android:text="@{viewModel.mCountryName}"
                     android:textColor="?attr/colorAccent"
-                    android:textSize="24sp" />
+                    android:textSize="24sp"/>
 
                 <!--第二行-->
                 <TextView
@@ -89,7 +69,7 @@
                     android:layout_alignEnd="@+id/tv_verify_text"
                     android:layout_alignRight="@+id/tv_verify_text"
                     android:layout_below="@id/tv_country_name"
-                    android:text="@{viewModel.mCountryCode}" />
+                    android:text="@{viewModel.mCountryCode}"/>
 
                 <EditText
                     android:id="@+id/et_phone_number"
@@ -102,7 +82,7 @@
                     android:layout_toRightOf="@+id/tv_verify_text"
                     android:inputType="phone"
                     android:text="@={viewModel.mPhoneNumber}"
-                    android:transitionName="trans_et_1" />
+                    android:transitionName="trans_et_1"/>
                 <!--第三行-->
                 <TextView
                     android:id="@+id/tv_verify_text"
@@ -111,7 +91,7 @@
                     android:layout_alignBaseline="@+id/et_verify_code"
                     android:layout_alignBottom="@id/tv_country_name"
                     android:gravity="center"
-                    android:text="验证码：" />
+                    android:text="验证码："/>
 
 
                 <EditText
@@ -126,7 +106,7 @@
                     android:layout_toStartOf="@+id/btn_sendSMS"
                     android:inputType="phone"
                     android:text="@={viewModel.mVerifyCode}"
-                    android:transitionName="trans_et_2" />
+                    android:transitionName="trans_et_2"/>
 
                 <Button
                     android:id="@+id/btn_sendSMS"
@@ -140,7 +120,7 @@
                     android:background="@drawable/btn_ripple_login"
                     android:clickable="@{viewModel.mIsSendBtnClickable}"
                     android:onClick="@{()->viewModel.sendSMS()}"
-                    android:text="@{viewModel.mSendBtnText}" />
+                    android:text="@{viewModel.mSendBtnText}"/>
 
 
             </RelativeLayout>

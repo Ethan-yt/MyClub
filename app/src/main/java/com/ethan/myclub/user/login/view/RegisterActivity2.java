@@ -12,14 +12,13 @@ import com.ethan.myclub.R;
 import com.ethan.myclub.global.Preferences;
 import com.ethan.myclub.network.OAuthHelper;
 import com.ethan.myclub.user.login.model.Token;
-import com.ethan.myclub.network.ApiHelper;
 import com.ethan.myclub.main.MainActivity;
-import com.ethan.myclub.main.SnackbarActivity;
+import com.ethan.myclub.main.BaseActivity;
 
 import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
 
-public class RegisterActivity2 extends SnackbarActivity {
+public class RegisterActivity2 extends BaseActivity {
 
     private String mUsername;
     private CardView mBtnNext;
@@ -31,16 +30,9 @@ public class RegisterActivity2 extends SnackbarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register2);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
-                    finishAfterTransition();
-                else
-                    finish();
-            }
-        });
+        new ToolbarWrapper(this,"注册")
+                .showBackIcon()
+                .show();
 
         mUsername = this.getIntent().getStringExtra("username");
         mEtPassword = (EditText) findViewById(R.id.et_password);
@@ -62,8 +54,8 @@ public class RegisterActivity2 extends SnackbarActivity {
                                     public void onNext(Token token) {
                                         Preferences.setToken(RegisterActivity2.this, token);
                                         Intent intent = new Intent();
-                                        intent.putExtra("RequestCode",SnackbarActivity.REQUEST_REGESTER);
-                                        intent.putExtra("ResultCode",SnackbarActivity.RESULT_OK);
+                                        intent.putExtra("RequestCode", BaseActivity.REQUEST_REGESTER);
+                                        intent.putExtra("ResultCode", BaseActivity.RESULT_OK);
                                         intent.setClass(RegisterActivity2.this, MainActivity.class);
                                         startActivity(intent);
                                     }
@@ -83,10 +75,5 @@ public class RegisterActivity2 extends SnackbarActivity {
 
             }
         });
-    }
-
-    @Override
-    protected void setRootLayout() {
-        mRootLayout = findViewById(R.id.container);
     }
 }

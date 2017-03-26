@@ -1,28 +1,16 @@
 package com.ethan.myclub.util;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Parcel;
-import android.os.Parcelable;
-import android.support.annotation.AnyThread;
-import android.view.View;
-
-import com.ethan.myclub.main.SnackbarActivity;
-import com.ethan.myclub.user.login.view.LoginActivity;
-import com.ethan.myclub.user.schedule.model.Schedule;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.math.BigInteger;
-import java.nio.Buffer;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by ethan on 2017/3/5.
