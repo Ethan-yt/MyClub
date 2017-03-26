@@ -22,19 +22,22 @@ import okhttp3.Credentials;
 
 public class Preferences {
 
-    public static final int CACHE_TIME_USER_INFO = CacheUtil.TIME_DAY;
+
+    public static final int CACHE_TIME_USER_INFO = CacheUtil.TIME_HOUR * 2;
+    public static final int CACHE_TIME_USER_CLUB_LIST = CacheUtil.TIME_HOUR * 2;
+
+    public static final String CACHE_USER_INFO = "userInfo";
+    public static final String CACHE_USER_CLUB_LIST = "userClubList";
+
 
     public static final String FILE_NAME_TOKEN = "Token.dat";
 
     private static final String TAG = "Preferences";
 
-    public static final String CACHE_USER_INFO = "userInfo";
-
-
-    static public SharedPreferences sSharedPreferences;
+    //static public SharedPreferences sSharedPreferences;
 
     static public void initPreferencesEngine(Context context) {
-        sSharedPreferences = context.getSharedPreferences("preferences", Context.MODE_PRIVATE);
+        //sSharedPreferences = context.getSharedPreferences("preferences", Context.MODE_PRIVATE);
 
         Parcel parcel = Utils.readParcelFromFile(context, FILE_NAME_TOKEN);
         if (parcel != null) {
@@ -45,7 +48,7 @@ public class Preferences {
         if (sToken != null && !TextUtils.isEmpty(sToken.mAccessToken))
             sIsLogin.set(true);
         Log.i(TAG, "initPreferencesEngine: is login: " + sIsLogin.get());
-        if(sIsLogin.get())
+        if (sIsLogin.get())
             Log.i(TAG, "initPreferencesEngine: token is: " + sToken.mAccessToken);
     }
 
@@ -62,7 +65,10 @@ public class Preferences {
         sIsLogin.set(token != null);
         Parcel parcel = Parcel.obtain();
         if (token == null)
+        {
             CacheUtil.get(context).remove(CACHE_USER_INFO);//退出登录，清除个人信息缓存
+            CacheUtil.get(context).remove(CACHE_USER_CLUB_LIST);
+        }
         else
             token.writeToParcel(parcel, 0);//保存token
         Utils.saveParcelToFile(context, FILE_NAME_TOKEN, parcel);

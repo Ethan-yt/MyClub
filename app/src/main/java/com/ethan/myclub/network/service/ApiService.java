@@ -1,15 +1,16 @@
 package com.ethan.myclub.network.service;
 
+import com.ethan.myclub.club.main.model.Club;
 import com.ethan.myclub.user.info.model.Profile;
-import com.ethan.myclub.user.login.model.Token;
 import com.ethan.myclub.user.login.model.Valid;
+
+import java.util.List;
 
 import io.reactivex.Observable;
 import okhttp3.MultipartBody;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
-import retrofit2.http.Header;
 import retrofit2.http.Multipart;
 import retrofit2.http.PATCH;
 import retrofit2.http.POST;
@@ -34,5 +35,8 @@ public interface ApiService {
 
     @GET("api/user/profile/")
     Observable<Profile> getAccountProfile();
+
+    @GET("api/club/clubs/")
+    Observable<List<Club>> getClubs();
 
 }

@@ -4,7 +4,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.view.ViewGroup;
 
-import com.ethan.myclub.club.ClubFragment;
+import com.ethan.myclub.club.main.view.ClubListFragment;
 import com.ethan.myclub.discover.DiscoverFragment;
 import com.ethan.myclub.user.main.view.UserFragment;
 
@@ -23,7 +23,7 @@ public class BaseViewPagerAdapter extends FragmentPagerAdapter {
 
 		fragments.clear();
 		fragments.add(new DiscoverFragment());
-		fragments.add(new ClubFragment());
+		fragments.add(new ClubListFragment());
 		fragments.add(new UserFragment());
 		currentFragment = fragments.get(0);
 	}
