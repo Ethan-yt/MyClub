@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -9,150 +12,140 @@
     </data>
 
     <android.support.constraint.ConstraintLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
-        style="@style/Login"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@drawable/bg_login"
+        >
 
-        <android.support.v7.widget.CardView
-            android:id="@+id/cv_input"
+        <RelativeLayout
+            android:id="@+id/linearLayout"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="32dp"
-            android:layout_marginLeft="32dp"
-            android:layout_marginRight="32dp"
-            android:layout_marginStart="32dp"
-            android:transitionName="trans_cv_input"
-            app:cardCornerRadius="10dp"
-            app:contentPadding="16dp"
+            android:layout_marginBottom="0dp"
+            android:layout_marginLeft="56dp"
+            android:layout_marginRight="56dp"
+            android:layout_marginTop="0dp"
+            android:orientation="vertical"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.41000003">
 
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-                <!--第一行-->
-
-                <TextView
-                    android:id="@+id/tv_country"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignBaseline="@+id/tv_country_name"
-                    android:layout_alignBottom="@+id/tv_country_name"
-                    android:gravity="center"
-                    android:text="国家和地区"/>
-
-                <TextView
-                    android:id="@id/tv_country_name"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_alignParentRight="true"
-                    android:layout_alignParentTop="true"
-                    android:gravity="center"
-                    android:onClick="@{()->viewModel.selectCountry()}"
-                    android:text="@{viewModel.mCountryName}"
-                    android:textColor="?attr/colorAccent"
-                    android:textSize="24sp"/>
-
-                <!--第二行-->
-                <TextView
-                    android:id="@+id/tv_country_code"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_alignBaseline="@+id/et_phone_number"
-                    android:layout_alignEnd="@+id/tv_verify_text"
-                    android:layout_alignRight="@+id/tv_verify_text"
-                    android:layout_below="@id/tv_country_name"
-                    android:text="@{viewModel.mCountryCode}"/>
-
-                <EditText
-                    android:id="@+id/et_phone_number"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_alignParentRight="true"
-                    android:layout_below="@id/tv_country_name"
-                    android:layout_toEndOf="@+id/tv_verify_text"
-                    android:layout_toRightOf="@+id/tv_verify_text"
-                    android:inputType="phone"
-                    android:text="@={viewModel.mPhoneNumber}"
-                    android:transitionName="trans_et_1"/>
-                <!--第三行-->
-                <TextView
-                    android:id="@+id/tv_verify_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignBaseline="@+id/et_verify_code"
-                    android:layout_alignBottom="@id/tv_country_name"
-                    android:gravity="center"
-                    android:text="验证码："/>
-
-
-                <EditText
-                    android:id="@+id/et_verify_code"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_alignLeft="@id/et_phone_number"
-                    android:layout_alignStart="@id/et_phone_number"
-                    android:layout_below="@id/et_phone_number"
-                    android:layout_marginBottom="4dp"
-                    android:layout_toLeftOf="@+id/btn_sendSMS"
-                    android:layout_toStartOf="@+id/btn_sendSMS"
-                    android:inputType="phone"
-                    android:text="@={viewModel.mVerifyCode}"
-                    android:transitionName="trans_et_2"/>
-
-                <Button
-                    android:id="@+id/btn_sendSMS"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignBaseline="@id/et_verify_code"
-                    android:layout_alignParentEnd="true"
-                    android:layout_alignParentRight="true"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginStart="8dp"
-                    android:background="@drawable/btn_ripple_login"
-                    android:clickable="@{viewModel.mIsSendBtnClickable}"
-                    android:onClick="@{()->viewModel.sendSMS()}"
-                    android:text="@{viewModel.mSendBtnText}"/>
-
-
-            </RelativeLayout>
-        </android.support.v7.widget.CardView>
-
-        <android.support.v7.widget.CardView
-            android:id="@+id/btn_next"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:clickable="true"
-            android:foreground="?android:attr/selectableItemBackground"
-            android:transitionName="trans_btn_next"
-            app:cardBackgroundColor="@color/colorPrimary"
-            app:cardCornerRadius="10dp"
-            app:contentPadding="10dp"
-            app:layout_constraintLeft_toLeftOf="@+id/cv_input"
-            app:layout_constraintRight_toRightOf="@+id/cv_input"
-            app:layout_constraintTop_toBottomOf="@+id/cv_input">
+            <!--第一行-->
 
             <TextView
+                android:id="@+id/tv_country"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@+id/tv_country_name"
+                android:layout_alignBottom="@+id/tv_country_name"
+                android:gravity="center"
+                android:text="国家和地区"/>
+
+            <TextView
+                android:padding="8dp"
+                android:id="@id/tv_country_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentTop="true"
+                android:gravity="center"
+                android:onClick="@{()->viewModel.selectCountry()}"
+                android:text="@{viewModel.mCountryName}"
+                android:textColor="?attr/colorAccent"
+                android:textSize="24sp"
+                tools:text="台湾"/>
+
+            <!--第二行-->
+            <TextView
+                android:id="@+id/tv_country_code"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_below="@id/cv_input"
-                android:onClick="@{()->viewModel.nextStep()}"
-                android:text="下一步"
-                android:textAlignment="center"
-                android:textSize="25sp"
-
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@+id/et_phone_number"
+                android:layout_alignEnd="@+id/tv_verify_text"
+                android:layout_alignRight="@+id/tv_verify_text"
+                android:layout_below="@id/tv_country_name"
+                android:text="@{viewModel.mCountryCode}"
+                tools:text="886"
                 />
-        </android.support.v7.widget.CardView>
 
+            <EditText
+                android:id="@+id/et_phone_number"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_below="@id/tv_country_name"
+                android:layout_toEndOf="@+id/tv_verify_text"
+                android:layout_toRightOf="@+id/tv_verify_text"
+                android:inputType="phone"
+                android:text="@={viewModel.mPhoneNumber}"
+                android:transitionName="trans_et_1"/>
+            <!--第三行-->
+            <TextView
+                android:id="@+id/tv_verify_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@+id/et_verify_code"
+                android:layout_alignBottom="@id/tv_country_name"
+                android:gravity="center"
+                android:text="验证码："/>
+
+
+            <EditText
+                android:id="@+id/et_verify_code"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@id/et_phone_number"
+                android:layout_alignStart="@id/et_phone_number"
+                android:layout_below="@id/et_phone_number"
+                android:layout_toLeftOf="@+id/btn_sendSMS"
+                android:layout_toStartOf="@+id/btn_sendSMS"
+                android:inputType="phone"
+                android:text="@={viewModel.mVerifyCode}"
+                android:transitionName="trans_et_2"/>
+
+            <Button
+                android:id="@+id/btn_sendSMS"
+                android:layout_marginLeft="5dp"
+                android:layout_width="95dp"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@id/et_verify_code"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:clickable="@{viewModel.mIsSendBtnClickable}"
+                android:gravity="center"
+                android:onClick="@{()->viewModel.sendSMS()}"
+                android:text="@{viewModel.mSendBtnText}"
+                android:outlineProvider="paddedBounds"
+                tools:text="等待60秒"/>
+
+
+        </RelativeLayout>
+
+
+        <Button
+            android:id="@+id/btn_next"
+            android:layout_width="218dp"
+            android:layout_height="43dp"
+            android:layout_marginLeft="0dp"
+            android:layout_marginRight="0dp"
+            android:layout_marginTop="64dp"
+            android:background="@drawable/btn_login"
+            android:clickable="true"
+            android:elevation="5dp"
+            android:text="下一步"
+            android:textSize="20sp"
+            android:onClick="@{()->viewModel.nextStep()}"
+            android:textStyle="bold"
+            android:transitionName="trans_btn_next"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout">
+        </Button>
 
     </android.support.constraint.ConstraintLayout>
 

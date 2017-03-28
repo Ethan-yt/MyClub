@@ -75,7 +75,8 @@ public class LoginActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_schedule_login);
 
-        new ToolbarWrapper(this, "导入课程")
+        getToolbarWrapper()
+                .setTitle("导入课程")
                 .showBackIcon()
                 .moveFirstChildDown()
                 .show();

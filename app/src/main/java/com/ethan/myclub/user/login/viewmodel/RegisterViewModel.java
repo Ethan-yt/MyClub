@@ -4,8 +4,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.databinding.ObservableBoolean;
 import android.databinding.ObservableField;
-import android.os.Build;
-import android.os.Handler;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.util.Pair;
@@ -14,9 +12,8 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 
-import com.ethan.myclub.main.BaseActivity;
+import com.ethan.myclub.databinding.ActivityLoginRegisterBinding;
 import com.ethan.myclub.network.ApiHelper;
-import com.ethan.myclub.network.OAuthHelper;
 import com.ethan.myclub.user.login.model.Valid;
 import com.ethan.myclub.user.login.view.RegisterActivity;
 import com.ethan.myclub.user.login.view.RegisterActivity2;
@@ -51,7 +48,8 @@ import io.reactivex.schedulers.Schedulers;
 public class RegisterViewModel {
 
 
-    private final RegisterActivity mView;
+    private final RegisterActivity mActivity;
+    private ActivityLoginRegisterBinding mBinding;
     public ObservableField<String> mCountryName = new ObservableField<>("台湾");
     public ObservableField<String> mCountryCode = new ObservableField<>("886");
     public ObservableField<String> mPhoneNumber = new ObservableField<>();
@@ -59,17 +57,21 @@ public class RegisterViewModel {
     public ObservableField<String> mSendBtnText = new ObservableField<>("发送验证码");
     public ObservableField<String> mVerifyCode = new ObservableField<>();
 
-    public RegisterViewModel(RegisterActivity registerActivity) {
-        mView = registerActivity;
-        new BaseActivity.ToolbarWrapper(mView,"验证手机号")
+    public RegisterViewModel(RegisterActivity registerActivity, ActivityLoginRegisterBinding binding) {
+        mActivity = registerActivity;
+        mBinding = binding;
+        mBinding.setViewModel(this);
+
+        mActivity.getToolbarWrapper()
+                .setTitle("验证手机号")
                 .showBackIcon()
                 .show();
         //Init SMSSDK
-        SMSSDK.initSDK(mView, "1b8ee6770f538", "3f490908a071256b009580392a5b312a");
+        SMSSDK.initSDK(mActivity, "1b8ee6770f538", "3f490908a071256b009580392a5b312a");
     }
 
     public void selectCountry() {
-        mView.showWaitingDialog("请稍候", "正在获取国家列表");
+        mActivity.showWaitingDialog("请稍候", "正在获取国家列表");
 
         //Log.e("0", "-------线程:" + Thread.currentThread().getName());
         Observable.create(new ObservableOnSubscribe<ArrayList>() {
@@ -121,9 +123,9 @@ public class RegisterViewModel {
                     public void accept(final HashMap hashMap) throws Exception {
                         //成功
                         Log.e("3", "-------线程:" + Thread.currentThread().getName());
-                        final CountryListView countryListView = new CountryListView(mView);
+                        final CountryListView countryListView = new CountryListView(mActivity);
 
-                        final AlertDialog dialog = new AlertDialog.Builder(mView)
+                        final AlertDialog dialog = new AlertDialog.Builder(mActivity)
                                 .setTitle("请选择国家或地区")
                                 .setView(countryListView)
                                 .setNegativeButton("取消", new DialogInterface.OnClickListener() {
@@ -140,20 +142,20 @@ public class RegisterViewModel {
                                 if (position >= 0) {
                                     String[] country = countryListView.getCountry(group, position);
                                     if (hashMap != null && hashMap.containsKey(country[1])) {
-                                        mView.showSnackbar("已经设置您的国家代码为：" + country[1]);
+                                        mActivity.showSnackbar("已经设置您的国家代码为：" + country[1]);
                                         String countryCode = country[1];
                                         String countryName = country[0];
                                         mCountryCode.set(countryCode);
                                         mCountryName.set(countryName);
                                         dialog.dismiss();
                                     } else {
-                                        mView.showSnackbar("暂时不支持这个国家或地区");
+                                        mActivity.showSnackbar("暂时不支持这个国家或地区");
                                     }
                                 }
                             }
                         });
 
-                        mView.dismissDialog();
+                        mActivity.dismissDialog();
                         dialog.show();
 
 
@@ -163,15 +165,15 @@ public class RegisterViewModel {
                     public void accept(Throwable throwable) throws Exception {
                         //失败
                         throwable.printStackTrace();
-                        mView.showSnackbar(parseErrorMessage(throwable));
-                        mView.dismissDialog();
+                        mActivity.showSnackbar(parseErrorMessage(throwable));
+                        mActivity.dismissDialog();
                     }
                 });
     }
 
     public void sendSMS() {
 
-        ApiHelper.getProxyWithoutToken(mView)
+        ApiHelper.getProxyWithoutToken(mActivity)
                 .accountValid(mPhoneNumber.get())
                 .flatMap(new Function<Valid, ObservableSource<Boolean>>() {
                     @Override
@@ -205,15 +207,15 @@ public class RegisterViewModel {
                     @Override
                     public void onSubscribe(Disposable d) {
                         mIsSendBtnClickable.set(false);
-                        mView.showSnackbar("正在发送短信...");
-                        mView.hideKeyboard();
+                        mActivity.showSnackbar("正在发送短信...");
+                        mActivity.hideKeyboard();
                     }
 
                     @Override
                     public void onNext(Boolean aBoolean) {
                         //成功
                         if (aBoolean) {
-                            mView.showSnackbar("您已通过智能验证");
+                            mActivity.showSnackbar("您已通过智能验证");
                             Observable.timer(2, TimeUnit.SECONDS, AndroidSchedulers.mainThread()).subscribe(new Consumer<Long>() {
                                 @Override
                                 public void accept(@NonNull Long aLong) throws Exception {
@@ -221,7 +223,7 @@ public class RegisterViewModel {
                                 }
                             });
                         } else {
-                            mView.showSnackbar("短信已发送，请注意查收");
+                            mActivity.showSnackbar("短信已发送，请注意查收");
                             startCounting();
                         }
                     }
@@ -229,7 +231,7 @@ public class RegisterViewModel {
                     @Override
                     public void onError(Throwable e) {
                         //失败
-                        mView.showSnackbar(parseErrorMessage(e));
+                        mActivity.showSnackbar(parseErrorMessage(e));
                         mIsSendBtnClickable.set(true);
 
                     }
@@ -312,8 +314,8 @@ public class RegisterViewModel {
                     @Override
                     public void accept(Throwable throwable) throws Exception {
                         //失败
-                        mView.showSnackbar(parseErrorMessage(throwable));
-                        mView.mBinding.btnNext.setClickable(true);
+                        mActivity.showSnackbar(parseErrorMessage(throwable));
+                        mBinding.btnNext.setClickable(true);
                     }
                 });
 
@@ -322,14 +324,13 @@ public class RegisterViewModel {
     private void startRegisterActivity2() {
         Intent intent = new Intent();
         intent.putExtra("username", mPhoneNumber.get());
-        intent.setClass(mView, RegisterActivity2.class);
+        intent.setClass(mActivity, RegisterActivity2.class);
 
         @SuppressWarnings("unchecked")
         ActivityOptionsCompat options = ActivityOptionsCompat
-                .makeSceneTransitionAnimation(mView,
-                        Pair.create((View) mView.mBinding.cvInput, "trans_cv_input"),
-                        Pair.create((View) mView.mBinding.btnNext, "trans_cv_next"));
-        ActivityCompat.startActivity(mView, intent, options.toBundle());
+                .makeSceneTransitionAnimation(mActivity,
+                        Pair.create((View) mBinding.btnNext, "trans_cv_next"));
+        ActivityCompat.startActivity(mActivity, intent, options.toBundle());
     }
 
     private String parseErrorMessage(Throwable throwable) {

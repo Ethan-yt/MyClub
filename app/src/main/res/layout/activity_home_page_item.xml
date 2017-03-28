@@ -55,7 +55,7 @@
         android:id="@+id/commentNum"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:drawableLeft="@drawable/ic_message"
+        android:drawableLeft="@drawable/ic_message_black_24dp"
         android:text="203人评论"
         android:textSize="10dp"
         android:layout_marginLeft="0dp"

@@ -34,7 +34,8 @@ public class ScheduleActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_schedule);
-        new ToolbarWrapper(this, "时间管理")
+        getToolbarWrapper()
+                .setTitle("时间管理")
                 .showBackIcon()
                 .setMenuAndListener(R.menu.menu_toolbar_schedule,
                         new Toolbar.OnMenuItemClickListener() {

@@ -19,7 +19,7 @@
         android:layout_height="200dp"
         app:cardBackgroundColor="@android:color/white"
         app:cardCornerRadius="8dp"
-        app:cardElevation="4dp"
+        app:cardElevation="2dp"
         app:cardUseCompatPadding="true">
 
         <RelativeLayout
@@ -32,14 +32,14 @@
             <ImageView
                 android:id="@+id/iv_club_badge"
                 android:layout_width="match_parent"
-                android:layout_height="100dp"
+                android:layout_height="125dp"
                 android:scaleType="centerCrop"
-                tools:src = "@drawable/img_default_avater"
+                tools:src = "@drawable/img_default_avatar"
                 app:clubItemBadgeUrl="@{club.clubBadge}"/>
 
             <TextView
                 android:id="@+id/tv_club_name"
-                android:layout_marginTop="24dp"
+                android:layout_marginTop="8dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/iv_club_badge"

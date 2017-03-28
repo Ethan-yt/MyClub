@@ -9,7 +9,6 @@
         android:id="@+id/clubPhoto"
         android:layout_width="60dp"
         android:layout_height="60dp"
-        android:src="@drawable/avarat_small_bg"
         tools:layout_constraintTop_creator="1"
         tools:layout_constraintRight_creator="1"
         tools:layout_constraintBottom_creator="1"

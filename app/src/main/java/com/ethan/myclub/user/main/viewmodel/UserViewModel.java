@@ -45,7 +45,7 @@ public class UserViewModel {
         mFragment = fragment;
         mBinding = binding;
         mBinding.setViewModel(this);
-        new BaseFragment.ToolbarWrapper(mFragment,"个人中心").show();
+        //new BaseFragment.ToolbarWrapper(mFragment,"个人中心").show();
     }
 
     public void timeManagement() {
@@ -175,7 +175,7 @@ public class UserViewModel {
     public static void loadImage(final ImageView view, String imageUrl) {
         Object target;
         if (TextUtils.isEmpty(imageUrl)) {
-            target = R.drawable.img_default_avater;
+            target = R.drawable.img_default_avatar;
         } else {
             target = ApiHelper.BASE_URL + imageUrl;
         }
@@ -184,5 +184,10 @@ public class UserViewModel {
                 .crossFade()
                 .bitmapTransform(new CropCircleTransformation(view.getContext()))
                 .into(view);
+    }
+
+    public void message()
+    {
+
     }
 }

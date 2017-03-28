@@ -1,10 +1,8 @@
 package com.ethan.myclub.user.login.view;
 
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
-import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.EditText;
 
@@ -28,9 +26,10 @@ public class RegisterActivity2 extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_register2);
+        setContentView(R.layout.activity_login_register2);
 
-        new ToolbarWrapper(this,"注册")
+        getToolbarWrapper()
+                .setTitle("注册")
                 .showBackIcon()
                 .show();
 

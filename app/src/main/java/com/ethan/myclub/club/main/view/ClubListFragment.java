@@ -6,14 +6,15 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.ethan.myclub.R;
-import com.ethan.myclub.club.main.viewmodel.ClubListViewModel;
+import com.ethan.myclub.club.main.viewmodel.ClubViewModel;
 import com.ethan.myclub.databinding.FragmentClubBinding;
+import com.ethan.myclub.main.BaseActivity;
 import com.ethan.myclub.main.BaseFragment;
 
 
 public class ClubListFragment extends BaseFragment {
 
-    public ClubListViewModel mViewModel;
+    public ClubViewModel mViewModel;
 
     public ClubListFragment() {
         // Required empty public constructor
@@ -22,14 +23,24 @@ public class ClubListFragment extends BaseFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        FragmentClubBinding fragmentClubBinding = (FragmentClubBinding) onCreateDataBindingView(inflater,R.layout.fragment_club,container);
-        mViewModel = new ClubListViewModel(this,fragmentClubBinding);
+        FragmentClubBinding fragmentClubBinding = (FragmentClubBinding) onCreateDataBindingView(inflater, R.layout.fragment_club, container);
+        mViewModel = new ClubViewModel(this, fragmentClubBinding);
+        willBeDisplayed();
         return fragmentClubBinding.getRoot();
     }
 
     @Override
     public void refresh() {
         mViewModel.updateUserClubList();
+    }
+
+    @Override
+    public void willBeDisplayed() {
+        super.willBeDisplayed();
+        BaseActivity baseActivity = (BaseActivity) getActivity();
+        if (baseActivity != null) {
+            baseActivity.getToolbarWrapper().setTitle("社团").show();
+        }
     }
 
     @Override

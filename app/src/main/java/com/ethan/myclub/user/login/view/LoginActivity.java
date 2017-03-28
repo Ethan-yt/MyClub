@@ -1,21 +1,25 @@
 package com.ethan.myclub.user.login.view;
 
 import android.databinding.DataBindingUtil;
+import android.databinding.ViewDataBinding;
 import android.os.Bundle;
 
 import com.ethan.myclub.R;
 import com.ethan.myclub.databinding.ActivityLoginBinding;
 import com.ethan.myclub.main.BaseActivity;
+import com.ethan.myclub.user.info.viewmodel.InfoViewModel;
 import com.ethan.myclub.user.login.viewmodel.LoginViewModel;
 
 public class LoginActivity extends BaseActivity {
-    public ActivityLoginBinding mBinding;
+
+    private LoginViewModel mViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mBinding = DataBindingUtil.setContentView(this, R.layout.activity_login);
-        mBinding.setViewModel(new LoginViewModel(this));
+        ActivityLoginBinding dataBinding = DataBindingUtil.setContentView(this, R.layout.activity_login);
+
+        mViewModel = new LoginViewModel(this, dataBinding);
     }
 
 }

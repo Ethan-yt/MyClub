@@ -2,11 +2,14 @@ package com.ethan.myclub.user.login.viewmodel;
 
 import android.content.Intent;
 import android.databinding.ObservableField;
+import android.os.Build;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.util.Pair;
 import android.view.View;
+import android.view.WindowManager;
 
+import com.ethan.myclub.databinding.ActivityLoginBinding;
 import com.ethan.myclub.global.Preferences;
 import com.ethan.myclub.network.ApiHelper;
 import com.ethan.myclub.network.OAuthHelper;
@@ -27,13 +30,18 @@ import static android.app.Activity.RESULT_OK;
 public class LoginViewModel {
 
     private LoginActivity mView;
+    private ActivityLoginBinding mBinding;
     public ObservableField<String> userName = new ObservableField<>("admin");
     public ObservableField<String> password = new ObservableField<>("123456");
 
 
-    public LoginViewModel(LoginActivity loginActivity) {
+    public LoginViewModel(LoginActivity loginActivity, ActivityLoginBinding binding) {
         mView = loginActivity;
-
+        mBinding = binding;
+        mBinding.setViewModel(this);
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+//            mView.getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+//        }
     }
 
     public void register() {
@@ -42,8 +50,7 @@ public class LoginViewModel {
         @SuppressWarnings("unchecked")
         ActivityOptionsCompat options = ActivityOptionsCompat
                 .makeSceneTransitionAnimation(mView,
-                        Pair.create((View) mView.mBinding.cvInput, "trans_cv_input"),
-                        Pair.create((View) mView.mBinding.btnLogin, "trans_btn_next"));
+                        Pair.create((View) mBinding.btnLogin, "trans_btn_next"));
         ActivityCompat.startActivity(mView, intent, options.toBundle());
     }
 

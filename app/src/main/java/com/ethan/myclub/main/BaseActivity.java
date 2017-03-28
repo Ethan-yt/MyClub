@@ -4,23 +4,34 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.MenuRes;
+import android.support.design.widget.AppBarLayout;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.view.ViewCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.TypedValue;
+import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 
 import com.ethan.myclub.R;
 import com.ethan.myclub.global.Preferences;
 import com.ethan.myclub.user.login.view.LoginActivity;
 import com.ethan.myclub.util.CacheUtil;
+import com.ethan.myclub.util.Utils;
 
 import org.jsoup.Connection;
+
+import java.lang.reflect.Field;
 
 import io.reactivex.disposables.Disposable;
 
@@ -30,6 +41,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     public static final int REQUEST_REGESTER = 10305;
 
     protected ViewGroup mRootLayout;
+    private ToolbarWrapper mToolbarWrapper;
 
     public void showSnackbar(String text) {
         showSnackbar(text, null, null);
@@ -87,7 +99,6 @@ public abstract class BaseActivity extends AppCompatActivity {
         if (!(view instanceof ViewGroup))
             throw new RuntimeException("Content view of a BaseActivity must be a ViewGroup!");
         mRootLayout = (ViewGroup) view;
-
 //        View decorView = getWindow().getDecorView();
 //        ViewGroup contentView = (ViewGroup) decorView.findViewById(android.R.id.content);
 //        final View childView = contentView.getChildAt(0);
@@ -95,20 +106,29 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
 
-    public static class ToolbarWrapper {
+    public ToolbarWrapper getToolbarWrapper() {
+        if (mToolbarWrapper == null)
+            mToolbarWrapper = new ToolbarWrapper();
+        return mToolbarWrapper;
+    }
 
-        private BaseActivity mBaseActivity;
-        private int mMenuResId = -1;
+    public class ToolbarWrapper {
+        private AppBarLayout mAppBarLayout;
+        private Toolbar mToolbar;
+        public int mMenuResId = -1;
         private boolean mIsShowBackIcon = false;
-        private String mTittle;
+        private String mTitle;
         private Toolbar.OnMenuItemClickListener mOnMenuItemClickListener;
         private boolean mIsNeedMoveFirstChildDown = false;
 
-        public ToolbarWrapper(BaseActivity baseActivity, String tittle) {
-            mBaseActivity = baseActivity;
-            if (mBaseActivity.mRootLayout == null)
-                throw new RuntimeException("You must call setContentView before initToolbar!");
-            mTittle = tittle;
+        public ToolbarWrapper() {
+            if (mRootLayout == null)
+                throw new RuntimeException("You must call setContentView before init Toolbar!");
+        }
+
+        public ToolbarWrapper setTitle(String title) {
+            mTitle = title;
+            return this;
         }
 
         public ToolbarWrapper setMenuAndListener(@MenuRes int resId, Toolbar.OnMenuItemClickListener onMenuItemClickListener) {
@@ -129,44 +149,64 @@ public abstract class BaseActivity extends AppCompatActivity {
 
         public void show() {
             if (mIsNeedMoveFirstChildDown) {
-                int childCount = mBaseActivity.mRootLayout.getChildCount();
+                int childCount = mRootLayout.getChildCount();
                 if (childCount == 0)
                     throw new RuntimeException("Root view group must have a child to move down!");
-                View child = mBaseActivity.mRootLayout.getChildAt(0);
+                View child = mRootLayout.getChildAt(0);
                 ViewGroup.MarginLayoutParams layoutParams = (ViewGroup.MarginLayoutParams) child.getLayoutParams();
 
                 TypedValue typedValue = new TypedValue();
-                mBaseActivity.getTheme().resolveAttribute(R.attr.actionBarSize, typedValue, true);
-                layoutParams.topMargin = mBaseActivity.getResources().getDimensionPixelSize(typedValue.resourceId);
+                getTheme().resolveAttribute(R.attr.actionBarSize, typedValue, true);
+                layoutParams.topMargin = getResources().getDimensionPixelSize(typedValue.resourceId);
                 child.setLayoutParams(layoutParams);
             }
 
-            View appBarLayout = View.inflate(mBaseActivity, R.layout.view_toolbar, mBaseActivity.mRootLayout);
-            Toolbar toolbar = (Toolbar) appBarLayout.findViewById(R.id.toolbar);
-            toolbar.setTitle(mTittle);
-            if (mMenuResId != -1 && mOnMenuItemClickListener != null) {
-                toolbar.inflateMenu(mMenuResId);
-                toolbar.setOnMenuItemClickListener(mOnMenuItemClickListener);
+            if (mAppBarLayout == null) {
+                View v = View.inflate(BaseActivity.this, R.layout.view_toolbar, mRootLayout);
+                ViewCompat.requestApplyInsets(mRootLayout);
+                mToolbar = (Toolbar) v.findViewById(R.id.toolbar);
+                mAppBarLayout = (AppBarLayout) mToolbar.getParent();
+                mToolbar.setTitle(mTitle);
+                setSupportActionBar(mToolbar);
+            } else {
+                mAppBarLayout.setExpanded(true);
+                if (mTitle != null)
+                    mToolbar.setTitle(mTitle);
             }
 
+            if (mMenuResId != -1 && mOnMenuItemClickListener != null) {
+                mToolbar.setOnMenuItemClickListener(mOnMenuItemClickListener);
+            }
 
             if (mIsShowBackIcon) {
                 final TypedValue typedValueAttr = new TypedValue();
-                mBaseActivity.getTheme().resolveAttribute(R.attr.homeAsUpIndicator, typedValueAttr, true);
-                toolbar.setNavigationIcon(typedValueAttr.resourceId);
-                toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+                getTheme().resolveAttribute(R.attr.homeAsUpIndicator, typedValueAttr, true);
+                mToolbar.setNavigationIcon(typedValueAttr.resourceId);
+                mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        //ActivityCompat.finishAfterTransition(BaseActivity.this);
-                        mBaseActivity.onBackPressed();
+                        onBackPressed();
                     }
                 });
             }
+
+            Utils.StatusBarLightMode(BaseActivity.this);
+
         }
 
-
+        public void dismiss() {
+            mAppBarLayout.setExpanded(false);
+        }
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        if (mToolbarWrapper != null && mToolbarWrapper.mMenuResId != -1) {
+            getMenuInflater().inflate(mToolbarWrapper.mMenuResId, menu);
+            return true;
+        }
+        return super.onCreateOptionsMenu(menu);
+    }
 
     public ProgressDialog mProgressDialog;
     public Disposable mDisposable;

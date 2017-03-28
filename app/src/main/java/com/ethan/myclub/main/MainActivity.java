@@ -4,16 +4,16 @@ import android.content.Intent;
 import android.graphics.Color;
 
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 
 
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationAdapter;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationViewPager;
 import com.ethan.myclub.R;
-import com.ethan.myclub.util.CacheUtil;
+import com.ethan.myclub.user.main.view.UserFragment;
 
-
-public class MainActivity extends SnackbarActivity {
+public class MainActivity extends BaseActivity {
 
     private BaseFragment currentFragment;
     private BaseViewPagerAdapter adapter;
@@ -39,8 +39,8 @@ public class MainActivity extends SnackbarActivity {
         navigationAdapter = new AHBottomNavigationAdapter(this, R.menu.bottom_navigation_menu);
         navigationAdapter.setupWithBottomNavigation(bottomNavigation);
 
-        bottomNavigation.setAccentColor(Color.parseColor("#80be58"));
-        bottomNavigation.setInactiveColor(Color.parseColor("#4c7631"));
+        bottomNavigation.setInactiveColor(ContextCompat.getColor(this, R.color.colorBottomNavigationInactive));
+        bottomNavigation.setAccentColor(ContextCompat.getColor(this, R.color.colorAccent));
 
         bottomNavigation.setOnTabSelectedListener(new AHBottomNavigation.OnTabSelectedListener() {
             @Override
@@ -77,14 +77,9 @@ public class MainActivity extends SnackbarActivity {
         adapter = new BaseViewPagerAdapter(getSupportFragmentManager());
         viewPager.setAdapter(adapter);
 
-        currentFragment = adapter.getCurrentFragment();
-        bottomNavigation.setCurrentItem(2);// TODO: 2017/3/13  删除这行测试语句
+        bottomNavigation.setCurrentItem(1);// TODO: 2017/3/13  删除这行测试语句
     }
 
-    @Override
-    protected void setRootLayout() {
-        mRootLayout = findViewById(R.id.container);
-    }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);

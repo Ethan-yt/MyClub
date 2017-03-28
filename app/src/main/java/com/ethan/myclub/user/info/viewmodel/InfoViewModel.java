@@ -12,7 +12,6 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -30,19 +29,11 @@ import com.ethan.myclub.main.BaseActivity;
 import com.ethan.myclub.network.ApiHelper;
 import com.ethan.myclub.user.info.view.InfoActivity;
 import com.ethan.myclub.util.CacheUtil;
-import com.ethan.myclub.util.Utils;
 
 import java.io.File;
 
-import io.reactivex.Observable;
-import io.reactivex.ObservableEmitter;
-import io.reactivex.ObservableOnSubscribe;
-import io.reactivex.ObservableSource;
 import io.reactivex.Observer;
-import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Function;
-import io.reactivex.schedulers.Schedulers;
 import jp.wasabeef.glide.transformations.CropCircleTransformation;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
@@ -66,8 +57,8 @@ public class InfoViewModel {
         if (!TextUtils.isEmpty(imageUrl))
             mBinding.setImageUri(Uri.parse(ApiHelper.BASE_URL + imageUrl));
 
-        new BaseActivity.ToolbarWrapper(mActivity, "编辑个人资料")
-                .moveFirstChildDown()
+        mActivity.getToolbarWrapper()
+                .setTitle("编辑个人资料")
                 .setMenuAndListener(R.menu.menu_toolbar_user_info, new Toolbar.OnMenuItemClickListener() {
                     @Override
                     public boolean onMenuItemClick(MenuItem item) {
@@ -82,7 +73,6 @@ public class InfoViewModel {
                 })
                 .showBackIcon()
                 .show();
-
         mAvatarFile = new File(mActivity.getExternalCacheDir(), "avatar.camera.jpg");
         ;
         mAvatarUri = Uri.fromFile(mAvatarFile);
@@ -108,7 +98,7 @@ public class InfoViewModel {
 
 
     public void editAvatar() {
-        final View view = LayoutInflater.from(mActivity).inflate(R.layout.item_select_photo, null);
+        final View view = LayoutInflater.from(mActivity).inflate(R.layout.view_select_photo, null);
         final BottomSheetDialog mBottomSheetDialog = new BottomSheetDialog(mActivity);
         mBottomSheetDialog.setContentView(view);
         mBottomSheetDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
@@ -273,7 +263,7 @@ public class InfoViewModel {
     public static void loadImage(final ImageView view, Uri imageUri) {
         Object target;
         if (imageUri == null) {
-            target = R.drawable.img_default_avater;
+            target = R.drawable.img_default_avatar;
         } else {
             target = imageUri;
         }

@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.ethan.myclub.R;
+import com.ethan.myclub.main.BaseActivity;
 import com.ethan.myclub.main.BaseFragment;
 
 /**
@@ -25,8 +26,15 @@ public class DiscoverFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = onCreateView(inflater, R.layout.fragment_discover, container);
-        new ToolbarWrapper(this,"发现").show();
         return view;
     }
 
+    @Override
+    public void willBeDisplayed() {
+        super.willBeDisplayed();
+        BaseActivity baseActivity = (BaseActivity) getActivity();
+        if (baseActivity != null){
+            baseActivity.getToolbarWrapper().setTitle("发现").show();
+        }
+    }
 }

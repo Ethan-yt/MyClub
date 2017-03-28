@@ -16,13 +16,13 @@ import cn.smssdk.SMSSDK;
 
 public class RegisterActivity extends BaseActivity {
 
-    public ActivityLoginRegisterBinding mBinding;
+    private RegisterViewModel mViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mBinding = DataBindingUtil.setContentView(this, R.layout.activity_login_register);
-        mBinding.setViewModel(new RegisterViewModel(this));
+        ActivityLoginRegisterBinding dataBinding = DataBindingUtil.setContentView(this, R.layout.activity_login_register);
+        mViewModel = new RegisterViewModel(this, dataBinding);
     }
 
     @Override

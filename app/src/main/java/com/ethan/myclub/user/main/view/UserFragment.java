@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 
 import com.ethan.myclub.R;
 import com.ethan.myclub.databinding.FragmentUserBinding;
+import com.ethan.myclub.main.BaseActivity;
 import com.ethan.myclub.main.BaseFragment;
 import com.ethan.myclub.user.main.viewmodel.UserViewModel;
 
@@ -39,8 +40,15 @@ public class UserFragment extends BaseFragment {
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-        mViewModel.getUserInfoCache();
+    public void willBeDisplayed() {
+        super.willBeDisplayed();
+        BaseActivity baseActivity = (BaseActivity) getActivity();
+        if (baseActivity != null){
+            baseActivity.getToolbarWrapper().dismiss();
+        }
+
+
+        if (mViewModel != null)
+            mViewModel.getUserInfoCache();
     }
 }

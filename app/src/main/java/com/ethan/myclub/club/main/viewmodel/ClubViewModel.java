@@ -27,19 +27,20 @@ import io.reactivex.disposables.Disposable;
  * Created by ethan on 2017/3/25.
  */
 
-public class ClubListViewModel {
+public class ClubViewModel {
 
-    private static final String TAG = "ClubListViewModel";
+    private static final String TAG = "ClubViewModel";
 
     private ClubListFragment mFragment;
 
     private FragmentClubBinding mBinding;
 
-    public ClubListViewModel(ClubListFragment fragment, FragmentClubBinding binding){
+    public ClubViewModel(ClubListFragment fragment, FragmentClubBinding binding){
         mFragment = fragment;
         mBinding = binding;
         mBinding.setViewModel(this);
-        new BaseFragment.ToolbarWrapper(mFragment,"社团").show();
+        //new BaseFragment.ToolbarWrapper(mFragment,"社团").show();
+       // ((BaseActivity)mFragment.getActivity()).getToolbarWrapper().setTitle("社团").show();
     }
 
     private static final int GET_CLUBS_RESULT_OK = -1;
@@ -69,7 +70,7 @@ public class ClubListViewModel {
                 break;
             case GET_CLUBS_RESULT_OK:
                 ClubListAdapter mAdapter = new ClubListAdapter(R.layout.item_club, Arrays.asList(clubsArray));
-                mBinding.recyclerView.setLayoutManager(new GridLayoutManager(mFragment.getContext(),2));
+                mBinding.recyclerView.setLayoutManager(new GridLayoutManager(mFragment.getContext(),1));
                 mBinding.recyclerView.setAdapter(mAdapter);
 
                 break;
