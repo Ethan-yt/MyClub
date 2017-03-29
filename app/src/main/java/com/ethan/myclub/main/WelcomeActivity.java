@@ -1,8 +1,11 @@
 package com.ethan.myclub.main;
 
+import android.app.ActivityOptions;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v7.app.AppCompatActivity;
 
 import com.ethan.myclub.R;
@@ -31,7 +34,9 @@ public class WelcomeActivity extends AppCompatActivity {
                     public void accept(@NonNull Long aLong) throws Exception {
 
                         Intent intent = new Intent(WelcomeActivity.this, MainActivity.class);
-                        startActivity(intent);
+
+                        ActivityCompat.startActivity(WelcomeActivity.this, intent, ActivityOptionsCompat.makeCustomAnimation(WelcomeActivity.this,R.anim.fade_in,R.anim.fade_out).toBundle());
+
                         finish();
                     }
                 });
