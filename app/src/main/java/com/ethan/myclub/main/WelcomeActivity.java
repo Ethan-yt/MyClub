@@ -35,7 +35,8 @@ public class WelcomeActivity extends AppCompatActivity {
 
                         Intent intent = new Intent(WelcomeActivity.this, MainActivity.class);
 
-                        ActivityCompat.startActivity(WelcomeActivity.this, intent, ActivityOptionsCompat.makeCustomAnimation(WelcomeActivity.this,R.anim.fade_in,R.anim.fade_out).toBundle());
+                        //noinspection unchecked
+                        ActivityCompat.startActivity(WelcomeActivity.this, intent, ActivityOptionsCompat.makeCustomAnimation(WelcomeActivity.this, android.R.anim.fade_in, android.R.anim.fade_out).toBundle());
 
                         finish();
                     }
