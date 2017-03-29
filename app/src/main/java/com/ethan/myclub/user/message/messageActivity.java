@@ -1,13 +1,10 @@
 package com.ethan.myclub.user.message;
 
-import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Toast;
 
 import com.ethan.myclub.R;
 
@@ -20,7 +17,7 @@ public class messageActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_message_message);
+        setContentView(R.layout.unused_activity_message_message);
 
         message=(Button)this.findViewById(R.id.button0);
         message1=(Button)this.findViewById(R.id.button1);

@@ -31,7 +31,7 @@
         android:layout_width="60dp"
         android:layout_height="?attr/actionBarSize"
         android:background="#00000000"
-        android:src="@drawable/search"
+        android:src="@drawable/unused_search"
         android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true" />
@@ -44,7 +44,7 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:background="#00000000"
-        android:src="@drawable/locate" />
+        android:src="@drawable/unused_locate" />
 
     <ScrollView
         android:id="@+id/scrollView1"
@@ -56,7 +56,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent">
 
-            <include layout="@layout/activity_home_page_banner"
+            <include layout="@layout/unused_activity_home_page_banner"
                 android:id="@+id/include" />
 
             <ListView

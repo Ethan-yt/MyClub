@@ -15,16 +15,16 @@ import com.ethan.myclub.R;
 import com.ethan.myclub.databinding.FragmentUserBinding;
 import com.ethan.myclub.global.Preferences;
 import com.ethan.myclub.main.BaseActivity;
-import com.ethan.myclub.main.BaseFragment;
 import com.ethan.myclub.network.ApiHelper;
-import com.ethan.myclub.user.info.model.Profile;
-import com.ethan.myclub.user.info.view.InfoActivity;
+import com.ethan.myclub.user.profile.model.Profile;
+import com.ethan.myclub.user.profile.view.ProfileEditActivity;
 import com.ethan.myclub.user.login.view.LoginActivity;
 import com.ethan.myclub.user.main.view.UserFragment;
 import com.ethan.myclub.user.schedule.ScheduleActivity;
 import com.ethan.myclub.util.CacheUtil;
 
 import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import jp.wasabeef.glide.transformations.CropCircleTransformation;
 
@@ -60,7 +60,7 @@ public class UserViewModel {
 
     public void info() {
         if (Preferences.sIsLogin.get()) {
-            Intent intent = new Intent(mFragment.getActivity(), InfoActivity.class);
+            Intent intent = new Intent(mFragment.getActivity(), ProfileEditActivity.class);
 
             intent.putExtra("ImageUrl", mBinding.getProfile().avatarThumbnailUrl);
 
@@ -78,6 +78,7 @@ public class UserViewModel {
     public void settings() {
         ApiHelper.getProxy((BaseActivity) mFragment.getActivity())
                 .test()
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<Object>() {
                     @Override
                     public void onSubscribe(Disposable d) {
@@ -134,6 +135,7 @@ public class UserViewModel {
         }
         ApiHelper.getProxy((BaseActivity) mFragment.getActivity())
                 .getAccountProfile()
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<Profile>() {
                     @Override
                     public void onSubscribe(Disposable d) {

@@ -3,16 +3,16 @@
     <item
         android:id="@+id/menu_discovery"
         android:title="发现"
-        android:icon="@drawable/ic_discovery" />
+        android:icon="@drawable/ic_nav_discovery" />
 
     <item
         android:id="@+id/menu_club"
         android:title="社团"
-        android:icon="@drawable/ic_club" />
+        android:icon="@drawable/ic_nav_club" />
 
 
     <item
         android:id="@+id/menu_user"
         android:title="我的"
-        android:icon="@drawable/ic_user" />
+        android:icon="@drawable/ic_nav_user" />
 </menu>

@@ -99,8 +99,7 @@ class ProxyHandler implements InvocationHandler {
                                 });
                     }
                 })
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread());
+                .subscribeOn(Schedulers.io());
     }
 
 

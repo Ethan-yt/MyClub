@@ -8,7 +8,7 @@
 
         <variable
             name="viewModel"
-            type="com.ethan.myclub.user.info.viewmodel.InfoViewModel"/>
+            type="com.ethan.myclub.user.profile.viewmodel.ProfileEditViewModel"/>
 
         <variable
             name="imageUri"
@@ -19,7 +19,7 @@
     <android.support.design.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context="com.ethan.myclub.user.info.view.InfoActivity">
+        tools:context="com.ethan.myclub.user.profile.view.ProfileEditActivity">
 
         <android.support.v4.widget.NestedScrollView
             android:layout_width="match_parent"

@@ -18,6 +18,7 @@ import com.ethan.myclub.user.login.view.LoginActivity;
 import com.ethan.myclub.user.login.view.RegisterActivity;
 
 import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import okhttp3.Credentials;
 
@@ -57,6 +58,7 @@ public class LoginViewModel {
     public void login() {
         OAuthHelper.getProxy(mView)
                 .login("password", userName.get(), password.get())
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         new Observer<Token>() {
                             @Override

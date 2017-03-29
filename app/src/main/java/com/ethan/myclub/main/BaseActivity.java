@@ -66,8 +66,7 @@ public abstract class BaseActivity extends AppCompatActivity {
                 showSnackbar("注册成功！已经帮您自动登录！");
             }
             if (requestCode == REQUEST_REGESTER || requestCode == REQUEST_LOGIN)
-                //清除缓存
-                CacheUtil.get(this).remove(Preferences.CACHE_USER_INFO);
+                CacheUtil.get(this).remove(Preferences.CACHE_USER_INFO);//登录或者注册成功，清除缓存
         }
     }
 
@@ -290,10 +289,14 @@ public abstract class BaseActivity extends AppCompatActivity {
         showSnackbar(message, "登录", new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent();
-                intent.setClass(BaseActivity.this, LoginActivity.class);
-                startActivityForResult(intent, BaseActivity.REQUEST_LOGIN);
+                startLoginActivity();
             }
         });
     }
+    public void startLoginActivity(){
+        Intent intent = new Intent();
+        intent.setClass(BaseActivity.this, LoginActivity.class);
+        startActivityForResult(intent, BaseActivity.REQUEST_LOGIN);
+    }
+
 }

@@ -39,13 +39,9 @@ public class ClubListFragment extends BaseFragment {
         super.willBeDisplayed();
         BaseActivity baseActivity = (BaseActivity) getActivity();
         if (baseActivity != null) {
-            baseActivity.getToolbarWrapper().setTitle("社团").show();
+            baseActivity.getToolbarWrapper().setTitle("我的社团").show();
         }
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        mViewModel.getUserClubListCache();
+        if (mViewModel != null)
+            mViewModel.getUserClubListCache();
     }
 }

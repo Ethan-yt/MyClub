@@ -1,4 +1,4 @@
-package com.ethan.myclub.user.info.model;
+package com.ethan.myclub.user.profile.model;
 
 /**
  * Created by ethan on 2017/3/17.

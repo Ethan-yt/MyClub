@@ -1,7 +1,7 @@
 package com.ethan.myclub.network.service;
 
 import com.ethan.myclub.club.main.model.Club;
-import com.ethan.myclub.user.info.model.Profile;
+import com.ethan.myclub.user.profile.model.Profile;
 import com.ethan.myclub.user.login.model.Valid;
 
 import java.util.List;

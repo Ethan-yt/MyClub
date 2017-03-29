@@ -18,7 +18,7 @@
 
         <variable
             name="profile"
-            type="com.ethan.myclub.user.info.model.Profile"/>
+            type="com.ethan.myclub.user.profile.model.Profile"/>
 
     </data>
 
@@ -104,7 +104,7 @@
             </RelativeLayout>
 
             <include
-                layout="@layout/item_user_info"
+                layout="@layout/include_user"
                 bind:viewModel="@{viewModel}"/>
         </LinearLayout>
     </FrameLayout>

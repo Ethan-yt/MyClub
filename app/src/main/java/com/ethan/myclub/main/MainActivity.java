@@ -88,6 +88,9 @@ public class MainActivity extends BaseActivity {
             if (viewPager.getCurrentItem() == 2) {
                 adapter.getItem(2).willBeDisplayed();
             }
+            if (viewPager.getCurrentItem() == 1) {
+                adapter.getItem(1).willBeDisplayed();
+            }
         }
 
     }

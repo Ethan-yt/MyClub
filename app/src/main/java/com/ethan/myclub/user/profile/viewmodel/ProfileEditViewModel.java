@@ -1,4 +1,4 @@
-package com.ethan.myclub.user.info.viewmodel;
+package com.ethan.myclub.user.profile.viewmodel;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -23,16 +23,16 @@ import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.ethan.myclub.R;
-import com.ethan.myclub.databinding.ActivityInfoBinding;
+import com.ethan.myclub.databinding.ActivityProfileEditBinding;
 import com.ethan.myclub.global.Preferences;
-import com.ethan.myclub.main.BaseActivity;
 import com.ethan.myclub.network.ApiHelper;
-import com.ethan.myclub.user.info.view.InfoActivity;
+import com.ethan.myclub.user.profile.view.ProfileEditActivity;
 import com.ethan.myclub.util.CacheUtil;
 
 import java.io.File;
 
 import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import jp.wasabeef.glide.transformations.CropCircleTransformation;
 import okhttp3.MediaType;
@@ -43,14 +43,14 @@ import okhttp3.RequestBody;
  * Created by ethan on 2017/3/20.
  */
 
-public class InfoViewModel {
+public class ProfileEditViewModel {
 
-    private static final String TAG = "InfoViewModel";
-    private InfoActivity mActivity;
-    public ActivityInfoBinding mBinding;
+    private static final String TAG = "ProfileEditViewModel";
+    private ProfileEditActivity mActivity;
+    public ActivityProfileEditBinding mBinding;
 
-    public InfoViewModel(InfoActivity infoActivity, ActivityInfoBinding binding) {
-        mActivity = infoActivity;
+    public ProfileEditViewModel(ProfileEditActivity profileEditActivity, ActivityProfileEditBinding binding) {
+        mActivity = profileEditActivity;
         mBinding = binding;
         mBinding.setViewModel(this);
         String imageUrl = mActivity.getIntent().getStringExtra("ImageUrl");
@@ -86,8 +86,7 @@ public class InfoViewModel {
     private boolean mIsInfoEdited = false;
 
     private void saveChanges() {
-        //先清空缓存
-        CacheUtil.get(mActivity).remove(Preferences.CACHE_USER_INFO);
+        CacheUtil.get(mActivity).remove(Preferences.CACHE_USER_INFO);//先清空缓存，修改资料
         if (mIsAvatarEdited)
             saveAvatar();
         else if (mIsInfoEdited)
@@ -117,7 +116,7 @@ public class InfoViewModel {
                 Intent takeIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                 //下面这句指定调用相机拍照后的照片存储的路径
                 takeIntent.putExtra(MediaStore.EXTRA_OUTPUT, mAvatarUri);
-                mActivity.startActivityForResult(takeIntent, InfoActivity.REQUEST_CODE_CAMERA);
+                mActivity.startActivityForResult(takeIntent, ProfileEditActivity.REQUEST_CODE_CAMERA);
                 mBottomSheetDialog.dismiss();
             }
         });
@@ -128,7 +127,7 @@ public class InfoViewModel {
                         Intent pickIntent = new Intent(Intent.ACTION_PICK, null);
                         // image/jpeg 、 image/png等的类型
                         pickIntent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
-                        mActivity.startActivityForResult(pickIntent, InfoActivity.REQUEST_CODE_PICK);
+                        mActivity.startActivityForResult(pickIntent, ProfileEditActivity.REQUEST_CODE_PICK);
                         mBottomSheetDialog.dismiss();
                     }
                 });
@@ -151,7 +150,7 @@ public class InfoViewModel {
         intent.putExtra(MediaStore.EXTRA_OUTPUT, mAvatarUri);
         intent.putExtra("scaleUpIfNeeded", true); //黑边
         intent.putExtra("noFaceDetection", true); // no face detection
-        mActivity.startActivityForResult(intent, InfoActivity.REQUEST_CODE_CROP);
+        mActivity.startActivityForResult(intent, ProfileEditActivity.REQUEST_CODE_CROP);
     }
 
 
@@ -199,6 +198,7 @@ public class InfoViewModel {
                 MultipartBody.Part.createFormData("avatar", mAvatarFile.getName(), requestFile);
         ApiHelper.getProxy(mActivity)
                 .uploadAvatar(body)
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         new Observer<Object>() {
                             @Override
@@ -234,19 +234,19 @@ public class InfoViewModel {
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (resultCode != InfoActivity.RESULT_OK)// 用户点击取消操作
+        if (resultCode != ProfileEditActivity.RESULT_OK)// 用户点击取消操作
             return;
         switch (requestCode) {
-            case InfoActivity.REQUEST_CODE_PICK:// 直接从相册获取
+            case ProfileEditActivity.REQUEST_CODE_PICK:// 直接从相册获取
                 if (data == null)
                     return;
                 else
                     startPhotoCrop(data.getData());
                 break;
-            case InfoActivity.REQUEST_CODE_CAMERA:// 调用相机拍照
+            case ProfileEditActivity.REQUEST_CODE_CAMERA:// 调用相机拍照
                 startPhotoCrop(mAvatarUri);
                 break;
-            case InfoActivity.REQUEST_CODE_CROP:// 取得裁剪后的图片
+            case ProfileEditActivity.REQUEST_CODE_CROP:// 取得裁剪后的图片
                 setPicToView(data);
                 break;
         }

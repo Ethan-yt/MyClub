@@ -1,6 +1,4 @@
-package com.ethan.myclub.user.info.model;
-
-import android.databinding.BaseObservable;
+package com.ethan.myclub.user.profile.model;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;

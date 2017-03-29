@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools">
 
     <data>
@@ -14,16 +15,16 @@
     </data>
 
     <android.support.v7.widget.CardView
-        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="200dp"
+        android:layout_margin="5dp"
         app:cardBackgroundColor="@android:color/white"
         app:cardCornerRadius="8dp"
-        app:cardElevation="2dp"
+        app:cardElevation="5dp"
         app:cardUseCompatPadding="true">
 
-        <RelativeLayout
-            android:layout_width="wrap_content"
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
@@ -31,38 +32,52 @@
 
             <ImageView
                 android:id="@+id/iv_club_badge"
-                android:layout_width="match_parent"
-                android:layout_height="125dp"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginLeft="0dp"
+                android:layout_marginRight="0dp"
+                android:layout_marginTop="0dp"
                 android:scaleType="centerCrop"
-                tools:src = "@drawable/img_default_avatar"
-                app:clubItemBadgeUrl="@{club.clubBadge}"/>
+                app:clubItemBadgeUrl="@{club.clubBadge}"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:src="@drawable/img_default_avatar"
+                android:layout_marginBottom="8dp"
+                app:layout_constraintBottom_toTopOf="@+id/tv_club_name"/>
 
             <TextView
                 android:id="@+id/tv_club_name"
-                android:layout_marginTop="8dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/iv_club_badge"
-                android:layout_marginLeft="24dp"
-                android:layout_marginStart="24dp"
                 android:text="@{club.clubName}"
                 android:textSize="16sp"
                 android:textStyle="bold"
-                tools:text="烘焙社"/>
+                tools:text="烘焙社"
+                android:layout_marginLeft="8dp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                android:layout_marginBottom="8dp"
+                app:layout_constraintBottom_toTopOf="@+id/tv_club_brief_introduce"/>
 
             <TextView
                 android:id="@+id/tv_club_brief_introduce"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_height="28dp"
                 android:layout_below="@id/tv_club_name"
-                android:layout_marginLeft="24dp"
-                android:layout_marginStart="24dp"
-                android:layout_marginTop="8dp"
+                android:layout_margin="10dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
                 android:text='@{club.clubBriefIntroduce}'
                 android:textColor="#888888"
                 android:textSize="12sp"
-                tools:text="一个辣鸡社团"/>
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                tools:text="插画在中国被人们俗称为插图。今天通行于国外市场的商业插画包括出版物配图、卡通吉祥物、影视海报、游戏人物设定及游戏内置的美术场景设计、广告、漫画、绘本、贺卡、挂历、装饰画、包装等多种形式。"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_marginBottom="0dp"/>
 
-        </RelativeLayout>
+        </android.support.constraint.ConstraintLayout>
     </android.support.v7.widget.CardView>
 </layout>
