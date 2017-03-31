@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Color;
 
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.support.v4.content.ContextCompat;
 
 
@@ -27,8 +28,12 @@ public class MainActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        if(savedInstanceState != null) {
+            String FRAGMENTS_TAG = "android:support:fragments";
+            // remove掉保存的Fragment
+            savedInstanceState.remove(FRAGMENTS_TAG);
+        }
         super.onCreate(savedInstanceState);
-        //supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_main);
         initUI();
 

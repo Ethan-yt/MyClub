@@ -10,6 +10,7 @@ import com.ethan.myclub.club.main.viewmodel.ClubViewModel;
 import com.ethan.myclub.databinding.FragmentClubBinding;
 import com.ethan.myclub.main.BaseActivity;
 import com.ethan.myclub.main.BaseFragment;
+import com.ethan.myclub.util.Utils;
 
 
 public class ClubListFragment extends BaseFragment {
@@ -40,8 +41,10 @@ public class ClubListFragment extends BaseFragment {
         BaseActivity baseActivity = (BaseActivity) getActivity();
         if (baseActivity != null) {
             baseActivity.getToolbarWrapper().setTitle("我的社团").show();
+            Utils.StatusBarLightMode(baseActivity, true);
         }
         if (mViewModel != null)
             mViewModel.getUserClubListCache();
+
     }
 }

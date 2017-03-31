@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import com.ethan.myclub.R;
 import com.ethan.myclub.main.BaseActivity;
 import com.ethan.myclub.main.BaseFragment;
+import com.ethan.myclub.util.Utils;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -33,8 +34,9 @@ public class DiscoverFragment extends BaseFragment {
     public void willBeDisplayed() {
         super.willBeDisplayed();
         BaseActivity baseActivity = (BaseActivity) getActivity();
-        if (baseActivity != null){
+        if (baseActivity != null) {
             baseActivity.getToolbarWrapper().setTitle("发现").show();
+            Utils.StatusBarLightMode(baseActivity, true);
         }
     }
 }

@@ -15,6 +15,7 @@ import com.ethan.myclub.databinding.FragmentUserBinding;
 import com.ethan.myclub.main.BaseActivity;
 import com.ethan.myclub.main.BaseFragment;
 import com.ethan.myclub.user.main.viewmodel.UserViewModel;
+import com.ethan.myclub.util.Utils;
 
 
 public class UserFragment extends BaseFragment {
@@ -43,8 +44,9 @@ public class UserFragment extends BaseFragment {
     public void willBeDisplayed() {
         super.willBeDisplayed();
         BaseActivity baseActivity = (BaseActivity) getActivity();
-        if (baseActivity != null){
+        if (baseActivity != null) {
             baseActivity.getToolbarWrapper().dismiss();
+            Utils.StatusBarLightMode(baseActivity, false);
         }
 
 
