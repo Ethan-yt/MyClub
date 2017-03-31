@@ -9,9 +9,6 @@
 
         <import type="android.view.View"/>
 
-        <import type="com.ethan.myclub.global.Preferences"/>
-
-
         <variable
             name="viewModel"
             type="com.ethan.myclub.user.main.viewmodel.UserViewModel"/>
@@ -39,12 +36,13 @@
                 android:layout_height="match_parent"
                 android:scaleType="centerCrop"
                 android:src="@drawable/bg_user"/>
+
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
-                android:layout_marginRight="10dp"
                 android:layout_alignParentRight="true"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="30dp"
                 android:padding="10dp"
                 app:srcCompat="@drawable/ic_menu_white_24dp"/>
 
@@ -69,7 +67,6 @@
                 android:text="@{profile.username}"
                 android:textColor="#fff"
                 android:textSize="16sp"
-                android:visibility="@{Preferences.sIsLogin ? View.VISIBLE : View.GONE}"
                 tools:text="你好"/>
 
             <TextView
@@ -82,7 +79,6 @@
                 android:text="@{profile.nickname}"
                 android:textColor="#fff"
                 android:textSize="20sp"
-                android:visibility="@{Preferences.sIsLogin ? View.VISIBLE : View.GONE}"
                 tools:text="你好"/>
 
         </RelativeLayout>
