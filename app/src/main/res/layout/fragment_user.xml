@@ -22,92 +22,74 @@
 
     </data>
 
-    <FrameLayout
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="252dp"
+            android:elevation="3dp"
+            android:outlineProvider="bounds">
 
-            <RelativeLayout
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content">
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                android:src="@drawable/bg_user"/>
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:layout_marginRight="10dp"
+                android:layout_alignParentRight="true"
+                android:padding="10dp"
+                app:srcCompat="@drawable/ic_menu_white_24dp"/>
 
-                <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_alignBottom="@+id/ll_username_wrapper"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/bg_user"/>
-
-                <ImageView
-                    android:id="@+id/iv_avatar"
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginTop="64dp"
-                    android:transitionName="trans_iv_avatar"
-                    app:imageUrl="@{profile.avatarThumbnailUrl ?? null}"/>
-
-
-                <LinearLayout
-                    android:id="@+id/ll_username_wrapper"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/iv_avatar"
-                    android:layout_centerHorizontal="true"
-                    android:padding="15dp"
-                    android:gravity="center"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:id="@+id/tv_username"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:gravity="center_horizontal"
-                        android:text="@{profile.username}"
-                        android:textColor="#ff545454"
-                        android:textSize="12sp"
-                        android:visibility="@{Preferences.sIsLogin ? View.VISIBLE : View.GONE}"
-                        tools:text="你好"
-                        tools:visibility="visible"/>
-
-                    <TextView
-                        android:id="@+id/tv_nickname"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:duplicateParentState="false"
-                        android:text="@{profile.nickname}"
-                        android:textColor="#ff545454"
-                        android:textSize="15sp"
-                        android:visibility="@{Preferences.sIsLogin ? View.VISIBLE : View.GONE}"
-                        tools:text="你好"
-                        tools:visibility="visible"/>
-
-                    <TextView
-                        android:id="@+id/tv_loginBtn"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:onClick="@{()->viewModel.login()}"
-                        android:text="点击登录"
-                        android:textColor="#0900b9"
-                        android:textSize="15sp"
-                        android:visibility="@{!Preferences.sIsLogin ? View.VISIBLE : View.GONE}"
-                        tools:visibility="visible"/>
-
-                </LinearLayout>
+            <ImageView
+                android:id="@+id/iv_avatar"
+                android:layout_width="90dp"
+                android:layout_height="90dp"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="69dp"
+                android:elevation="5dp"
+                android:transitionName="trans_iv_avatar"
+                app:imageUrl="@{profile.avatarThumbnailUrl ?? null}"/>
 
 
-            </RelativeLayout>
+            <TextView
+                android:id="@+id/tv_username"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/iv_avatar"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="10dp"
+                android:text="@{profile.username}"
+                android:textColor="#fff"
+                android:textSize="16sp"
+                android:visibility="@{Preferences.sIsLogin ? View.VISIBLE : View.GONE}"
+                tools:text="你好"/>
 
-            <include
-                layout="@layout/include_user"
-                bind:viewModel="@{viewModel}"/>
-        </LinearLayout>
-    </FrameLayout>
+            <TextView
+                android:id="@+id/tv_nickname"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tv_username"
+                android:layout_centerHorizontal="true"
+                android:layout_margin="10dp"
+                android:text="@{profile.nickname}"
+                android:textColor="#fff"
+                android:textSize="20sp"
+                android:visibility="@{Preferences.sIsLogin ? View.VISIBLE : View.GONE}"
+                tools:text="你好"/>
 
+        </RelativeLayout>
+
+        <include
+            layout="@layout/include_user"
+            bind:viewModel="@{viewModel}"/>
+    </LinearLayout>
 
 </layout>

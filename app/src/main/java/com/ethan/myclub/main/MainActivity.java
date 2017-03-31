@@ -11,6 +11,8 @@ import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationAdapter;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationViewPager;
 import com.ethan.myclub.R;
+import com.ethan.myclub.global.Preferences;
+import com.ethan.myclub.user.login.view.LoginActivity;
 import com.ethan.myclub.user.main.view.UserFragment;
 
 public class MainActivity extends BaseActivity {
@@ -59,13 +61,20 @@ public class MainActivity extends BaseActivity {
                     currentFragment.refresh();
                     return true;
                 }
+                //切换到个人页面前
+                if (position == 2) {
+                    //检查是否已经登录
+                    if (!Preferences.sIsLogin.get()) {
+                        showLoginSnackbar("您还没有登录哦");
+                        return false;
+                    }
+                }
 
                 if (currentFragment != null) {
                     currentFragment.willBeHidden();
                 }
 
                 viewPager.setCurrentItem(position, false);
-                //currentFragment = adapter.getCurrentFragment();
                 currentFragment = adapter.getItem(position);
                 currentFragment.willBeDisplayed();
 
@@ -90,9 +99,6 @@ public class MainActivity extends BaseActivity {
         super.onActivityResult(requestCode, resultCode, data);
         //如果登录/注册成功，刷新个人信息
         if (resultCode == RESULT_OK) {
-            if (viewPager.getCurrentItem() == 2) {
-                adapter.getItem(2).willBeDisplayed();
-            }
             if (viewPager.getCurrentItem() == 1) {
                 adapter.getItem(1).willBeDisplayed();
             }

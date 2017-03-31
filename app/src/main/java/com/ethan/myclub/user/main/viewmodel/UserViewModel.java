@@ -53,11 +53,6 @@ public class UserViewModel {
         mFragment.startActivity(intent);
     }
 
-    public void login() {
-        Intent intent = new Intent(mFragment.getActivity(), LoginActivity.class);
-        mFragment.getActivity().startActivityForResult(intent, BaseActivity.REQUEST_LOGIN);
-    }
-
     public void info() {
         if (Preferences.sIsLogin.get()) {
             Intent intent = new Intent(mFragment.getActivity(), ProfileEditActivity.class);

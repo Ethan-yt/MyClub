@@ -10,6 +10,8 @@ import com.bumptech.glide.request.target.Target;
 import com.ethan.myclub.R;
 import com.ethan.myclub.network.ApiHelper;
 
+import jp.wasabeef.glide.transformations.CropCircleTransformation;
+
 /**
  * Created by ethan on 2017/3/26.
  */
@@ -39,6 +41,7 @@ public class ClubItemViewModel {
                     }
                 })
                 .crossFade()
+                .bitmapTransform(new CropCircleTransformation(view.getContext()))
                 //.skipMemoryCache(true)
                 //.diskCacheStrategy(DiskCacheStrategy.NONE)
                 .into(view);
