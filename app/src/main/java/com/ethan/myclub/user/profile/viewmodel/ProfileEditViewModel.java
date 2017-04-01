@@ -1,5 +1,6 @@
 package com.ethan.myclub.user.profile.viewmodel;
 
+import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.databinding.BindingAdapter;
@@ -221,16 +222,21 @@ public class ProfileEditViewModel {
                             @Override
                             public void onComplete() {
                                 mActivity.dismissDialog();
-                                if (!mIsInfoEdited)
-                                    ActivityCompat.finishAfterTransition(mActivity);
-                                else
+                                if (!mIsInfoEdited) {
+                                    finishEdit();
+                                } else
                                     saveInfo();
                             }
                         });
     }
 
-    private void saveInfo() {
+    private void finishEdit() {
+        mActivity.setResult(Activity.RESULT_OK);
+        ActivityCompat.finishAfterTransition(mActivity);
+    }
 
+    private void saveInfo() {
+        finishEdit();
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {

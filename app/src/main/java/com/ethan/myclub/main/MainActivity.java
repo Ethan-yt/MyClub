@@ -105,7 +105,10 @@ public class MainActivity extends BaseActivity {
         //如果登录/注册成功，刷新个人信息
         if (resultCode == RESULT_OK) {
             if (viewPager.getCurrentItem() == 1) {
-                adapter.getItem(1).willBeDisplayed();
+                adapter.getItem(1).refresh();
+            }
+            if (viewPager.getCurrentItem() == 2) {
+                adapter.getItem(2).refresh();
             }
         }
 
