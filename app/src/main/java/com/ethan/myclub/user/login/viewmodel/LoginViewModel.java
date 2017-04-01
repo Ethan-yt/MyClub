@@ -57,7 +57,7 @@ public class LoginViewModel {
 
     public void login() {
         OAuthHelper.getProxy(mView)
-                .login("password", userName.get(), password.get())
+                .login("password", userName.get(), password.get(), Preferences.sPushRegID)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         new Observer<Token>() {

@@ -43,7 +43,7 @@ public class RegisterActivity2 extends BaseActivity {
             @Override
             public void onClick(View v) {
                 OAuthHelper.getProxy(RegisterActivity2.this)
-                        .register(mUsername, mEtPassword.getText().toString(),mEtNickname.getText().toString())
+                        .register(mUsername, mEtPassword.getText().toString(),mEtNickname.getText().toString(),Preferences.sPushRegID)
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(
                                 new Observer<Token>() {

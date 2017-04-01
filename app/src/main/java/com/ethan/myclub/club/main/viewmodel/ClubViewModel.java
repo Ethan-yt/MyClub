@@ -133,7 +133,7 @@ public class ClubViewModel {
                         Club[] clubsArray = clubs.toArray(new Club[0]);
                         notifyClubsObservable(clubsArray, GET_CLUBS_RESULT_OK);
                         CacheUtil.get(mFragment.getActivity())
-                                .put(Preferences.CACHE_USER_CLUB_LIST, clubsArray, Preferences.CACHE_TIME_USER_INFO);
+                                .put(Preferences.CACHE_USER_CLUB_LIST, clubsArray, Preferences.CACHE_TIME_USER_CLUB_LIST);
                     }
 
                     @Override

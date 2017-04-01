@@ -22,7 +22,8 @@ import okhttp3.Credentials;
 
 public class Preferences {
 
-
+    private static final String TAG = "Preferences";
+    //--------------Cache--------------
     public static final int CACHE_TIME_USER_INFO = CacheUtil.TIME_HOUR * 2;
     public static final int CACHE_TIME_USER_CLUB_LIST = CacheUtil.TIME_HOUR * 2;
 
@@ -31,8 +32,6 @@ public class Preferences {
 
 
     public static final String FILE_NAME_TOKEN = "Token.dat";
-
-    private static final String TAG = "Preferences";
 
     //static public SharedPreferences sSharedPreferences;
 
@@ -52,11 +51,19 @@ public class Preferences {
             Log.i(TAG, "initPreferencesEngine: token is: " + sToken.mAccessToken);
     }
 
+
+    //--------------------------------OAuth----------------------------------
     final static private String CLIENT_ID = "N4KeCoCo530CIotQW9QL7LaOxudoOs5a7STrrb4Q";
 
     final static private String CLIENT_SECRET = "sSrIu0NTlCtljOBRcv0otpHZmdDpbpNq4l1svvTIYbXDXHcEsq8ujuFIhuUWwSQ24hmdu3ou3LWGQ1vLqTJaiZxJ33LiZbxh7dWLCdzgi6taCEp0DmjTBNYXKAIHOlvu";
 
     final static public String CLIENT_CREDENTIALS = Credentials.basic(CLIENT_ID, CLIENT_SECRET);
+
+    //--------------------------------MI PUSH--------------------------------
+
+    static public String sPushRegID;
+
+    //-----------------------------------------------------------------------
 
     static private Token sToken;
 
@@ -64,12 +71,10 @@ public class Preferences {
     public static void setToken(Context context, Token token) {
         sIsLogin.set(token != null);
         Parcel parcel = Parcel.obtain();
-        if (token == null)
-        {
+        if (token == null) {
             CacheUtil.get(context).remove(CACHE_USER_INFO);//退出登录，清除个人信息缓存
             CacheUtil.get(context).remove(CACHE_USER_CLUB_LIST);
-        }
-        else
+        } else
             token.writeToParcel(parcel, 0);//保存token
         Utils.saveParcelToFile(context, FILE_NAME_TOKEN, parcel);
 

@@ -18,7 +18,8 @@ public interface OAuthService {
     @POST("api/o/token/")
     Observable<Token> login(@Field("grant_type") String grantType,
                             @Field("username") String username,
-                            @Field("password") String password);
+                            @Field("password") String password,
+                            @Field("regID") String regID);
 
     @FormUrlEncoded
     @POST("api/o/token/")
@@ -34,6 +35,7 @@ public interface OAuthService {
     @POST("api/user/register/")
     Observable<Token> register(@Field("username") String username,
                                @Field("password") String password,
-                               @Field("nickname") String nickname);
+                               @Field("nickname") String nickname,
+                               @Field("regID") String regID);
 
 }
