@@ -57,7 +57,7 @@ public class UserViewModel {
         if (Preferences.sIsLogin.get()) {
             Intent intent = new Intent(mFragment.getActivity(), ProfileEditActivity.class);
 
-            intent.putExtra("ImageUrl", mBinding.getProfile().avatarThumbnailUrl);
+            intent.putExtra("ImageUrl", mBinding.getProfile().avatar);
 
             @SuppressWarnings("unchecked")
             ActivityOptionsCompat options = ActivityOptionsCompat
@@ -140,8 +140,7 @@ public class UserViewModel {
                     @Override
                     public void onNext(Profile profile) {
                         Log.i(TAG, "updateUserInfo: 获取UserInfo完成");
-                        Log.e(TAG, "onNext: " + profile.avatarThumbnailUrl);
-                        Log.e(TAG, "onNext: " + profile.avatarUrl);
+                        profile.avatar += "?imageView2/0/w/300/h/300";
                         notifyInfoObservable(profile);
                         CacheUtil.get(mFragment.getActivity())
                                 .put(Preferences.CACHE_USER_INFO, profile, Preferences.CACHE_TIME_USER_INFO);
@@ -174,7 +173,7 @@ public class UserViewModel {
         if (TextUtils.isEmpty(imageUrl)) {
             target = R.drawable.img_default_avatar;
         } else {
-            target = ApiHelper.BASE_URL + imageUrl;
+            target = imageUrl;
         }
         Glide.with(view.getContext())
                 .load(target)

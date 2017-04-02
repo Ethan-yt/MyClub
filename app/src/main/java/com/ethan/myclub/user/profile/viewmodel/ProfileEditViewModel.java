@@ -56,11 +56,11 @@ public class ProfileEditViewModel {
         mBinding.setViewModel(this);
         String imageUrl = mActivity.getIntent().getStringExtra("ImageUrl");
         if (!TextUtils.isEmpty(imageUrl))
-            mBinding.setImageUri(Uri.parse(ApiHelper.BASE_URL + imageUrl));
+            mBinding.setImageUri(Uri.parse(imageUrl));
 
         mActivity.getToolbarWrapper()
                 .setTitle("编辑个人资料")
-                .setMenuAndListener(R.menu.menu_toolbar_user_info, new Toolbar.OnMenuItemClickListener() {
+                .setMenu(R.menu.menu_toolbar_user_info, new Toolbar.OnMenuItemClickListener() {
                     @Override
                     public boolean onMenuItemClick(MenuItem item) {
                         int menuItemId = item.getItemId();

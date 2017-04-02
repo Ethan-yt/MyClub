@@ -54,7 +54,7 @@
                 android:layout_marginTop="69dp"
                 android:elevation="5dp"
                 android:transitionName="trans_iv_avatar"
-                app:imageUrl="@{profile.avatarThumbnailUrl ?? null}"/>
+                app:imageUrl="@{profile.avatar ?? null}"/>
 
 
             <TextView

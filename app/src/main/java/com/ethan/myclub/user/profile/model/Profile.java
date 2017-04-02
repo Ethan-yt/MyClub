@@ -61,11 +61,8 @@ public class Profile implements Serializable {
     @SerializedName("brief_introduction")
     @Expose
     public String briefIntroduction;
-    @SerializedName("avatar_url")
+    @SerializedName("avatar")
     @Expose
-    public String avatarUrl;
-    @SerializedName("avatar_thumbnail_url")
-    @Expose
-    public String avatarThumbnailUrl;
+    public String avatar;
 
 }

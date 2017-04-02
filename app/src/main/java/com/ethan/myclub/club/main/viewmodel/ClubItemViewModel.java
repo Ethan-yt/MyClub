@@ -24,7 +24,7 @@ public class ClubItemViewModel {
         if (imageUrl == null) {
             target = R.drawable.img_default_avatar;
         } else {
-            target = ApiHelper.BASE_URL+ imageUrl;
+            target = imageUrl + "?imageView2/0/w/300/h/300";
         }
         Glide.with(view.getContext())
                 .load(target)
