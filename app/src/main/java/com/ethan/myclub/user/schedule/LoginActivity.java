@@ -1,10 +1,12 @@
 package com.ethan.myclub.user.schedule;
 
 
+import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
@@ -78,7 +80,6 @@ public class LoginActivity extends BaseActivity {
         getToolbarWrapper()
                 .setTitle("导入课程")
                 .showBackIcon()
-                .moveFirstChildDown()
                 .show();
 
         mPwView = (EditText) findViewById(R.id.pw);
@@ -531,4 +532,9 @@ public class LoginActivity extends BaseActivity {
                 .build();
     }
 
+    public static void startActivityForResult(Activity activity, int requestCode) {
+        Intent intent = new Intent(activity, LoginActivity.class);
+        ActivityCompat.startActivityForResult(activity, intent, requestCode, null);
+
+    }
 }

@@ -1,8 +1,6 @@
 package com.ethan.myclub.user.main.viewmodel;
 
-import android.content.Intent;
 import android.databinding.BindingAdapter;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.util.Pair;
 import android.text.TextUtils;
@@ -18,7 +16,6 @@ import com.ethan.myclub.main.BaseActivity;
 import com.ethan.myclub.network.ApiHelper;
 import com.ethan.myclub.user.profile.model.Profile;
 import com.ethan.myclub.user.profile.view.ProfileEditActivity;
-import com.ethan.myclub.user.login.view.LoginActivity;
 import com.ethan.myclub.user.main.view.UserFragment;
 import com.ethan.myclub.user.schedule.ScheduleActivity;
 import com.ethan.myclub.util.CacheUtil;
@@ -49,57 +46,28 @@ public class UserViewModel {
     }
 
     public void timeManagement() {
-        Intent intent = new Intent(mFragment.getActivity(), ScheduleActivity.class);
-        mFragment.startActivity(intent);
+        ScheduleActivity.startActivity(mFragment.getActivity(),null);
     }
 
     public void info() {
         if (Preferences.sIsLogin.get()) {
-            Intent intent = new Intent(mFragment.getActivity(), ProfileEditActivity.class);
-
-            intent.putExtra("ImageUrl", mBinding.getProfile().avatar);
-
             @SuppressWarnings("unchecked")
             ActivityOptionsCompat options = ActivityOptionsCompat
                     .makeSceneTransitionAnimation(mFragment.getActivity(),
                             Pair.create((View) mBinding.ivAvatar, "trans_iv_avatar"));
-            ActivityCompat.startActivityForResult(mFragment.getActivity(), intent, REQUEST_EDIT_INFO, options.toBundle());
+            ProfileEditActivity.startActivity(mFragment.getActivity(), mBinding.getProfile().avatar, options.toBundle());
         } else
-            ((BaseActivity) mFragment.getActivity()).showLoginSnackbar("您还没有登录！");
+            mFragment.mBaseActivity.showLoginSnackbar("您还没有登录！");
 
 
     }
 
     public void settings() {
-        ApiHelper.getProxy((BaseActivity) mFragment.getActivity())
-                .test()
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<Object>() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
 
-                    }
-
-                    @Override
-                    public void onNext(Object o) {
-                        Log.e("成功", "accept: " + o);
-
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        Log.e("失败", "accept: ", e);
-                    }
-
-                    @Override
-                    public void onComplete() {
-                        Log.e("完成", "accept: ");
-                    }
-                });
     }
 
     public void collection() {
-        Preferences.setToken(mFragment.getActivity(), null);
+        Preferences.setToken(mFragment.mBaseActivity, null);
         getUserInfoCache();
     }
 
@@ -129,7 +97,7 @@ public class UserViewModel {
             return;
         }
         ApiHelper.getProxy((BaseActivity) mFragment.getActivity())
-                .getAccountProfile()
+                .getMyProfile()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<Profile>() {
                     @Override
@@ -149,7 +117,7 @@ public class UserViewModel {
                     @Override
                     public void onError(Throwable e) {
                         Log.i(TAG, "updateUserInfo: 获取UserInfo失败");
-                        ((BaseActivity) mFragment.getActivity()).showSnackbar("获取用户信息失败：" + e.getMessage(),
+                        mFragment.mBaseActivity.showSnackbar("获取用户信息失败：" + e.getMessage(),
                                 "重试",
                                 new View.OnClickListener() {
                                     @Override
@@ -182,8 +150,7 @@ public class UserViewModel {
                 .into(view);
     }
 
-    public void message()
-    {
+    public void message() {
 
     }
 }

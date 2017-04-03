@@ -18,18 +18,18 @@ import java.util.List;
  * Created by ethan on 2017/3/26.
  */
 
-public class ClubListAdapter extends BaseQuickAdapter<Club, ClubListAdapter.ClubViewHolder> {
+public class ClubListAdapter extends BaseQuickAdapter<Club, ClubListAdapter.ViewHolder> {
 
     private ClubItemViewModel mViewModel;
 
-    public ClubListAdapter(int layoutResId, List<Club> data) {
-        super(layoutResId, data);
+    public ClubListAdapter(List<Club> data) {
+        super(R.layout.item_club, data);
 
         mViewModel = new ClubItemViewModel();
     }
 
     @Override
-    protected void convert(ClubViewHolder helper, Club item) {
+    protected void convert(ViewHolder helper, Club item) {
         ItemClubBinding binding = (ItemClubBinding) helper.getBinding();
         binding.setClub(item);
         binding.setViewModel(mViewModel);
@@ -57,9 +57,9 @@ public class ClubListAdapter extends BaseQuickAdapter<Club, ClubListAdapter.Club
         return view;
     }
 
-    public class ClubViewHolder extends BaseViewHolder {
+    public class ViewHolder extends BaseViewHolder {
 
-        public ClubViewHolder(View view) {
+        public ViewHolder(View view) {
             super(view);
         }
 

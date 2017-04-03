@@ -1,11 +1,7 @@
 package com.ethan.myclub.user.main.view;
 
 
-import android.content.Intent;
-import android.databinding.DataBindingUtil;
-import android.databinding.ViewDataBinding;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,10 +39,9 @@ public class UserFragment extends BaseFragment {
     @Override
     public void willBeDisplayed() {
         super.willBeDisplayed();
-        BaseActivity baseActivity = (BaseActivity) getActivity();
-        if (baseActivity != null) {
-            baseActivity.getToolbarWrapper().dismiss();
-            Utils.StatusBarLightMode(baseActivity, false);
+        if (mBaseActivity != null) {
+            mBaseActivity.getToolbarWrapper().close();
+            Utils.StatusBarLightMode(mBaseActivity, false);
         }
 
 

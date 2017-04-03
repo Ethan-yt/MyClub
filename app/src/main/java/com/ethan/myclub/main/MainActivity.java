@@ -1,10 +1,12 @@
 package com.ethan.myclub.main;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 
 import android.os.Bundle;
-import android.os.PersistableBundle;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.content.ContextCompat;
 
 
@@ -12,11 +14,13 @@ import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationAdapter;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationViewPager;
 import com.ethan.myclub.R;
+import com.ethan.myclub.discover.main.DiscoverFragment;
 import com.ethan.myclub.global.Preferences;
-import com.ethan.myclub.user.login.view.LoginActivity;
-import com.ethan.myclub.user.main.view.UserFragment;
+import com.ethan.myclub.user.login.view.RegisterActivity2;
 
 public class MainActivity extends BaseActivity {
+
+    public static final int REQUEST_ADD_CLUB = 10306;
 
     private BaseFragment currentFragment;
     private BaseViewPagerAdapter adapter;
@@ -28,7 +32,7 @@ public class MainActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        if(savedInstanceState != null) {
+        if (savedInstanceState != null) {
             String FRAGMENTS_TAG = "android:support:fragments";
             // remove掉保存的Fragment
             savedInstanceState.remove(FRAGMENTS_TAG);
@@ -48,7 +52,7 @@ public class MainActivity extends BaseActivity {
         bottomNavigation = (AHBottomNavigation) findViewById(R.id.bottom_navigation);
         viewPager = (AHBottomNavigationViewPager) findViewById(R.id.view_pager);
 
-        navigationAdapter = new AHBottomNavigationAdapter(this, R.menu.bottom_navigation_menu);
+        navigationAdapter = new AHBottomNavigationAdapter(this, R.menu.bottom_navigation);
         navigationAdapter.setupWithBottomNavigation(bottomNavigation);
 
         bottomNavigation.setInactiveColor(ContextCompat.getColor(this, R.color.colorBottomNavigationInactive));
@@ -95,21 +99,27 @@ public class MainActivity extends BaseActivity {
 
         adapter = new BaseViewPagerAdapter(getSupportFragmentManager());
         viewPager.setAdapter(adapter);
-
-        bottomNavigation.setCurrentItem(1);// TODO: 2017/3/13  删除这行测试语句
     }
-
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         //如果登录/注册成功，刷新个人信息
         if (resultCode == RESULT_OK) {
-            if (viewPager.getCurrentItem() == 1) {
-                adapter.getItem(1).refresh();
+            if (requestCode == REQUEST_REGISTER || requestCode == REQUEST_LOGIN)
+            {
+                if (viewPager.getCurrentItem() == 1) {
+                    adapter.getItem(1).refresh();
+                }
+                if (viewPager.getCurrentItem() == 2) {
+                    adapter.getItem(2).refresh();
+                }
             }
-            if (viewPager.getCurrentItem() == 2) {
-                adapter.getItem(2).refresh();
+            else if(requestCode == REQUEST_ADD_CLUB)
+            {
+                ((DiscoverFragment)adapter.getItem(0)).setCurrentTab(1);
+                bottomNavigation.setCurrentItem(0);
             }
+
         }
 
     }
@@ -118,5 +128,20 @@ public class MainActivity extends BaseActivity {
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
         onActivityResult(intent.getIntExtra("RequestCode", 0), intent.getIntExtra("ResultCode", 0), intent);
+    }
+
+    public static void startActivity(Activity activity, Bundle bundle) {
+        Intent intent = new Intent(activity, MainActivity.class);
+        ActivityCompat.startActivity(activity, intent, bundle);
+
+    }
+
+    public static void startActivity(Activity activity, int requestCode, int resultCode) {
+        Intent intent = new Intent(activity, MainActivity.class);
+        intent.putExtra("RequestCode", requestCode);
+        intent.putExtra("ResultCode", resultCode);
+        activity.startActivity(intent);
+
+
     }
 }

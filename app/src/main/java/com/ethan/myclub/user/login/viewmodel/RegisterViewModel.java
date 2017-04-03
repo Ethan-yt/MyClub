@@ -322,15 +322,12 @@ public class RegisterViewModel {
     }
 
     private void startRegisterActivity2() {
-        Intent intent = new Intent();
-        intent.putExtra("username", mPhoneNumber.get());
-        intent.setClass(mActivity, RegisterActivity2.class);
-
         @SuppressWarnings("unchecked")
         ActivityOptionsCompat options = ActivityOptionsCompat
                 .makeSceneTransitionAnimation(mActivity,
                         Pair.create((View) mBinding.btnNext, "trans_cv_next"));
-        ActivityCompat.startActivity(mActivity, intent, options.toBundle());
+        RegisterActivity2.startActivity(mActivity, mPhoneNumber.get(), options.toBundle());
+
     }
 
     private String parseErrorMessage(Throwable throwable) {

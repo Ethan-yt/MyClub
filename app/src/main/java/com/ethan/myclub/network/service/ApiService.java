@@ -3,6 +3,7 @@ package com.ethan.myclub.network.service;
 import com.ethan.myclub.club.main.model.Club;
 import com.ethan.myclub.user.profile.model.Profile;
 import com.ethan.myclub.user.login.model.Valid;
+import com.ethan.myclub.discover.club.model.ClubResult;
 
 import java.util.List;
 
@@ -15,6 +16,7 @@ import retrofit2.http.Multipart;
 import retrofit2.http.PATCH;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
+import retrofit2.http.Query;
 
 /**
  * Created by ethan on 2017/3/1.
@@ -34,9 +36,14 @@ public interface ApiService {
     Observable<Object> test();
 
     @GET("api/user/profile/")
-    Observable<Profile> getAccountProfile();
+    Observable<Profile> getMyProfile();
 
-    @GET("api/club/clubs/")
-    Observable<List<Club>> getClubs();
+    @GET("api/club/my-club-list/")
+    Observable<List<Club>> getMyClubs();
 
+    @GET("api/club/suggestion/")
+    Observable<List<String>> getClubSuggestion(@Query("keyword") String keyWord);
+
+    @GET("api/club/search/")
+    Observable<ClubResult> searchClub(@Query("keyword")String keyWord,@Query("page") int page ,@Query("items") int items);
 }

@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="235dp"
+    android:layout_margin="0dp"
+    app:cardBackgroundColor="@android:color/white"
+    app:cardCornerRadius="8dp"
+    app:cardElevation="5dp"
+    app:cardUseCompatPadding="true">
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true">
+
+        <ImageView
+            android:id="@+id/iv_club_badge"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:scaleType="centerCrop"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:src="@drawable/img_default_avatar"
+            android:layout_marginBottom="8dp"
+            app:layout_constraintBottom_toTopOf="@+id/tv_club_name"/>
+
+        <TextView
+            android:id="@+id/tv_club_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/iv_club_badge"
+            android:layout_marginBottom="2dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginStart="16dp"
+            android:textColor="#909090"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toTopOf="@+id/tv_memberNumber"
+            app:layout_constraintLeft_toLeftOf="parent"
+            tools:text="烘焙社"/>
+
+        <TextView
+            android:id="@+id/tv_club_brief_introduce"
+            android:layout_width="0dp"
+            android:layout_height="14dp"
+            android:layout_below="@id/tv_club_name"
+            android:layout_marginBottom="9dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:textColor="#A1A1A1"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toTopOf="@+id/view3"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            tools:text="插画在中国被人们俗称为插图。今天通行于国外市场的商业插画包括出版物配图、卡通吉祥物、影视海报、游戏人物设定及游戏内置的美术场景设计、广告、漫画、绘本、贺卡、挂历、装饰画、包装等多种形式。"/>
+
+        <TextView
+            android:id="@+id/tv_memberNumber"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="4dp"
+            android:layout_marginLeft="16dp"
+            android:textColor="#d3d3d3"
+            android:textSize="9sp"
+            app:layout_constraintBottom_toTopOf="@+id/tv_club_brief_introduce"
+            app:layout_constraintLeft_toLeftOf="parent"
+            tools:text="22个成员"/>
+
+        <view
+            class="android.support.v4.view.ViewPager"
+            id="@+id/view2"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_marginLeft="0dp"
+            android:layout_marginRight="0dp"
+            android:background="@drawable/divider_normal"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            android:layout_marginBottom="12dp"
+            app:layout_constraintBottom_toTopOf="@+id/textView3"
+            android:id="@+id/view3"/>
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginRight="8dp"
+            android:text="评论：99+"
+            android:textColor="#A1A1A1"
+            android:textSize="10sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            />
+
+    </android.support.constraint.ConstraintLayout>
+</android.support.v7.widget.CardView>

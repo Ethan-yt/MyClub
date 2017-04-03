@@ -1,12 +1,15 @@
 package com.ethan.myclub.user.profile.view;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 
 import com.ethan.myclub.R;
 import com.ethan.myclub.databinding.ActivityProfileEditBinding;
 import com.ethan.myclub.main.BaseActivity;
+import com.ethan.myclub.user.login.view.RegisterActivity;
 import com.ethan.myclub.user.profile.viewmodel.ProfileEditViewModel;
 
 public class ProfileEditActivity extends BaseActivity {
@@ -22,7 +25,7 @@ public class ProfileEditActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ActivityProfileEditBinding dataBinding = DataBindingUtil.setContentView(this, R.layout.activity_profile_edit);
-        mViewModel = new ProfileEditViewModel(this,dataBinding);
+        mViewModel = new ProfileEditViewModel(this, dataBinding);
     }
 
     @Override
@@ -36,4 +39,9 @@ public class ProfileEditActivity extends BaseActivity {
         mViewModel.onBackPressed();
     }
 
+    public static void startActivity(Activity activity, String imageUrl, Bundle bundle) {
+        Intent intent = new Intent(activity, ProfileEditActivity.class);
+        intent.putExtra("ImageUrl", imageUrl);
+        ActivityCompat.startActivity(activity, intent, bundle);
+    }
 }
