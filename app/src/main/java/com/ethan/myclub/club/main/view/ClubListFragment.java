@@ -1,7 +1,10 @@
 package com.ethan.myclub.club.main.view;
 
+import android.app.Activity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -10,6 +13,7 @@ import com.ethan.myclub.club.main.viewmodel.ClubViewModel;
 import com.ethan.myclub.databinding.FragmentClubBinding;
 import com.ethan.myclub.main.BaseActivity;
 import com.ethan.myclub.main.BaseFragment;
+import com.ethan.myclub.main.MainActivity;
 import com.ethan.myclub.util.Utils;
 
 
@@ -26,7 +30,6 @@ public class ClubListFragment extends BaseFragment {
                              Bundle savedInstanceState) {
         FragmentClubBinding fragmentClubBinding = (FragmentClubBinding) onCreateDataBindingView(inflater, R.layout.fragment_club, container);
         mViewModel = new ClubViewModel(this, fragmentClubBinding);
-        willBeDisplayed();
         return fragmentClubBinding.getRoot();
     }
 
@@ -38,13 +41,33 @@ public class ClubListFragment extends BaseFragment {
     @Override
     public void willBeDisplayed() {
         super.willBeDisplayed();
-        BaseActivity baseActivity = (BaseActivity) getActivity();
-        if (baseActivity != null) {
-            baseActivity.getToolbarWrapper().setTitle("我的社团").show();
-            Utils.StatusBarLightMode(baseActivity, true);
+        if (mBaseActivity != null) {
+            mBaseActivity.getToolbarWrapper()
+                    .dismiss()
+                    .setTitle("我的社团", true)
+                    .setMenu(R.menu.toolbar_club, new MyMenuItemClickListener())
+                    .show();
+            Utils.StatusBarLightMode(mBaseActivity, true);
         }
         if (mViewModel != null)
             mViewModel.getUserClubListCache();
 
+    }
+
+    private class MyMenuItemClickListener implements Toolbar.OnMenuItemClickListener {
+
+        @Override
+        public boolean onMenuItemClick(MenuItem item) {
+            switch (item.getItemId()) {
+                case R.id.action_scan:
+                    mBaseActivity.showSnackbar("愚人节快乐");
+                    break;
+                case R.id.action_add:
+                    mBaseActivity.startActivity(mBaseActivity, MainActivity.REQUEST_ADD_CLUB, Activity.RESULT_OK);
+                    break;
+            }
+
+            return false;
+        }
     }
 }

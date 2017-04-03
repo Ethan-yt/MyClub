@@ -61,7 +61,7 @@ public class Preferences {
 
     //--------------------------------MI PUSH--------------------------------
 
-    static public String sPushRegID;
+    static public String sPushRegID = "123";
 
     //-----------------------------------------------------------------------
 

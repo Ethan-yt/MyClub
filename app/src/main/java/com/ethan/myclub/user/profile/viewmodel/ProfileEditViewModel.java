@@ -60,7 +60,7 @@ public class ProfileEditViewModel {
 
         mActivity.getToolbarWrapper()
                 .setTitle("编辑个人资料")
-                .setMenu(R.menu.menu_toolbar_user_info, new Toolbar.OnMenuItemClickListener() {
+                .setMenu(R.menu.toolbar_user_info, new Toolbar.OnMenuItemClickListener() {
                     @Override
                     public boolean onMenuItemClick(MenuItem item) {
                         int menuItemId = item.getItemId();
@@ -111,7 +111,8 @@ public class ProfileEditViewModel {
         mBottomSheetDialog.show();
 
 
-        view.findViewById(R.id.btn_camera).setOnClickListener(new View.OnClickListener() {
+        view.findViewById(R.id.btn_camera)
+                .setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent takeIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);

@@ -46,13 +46,11 @@ public class LoginViewModel {
     }
 
     public void register() {
-        Intent intent = new Intent();
-        intent.setClass(mView, RegisterActivity.class);
         @SuppressWarnings("unchecked")
         ActivityOptionsCompat options = ActivityOptionsCompat
                 .makeSceneTransitionAnimation(mView,
                         Pair.create((View) mBinding.btnLogin, "trans_btn_next"));
-        ActivityCompat.startActivity(mView, intent, options.toBundle());
+        RegisterActivity.startActivity(mView, options.toBundle());
     }
 
     public void login() {

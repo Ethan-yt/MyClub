@@ -53,35 +53,34 @@ public class EmptyView extends FrameLayout {
     }
 
     private void showTip(String strTip) {
-        mProgressBar.setVisibility(GONE);
+        mProgressBar.setVisibility(INVISIBLE);
         mIvImg.setVisibility(VISIBLE);
         this.setOnClickListener(null);
-        mBtn.setVisibility(GONE);
+        mBtn.setVisibility(INVISIBLE);
         mTvTip.setVisibility(VISIBLE);
         mTvTip.setText(strTip);
     }
 
     private void showBtn(String strText) {
-        mProgressBar.setVisibility(GONE);
+        mProgressBar.setVisibility(INVISIBLE);
         mBtn.setOnClickListener(null);
         mIvImg.setVisibility(VISIBLE);
         mBtn.setVisibility(VISIBLE);
-        mTvTip.setVisibility(GONE);
+        mTvTip.setVisibility(INVISIBLE);
         mBtn.setText(strText);
     }
 
     public void showLoadingView() {
         mProgressBar.setVisibility(VISIBLE);
-        mIvImg.setVisibility(GONE);
-        mBtn.setVisibility(GONE);
-        mTvTip.setVisibility(GONE);
+        mIvImg.setVisibility(INVISIBLE);
+        mBtn.setVisibility(INVISIBLE);
+        mTvTip.setVisibility(INVISIBLE);
         mTvMessage.setText("加载中");
     }
 
     public void showNotLoginView() {
         mIvImg.setImageResource(R.drawable.ic_state_login);
         mTvMessage.setText("还没有登录哦");
-
         showBtn("登录");
         mBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -92,10 +91,10 @@ public class EmptyView extends FrameLayout {
 
     }
 
-    public void showEmptyView() {
+    public void showEmptyView(String message1,String message2) {
         mIvImg.setImageResource(R.drawable.ic_state_login);
-        mTvMessage.setText("还没有加入社团哦");
-        showTip("快去发现你喜欢的社团吧！");
+        mTvMessage.setText(message1);
+        showTip(message2);
     }
 
     public void showErrorView(OnClickListener retryListener) {

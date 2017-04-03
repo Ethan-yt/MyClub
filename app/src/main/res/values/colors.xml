@@ -5,4 +5,5 @@
     <color name="colorAccent">#4DD0E1</color>
 
     <color name="darkBackground">#eaeaea</color>
+    <color name="toolbarTitleText">#707070</color>
 </resources>

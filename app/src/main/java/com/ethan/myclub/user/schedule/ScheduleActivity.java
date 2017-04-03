@@ -1,21 +1,21 @@
 package com.ethan.myclub.user.schedule;
 
+import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Parcel;
 import android.support.design.widget.BottomSheetDialog;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.util.TypedValue;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.NumberPicker;
 
 import com.ethan.myclub.R;
 import com.ethan.myclub.main.BaseActivity;
+import com.ethan.myclub.user.login.view.RegisterActivity;
 import com.ethan.myclub.user.schedule.model.Schedule;
 import com.ethan.myclub.util.Utils;
 
@@ -37,7 +37,7 @@ public class ScheduleActivity extends BaseActivity {
         getToolbarWrapper()
                 .setTitle("时间管理")
                 .showBackIcon()
-                .setMenuAndListener(R.menu.menu_toolbar_schedule,
+                .setMenu(R.menu.toolbar_user_schedule,
                         new Toolbar.OnMenuItemClickListener() {
                             @Override
                             public boolean onMenuItemClick(MenuItem item) {
@@ -57,7 +57,6 @@ public class ScheduleActivity extends BaseActivity {
                                 return true;
                             }
                         })
-                .moveFirstChildDown()
                 .show();
 
         mScheduleView = (ScheduleView) findViewById(R.id.scheduleView);
@@ -94,9 +93,8 @@ public class ScheduleActivity extends BaseActivity {
     }
 
     private void downloadSchedule() {
-        Intent intent = new Intent(this, LoginActivity.class);
-        //startActivity(intent);
-        startActivityForResult(intent, REQUEST_LOGIN);
+        LoginActivity.startActivityForResult(this,REQUEST_LOGIN);
+
     }
 
     @Override
@@ -111,18 +109,6 @@ public class ScheduleActivity extends BaseActivity {
         }
 
     }
-
-//    @Override
-//    protected void onNewIntent(Intent intent) {
-//        super.onNewIntent(intent);
-//        mSchedules = intent.getParcelableArrayListExtra("Schedules");
-//        mCurrentYear = intent.getStringExtra("Year");
-//        mCurrentTerm = intent.getStringExtra("Term");
-//
-//        save();
-//
-//        refreshScheduleView();
-//    }
 
     private BottomSheetDialog mBottomSheetDialog;
 
@@ -188,5 +174,10 @@ public class ScheduleActivity extends BaseActivity {
         });
 
         mBottomSheetDialog.show();
+    }
+
+    public static void startActivity(Activity activity, Bundle bundle) {
+        Intent intent = new Intent(activity, ScheduleActivity.class);
+        ActivityCompat.startActivity(activity, intent, bundle);
     }
 }

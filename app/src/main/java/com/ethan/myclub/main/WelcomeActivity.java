@@ -28,15 +28,16 @@ public class WelcomeActivity extends BaseActivity {
 
         //读取配置项
         Preferences.initPreferencesEngine(this);
-        Observable.timer(2, TimeUnit.SECONDS, AndroidSchedulers.mainThread())
+        Observable.timer(0, TimeUnit.SECONDS, AndroidSchedulers.mainThread())
                 .subscribe(new Consumer<Long>() {
                     @Override
                     public void accept(@NonNull Long aLong) throws Exception {
 
-                        Intent intent = new Intent(WelcomeActivity.this, MainActivity.class);
-
-                        //noinspection unchecked
-                        ActivityCompat.startActivity(WelcomeActivity.this, intent, ActivityOptionsCompat.makeCustomAnimation(WelcomeActivity.this, android.R.anim.fade_in, android.R.anim.fade_out).toBundle());
+                        MainActivity.startActivity(WelcomeActivity.this,
+                                ActivityOptionsCompat.makeCustomAnimation(WelcomeActivity.this,
+                                        android.R.anim.fade_in,
+                                        android.R.anim.fade_out).toBundle()
+                        );
 
                         finish();
                     }
