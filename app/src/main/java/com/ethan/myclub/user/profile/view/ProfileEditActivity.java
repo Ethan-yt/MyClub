@@ -39,9 +39,9 @@ public class ProfileEditActivity extends BaseActivity {
         mViewModel.onBackPressed();
     }
 
-    public static void startActivity(Activity activity, String imageUrl, Bundle bundle) {
+    public static void startActivityForResult(Activity activity, String imageUrl, Bundle bundle, int requestCode) {
         Intent intent = new Intent(activity, ProfileEditActivity.class);
         intent.putExtra("ImageUrl", imageUrl);
-        ActivityCompat.startActivity(activity, intent, bundle);
+        ActivityCompat.startActivityForResult(activity, intent, requestCode, bundle);
     }
 }

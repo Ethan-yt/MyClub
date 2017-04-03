@@ -21,6 +21,7 @@ import com.ethan.myclub.user.login.view.RegisterActivity2;
 public class MainActivity extends BaseActivity {
 
     public static final int REQUEST_ADD_CLUB = 10306;
+    public static final int REQUEST_EDIT_INFO = 10307;
 
     private BaseFragment currentFragment;
     private BaseViewPagerAdapter adapter;
@@ -105,19 +106,23 @@ public class MainActivity extends BaseActivity {
         super.onActivityResult(requestCode, resultCode, data);
         //如果登录/注册成功，刷新个人信息
         if (resultCode == RESULT_OK) {
-            if (requestCode == REQUEST_REGISTER || requestCode == REQUEST_LOGIN)
-            {
-                if (viewPager.getCurrentItem() == 1) {
-                    adapter.getItem(1).refresh();
-                }
-                if (viewPager.getCurrentItem() == 2) {
+            switch(requestCode){
+                case REQUEST_REGISTER:
+                case REQUEST_LOGIN:
+                    if (viewPager.getCurrentItem() == 1) {
+                        adapter.getItem(1).refresh();
+                    }
+                    if (viewPager.getCurrentItem() == 2) {
+                        adapter.getItem(2).refresh();
+                    }
+                    break;
+                case REQUEST_ADD_CLUB:
+                    ((DiscoverFragment)adapter.getItem(0)).setCurrentTab(1);
+                    bottomNavigation.setCurrentItem(0);
+                    break;
+                case REQUEST_EDIT_INFO:
                     adapter.getItem(2).refresh();
-                }
-            }
-            else if(requestCode == REQUEST_ADD_CLUB)
-            {
-                ((DiscoverFragment)adapter.getItem(0)).setCurrentTab(1);
-                bottomNavigation.setCurrentItem(0);
+                    break;
             }
 
         }

@@ -13,6 +13,7 @@ import com.ethan.myclub.R;
 import com.ethan.myclub.databinding.FragmentUserBinding;
 import com.ethan.myclub.global.Preferences;
 import com.ethan.myclub.main.BaseActivity;
+import com.ethan.myclub.main.MainActivity;
 import com.ethan.myclub.network.ApiHelper;
 import com.ethan.myclub.user.profile.model.Profile;
 import com.ethan.myclub.user.profile.view.ProfileEditActivity;
@@ -32,7 +33,7 @@ import jp.wasabeef.glide.transformations.CropCircleTransformation;
 public class UserViewModel {
 
     private static final String TAG = "UserViewModel";
-    public static final int REQUEST_EDIT_INFO = 20304;
+
 
     private UserFragment mFragment;
 
@@ -46,7 +47,7 @@ public class UserViewModel {
     }
 
     public void timeManagement() {
-        ScheduleActivity.startActivity(mFragment.getActivity(),null);
+        ScheduleActivity.startActivity(mFragment.getActivity(), null);
     }
 
     public void info() {
@@ -55,7 +56,7 @@ public class UserViewModel {
             ActivityOptionsCompat options = ActivityOptionsCompat
                     .makeSceneTransitionAnimation(mFragment.getActivity(),
                             Pair.create((View) mBinding.ivAvatar, "trans_iv_avatar"));
-            ProfileEditActivity.startActivity(mFragment.getActivity(), mBinding.getProfile().avatar, options.toBundle());
+            ProfileEditActivity.startActivityForResult(mFragment.getActivity(), mBinding.getProfile().avatar, options.toBundle(), MainActivity.REQUEST_EDIT_INFO);
         } else
             mFragment.mBaseActivity.showLoginSnackbar("您还没有登录！");
 
