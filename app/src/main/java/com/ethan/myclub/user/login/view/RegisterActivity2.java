@@ -43,28 +43,37 @@ public class RegisterActivity2 extends BaseActivity {
         mEtNickname = (EditText) findViewById(R.id.et_nickname);
         mBtnNext = (Button) findViewById(R.id.btn_next);
 
-        showWaitingDialog("请稍候", "注册中");
+
         mBtnNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 OAuthHelper.getProxy(RegisterActivity2.this)
                         .register(mUsername, mEtPassword.getText().toString(), mEtNickname.getText().toString(), Preferences.sPushRegID)
                         .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(
-                                new Consumer<Token>() {
-                                    @Override
-                                    public void accept(@NonNull Token token) throws Exception {
-                                        Preferences.setToken(RegisterActivity2.this, token);
-                                        MainActivity.startActivity(RegisterActivity2.this, BaseActivity.REQUEST_REGISTER, BaseActivity.RESULT_OK);
-                                    }
-                                }, new Consumer<Throwable>() {
-                                    @Override
-                                    public void accept(@NonNull Throwable throwable) throws Exception {
-                                        showSnackbar("注册失败！" + throwable.getMessage());
-                                        throwable.printStackTrace();
-                                        dismissDialog();
-                                    }
-                                });
+                        .subscribe(new Observer<Token>() {
+                            @Override
+                            public void onSubscribe(Disposable d) {
+                                showWaitingDialog("请稍候", "注册中", d);
+                            }
+
+                            @Override
+                            public void onNext(Token token) {
+                                Preferences.setToken(RegisterActivity2.this, token);
+                                MainActivity.startActivity(RegisterActivity2.this, BaseActivity.REQUEST_REGISTER, BaseActivity.RESULT_OK);
+                            }
+
+                            @Override
+                            public void onError(Throwable e) {
+                                showSnackbar("注册失败！" + e.getMessage());
+                                e.printStackTrace();
+                                dismissDialog();
+                            }
+
+                            @Override
+                            public void onComplete() {
+                                dismissDialog();
+                            }
+                        });
 
             }
         });

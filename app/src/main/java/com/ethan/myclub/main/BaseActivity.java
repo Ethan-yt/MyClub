@@ -254,6 +254,8 @@ public abstract class BaseActivity extends AppCompatActivity {
     private void showDialog(String tittle, String message, Disposable disposable, int style) {
 
         hideKeyboard();//隐藏
+        if(mProgressDialog != null)
+            dismissDialog();
         ProgressDialog dialog = new ProgressDialog(this);
         dialog.setProgressStyle(style);// 设置进度条的形式为圆形转动的进度条
         dialog.setCanceledOnTouchOutside(false);// 设置在点击Dialog外是否取消Dialog进度条

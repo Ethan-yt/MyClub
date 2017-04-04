@@ -71,14 +71,24 @@ public class ClubViewModel {
 
     private void notifyClubsObservable(Club[] clubsArray, int resultCode) {
 
+
+
         if (resultCode == GET_CLUBS_RESULT_OK) {
-            mBinding.recyclerView.setLayoutFrozen(false);
-            List<Club> dataArray = Arrays.asList(clubsArray);
-            mAdapter.setNewData(dataArray);
-        } else {
             if (clubsArray != null && clubsArray.length == 0)
+            {
                 mEmptyView.showEmptyView("还没有加入社团哦", "快去发现你喜欢的社团吧！");
-            else switch (resultCode) {
+                mAdapter.setNewData(null);
+                mBinding.recyclerView.setLayoutFrozen(true);
+                mAdapter.setEmptyView(mEmptyView);
+            }
+            else
+            {
+                mBinding.recyclerView.setLayoutFrozen(false);
+                List<Club> dataArray = Arrays.asList(clubsArray);
+                mAdapter.setNewData(dataArray);
+            }
+        } else {
+            switch (resultCode) {
                 case GET_CLUBS_RESULT_NOT_LOGIN:
                     mEmptyView.showNotLoginView();
                     break;
