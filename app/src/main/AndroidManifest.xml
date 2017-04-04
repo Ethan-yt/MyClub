@@ -18,6 +18,7 @@
         <activity android:name=".main.WelcomeActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
+
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
@@ -38,7 +39,7 @@
             android:theme="@style/AppTheme.Dark"/>
         <activity android:name=".user.profile.view.ProfileEditActivity"/>
         <activity android:name=".user.message.messageActivity"/>
-
+        <activity android:name=".club.create.view.ClubCreateActivity"/>
     </application>
 
 </manifest>

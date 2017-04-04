@@ -45,5 +45,14 @@ public interface ApiService {
     Observable<List<String>> getClubSuggestion(@Query("keyword") String keyWord);
 
     @GET("api/club/search/")
-    Observable<ClubResult> searchClub(@Query("keyword")String keyWord,@Query("page") int page ,@Query("items") int items);
+    Observable<ClubResult> searchClub(@Query("keyword") String keyWord, @Query("page") int page, @Query("items") int items);
+
+    @FormUrlEncoded
+    @POST("api/club/")
+    Observable<com.ethan.myclub.club.create.model.Club>
+    createClub(@Field("club_name") String clubName,
+               @Field("college_id") String collegeId,
+               @Field("brief_introduce") String bief_introduce,
+               @Field("contact") String contact);
+
 }

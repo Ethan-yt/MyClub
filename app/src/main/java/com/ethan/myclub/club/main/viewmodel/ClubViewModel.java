@@ -88,6 +88,7 @@ public class ClubViewModel {
                 mAdapter.setNewData(dataArray);
             }
         } else {
+            CacheUtil.get(mFragment.getContext()).remove(Preferences.CACHE_USER_CLUB_LIST);//登录或者注册成功，清除缓存
             switch (resultCode) {
                 case GET_CLUBS_RESULT_NOT_LOGIN:
                     mEmptyView.showNotLoginView();
