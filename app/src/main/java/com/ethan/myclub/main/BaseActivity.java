@@ -119,6 +119,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         @DrawableRes
         private int mNavIconId = -1;
         private View.OnClickListener mNavOnClickListener;
+        private boolean mIsAnimate = false;
 
 
         private ToolbarWrapper() {
@@ -128,9 +129,12 @@ public abstract class BaseActivity extends AppCompatActivity {
 
         public ToolbarWrapper dismiss() {
             if (mAppBarLayout != null) {
+                if(mIsAnimate)
+                {
+                    Animation out = AnimationUtils.loadAnimation(BaseActivity.this, android.R.anim.fade_out);
+                    mAppBarLayout.startAnimation(out);
+                }
                 mRootLayout.removeView(mAppBarLayout);
-                Animation out = AnimationUtils.loadAnimation(BaseActivity.this, android.R.anim.fade_out);
-                mAppBarLayout.startAnimation(out);
                 mToolbarWrapper = new ToolbarWrapper();
             }
             return mToolbarWrapper;
@@ -146,7 +150,10 @@ public abstract class BaseActivity extends AppCompatActivity {
             mIsTitleInCenter = isCenter;
             return this;
         }
-
+        public ToolbarWrapper withAnimate() {
+            mIsAnimate = true;
+            return this;
+        }
         public ToolbarWrapper setMenu(@MenuRes int resId, Toolbar.OnMenuItemClickListener onMenuItemClickListener) {
             return setMenu(resId, onMenuItemClickListener, null);
         }
@@ -218,8 +225,11 @@ public abstract class BaseActivity extends AppCompatActivity {
                 mToolbar.setNavigationIcon(mNavIconId);
                 mToolbar.setNavigationOnClickListener(mNavOnClickListener);
             }
-            Animation in = AnimationUtils.loadAnimation(BaseActivity.this, android.R.anim.fade_in);
-            mAppBarLayout.startAnimation(in);
+            if(mIsAnimate)
+            {
+                Animation in = AnimationUtils.loadAnimation(BaseActivity.this, android.R.anim.fade_in);
+                mAppBarLayout.startAnimation(in);
+            }
         }
 
         public void close() {
@@ -251,7 +261,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     public ProgressDialog mProgressDialog;
     public Disposable mDisposable;
 
-    private void showDialog(String tittle, String message, Disposable disposable, int style) {
+    private void showDialog(String title, String message, Disposable disposable, int style) {
 
         hideKeyboard();//隐藏
         if(mProgressDialog != null)
@@ -259,7 +269,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         ProgressDialog dialog = new ProgressDialog(this);
         dialog.setProgressStyle(style);// 设置进度条的形式为圆形转动的进度条
         dialog.setCanceledOnTouchOutside(false);// 设置在点击Dialog外是否取消Dialog进度条
-        dialog.setTitle(tittle);
+        dialog.setTitle(title);
         dialog.setMessage(message);
         if (disposable != null) {
             mDisposable = disposable;
@@ -290,20 +300,20 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
 
-    public void showWaitingDialog(String tittle, String message, Disposable d) {
-        showDialog(tittle, message, d, ProgressDialog.STYLE_SPINNER);
+    public void showWaitingDialog(String title, String message, Disposable d) {
+        showDialog(title, message, d, ProgressDialog.STYLE_SPINNER);
     }
 
-    public void showWaitingDialog(String tittle, String message) {
-        showWaitingDialog(tittle, message, null);
+    public void showWaitingDialog(String title, String message) {
+        showWaitingDialog(title, message, null);
     }
 
-    public void showProgressDialog(String tittle, String message, Disposable d) {
-        showDialog(tittle, message, d, ProgressDialog.STYLE_HORIZONTAL);
+    public void showProgressDialog(String title, String message, Disposable d) {
+        showDialog(title, message, d, ProgressDialog.STYLE_HORIZONTAL);
     }
 
-    public void showProgressDialog(String tittle, String message) {
-        showProgressDialog(tittle, message, null);
+    public void showProgressDialog(String title, String message) {
+        showProgressDialog(title, message, null);
     }
 
     public void dismissDialog() {

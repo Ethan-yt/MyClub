@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.ethan.myclub.R;
+import com.ethan.myclub.club.create.view.ClubCreateActivity;
 import com.ethan.myclub.club.main.viewmodel.ClubViewModel;
 import com.ethan.myclub.databinding.FragmentClubBinding;
 import com.ethan.myclub.main.BaseActivity;
@@ -44,6 +45,7 @@ public class ClubListFragment extends BaseFragment {
         if (mBaseActivity != null) {
             mBaseActivity.getToolbarWrapper()
                     .dismiss()
+                    .withAnimate()
                     .setTitle("我的社团", true)
                     .setMenu(R.menu.toolbar_club, new MyMenuItemClickListener())
                     .show();
@@ -64,6 +66,9 @@ public class ClubListFragment extends BaseFragment {
                     break;
                 case R.id.action_add:
                     mBaseActivity.startActivity(mBaseActivity, MainActivity.REQUEST_ADD_CLUB, Activity.RESULT_OK);
+                    break;
+                case R.id.action_create:
+                    ClubCreateActivity.startForResult(mBaseActivity, MainActivity.REQUEST_CREATE_CLUB);
                     break;
             }
 

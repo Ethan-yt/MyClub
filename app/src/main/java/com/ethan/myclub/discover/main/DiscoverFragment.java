@@ -71,6 +71,7 @@ public class DiscoverFragment extends BaseFragment {
         if (mBaseActivity != null) {
             mBaseActivity.getToolbarWrapper()
                     .dismiss()
+                    .withAnimate()
                     .setTitle("")
                     .setMenu(R.menu.toolbar_discover,
                             new Toolbar.OnMenuItemClickListener() {
