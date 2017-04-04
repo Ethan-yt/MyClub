@@ -113,15 +113,15 @@ public class ProfileEditViewModel {
 
         view.findViewById(R.id.btn_camera)
                 .setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent takeIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                //下面这句指定调用相机拍照后的照片存储的路径
-                takeIntent.putExtra(MediaStore.EXTRA_OUTPUT, mAvatarUri);
-                mActivity.startActivityForResult(takeIntent, ProfileEditActivity.REQUEST_CODE_CAMERA);
-                mBottomSheetDialog.dismiss();
-            }
-        });
+                    @Override
+                    public void onClick(View v) {
+                        Intent takeIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                        //下面这句指定调用相机拍照后的照片存储的路径
+                        takeIntent.putExtra(MediaStore.EXTRA_OUTPUT, mAvatarUri);
+                        mActivity.startActivityForResult(takeIntent, ProfileEditActivity.REQUEST_CODE_CAMERA);
+                        mBottomSheetDialog.dismiss();
+                    }
+                });
         view.findViewById(R.id.btn_pick)
                 .setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -266,6 +266,7 @@ public class ProfileEditViewModel {
             ActivityCompat.finishAfterTransition(mActivity);
     }
 
+
     @BindingAdapter({"imageUri"})
     public static void loadImage(final ImageView view, Uri imageUri) {
         Object target;
@@ -274,6 +275,14 @@ public class ProfileEditViewModel {
         } else {
             target = imageUri;
         }
+        Boolean skipMemoryCache = true;
+        DiskCacheStrategy diskCacheStrategy = DiskCacheStrategy.NONE;
+
+        if (imageUri != null && imageUri.getScheme().equals("http")) {
+            skipMemoryCache = false;
+            diskCacheStrategy = DiskCacheStrategy.ALL;
+        }
+
         Glide.with(view.getContext())
                 .load(target)
                 .listener(new RequestListener<Object, GlideDrawable>() {
@@ -289,9 +298,11 @@ public class ProfileEditViewModel {
                     }
                 })
                 .crossFade()
-                .skipMemoryCache(true)
-                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                .skipMemoryCache(skipMemoryCache)
+                .diskCacheStrategy(diskCacheStrategy)
                 .bitmapTransform(new CropCircleTransformation(view.getContext()))
                 .into(view);
+
+
     }
 }
