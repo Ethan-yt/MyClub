@@ -120,7 +120,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         private int mNavIconId = -1;
         private View.OnClickListener mNavOnClickListener;
         private boolean mIsAnimate = false;
-
+        private boolean mIsScroll = false;
 
         private ToolbarWrapper() {
             if (mRootLayout == null)
@@ -154,6 +154,12 @@ public abstract class BaseActivity extends AppCompatActivity {
             mIsAnimate = true;
             return this;
         }
+
+        public ToolbarWrapper setScrollable(){
+            mIsScroll = true;
+            return this;
+        }
+
         public ToolbarWrapper setMenu(@MenuRes int resId, Toolbar.OnMenuItemClickListener onMenuItemClickListener) {
             return setMenu(resId, onMenuItemClickListener, null);
         }
@@ -214,9 +220,17 @@ public abstract class BaseActivity extends AppCompatActivity {
             } else
                 mToolbar.setTitle(mTitle);
 
+
+
+
             setSupportActionBar(mToolbar);
-
-
+            if(mIsScroll)
+            {
+                AppBarLayout.LayoutParams params =
+                        (AppBarLayout.LayoutParams) mToolbar.getLayoutParams();
+                params.setScrollFlags(AppBarLayout.LayoutParams.SCROLL_FLAG_SCROLL
+                        | AppBarLayout.LayoutParams.SCROLL_FLAG_ENTER_ALWAYS);
+            }
             if (mMenuResId != -1 && mOnMenuItemClickListener != null) {
                 mToolbar.setOnMenuItemClickListener(mOnMenuItemClickListener);
             }
@@ -230,6 +244,7 @@ public abstract class BaseActivity extends AppCompatActivity {
                 Animation in = AnimationUtils.loadAnimation(BaseActivity.this, android.R.anim.fade_in);
                 mAppBarLayout.startAnimation(in);
             }
+
         }
 
         public void close() {

@@ -33,18 +33,19 @@
 
         <TextView
             android:id="@+id/tv_club_name"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_below="@id/iv_club_badge"
             android:layout_marginBottom="2dp"
-            android:lines="1"
-            android:ellipsize="end"
             android:layout_marginLeft="16dp"
-            android:layout_marginStart="16dp"
+            android:layout_marginRight="16dp"
+            android:ellipsize="end"
+            android:lines="1"
             android:textColor="#909090"
             android:textSize="16sp"
             app:layout_constraintBottom_toTopOf="@+id/tv_memberNumber"
             app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
             tools:text="烘焙社"/>
 
         <TextView
@@ -63,7 +64,9 @@
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            tools:text="插画在中国被人们俗称为插图。今天通行于国外市场的商业插画包括出版物配图、卡通吉祥物、影视海报、游戏人物设定及游戏内置的美术场景设计、广告、漫画、绘本、贺卡、挂历、装饰画、包装等多种形式。"/>
+            tools:text="插画在中国被人们俗称为插图。今天通行于国外市场的商业插画包括出版物配图、卡通吉祥物、影视海报、游戏人物设定及游戏内置的美术场景设计、广告、漫画、绘本、贺卡、挂历、装饰画、包装等多种形式。"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"/>
 
         <TextView
             android:id="@+id/tv_memberNumber"
@@ -75,15 +78,14 @@
             android:textSize="9sp"
             app:layout_constraintBottom_toTopOf="@+id/tv_club_brief_introduce"
             app:layout_constraintLeft_toLeftOf="parent"
-            tools:text="22个成员"/>
+            tools:text="22个成员"
+            android:layout_marginStart="16dp"/>
 
         <view
             class="android.support.v4.view.ViewPager"
             id="@+id/view2"
             android:layout_width="0dp"
             android:layout_height="1dp"
-            android:layout_marginLeft="0dp"
-            android:layout_marginRight="0dp"
             android:background="@drawable/divider_normal"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
@@ -103,7 +105,7 @@
             android:textSize="10sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            />
+            android:layout_marginEnd="16dp"/>
 
     </android.support.constraint.ConstraintLayout>
 </android.support.v7.widget.CardView>

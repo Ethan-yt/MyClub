@@ -71,8 +71,6 @@ public class ClubViewModel {
 
     private void notifyClubsObservable(Club[] clubsArray, int resultCode) {
 
-
-
         if (resultCode == GET_CLUBS_RESULT_OK) {
             if (clubsArray != null && clubsArray.length == 0)
             {

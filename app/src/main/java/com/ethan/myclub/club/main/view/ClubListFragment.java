@@ -12,6 +12,7 @@ import com.ethan.myclub.R;
 import com.ethan.myclub.club.create.view.ClubCreateActivity;
 import com.ethan.myclub.club.main.viewmodel.ClubViewModel;
 import com.ethan.myclub.databinding.FragmentClubBinding;
+import com.ethan.myclub.global.Preferences;
 import com.ethan.myclub.main.BaseActivity;
 import com.ethan.myclub.main.BaseFragment;
 import com.ethan.myclub.main.MainActivity;
@@ -43,12 +44,17 @@ public class ClubListFragment extends BaseFragment {
     public void willBeDisplayed() {
         super.willBeDisplayed();
         if (mBaseActivity != null) {
-            mBaseActivity.getToolbarWrapper()
+            BaseActivity.ToolbarWrapper toolbarWrapper = mBaseActivity.getToolbarWrapper()
                     .dismiss()
                     .withAnimate()
-                    .setTitle("我的社团", true)
-                    .setMenu(R.menu.toolbar_club, new MyMenuItemClickListener())
-                    .show();
+                    .setScrollable()
+                    .setTitle("我的社团", true);
+
+            if (Preferences.sIsLogin.get())
+                toolbarWrapper.setMenu(R.menu.toolbar_club, new MyMenuItemClickListener());
+
+            toolbarWrapper.show();
+
             Utils.StatusBarLightMode(mBaseActivity, true);
         }
         if (mViewModel != null)

@@ -1,5 +1,6 @@
 package com.ethan.myclub.club.create.viewmodel;
 
+import android.app.Activity;
 import android.databinding.ObservableField;
 
 import com.ethan.myclub.club.create.model.Club;
@@ -46,6 +47,7 @@ public class ClubCreateViewModel {
 
                     @Override
                     public void onNext(Club club) {
+                        mActivity.setResult(Activity.RESULT_OK);
                         mActivity.finish();
                     }
 
