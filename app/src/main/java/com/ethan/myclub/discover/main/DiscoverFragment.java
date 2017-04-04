@@ -113,53 +113,34 @@ public class DiscoverFragment extends BaseFragment {
 
                                         @Override
                                         public boolean onQueryTextChange(String query) {
-                                            Fragment fragment = mAdapter.getItem(mViewPager.getCurrentItem());
-                                            switch (mViewPager.getCurrentItem()) {
-                                                case 0:
-                                                    break;
-                                                case 1:
-                                                    ((ClubFragment)fragment).mKeyWord = query;
-                                                    break;
-                                                case 2:
-                                                    break;
-                                            }
+                                            TabFragment fragment = (TabFragment) mAdapter.getItem(mViewPager.getCurrentItem());
+                                            fragment.mKeyWord = query;
                                             if (query.length() >= 2) {
-                                                Observable<List<String>> observable = null;
-                                                switch (mViewPager.getCurrentItem()) {
-                                                    case 0:
-                                                        break;
-                                                    case 1:
-                                                        ((ClubFragment)fragment).mKeyWord = query;
-                                                        observable = ApiHelper.getProxyWithoutToken(mBaseActivity).getClubSuggestion(query);
-                                                        break;
-                                                    case 2:
-                                                        break;
-                                                }
-                                                if (observable != null)
-                                                    observable.observeOn(AndroidSchedulers.mainThread())
-                                                            .subscribe(new Consumer<List<String>>() {
-                                                                @Override
-                                                                public void accept(@NonNull List<String> strs) throws Exception {
-                                                                    final String[] sAutocompleteColNames = new String[]{
-                                                                            BaseColumns._ID,                         // necessary for adapter
-                                                                            SearchManager.SUGGEST_COLUMN_TEXT_1      // the full search term
-                                                                    };
+                                                fragment.getSuggestionObservable(query, mBaseActivity)
+                                                        .observeOn(AndroidSchedulers.mainThread())
+                                                        .subscribe(new Consumer<List<String>>() {
+                                                            @Override
+                                                            public void accept(@NonNull List<String> strs) throws Exception {
+                                                                final String[] sAutocompleteColNames = new String[]{
+                                                                        BaseColumns._ID,                         // necessary for adapter
+                                                                        SearchManager.SUGGEST_COLUMN_TEXT_1      // the full search term
+                                                                };
 
-                                                                    MatrixCursor cursor = new MatrixCursor(sAutocompleteColNames);
-                                                                    // parse your search terms into the MatrixCursor
-                                                                    for (int index = 0; index < strs.size(); index++) {
-                                                                        String term = strs.get(index);
-                                                                        Object[] row = new Object[]{index, term};
-                                                                        cursor.addRow(row);
-                                                                    }
-                                                                    searchView.getSuggestionsAdapter().changeCursor(cursor);
+                                                                MatrixCursor cursor = new MatrixCursor(sAutocompleteColNames);
+                                                                // parse your search terms into the MatrixCursor
+                                                                for (int index = 0; index < strs.size(); index++) {
+                                                                    String term = strs.get(index);
+                                                                    Object[] row = new Object[]{index, term};
+                                                                    cursor.addRow(row);
                                                                 }
-                                                            }, new Consumer<Throwable>() {
-                                                                @Override
-                                                                public void accept(@NonNull Throwable throwable) throws Exception {
-                                                                    throwable.printStackTrace();
-                                                                }
-                                                            });
+                                                                searchView.getSuggestionsAdapter().changeCursor(cursor);
+                                                            }
+                                                        }, new Consumer<Throwable>() {
+                                                            @Override
+                                                            public void accept(@NonNull Throwable throwable) throws Exception {
+                                                                throwable.printStackTrace();
+                                                            }
+                                                        });
 
 
                                             } else {
@@ -167,21 +148,12 @@ public class DiscoverFragment extends BaseFragment {
                                             }
                                             return true;
                                         }
+
                                         //提交搜索结果
                                         @Override
                                         public boolean onQueryTextSubmit(String query) {
-                                            Fragment fragment = mAdapter.getItem(mViewPager.getCurrentItem());
-
-                                            switch (mViewPager.getCurrentItem()) {
-                                                case 0:
-                                                    break;
-                                                case 1:
-                                                    ((ClubFragment)fragment).updateClubList(1,10);
-                                                    break;
-                                                case 2:
-                                                    break;
-                                            }
-
+                                            TabFragment fragment = (TabFragment) mAdapter.getItem(mViewPager.getCurrentItem());
+                                            fragment.update(1, 10);
                                             if (query.length() >= 2) {
                                                 searchView.getSuggestionsAdapter().changeCursor(null);
                                                 return true;
