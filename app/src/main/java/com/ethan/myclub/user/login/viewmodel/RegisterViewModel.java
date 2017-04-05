@@ -1,10 +1,8 @@
 package com.ethan.myclub.user.login.viewmodel;
 
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.databinding.ObservableBoolean;
 import android.databinding.ObservableField;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.util.Pair;
 import android.support.v7.app.AlertDialog;
