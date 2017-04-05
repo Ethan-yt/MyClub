@@ -6,4 +6,9 @@
 
     <color name="darkBackground">#eaeaea</color>
     <color name="toolbarTitleText">#707070</color>
+
+    <color name="si_default_text_color">#FF0000</color>
+    <color name="si_default_text_color_selected">#FF00FF</color>
+    <color name="si_default_indicator_bg">#ee9999</color>
+
 </resources>

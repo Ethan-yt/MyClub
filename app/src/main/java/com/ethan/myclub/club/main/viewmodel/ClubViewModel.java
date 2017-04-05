@@ -9,6 +9,7 @@ import com.ethan.myclub.club.main.adapter.ClubListAdapter;
 import com.ethan.myclub.club.main.model.Club;
 import com.ethan.myclub.club.main.view.ClubListFragment;
 import com.ethan.myclub.club.main.view.EmptyView;
+import com.ethan.myclub.club.operation.view.ClubOperationActivity;
 import com.ethan.myclub.databinding.FragmentClubBinding;
 import com.ethan.myclub.global.Preferences;
 import com.ethan.myclub.network.ApiHelper;
@@ -44,6 +45,13 @@ public class ClubViewModel {
 
         mAdapter = new ClubListAdapter(null);
         mAdapter.openLoadAnimation(BaseQuickAdapter.ALPHAIN);
+        mAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                ClubOperationActivity.start(mFragment.getActivity(), (Club) adapter.getItem(position));
+            }
+        });
+
         mBinding.recyclerView.setLayoutManager(new GridLayoutManager(mFragment.getContext(), 2));
         mBinding.recyclerView.setAdapter(mAdapter);
 
@@ -72,8 +80,7 @@ public class ClubViewModel {
     private void notifyClubsObservable(Club[] clubsArray, int resultCode) {
 
         if (resultCode == GET_CLUBS_RESULT_OK) {
-            if (clubsArray != null && clubsArray.length == 0)
-            {
+            if (clubsArray == null || clubsArray.length == 0) {
                 mEmptyView.showEmptyView("还没有加入社团哦", "快去发现你喜欢的社团吧！");
                 mAdapter.setNewData(null);
                 mBinding.recyclerView.setLayoutFrozen(true);
@@ -82,8 +89,8 @@ public class ClubViewModel {
             else
             {
                 mBinding.recyclerView.setLayoutFrozen(false);
-                List<Club> dataArray = Arrays.asList(clubsArray);
-                mAdapter.setNewData(dataArray);
+                List<Club> dataList = Arrays.asList(clubsArray);
+                mAdapter.setNewData(dataList);
             }
         } else {
             CacheUtil.get(mFragment.getContext()).remove(Preferences.CACHE_USER_CLUB_LIST);//登录或者注册成功，清除缓存
