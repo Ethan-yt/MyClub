@@ -41,9 +41,7 @@ public class ClubItemViewModel {
                     }
                 })
                 .crossFade()
-                //.bitmapTransform(new CropCircleTransformation(view.getContext()))
-                //.skipMemoryCache(true)
-                //.diskCacheStrategy(DiskCacheStrategy.NONE)
+                .bitmapTransform(new CropCircleTransformation(view.getContext()))
                 .into(view);
     }
 }
