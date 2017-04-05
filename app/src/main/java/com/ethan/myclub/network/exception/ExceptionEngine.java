@@ -10,6 +10,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.net.ConnectException;
+import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
 
 /**
@@ -86,6 +87,9 @@ public class ExceptionEngine extends Throwable {
         } else if (e instanceof ConnectException
                 || e instanceof UnknownHostException) {
             ex = new ApiException(e, ApiException.NETWORK_ERROR, "连接失败");
+            return ex;
+        }else if (e instanceof SocketTimeoutException){
+            ex = new ApiException(e, ApiException.HTTP_ERROR, "连接超时");
             return ex;
         } else {
             ex = new ApiException(e, ApiException.UNKNOWN_ERROR, "未知错误");
