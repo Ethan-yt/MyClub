@@ -3,8 +3,11 @@ package com.ethan.myclub.discover.club;
 import android.util.Log;
 import android.view.View;
 
+import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.ethan.myclub.club.info.view.ClubInfoActivity;
 import com.ethan.myclub.discover.club.adapter.ClubAdapter;
 import com.ethan.myclub.discover.club.model.ClubResult;
+import com.ethan.myclub.discover.club.model.Hit;
 import com.ethan.myclub.discover.main.TabFragment;
 import com.ethan.myclub.main.BaseActivity;
 import com.ethan.myclub.network.ApiHelper;
@@ -23,6 +26,12 @@ public class ClubFragment extends TabFragment {
 
     public ClubFragment() {
         mAdapter = new ClubAdapter(this, null);
+        mAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                ClubInfoActivity.start(getActivity(), String.valueOf(((Hit) adapter.getItem(position)).id));
+            }
+        });
     }
 
     public void update(final int page, final int items) {
@@ -45,7 +54,6 @@ public class ClubFragment extends TabFragment {
                         mAdapter.setEnableLoadMore(true);
                         mCurrentPage++;
                         if (page == 1) {
-                            mSwipeRefreshLayout.setRefreshing(false);
                             if (clubResult.hits.hits == null || clubResult.hits.hits.size() == 0) {
                                 mEmptyView.showEmptyView("还没有这个社团", "你可以创建这个社团哦！");
                                 mAdapter.setNewData(null);
@@ -96,7 +104,8 @@ public class ClubFragment extends TabFragment {
 
                     @Override
                     public void onComplete() {
-
+                        if (page == 1)
+                            mSwipeRefreshLayout.setRefreshing(false);
                     }
                 });
     }
