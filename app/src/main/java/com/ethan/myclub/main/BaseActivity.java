@@ -1,16 +1,24 @@
 package com.ethan.myclub.main;
 
+import android.animation.ObjectAnimator;
+import android.animation.StateListAnimator;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.MenuRes;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.Snackbar;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -18,6 +26,7 @@ import android.util.TypedValue;
 import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.inputmethod.InputMethodManager;
@@ -94,9 +103,6 @@ public abstract class BaseActivity extends AppCompatActivity {
         if (!(view instanceof ViewGroup))
             throw new RuntimeException("Content view of a BaseActivity must be a ViewGroup!");
         mRootLayout = (ViewGroup) view;
-//        View decorView = getWindow().getDecorView();
-//        ViewGroup contentView = (ViewGroup) decorView.findViewById(android.R.id.content);
-//        final View childView = contentView.getChildAt(0);
 
     }
 
@@ -112,15 +118,20 @@ public abstract class BaseActivity extends AppCompatActivity {
         private Toolbar mToolbar;
         @MenuRes
         private int mMenuResId = -1;
-        private String mTitle;
+        private String mTitle = "";
         private boolean mIsTitleInCenter = false;
         private Toolbar.OnMenuItemClickListener mOnMenuItemClickListener;
         private OnFinishCreateMenu mOnFinishCreateMenu;
-        @DrawableRes
-        private int mNavIconId = -1;
+        private Drawable mNavIcon;
         private View.OnClickListener mNavOnClickListener;
         private boolean mIsAnimate = false;
         private boolean mIsScroll = false;
+        private boolean mIsTransparent = false;
+        private int mColor;
+        private boolean mIsUseColor = false;
+
+
+        private ViewGroup mTarget;
 
         private ToolbarWrapper() {
             if (mRootLayout == null)
@@ -129,8 +140,7 @@ public abstract class BaseActivity extends AppCompatActivity {
 
         public ToolbarWrapper dismiss() {
             if (mAppBarLayout != null) {
-                if(mIsAnimate)
-                {
+                if (mIsAnimate) {
                     Animation out = AnimationUtils.loadAnimation(BaseActivity.this, android.R.anim.fade_out);
                     mAppBarLayout.startAnimation(out);
                 }
@@ -145,17 +155,28 @@ public abstract class BaseActivity extends AppCompatActivity {
             return this;
         }
 
+        public ToolbarWrapper transparent() {
+            mIsTransparent = true;
+            return this;
+        }
+
+        public ToolbarWrapper target(ViewGroup target) {
+            mTarget = target;
+            return this;
+        }
+
         public ToolbarWrapper setTitle(String title, boolean isCenter) {
             mTitle = title;
             mIsTitleInCenter = isCenter;
             return this;
         }
+
         public ToolbarWrapper withAnimate() {
             mIsAnimate = true;
             return this;
         }
 
-        public ToolbarWrapper setScrollable(){
+        public ToolbarWrapper setScrollable() {
             mIsScroll = true;
             return this;
         }
@@ -183,10 +204,17 @@ public abstract class BaseActivity extends AppCompatActivity {
         }
 
         public ToolbarWrapper showNavIcon(@DrawableRes int navIconId, View.OnClickListener onClickListener) {
-            mNavIconId = navIconId;
+            mNavIcon = ContextCompat.getDrawable(BaseActivity.this, navIconId);
             mNavOnClickListener = onClickListener;
             return this;
         }
+
+        public ToolbarWrapper setColor(int color) {
+            mIsUseColor = true;
+            mColor = color;
+            return this;
+        }
+
 
         public void show() {
             show(-1);
@@ -208,7 +236,9 @@ public abstract class BaseActivity extends AppCompatActivity {
 
             if (layoutResId == -1)
                 layoutResId = R.layout.view_toolbar;
-            ViewGroup v = (ViewGroup) View.inflate(BaseActivity.this, layoutResId, mRootLayout);
+            if (mTarget == null)
+                mTarget = mRootLayout;
+            ViewGroup v = (ViewGroup) View.inflate(BaseActivity.this, layoutResId, mTarget);
             ViewCompat.requestApplyInsets(mRootLayout);
             mToolbar = (Toolbar) v.findViewById(R.id.toolbar);
 
@@ -217,15 +247,31 @@ public abstract class BaseActivity extends AppCompatActivity {
                 TextView tv = (TextView) v.findViewById(R.id.center_title);
                 tv.setText(mTitle);
                 mToolbar.setTitle("");
-            } else
+                if (mIsUseColor)
+                    tv.setTextColor(mColor);
+            } else {
                 mToolbar.setTitle(mTitle);
+                if (mIsUseColor) {
+                    mToolbar.setTitleTextColor(mColor);
+                }
+            }
 
+            if (mIsTransparent) {
+                mAppBarLayout.setBackgroundColor(Color.TRANSPARENT);
+                mToolbar.setBackgroundColor(Color.TRANSPARENT);
 
+                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+                    StateListAnimator stateListAnimator = new StateListAnimator();
+                    stateListAnimator.addState(new int[0], ObjectAnimator.ofFloat(mAppBarLayout, "elevation", 0));
+                    mAppBarLayout.setStateListAnimator(stateListAnimator);
 
+                }
+
+            }
 
             setSupportActionBar(mToolbar);
-            if(mIsScroll)
-            {
+
+            if (mIsScroll) {
                 AppBarLayout.LayoutParams params =
                         (AppBarLayout.LayoutParams) mToolbar.getLayoutParams();
                 params.setScrollFlags(AppBarLayout.LayoutParams.SCROLL_FLAG_SCROLL
@@ -235,12 +281,13 @@ public abstract class BaseActivity extends AppCompatActivity {
                 mToolbar.setOnMenuItemClickListener(mOnMenuItemClickListener);
             }
 
-            if (mNavIconId != -1) {
-                mToolbar.setNavigationIcon(mNavIconId);
+            if (mNavIcon != null) {
+                if (mIsUseColor)
+                    mNavIcon.setColorFilter(mColor, PorterDuff.Mode.SRC_ATOP);
+                mToolbar.setNavigationIcon(mNavIcon);
                 mToolbar.setNavigationOnClickListener(mNavOnClickListener);
             }
-            if(mIsAnimate)
-            {
+            if (mIsAnimate) {
                 Animation in = AnimationUtils.loadAnimation(BaseActivity.this, android.R.anim.fade_in);
                 mAppBarLayout.startAnimation(in);
             }
@@ -279,7 +326,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     private void showDialog(String title, String message, Disposable disposable, int style) {
 
         hideKeyboard();//隐藏
-        if(mProgressDialog != null)
+        if (mProgressDialog != null)
             dismissDialog();
         ProgressDialog dialog = new ProgressDialog(this);
         dialog.setProgressStyle(style);// 设置进度条的形式为圆形转动的进度条
