@@ -73,6 +73,12 @@ public class ProfileEditViewModel {
                     }
                 })
                 .showBackIcon()
+                .showNavIcon(R.drawable.ic_toolbar_clear_white_24dp, new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        mActivity.onBackPressed();
+                    }
+                })
                 .show();
         mAvatarFile = new File(mActivity.getExternalCacheDir(), "avatar.camera.jpg");
         ;

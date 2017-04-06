@@ -20,15 +20,12 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.ethan.myclub.R;
-import com.ethan.myclub.discover.club.ClubFragment;
 import com.ethan.myclub.main.BaseActivity;
 import com.ethan.myclub.main.BaseFragment;
-import com.ethan.myclub.network.ApiHelper;
 import com.ethan.myclub.util.Utils;
 
 import java.util.List;
 
-import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.functions.Consumer;
@@ -166,7 +163,7 @@ public class DiscoverFragment extends BaseFragment {
 
                                 }
                             })
-                    .showNavIcon(R.drawable.ic_discover_location, new View.OnClickListener() {
+                    .showNavIcon(R.drawable.ic_toolbar_discover_location, new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
 

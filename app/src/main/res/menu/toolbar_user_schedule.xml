@@ -8,7 +8,7 @@
         app:showAsAction="always" />
     <item
         android:id="@+id/action_inputCurriculum"
-        android:icon="@drawable/ic_cloud_download_24dp"
+        android:icon="@drawable/ic_toolbar_cloud_download_24dp"
         android:title="导入课程"
         app:showAsAction="always" />
     <item
