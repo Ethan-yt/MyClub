@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.provider.BaseColumns;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.CursorAdapter;
 import android.support.v4.widget.SimpleCursorAdapter;
@@ -37,6 +38,7 @@ public class DiscoverFragment extends BaseFragment {
 
     private ViewPager mViewPager;
     private TabViewPagerAdapter mAdapter;
+    private SearchView mSearchView;
 
     public DiscoverFragment() {
         // Required empty public constructor
@@ -54,6 +56,35 @@ public class DiscoverFragment extends BaseFragment {
         mViewPager.setOffscreenPageLimit(mViewPager.getAdapter().getCount());
         setCurrentTab(1);
         willBeDisplayed();
+
+        mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                if (mSearchView != null)
+                    switch (position) {
+                        case 0:
+                            mSearchView.setQueryHint("搜索活动");
+                            break;
+                        case 1:
+                            mSearchView.setQueryHint("搜索社团名称、简介或标签");
+                            break;
+                        case 2:
+                            mSearchView.setQueryHint("搜索商家名称、赞助类型或赞助活动");
+                            break;
+                    }
+
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
         return view;
     }
 
@@ -81,24 +112,24 @@ public class DiscoverFragment extends BaseFragment {
                             new BaseActivity.OnFinishCreateMenu() {
                                 @Override
                                 public void onFinish(Menu menu) {
-                                    final SearchView searchView = (SearchView) menu
+                                    mSearchView = (SearchView) menu
                                             .findItem(R.id.action_search).getActionView();
-                                    searchView.setQueryHint("搜索…");
-                                    searchView.setSubmitButtonEnabled(true);
-                                    searchView.setSuggestionsAdapter(new SimpleCursorAdapter(
+
+                                    mSearchView.setSubmitButtonEnabled(true);
+                                    mSearchView.setSuggestionsAdapter(new SimpleCursorAdapter(
                                             mBaseActivity, android.R.layout.simple_list_item_1,
                                             null,
                                             new String[]{SearchManager.SUGGEST_COLUMN_TEXT_1},
                                             new int[]{android.R.id.text1},
                                             CursorAdapter.FLAG_REGISTER_CONTENT_OBSERVER));
 
-                                    searchView.setOnSuggestionListener(new SearchView.OnSuggestionListener() {
+                                    mSearchView.setOnSuggestionListener(new SearchView.OnSuggestionListener() {
                                         @Override
                                         public boolean onSuggestionSelect(int position) {
-                                            Cursor cursor = (Cursor) searchView.getSuggestionsAdapter().getItem(position);
+                                            Cursor cursor = (Cursor) mSearchView.getSuggestionsAdapter().getItem(position);
                                             String term = cursor.getString(cursor.getColumnIndex(SearchManager.SUGGEST_COLUMN_TEXT_1));
                                             cursor.close();
-                                            searchView.setQuery(term, false);
+                                            mSearchView.setQuery(term, true);
                                             return true;
                                         }
 
@@ -107,8 +138,37 @@ public class DiscoverFragment extends BaseFragment {
                                             return onSuggestionSelect(position);
                                         }
                                     });
+                                    MenuItemCompat.setOnActionExpandListener(menu.findItem(R.id.action_search), new MenuItemCompat.OnActionExpandListener() {
+                                        //搜索前设定提示
+                                        @Override
+                                        public boolean onMenuItemActionExpand(MenuItem item) {
+                                            switch (mViewPager.getCurrentItem()) {
+                                                case 0:
+                                                    mSearchView.setQueryHint("搜索活动");
+                                                    break;
+                                                case 1:
+                                                    mSearchView.setQueryHint("搜索社团名称、简介或标签");
+                                                    break;
+                                                case 2:
+                                                    mSearchView.setQueryHint("搜索商家名称、赞助类型或赞助活动");
+                                                    break;
+                                            }
+                                            return true;
+                                        }
+
+                                        //取消时清空
+                                        @Override
+                                        public boolean onMenuItemActionCollapse(MenuItem item) {
+                                            TabFragment fragment = (TabFragment) mAdapter.getItem(mViewPager.getCurrentItem());
+                                            fragment.mKeyWord = "";
+                                            fragment.update(1, 10);
+                                            return true;
+                                        }
+                                    });
+
+
                                     //当输入搜索字符的时候，请求搜索建议
-                                    searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+                                    mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
 
                                         @Override
                                         public boolean onQueryTextChange(String query) {
@@ -132,7 +192,7 @@ public class DiscoverFragment extends BaseFragment {
                                                                     Object[] row = new Object[]{index, term};
                                                                     cursor.addRow(row);
                                                                 }
-                                                                searchView.getSuggestionsAdapter().changeCursor(cursor);
+                                                                mSearchView.getSuggestionsAdapter().changeCursor(cursor);
                                                             }
                                                         }, new Consumer<Throwable>() {
                                                             @Override
@@ -143,7 +203,7 @@ public class DiscoverFragment extends BaseFragment {
 
 
                                             } else {
-                                                searchView.getSuggestionsAdapter().changeCursor(null);
+                                                mSearchView.getSuggestionsAdapter().changeCursor(null);
                                             }
                                             return true;
                                         }
@@ -154,7 +214,7 @@ public class DiscoverFragment extends BaseFragment {
                                             TabFragment fragment = (TabFragment) mAdapter.getItem(mViewPager.getCurrentItem());
                                             fragment.update(1, 10);
                                             if (query.length() >= 2) {
-                                                searchView.getSuggestionsAdapter().changeCursor(null);
+                                                mSearchView.getSuggestionsAdapter().changeCursor(null);
                                                 return true;
                                             }
                                             return true;
