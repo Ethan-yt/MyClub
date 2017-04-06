@@ -7,7 +7,7 @@ import android.view.View;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.ethan.myclub.club.main.adapter.ClubListAdapter;
 import com.ethan.myclub.club.main.model.MyClub;
-import com.ethan.myclub.club.main.view.ClubListFragment;
+import com.ethan.myclub.club.main.view.MyClubFragment;
 import com.ethan.myclub.club.main.view.EmptyView;
 import com.ethan.myclub.club.operation.view.ClubOperationActivity;
 import com.ethan.myclub.databinding.FragmentClubBinding;
@@ -33,12 +33,12 @@ public class ClubViewModel {
     private static final String TAG = "ClubViewModel";
     private final EmptyView mEmptyView;
 
-    private ClubListFragment mFragment;
+    private MyClubFragment mFragment;
     private FragmentClubBinding mBinding;
 
     private ClubListAdapter mAdapter;
 
-    public ClubViewModel(ClubListFragment fragment, FragmentClubBinding binding) {
+    public ClubViewModel(MyClubFragment fragment, FragmentClubBinding binding) {
         mFragment = fragment;
         mBinding = binding;
         mBinding.setViewModel(this);

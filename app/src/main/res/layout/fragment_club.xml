@@ -13,7 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/darkBackground"
-        tools:context="com.ethan.myclub.club.main.view.ClubListFragment">
+        tools:context="com.ethan.myclub.club.main.view.MyClubFragment">
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recycler_view"

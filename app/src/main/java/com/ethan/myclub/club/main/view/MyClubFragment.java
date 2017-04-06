@@ -19,11 +19,11 @@ import com.ethan.myclub.main.MainActivity;
 import com.ethan.myclub.util.Utils;
 
 
-public class ClubListFragment extends BaseFragment {
+public class MyClubFragment extends BaseFragment {
 
     public ClubViewModel mViewModel;
 
-    public ClubListFragment() {
+    public MyClubFragment() {
         // Required empty public constructor
     }
 
@@ -37,6 +37,15 @@ public class ClubListFragment extends BaseFragment {
 
     @Override
     public void refresh() {
+        BaseActivity.ToolbarWrapper toolbarWrapper = mBaseActivity.getToolbarWrapper()
+                .dismiss()
+                .withAnimate()
+                .setScrollable()
+                .setTitle("我的社团", true);
+        if (Preferences.sIsLogin.get())
+            toolbarWrapper.setMenu(R.menu.toolbar_club, new MyMenuItemClickListener());
+
+        toolbarWrapper.show();
         mViewModel.updateUserClubList();
     }
 
