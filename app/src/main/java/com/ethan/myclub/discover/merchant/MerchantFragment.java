@@ -1,68 +1,138 @@
 package com.ethan.myclub.discover.merchant;
 
-import android.content.Context;
-import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.net.Uri;
+import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
 
-import com.ethan.myclub.R;
-import com.ethan.myclub.discover.dummy.DummyContent;
+import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.ethan.myclub.club.info.view.ClubInfoActivity;
+import com.ethan.myclub.discover.club.adapter.ClubAdapter;
+import com.ethan.myclub.discover.club.model.ClubResult;
+import com.ethan.myclub.discover.club.model.Hit;
+import com.ethan.myclub.discover.main.TabFragment;
+import com.ethan.myclub.discover.merchant.adapter.MerchantAdapter;
+import com.ethan.myclub.discover.merchant.model.Merchant;
+import com.ethan.myclub.main.BaseActivity;
+import com.ethan.myclub.network.ApiHelper;
 
-public class MerchantFragment extends Fragment {
+import java.util.List;
+import java.util.concurrent.TimeUnit;
 
-    // TODO: Customize parameter argument names
-    private static final String ARG_COLUMN_COUNT = "column-count";
-    // TODO: Customize parameters
-    private int mColumnCount = 1;
+import io.reactivex.Observable;
+import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
 
-    /**
-     * Mandatory empty constructor for the fragment manager to instantiate the
-     * fragment (e.g. upon screen orientation changes).
-     */
+public class MerchantFragment extends TabFragment {
+
+    private static final String TAG = "Discover Merchant";
+
     public MerchantFragment() {
-    }
+        mAdapter = new MerchantAdapter(this, null);
+        mAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                final Merchant merchant = (Merchant) adapter.getItem(position);
 
-    // TODO: Customize parameter initialization
-    @SuppressWarnings("unused")
-    public static MerchantFragment newInstance(int columnCount) {
-        MerchantFragment fragment = new MerchantFragment();
-        Bundle args = new Bundle();
-        args.putInt(ARG_COLUMN_COUNT, columnCount);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        if (getArguments() != null) {
-            mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
-        }
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_discover_merchant, container, false);
-
-        // Set the adapter
-        if (view instanceof RecyclerView) {
-            Context context = view.getContext();
-            RecyclerView recyclerView = (RecyclerView) view;
-            if (mColumnCount <= 1) {
-                recyclerView.setLayoutManager(new LinearLayoutManager(context));
-            } else {
-                recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
+                new AlertDialog.Builder(getActivity())
+                        .setMessage("️\uD83D\uDCDE 联系电话：" + merchant.contact + "\n\n" +
+                                "\uD83C\uDFE0 地址：" + merchant.location)
+                        .setPositiveButton("拨打电话", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                Intent intent=new Intent();
+                                intent.setAction(Intent.ACTION_DIAL);   //android.intent.action.DIAL
+                                intent.setData(Uri.parse("tel:"+merchant.contact));
+                                startActivity(intent);
+                            }
+                        })
+                        .show();
             }
-            recyclerView.setAdapter(new MyMerchantRecyclerViewAdapter(DummyContent.ITEMS));
-        }
-        return view;
+        });
     }
 
+    @Override
+    public void update(final int page, int items) {
+        ApiHelper.getProxyWithoutToken((BaseActivity) getActivity())
+                .searchMerchant(mKeyWord, page, items)
+                .delay(1, TimeUnit.SECONDS)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<List<Merchant>>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                        //下拉刷新动画开始
+                        if (page == 1)
+                            mSwipeRefreshLayout.setRefreshing(true);
+                    }
+
+                    @Override
+                    public void onNext(List<Merchant> merchantList) {
+                        Log.i(TAG, "update: 获取Merchant完成");
+                        //允许读取更多
+                        mAdapter.setEnableLoadMore(true);
+                        mCurrentPage++;
+                        if (page == 1) {
+                            if (merchantList == null || merchantList.size() == 0) {
+                                mEmptyView.showEmptyView("还没有这个商家", "请换一个关键字试试哦");
+                                mAdapter.setNewData(null);
+                                mRecyclerView.setLayoutFrozen(true);
+                                mAdapter.setEmptyView(mEmptyView);
+                            } else {
+                                mRecyclerView.setLayoutFrozen(false);
+                                mAdapter.setNewData(merchantList);
+                            }
+                        } else {
+                            //允许下拉刷新
+                            mSwipeRefreshLayout.setEnabled(true);
+                            mAdapter.loadMoreComplete();
+                            mAdapter.addData(merchantList);
+                        }
+                        if (merchantList.size() < 10) {
+                            mIsNoMore = true;
+                            mAdapter.loadMoreEnd();
+                        }
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        //允许读取更多
+                        mAdapter.setEnableLoadMore(true);
+                        e.printStackTrace();
+                        Log.i(TAG, "update: 获取ClubList失败");
+                        if (page == 1) {
+                            mSwipeRefreshLayout.setRefreshing(false);
+                            mEmptyView.showErrorView(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    update(1, 10);
+                                }
+                            });
+                            mAdapter.setNewData(null);
+                            mRecyclerView.setLayoutFrozen(true);
+                            mAdapter.setEmptyView(mEmptyView);
+                        } else {
+                            //允许下拉刷新
+                            mSwipeRefreshLayout.setEnabled(true);
+                            mAdapter.loadMoreFail();
+                        }
+
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        if (page == 1)
+                            mSwipeRefreshLayout.setRefreshing(false);
+                    }
+                });
+    }
+
+    @Override
+    public Observable<List<String>> getSuggestionObservable(String query, BaseActivity activity) {
+        return ApiHelper.getProxyWithoutToken(activity).getMerchantSuggestion(query);
+    }
 }
