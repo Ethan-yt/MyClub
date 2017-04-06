@@ -12,7 +12,8 @@ import com.ethan.myclub.main.BaseActivity;
 public class Operation {
     public Class<?> mActivity;
     public String mName;
-    public @DrawableRes int mIconId;
+    @DrawableRes
+    public int mIconId;
 
     public Operation(Class<?> activity, String name, int iconId) {
         mActivity = activity;

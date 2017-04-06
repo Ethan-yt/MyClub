@@ -10,7 +10,7 @@ import java.util.List;
  * Created by ethan on 2017/3/26.
  */
 
-public class Club implements Serializable {
+public class MyClub implements Serializable {
 
     @SerializedName("club_id")
     @Expose
@@ -21,9 +21,6 @@ public class Club implements Serializable {
     @SerializedName("club_badge")
     @Expose
     public String clubBadge;
-    @SerializedName("club_badge_thumbnail")
-    @Expose
-    public String clubBadgeThumbnail;
     @SerializedName("club_brief_introduce")
     @Expose
     public String clubBriefIntroduce;

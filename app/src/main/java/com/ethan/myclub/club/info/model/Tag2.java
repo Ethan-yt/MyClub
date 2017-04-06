@@ -3,14 +3,14 @@ package com.ethan.myclub.club.info.model;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-import java.io.Serializable;
+import java.util.List;
 
 /**
- * Created by ethan on 2017/4/5.
+ * Created by ethan on 2017/4/6.
  */
 
-public class Tag implements Serializable {
+public class Tag2 {
     @SerializedName("tag_name")
     @Expose
-    public String tagName;
+    public List<String> tagName;
 }

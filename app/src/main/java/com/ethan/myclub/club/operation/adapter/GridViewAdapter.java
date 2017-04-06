@@ -23,13 +23,15 @@ public class GridViewAdapter extends BaseAdapter {
 
     private Activity mContext;
     private List<Operation> mLists;//数据源
-    private String mClubId;
+    private int mClubId;
+    private int mPermission;
 
 
-    public GridViewAdapter(Activity context, List<Operation> lists, String clubId) {
+    public GridViewAdapter(Activity context, List<Operation> lists, int clubId, int permission) {
         mContext = context;
         mLists = lists;
         mClubId = clubId;
+        mPermission = permission;
     }
 
     @Override
@@ -67,8 +69,8 @@ public class GridViewAdapter extends BaseAdapter {
             public void onClick(View v) {
                 Class<?> activity = mLists.get(position).mActivity;
                 try {
-                    Method method = activity.getMethod("start", Activity.class, String.class);
-                    method.invoke(null, mContext, mClubId);
+                    Method method = activity.getMethod("start", Activity.class, int.class, int.class);
+                    method.invoke(null, mContext, mClubId, mPermission);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

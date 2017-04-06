@@ -7,7 +7,7 @@
 
         <variable
             name="club"
-            type="com.ethan.myclub.club.main.model.Club"/>
+            type="com.ethan.myclub.club.main.model.MyClub"/>
 
         <variable
             name="viewModel"

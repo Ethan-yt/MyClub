@@ -1,19 +1,24 @@
 package com.ethan.myclub.club.info.viewmodel;
 
 import android.databinding.BindingAdapter;
+import android.databinding.ObservableField;
 import android.graphics.Color;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v4.widget.TextViewCompat;
+import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.ethan.myclub.R;
+import com.ethan.myclub.club.info.edit.view.ClubInfoEditActivity;
 import com.ethan.myclub.club.info.model.Club;
 import com.ethan.myclub.club.info.model.Tag;
 import com.ethan.myclub.club.info.view.ClubInfoActivity;
 import com.ethan.myclub.databinding.ActivityClubInfoBinding;
+import com.ethan.myclub.main.BaseActivity;
 import com.ethan.myclub.network.ApiHelper;
+import com.ethan.myclub.util.Utils;
 import com.google.android.flexbox.FlexboxLayout;
 
 import io.reactivex.Observer;
@@ -23,38 +28,46 @@ import jp.wasabeef.glide.transformations.CropCircleTransformation;
 
 public class ClubInfoViewModel {
 
+
     private ClubInfoActivity mActivity;
     private ActivityClubInfoBinding mBinding;
 
-    public String mClubId;
+    public ObservableField<Club> mClub = new ObservableField<>();
 
-    public ClubInfoViewModel(ClubInfoActivity activity, ActivityClubInfoBinding binding, String clubId) {
+    public ClubInfoViewModel(ClubInfoActivity activity, ActivityClubInfoBinding binding, final int clubId, int permission) {
         mActivity = activity;
         mBinding = binding;
         mBinding.setViewModel(this);
 
-        mActivity.getToolbarWrapper()
+        BaseActivity.ToolbarWrapper toolbar = mActivity.getToolbarWrapper()
                 .setTitle("社团简介", true)
                 .setColor(Color.WHITE)
                 .transparent()
                 .showBackIcon()
-                .target(mBinding.constraintLayout)
-                .show();
+                .target(mBinding.constraintLayout);
+        if (Utils.checkPermission(permission, 1))
+            toolbar.setMenu(R.menu.toolbar_club_info, new Toolbar.OnMenuItemClickListener() {
+                @Override
+                public boolean onMenuItemClick(MenuItem item) {
+                    ClubInfoEditActivity.startForResult(mActivity, mClub.get(), ClubInfoActivity.REQUEST_EDIT_CLUB_INFO);
+                    return false;
+                }
+            });
+        toolbar.show();
 
-        mClubId = clubId;
         mBinding.swipeRefreshLayout.setColorSchemeResources(R.color.colorAccent);
         mBinding.swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                update();
+                update(clubId);
             }
         });
-        update();
+        update(clubId);
     }
 
-    private void update() {
+    public void update(int id) {
         ApiHelper.getProxyWithoutToken(mActivity)
-                .getClub(mClubId)
+                .getClub(String.valueOf(id))
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<Club>() {
                     @Override
@@ -64,16 +77,16 @@ public class ClubInfoViewModel {
 
                     @Override
                     public void onNext(Club club) {
-                        mBinding.setClub(club);
+                        mClub .set(club);
+                        mBinding.flTags.removeAllViews();
                         for (Tag tag : club.tag) {
                             TextView tv = new TextView(mActivity);
                             tv.setText(tag.tagName);
                             tv.setBackgroundResource(R.drawable.bg_tag);
                             mBinding.flTags.addView(tv);
-
                             FlexboxLayout.LayoutParams lp = (FlexboxLayout.LayoutParams) tv.getLayoutParams();
-                            lp.flexShrink = 0;
-                            lp.rightMargin = 20;
+                            lp.setMargins(10, 10, 10, 10);
+                            lp.order = tag.tagName.length();
                         }
                     }
 

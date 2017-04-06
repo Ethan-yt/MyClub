@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.ethan.myclub.R;
-import com.ethan.myclub.club.main.model.Club;
+import com.ethan.myclub.club.main.model.MyClub;
 import com.ethan.myclub.club.main.viewmodel.ClubItemViewModel;
 import com.ethan.myclub.databinding.ItemClubBinding;
 
@@ -18,18 +18,18 @@ import java.util.List;
  * Created by ethan on 2017/3/26.
  */
 
-public class ClubListAdapter extends BaseQuickAdapter<Club, ClubListAdapter.ViewHolder> {
+public class ClubListAdapter extends BaseQuickAdapter<MyClub, ClubListAdapter.ViewHolder> {
 
     private ClubItemViewModel mViewModel;
 
-    public ClubListAdapter(List<Club> data) {
+    public ClubListAdapter(List<MyClub> data) {
         super(R.layout.item_club, data);
 
         mViewModel = new ClubItemViewModel();
     }
 
     @Override
-    protected void convert(ViewHolder helper, Club item) {
+    protected void convert(ViewHolder helper, MyClub item) {
         ItemClubBinding binding = (ItemClubBinding) helper.getBinding();
         binding.setClub(item);
         binding.setViewModel(mViewModel);

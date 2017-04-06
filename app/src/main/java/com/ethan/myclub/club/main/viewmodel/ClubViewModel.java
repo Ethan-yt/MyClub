@@ -6,7 +6,7 @@ import android.view.View;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.ethan.myclub.club.main.adapter.ClubListAdapter;
-import com.ethan.myclub.club.main.model.Club;
+import com.ethan.myclub.club.main.model.MyClub;
 import com.ethan.myclub.club.main.view.ClubListFragment;
 import com.ethan.myclub.club.main.view.EmptyView;
 import com.ethan.myclub.club.operation.view.ClubOperationActivity;
@@ -48,7 +48,7 @@ public class ClubViewModel {
         mAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                ClubOperationActivity.start(mFragment.getActivity(), (Club) adapter.getItem(position));
+                ClubOperationActivity.start(mFragment.getActivity(), (MyClub) adapter.getItem(position));
             }
         });
 
@@ -66,18 +66,18 @@ public class ClubViewModel {
     public void getUserClubListCache() {
 
         Object clubsObj = CacheUtil.get(mFragment.getActivity()).getAsObject(Preferences.CACHE_USER_CLUB_LIST);
-        if (clubsObj == null || !(clubsObj instanceof Club[])) {
+        if (clubsObj == null || !(clubsObj instanceof MyClub[])) {
             Log.i(TAG, "getUserClubListCache: 读取UserClubList缓存失败，强制获取更新");
             updateUserClubList();
         } else {
-            notifyClubsObservable((Club[]) clubsObj, GET_CLUBS_RESULT_OK);
+            notifyClubsObservable((MyClub[]) clubsObj, GET_CLUBS_RESULT_OK);
             Log.i(TAG, "getUserClubListCache: 读取UserClubList缓存成功");
         }
 
     }
 
 
-    private void notifyClubsObservable(Club[] clubsArray, int resultCode) {
+    private void notifyClubsObservable(MyClub[] clubsArray, int resultCode) {
 
         if (resultCode == GET_CLUBS_RESULT_OK) {
             if (clubsArray == null || clubsArray.length == 0) {
@@ -89,7 +89,7 @@ public class ClubViewModel {
             else
             {
                 mBinding.recyclerView.setLayoutFrozen(false);
-                List<Club> dataList = Arrays.asList(clubsArray);
+                List<MyClub> dataList = Arrays.asList(clubsArray);
                 mAdapter.setNewData(dataList);
             }
         } else {
@@ -131,11 +131,11 @@ public class ClubViewModel {
                 .getMyClubs()
                 .delay(1, TimeUnit.SECONDS)
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<List<Club>>() {
+                .subscribe(new Consumer<List<MyClub>>() {
                     @Override
-                    public void accept(@NonNull List<Club> clubs) throws Exception {
+                    public void accept(@NonNull List<MyClub> clubs) throws Exception {
                         Log.i(TAG, "updateUserClubList: 获取UserClubList完成");
-                        Club[] clubsArray = clubs.toArray(new Club[0]);
+                        MyClub[] clubsArray = clubs.toArray(new MyClub[0]);
                         notifyClubsObservable(clubsArray, GET_CLUBS_RESULT_OK);
                         CacheUtil.get(mFragment.getActivity())
                                 .put(Preferences.CACHE_USER_CLUB_LIST, clubsArray, Preferences.CACHE_TIME_USER_CLUB_LIST);

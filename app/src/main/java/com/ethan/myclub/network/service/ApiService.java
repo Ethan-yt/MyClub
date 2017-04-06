@@ -1,6 +1,9 @@
 package com.ethan.myclub.network.service;
 
-import com.ethan.myclub.club.main.model.Club;
+import com.ethan.myclub.club.info.model.Club;
+import com.ethan.myclub.club.info.model.Club;
+import com.ethan.myclub.club.info.model.Tag2;
+import com.ethan.myclub.club.main.model.MyClub;
 import com.ethan.myclub.user.profile.model.Profile;
 import com.ethan.myclub.user.login.model.Valid;
 import com.ethan.myclub.discover.club.model.ClubResult;
@@ -9,6 +12,7 @@ import java.util.List;
 
 import io.reactivex.Observable;
 import okhttp3.MultipartBody;
+import retrofit2.http.Body;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
@@ -41,7 +45,7 @@ public interface ApiService {
 
     //获取我的社团
     @GET("api/club/my-club-list/")
-    Observable<List<Club>> getMyClubs();
+    Observable<List<MyClub>> getMyClubs();
 
     //获取社团搜索提示
     @GET("api/club/suggestion/")
@@ -54,14 +58,35 @@ public interface ApiService {
     //创建社团
     @FormUrlEncoded
     @POST("api/club/")
-    Observable<com.ethan.myclub.club.create.model.Club>
+    Observable<Club>
     createClub(@Field("club_name") String clubName,
                @Field("college_id") String collegeId,
-               @Field("brief_introduce") String bief_introduce,
+               @Field("brief_introduce") String biefIntroduce,
                @Field("contact") String contact);
 
     //获取指定ID社团信息
     @GET("api/club/{clubId}/")
-    Observable<com.ethan.myclub.club.info.model.Club> getClub(@Path("clubId") String clubId);
+    Observable<Club> getClub(@Path("clubId") String clubId);
+
+    //修改社团信息
+    @FormUrlEncoded
+    @PATCH("api/club/{clubId}/")
+    Observable<Club>
+    modifyClub(@Path("clubId") String clubId,
+               @Field("club_name") String clubName,
+               @Field("college_id") String collegeId,
+               @Field("brief_introduce") String biefIntroduce,
+               @Field("contact") String contact);
+
+    //上传社团头像
+    @Multipart
+    @PATCH("api/club/{clubId}/badge/")
+    Observable<Object> uploadClubBadge(@Path("clubId") String clubId,
+                                       @Part MultipartBody.Part file);
+
+    //修改tags
+    @POST("api/club/{clubId}/tag/")
+    Observable<Club> editClubTags(@Path("clubId") String clubId, @Body Tag2 tags);
+
 
 }

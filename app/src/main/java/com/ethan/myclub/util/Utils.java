@@ -49,8 +49,7 @@ public class Utils {
             int length = fin.available();
             byte[] buffer = new byte[length];
             Parcel parcel = Parcel.obtain();
-            if(fin.read(buffer) != -1)
-            {
+            if (fin.read(buffer) != -1) {
                 parcel.unmarshall(buffer, 0, buffer.length);
                 parcel.setDataPosition(0); // This is extremely important!
             }
@@ -74,6 +73,7 @@ public class Utils {
             e.printStackTrace();
         }
     }
+
     /**
      * RandomAccessFile 获取文件的MD5值
      *
@@ -91,11 +91,11 @@ public class Utils {
             if (!file.exists()) {
                 return "";
             }
-            randomAccessFile=new RandomAccessFile(file,"r");
-            byte[] bytes=new byte[1024*1024*10];
-            int len=0;
-            while ((len=randomAccessFile.read(bytes))!=-1){
-                messageDigest.update(bytes,0, len);
+            randomAccessFile = new RandomAccessFile(file, "r");
+            byte[] bytes = new byte[1024 * 1024 * 10];
+            int len = 0;
+            while ((len = randomAccessFile.read(bytes)) != -1) {
+                messageDigest.update(bytes, 0, len);
             }
             BigInteger bigInt = new BigInteger(1, messageDigest.digest());
             String md5 = bigInt.toString(16);
@@ -123,10 +123,10 @@ public class Utils {
     /**
      * 设置状态栏图标为深色和魅族特定的文字风格
      * 可以用来判断是否为Flyme用户
-     * @param window 需要设置的窗口
-     * @param dark 是否把状态栏字体及图标颜色设置为深色
-     * @return  boolean 成功执行返回true
      *
+     * @param window 需要设置的窗口
+     * @param dark   是否把状态栏字体及图标颜色设置为深色
+     * @return boolean 成功执行返回true
      */
     public static boolean FlymeSetStatusBarLightMode(Window window, boolean dark) {
         boolean result = false;
@@ -155,12 +155,13 @@ public class Utils {
         }
         return result;
     }
+
     /**
      * 设置状态栏字体图标为深色，需要MIUIV6以上
-     * @param window 需要设置的窗口
-     * @param dark 是否把状态栏字体及图标颜色设置为深色
-     * @return  boolean 成功执行返回true
      *
+     * @param window 需要设置的窗口
+     * @param dark   是否把状态栏字体及图标颜色设置为深色
+     * @return boolean 成功执行返回true
      */
     public static boolean MIUISetStatusBarLightMode(Window window, boolean dark) {
         boolean result = false;
@@ -169,21 +170,22 @@ public class Utils {
             try {
                 int darkModeFlag = 0;
                 Class layoutParams = Class.forName("android.view.MiuiWindowManager$LayoutParams");
-                Field  field = layoutParams.getField("EXTRA_FLAG_STATUS_BAR_DARK_MODE");
+                Field field = layoutParams.getField("EXTRA_FLAG_STATUS_BAR_DARK_MODE");
                 darkModeFlag = field.getInt(layoutParams);
                 Method extraFlagField = clazz.getMethod("setExtraFlags", int.class, int.class);
-                if(dark){
-                    extraFlagField.invoke(window,darkModeFlag,darkModeFlag);//状态栏透明且黑色字体
-                }else{
+                if (dark) {
+                    extraFlagField.invoke(window, darkModeFlag, darkModeFlag);//状态栏透明且黑色字体
+                } else {
                     extraFlagField.invoke(window, 0, darkModeFlag);//清除黑色字体
                 }
-                result=true;
-            }catch (Exception ignored){
+                result = true;
+            } catch (Exception ignored) {
 
             }
         }
         return result;
     }
+
     /**
      * 在不知道手机系统的情况下尝试设置状态栏字体模式为深色
      * 也可以根据此方法判断手机系统类型
@@ -192,7 +194,7 @@ public class Utils {
      * @param activity
      * @return 1:MIUUI 2:Flyme 3:android6.0 0:设置失败
      */
-    public static int StatusBarLightMode(Activity activity,boolean isDark) {
+    public static int StatusBarLightMode(Activity activity, boolean isDark) {
         int result = 0;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             if (MIUISetStatusBarLightMode(activity.getWindow(), isDark)) {
@@ -207,4 +209,32 @@ public class Utils {
         return result;
     }
 
+    /**
+     * low
+     *
+     * @param bit        权限位
+     *                   low
+     *                   1: 修改基本信息
+     *                   2: 发布通知
+     *                   3: 查看导出课表
+     *                   4: 记账
+     *                   5: 审核新成员/踢普通成员
+     *                   6: 活动
+     *                   high
+     */
+    public static boolean checkPermission(int permission, int bit) {
+/*
+    现在的权限是  01101 MASK是00010
+
+    授权	    	01101|00010=01111
+
+    检查权限		01101&00010=00000
+
+    现在的权限是  01111 MASK是00010
+
+    撤销权限		01111&~00010=01111&11101=01101
+ */
+        int mask = 1 << bit - 1;
+        return (permission & mask) == 1;
+    }
 }

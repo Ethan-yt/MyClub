@@ -2,9 +2,8 @@ package com.ethan.myclub.club.create.viewmodel;
 
 import android.app.Activity;
 import android.databinding.ObservableField;
-
-import com.ethan.myclub.club.create.model.Club;
 import com.ethan.myclub.club.create.view.ClubCreateActivity;
+import com.ethan.myclub.club.info.model.Club;
 import com.ethan.myclub.databinding.ActivityClubCreateBinding;
 import com.ethan.myclub.network.ApiHelper;
 
@@ -18,9 +17,7 @@ public class ClubCreateViewModel {
     private ClubCreateActivity mActivity;
     private ActivityClubCreateBinding mBinding;
 
-    public ObservableField<String> mClubName = new ObservableField<>();
-    public ObservableField<String> mClubBrief = new ObservableField<>();
-    public ObservableField<String> mClubContact = new ObservableField<>();
+    public Club mClub;
 
     public ClubCreateViewModel(ClubCreateActivity activity, ActivityClubCreateBinding binding) {
         mActivity = activity;
@@ -33,11 +30,12 @@ public class ClubCreateViewModel {
         mBinding.tilClubBriefIntroduce.setCounterMaxLength(140);
         mBinding.tilClubContact.setCounterEnabled(true);
         mBinding.tilClubContact.setCounterMaxLength(140);
+        mClub = new Club();
     }
 
     public void createClub() {
         ApiHelper.getProxy(mActivity)
-                .createClub(mClubName.get(), "1", mClubBrief.get(), mClubContact.get())
+                .createClub(mClub.getClubName(), "1", mClub.getBriefIntroduce(), mClub.getContact())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<Club>() {
                     @Override

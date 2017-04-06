@@ -29,7 +29,7 @@ public class ClubFragment extends TabFragment {
         mAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                ClubInfoActivity.start(getActivity(), String.valueOf(((Hit) adapter.getItem(position)).id));
+                ClubInfoActivity.start(getActivity(), Integer.parseInt(((Hit) adapter.getItem(position)).id), 0);
             }
         });
     }

@@ -6,12 +6,10 @@ import android.widget.GridView;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.resource.drawable.GlideDrawable;
-import com.bumptech.glide.request.RequestListener;
-import com.bumptech.glide.request.target.Target;
 import com.ethan.myclub.R;
 import com.ethan.myclub.club.info.view.ClubInfoActivity;
-import com.ethan.myclub.club.main.model.Club;
+import com.ethan.myclub.club.main.model.MyClub;
+import com.ethan.myclub.club.main.model.Title;
 import com.ethan.myclub.club.operation.adapter.GridViewAdapter;
 import com.ethan.myclub.club.operation.adapter.ViewPagerAdapter;
 import com.ethan.myclub.club.operation.model.Operation;
@@ -28,9 +26,9 @@ public class ClubOperationViewModel {
     private ClubOperationActivity mActivity;
     private ActivityClubOperationBinding mBinding;
 
-    public Club mClub;
+    public MyClub mClub;
 
-    public ClubOperationViewModel(ClubOperationActivity activity, ActivityClubOperationBinding binding, Club club) {
+    public ClubOperationViewModel(ClubOperationActivity activity, ActivityClubOperationBinding binding, MyClub club) {
         mActivity = activity;
         mBinding = binding;
         mBinding.setViewModel(this);
@@ -48,7 +46,7 @@ public class ClubOperationViewModel {
         operations.add(new Operation(null, "社团账单", R.drawable.ic_club_op_budget));
         operations.add(new Operation(null, "社团通知", R.drawable.ic_club_op_notification));
         operations.add(new Operation(null, "退出社团", R.drawable.ic_club_op_quit));
-        gridView.setAdapter(new GridViewAdapter(mActivity, operations, String.valueOf(mClub.clubId)));
+        gridView.setAdapter(new GridViewAdapter(mActivity, operations, mClub.clubId, getMyPermission()));
         views.add(gridView);
 
 
@@ -56,7 +54,7 @@ public class ClubOperationViewModel {
         operations = new ArrayList<>();
         operations.add(new Operation(null, "招新管理", R.drawable.ic_club_op_freshmen));
         operations.add(new Operation(null, "空课表", R.drawable.ic_club_op_schedule));
-        gridView.setAdapter(new GridViewAdapter(mActivity, operations, String.valueOf(mClub.clubId)));
+        gridView.setAdapter(new GridViewAdapter(mActivity, operations, mClub.clubId, getMyPermission()));
         views.add(gridView);
 
         mBinding.viewPager.setAdapter(new ViewPagerAdapter(views));
@@ -78,5 +76,15 @@ public class ClubOperationViewModel {
                 .crossFade()
                 .bitmapTransform(new CropCircleTransformation(view.getContext()))
                 .into(view);
+    }
+
+    private int getMyPermission() {
+        if (mClub.isCreator)
+            return 0xFFFFFFFF;
+        for (Title title : mClub.titleTable) {
+            if (title.id.equals(mClub.titleId))
+                return title.permissionsPart1;
+        }
+        return 0;
     }
 }
