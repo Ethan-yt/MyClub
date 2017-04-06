@@ -18,6 +18,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.ethan.myclub.R;
+import com.ethan.myclub.network.ApiHelper;
 import com.ethan.myclub.user.schedule.model.Course;
 import com.ethan.myclub.user.schedule.model.CourseTime;
 import com.ethan.myclub.user.schedule.model.Schedule;
@@ -337,20 +338,6 @@ public class LoginActivity extends BaseActivity {
                     }
 
                 })
-                .onErrorResumeNext(new Function<Throwable, ObservableSource<? extends ScheduleParam>>() {
-                    @Override
-                    public ObservableSource<? extends ScheduleParam> apply(Throwable throwable) throws Exception {
-                        if (throwable instanceof HttpException) {
-                            HttpException exception = (HttpException) throwable;
-                            if (exception.code() == 302) {
-                                Response response = exception.response();
-                                String html = response.errorBody().string();
-                                return Observable.error(throwable);
-                            }
-                        }
-                        return Observable.error(throwable);
-                    }
-                })
                 .observeOn(Schedulers.io())
                 .flatMap(new Function<ScheduleParam, Observable<ResponseBody>>() {
                     @Override
@@ -410,10 +397,41 @@ public class LoginActivity extends BaseActivity {
                             public void onComplete() {
                                 dismissDialog();
                                 showSnackbar("课表下载完成！");
-                                showNumberPicker();
+                                uploadToServer();
                             }
                         }
                 );
+
+
+    }
+
+    private void uploadToServer() {
+        ApiHelper.getProxy(this)
+                .updateSchedule(schedules)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<Object>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                        showWaitingDialog("上传中", "正在上传课程表...", d);
+                    }
+
+                    @Override
+                    public void onNext(Object o) {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        dismissDialog();
+                        showSnackbar("上传失败：" + e.getMessage());
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        dismissDialog();
+                        showNumberPicker();
+                    }
+                });
 
 
     }

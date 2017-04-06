@@ -4,9 +4,11 @@ import com.ethan.myclub.club.info.model.Club;
 import com.ethan.myclub.club.info.model.Club;
 import com.ethan.myclub.club.info.model.Tag2;
 import com.ethan.myclub.club.main.model.MyClub;
+import com.ethan.myclub.discover.merchant.model.Merchant;
 import com.ethan.myclub.user.profile.model.Profile;
 import com.ethan.myclub.user.login.model.Valid;
 import com.ethan.myclub.discover.club.model.ClubResult;
+import com.ethan.myclub.user.schedule.model.Schedule;
 
 import java.util.List;
 
@@ -28,7 +30,7 @@ import retrofit2.http.Query;
  */
 
 public interface ApiService {
-
+    //============================账户============================
     //验证账户可用性
     @FormUrlEncoded
     @POST("api/user/account-valid/")
@@ -47,6 +49,7 @@ public interface ApiService {
     @GET("api/club/my-club-list/")
     Observable<List<MyClub>> getMyClubs();
 
+    //============================社团============================
     //获取社团搜索提示
     @GET("api/club/suggestion/")
     Observable<List<String>> getClubSuggestion(@Query("keyword") String keyWord);
@@ -87,6 +90,22 @@ public interface ApiService {
     //修改tags
     @POST("api/club/{clubId}/tag/")
     Observable<Club> editClubTags(@Path("clubId") String clubId, @Body Tag2 tags);
+
+    //============================商家============================
+    //获取商家搜索提示
+    @GET("api/merchant/suggestion/")
+    Observable<List<String>> getMerchantSuggestion(@Query("keyword") String keyWord);
+
+    //搜索商家
+    @GET("api/merchant/search/")
+    Observable<List<Merchant>> searchMerchant(@Query("keyword") String keyWord, @Query("page") int page, @Query("items") int items);
+
+    //============================课表============================
+
+    //上传课表
+    @POST("api/user/schedule/")
+    Observable<Object> updateSchedule(@Body List<Schedule> schedules);
+
 
 
 }

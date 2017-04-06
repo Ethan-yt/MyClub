@@ -3,6 +3,9 @@ package com.ethan.myclub.user.schedule.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,9 +15,14 @@ import java.util.List;
 
 
 public class Course implements Parcelable {
+    @Expose
     final private String name;// 课程名 信号系统
+    @Expose
     final private String type;// 属性 专选
+    @Expose
     final private String teacher;// 教师 孔军
+    @Expose
+    @SerializedName("courses_time")
     final private List<CourseTime> time;//时间
 
     private Course(Parcel in) {

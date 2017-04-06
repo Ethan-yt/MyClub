@@ -3,18 +3,33 @@ package com.ethan.myclub.user.schedule.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
 /**
  * Created by ethan on 2017/3/4.
  */
 
 public class CourseTime implements Parcelable {
-
+    @Expose
+    @SerializedName("weekday")
     final private int day;// 星期几
+    @Expose
+    @SerializedName("week_begin")
     final private int weekBegin;// 第几周
+    @Expose
+    @SerializedName("week_end")
     final private int weekEnd;// 第几周
+    @Expose
+    @SerializedName("week_flag")
     final private int weekFlag; // 单双周标记 0为不限 1为单 2为双
+    @Expose
+    @SerializedName("time_begin")
     final private int timeBegin; // 节数
+    @Expose
+    @SerializedName("time_end")
     final private int timeEnd; // 节数
+    @Expose
     final private String location;// 教室 1教1B411
 
     public int getDay() {

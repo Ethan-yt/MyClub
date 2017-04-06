@@ -47,7 +47,10 @@ public class UserViewModel {
     }
 
     public void timeManagement() {
-        ScheduleActivity.startActivity(mFragment.getActivity(), null);
+        if (Preferences.sIsLogin.get()) {
+            ScheduleActivity.startActivity(mFragment.getActivity(), null);
+        } else
+            mFragment.mBaseActivity.showLoginSnackbar("您还没有登录！");
     }
 
     public void info() {

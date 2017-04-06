@@ -3,6 +3,8 @@ package com.ethan.myclub.user.schedule.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.google.gson.annotations.Expose;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,8 +13,11 @@ import java.util.List;
  */
 
 public class Schedule implements Parcelable {
+    @Expose
     final private String year;
+    @Expose
     final private String term;
+    @Expose
     final private List<Course> courses;
 
     private Schedule(Parcel in) {
