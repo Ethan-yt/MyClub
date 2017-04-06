@@ -2,30 +2,19 @@ package com.ethan.myclub.user.profile.viewmodel;
 
 import android.app.Activity;
 import android.content.DialogInterface;
-import android.content.Intent;
-import android.databinding.BindingAdapter;
-import android.graphics.Bitmap;
+import android.databinding.ObservableField;
 import android.net.Uri;
-import android.os.Bundle;
-import android.provider.MediaStore;
-import android.support.design.widget.BottomSheetDialog;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
-import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.bumptech.glide.load.resource.drawable.GlideDrawable;
-import com.bumptech.glide.request.RequestListener;
-import com.bumptech.glide.request.target.Target;
 import com.ethan.myclub.R;
-import com.ethan.myclub.databinding.ActivityProfileEditBinding;
+import com.ethan.myclub.databinding.ActivityUserProfileEditBinding;
 import com.ethan.myclub.global.Preferences;
+import com.ethan.myclub.main.ImageSelectActivity;
 import com.ethan.myclub.network.ApiHelper;
 import com.ethan.myclub.user.profile.view.ProfileEditActivity;
 import com.ethan.myclub.util.CacheUtil;
@@ -35,7 +24,6 @@ import java.io.File;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
-import jp.wasabeef.glide.transformations.CropCircleTransformation;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -48,15 +36,17 @@ public class ProfileEditViewModel {
 
     private static final String TAG = "ProfileEditViewModel";
     private ProfileEditActivity mActivity;
-    public ActivityProfileEditBinding mBinding;
+    public ActivityUserProfileEditBinding mBinding;
 
-    public ProfileEditViewModel(ProfileEditActivity profileEditActivity, ActivityProfileEditBinding binding) {
+    public ObservableField<Uri> mImageUri = new ObservableField<>();
+
+    public ProfileEditViewModel(ProfileEditActivity profileEditActivity, ActivityUserProfileEditBinding binding) {
         mActivity = profileEditActivity;
         mBinding = binding;
         mBinding.setViewModel(this);
         String imageUrl = mActivity.getIntent().getStringExtra("ImageUrl");
         if (!TextUtils.isEmpty(imageUrl))
-            mBinding.setImageUri(Uri.parse(imageUrl));
+            mImageUri.set(Uri.parse(imageUrl));
 
         mActivity.getToolbarWrapper()
                 .setTitle("编辑个人资料")
@@ -72,7 +62,6 @@ public class ProfileEditViewModel {
                         return true;
                     }
                 })
-                .showBackIcon()
                 .showNavIcon(R.drawable.ic_toolbar_clear_white_24dp, new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -80,15 +69,10 @@ public class ProfileEditViewModel {
                     }
                 })
                 .show();
-        mAvatarFile = new File(mActivity.getExternalCacheDir(), "avatar.camera.jpg");
-        ;
-        mAvatarUri = Uri.fromFile(mAvatarFile);
+
     }
 
-    final private File mAvatarFile;
-    final private Uri mAvatarUri;
-
-
+    private File mAvatarFile;
     private boolean mIsAvatarEdited = false;
     private boolean mIsInfoEdited = false;
 
@@ -103,76 +87,17 @@ public class ProfileEditViewModel {
     }
 
 
+
     public void editAvatar() {
-        final View view = LayoutInflater.from(mActivity).inflate(R.layout.view_select_photo, null);
-        final BottomSheetDialog mBottomSheetDialog = new BottomSheetDialog(mActivity);
-        mBottomSheetDialog.setContentView(view);
-        mBottomSheetDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+        mActivity.selectPicture("avatar.temp.jpg", new ImageSelectActivity.OnFinishSelectImageListener() {
             @Override
-            public void onDismiss(DialogInterface dialog) {
-                //mBottomSheetDialog = null;
+            public void onFinish(File outputFile, Uri outputUri) {
+                mImageUri.set(outputUri);
+                mIsAvatarEdited = true;
+                mAvatarFile = outputFile;
             }
         });
-
-        mBottomSheetDialog.show();
-
-
-        view.findViewById(R.id.btn_camera)
-                .setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Intent takeIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                        //下面这句指定调用相机拍照后的照片存储的路径
-                        takeIntent.putExtra(MediaStore.EXTRA_OUTPUT, mAvatarUri);
-                        mActivity.startActivityForResult(takeIntent, ProfileEditActivity.REQUEST_CODE_CAMERA);
-                        mBottomSheetDialog.dismiss();
-                    }
-                });
-        view.findViewById(R.id.btn_pick)
-                .setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Intent pickIntent = new Intent(Intent.ACTION_PICK, null);
-                        // image/jpeg 、 image/png等的类型
-                        pickIntent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
-                        mActivity.startActivityForResult(pickIntent, ProfileEditActivity.REQUEST_CODE_PICK);
-                        mBottomSheetDialog.dismiss();
-                    }
-                });
     }
-
-    private void startPhotoCrop(Uri uri) {
-        Intent intent = new Intent("com.android.camera.action.CROP");
-        intent.setDataAndType(uri, "image/*");
-        // crop=true是设置在开启的Intent中设置显示的VIEW可裁剪
-        intent.putExtra("crop", true);
-        // aspectX aspectY 是宽高的比例
-        intent.putExtra("aspectX", 1);
-        intent.putExtra("aspectY", 1);
-        // outputX outputY 是裁剪图片宽高
-        intent.putExtra("outputX", 300);
-        intent.putExtra("outputY", 300);
-        intent.putExtra("scale", true);
-        intent.putExtra("return-data", false);
-        intent.putExtra("outputFormat", Bitmap.CompressFormat.JPEG.toString());
-        intent.putExtra(MediaStore.EXTRA_OUTPUT, mAvatarUri);
-        intent.putExtra("scaleUpIfNeeded", true); //黑边
-        intent.putExtra("noFaceDetection", true); // no face detection
-        mActivity.startActivityForResult(intent, ProfileEditActivity.REQUEST_CODE_CROP);
-    }
-
-
-    private void setPicToView(Intent picData) {
-        if (picData == null)
-            return;
-        Bundle extras = picData.getExtras();
-        if (extras != null) {
-            //mBinding.ivAvatar.setImageURI(mAvatarUri);
-            mBinding.setImageUri(mAvatarUri);
-            mIsAvatarEdited = true;
-        }
-    }
-
 
     private void showAlertDialog() {
         new AlertDialog.Builder(mActivity)
@@ -246,24 +171,6 @@ public class ProfileEditViewModel {
         finishEdit();
     }
 
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (resultCode != ProfileEditActivity.RESULT_OK)// 用户点击取消操作
-            return;
-        switch (requestCode) {
-            case ProfileEditActivity.REQUEST_CODE_PICK:// 直接从相册获取
-                if (data == null)
-                    return;
-                else
-                    startPhotoCrop(data.getData());
-                break;
-            case ProfileEditActivity.REQUEST_CODE_CAMERA:// 调用相机拍照
-                startPhotoCrop(mAvatarUri);
-                break;
-            case ProfileEditActivity.REQUEST_CODE_CROP:// 取得裁剪后的图片
-                setPicToView(data);
-                break;
-        }
-    }
 
     public void onBackPressed() {
         if (mIsAvatarEdited || mIsInfoEdited)
@@ -273,42 +180,4 @@ public class ProfileEditViewModel {
     }
 
 
-    @BindingAdapter({"imageUri"})
-    public static void loadImage(final ImageView view, Uri imageUri) {
-        Object target;
-        if (imageUri == null) {
-            target = R.drawable.img_default_avatar;
-        } else {
-            target = imageUri;
-        }
-        Boolean skipMemoryCache = true;
-        DiskCacheStrategy diskCacheStrategy = DiskCacheStrategy.NONE;
-
-        if (imageUri != null && imageUri.getScheme().equals("http")) {
-            skipMemoryCache = false;
-            diskCacheStrategy = DiskCacheStrategy.ALL;
-        }
-
-        Glide.with(view.getContext())
-                .load(target)
-                .listener(new RequestListener<Object, GlideDrawable>() {
-                    @Override
-                    public boolean onException(Exception e, Object model, Target<GlideDrawable> target, boolean isFirstResource) {
-                        e.printStackTrace();
-                        return false;
-                    }
-
-                    @Override
-                    public boolean onResourceReady(GlideDrawable resource, Object model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
-                        return false;
-                    }
-                })
-                .crossFade()
-                .skipMemoryCache(skipMemoryCache)
-                .diskCacheStrategy(diskCacheStrategy)
-                .bitmapTransform(new CropCircleTransformation(view.getContext()))
-                .into(view);
-
-
-    }
 }

@@ -10,10 +10,6 @@
             name="viewModel"
             type="com.ethan.myclub.user.profile.viewmodel.ProfileEditViewModel"/>
 
-        <variable
-            name="imageUri"
-            type="android.net.Uri"/>
-
     </data>
 
     <android.support.design.widget.CoordinatorLayout
@@ -50,7 +46,7 @@
                         android:layout_centerHorizontal="true"
                         android:src="@drawable/img_default_avatar"
                         android:transitionName="trans_iv_avatar"
-                        app:imageUri="@{imageUri}"/>
+                        app:selectedImageUri="@{viewModel.mImageUri}"/>
 
                     <ImageView
                         android:layout_width="25dp"
