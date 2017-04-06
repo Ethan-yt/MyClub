@@ -10,10 +10,6 @@
         <variable
             name="viewModel"
             type="com.ethan.myclub.club.info.viewmodel.ClubInfoViewModel"/>
-
-        <variable
-            name="club"
-            type="com.ethan.myclub.club.info.model.Club"/>
     </data>
 
     <android.support.v4.widget.SwipeRefreshLayout
@@ -49,7 +45,7 @@
                     android:layout_marginRight="8dp"
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="80dp"
-                    app:clubInfoBadge="@{club.badge}"
+                    app:clubInfoBadge="@{viewModel.mClub.badge}"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
@@ -66,7 +62,7 @@
                     android:layout_marginTop="8dp"
                     android:ellipsize="end"
                     android:lines="1"
-                    android:text="@{club.clubName}"
+                    android:text="@{viewModel.mClub.clubName}"
                     android:textAlignment="center"
                     android:textColor="@android:color/white"
                     app:layout_constraintHorizontal_bias="0.0"
@@ -78,7 +74,7 @@
                 <android.support.v7.widget.CardView
                     android:id="@+id/cardView"
                     android:layout_width="0dp"
-                    android:layout_height="170dp"
+                    android:layout_height="wrap_content"
                     android:layout_marginEnd="8dp"
                     android:layout_marginLeft="8dp"
                     android:layout_marginRight="8dp"
@@ -92,7 +88,8 @@
 
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
+                        android:minHeight="170dp"
                         android:background="@drawable/bg_club_info"
                         android:orientation="vertical">
 
@@ -109,15 +106,16 @@
                             android:layout_marginTop="10dp"
                             android:layout_weight="1"
                             android:ellipsize="end"
-                            android:text="@{club.briefIntroduce}"
+                            android:text="@{viewModel.mClub.briefIntroduce}"
                             tools:text="噶的观点嘎达的嘎嘎三个法师烦恼萨芬撒即可发货就开始发神经啊回复就开始"/>
 
                         <com.google.android.flexbox.FlexboxLayout
-                            android:layout_marginTop="10dp"
                             android:id="@+id/fl_tags"
+                            app:flexWrap="wrap"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content">
                         </com.google.android.flexbox.FlexboxLayout>
+
                     </LinearLayout>
 
 
@@ -155,7 +153,7 @@
                             android:layout_height="match_parent"
                             android:layout_marginTop="10dp"
                             android:ellipsize="end"
-                            android:text="@{club.contact}"
+                            android:text="@{viewModel.mClub.contact}"
                             tools:text="噶的观点嘎达的嘎嘎三个法师烦恼萨芬撒即可发货就开始发神经啊回复就开始"/>
 
                     </LinearLayout>

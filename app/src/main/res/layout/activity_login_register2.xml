@@ -51,7 +51,7 @@
         android:layout_marginLeft="0dp"
         android:layout_marginRight="0dp"
         android:layout_marginTop="64dp"
-        android:background="@drawable/btn_login"
+        android:background="@drawable/btn_big"
         android:clickable="true"
         android:elevation="5dp"
         android:text="注册"
