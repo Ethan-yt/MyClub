@@ -32,6 +32,8 @@ public class ClubInfoEditActivity extends ImageSelectActivity {
     }
 
     public static void startForResult(Activity activity, Club club, int requestCode) {
+        if(club == null)
+            return;
         Intent intent = new Intent(activity, ClubInfoEditActivity.class);
         intent.putExtra("MyClub", club);
         ActivityCompat.startActivityForResult(activity, intent, requestCode, null);
