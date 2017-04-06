@@ -70,7 +70,7 @@ public class ExceptionEngine extends Throwable {
                 case SERVICE_UNAVAILABLE:
                 default:
                     //均视为网络错误
-                    ex = new ApiException(e, ApiException.HTTP_ERROR, "网络错误");
+                    ex = new ApiException(e, ApiException.HTTP_ERROR, "网络错误 HTTP" + httpException.code());
                     break;
             }
             return ex;
@@ -88,7 +88,7 @@ public class ExceptionEngine extends Throwable {
                 || e instanceof UnknownHostException) {
             ex = new ApiException(e, ApiException.NETWORK_ERROR, "连接失败");
             return ex;
-        }else if (e instanceof SocketTimeoutException){
+        } else if (e instanceof SocketTimeoutException) {
             ex = new ApiException(e, ApiException.HTTP_ERROR, "连接超时");
             return ex;
         } else {
