@@ -3,14 +3,18 @@ package com.ethan.myclub.club.info.viewmodel;
 import android.databinding.BindingAdapter;
 import android.graphics.Color;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v4.widget.TextViewCompat;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.ethan.myclub.R;
 import com.ethan.myclub.club.info.model.Club;
+import com.ethan.myclub.club.info.model.Tag;
 import com.ethan.myclub.club.info.view.ClubInfoActivity;
 import com.ethan.myclub.databinding.ActivityClubInfoBinding;
 import com.ethan.myclub.network.ApiHelper;
+import com.google.android.flexbox.FlexboxLayout;
 
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -61,7 +65,16 @@ public class ClubInfoViewModel {
                     @Override
                     public void onNext(Club club) {
                         mBinding.setClub(club);
+                        for (Tag tag : club.tag) {
+                            TextView tv = new TextView(mActivity);
+                            tv.setText(tag.tagName);
+                            tv.setBackgroundResource(R.drawable.bg_tag);
+                            mBinding.flTags.addView(tv);
 
+                            FlexboxLayout.LayoutParams lp = (FlexboxLayout.LayoutParams) tv.getLayoutParams();
+                            lp.flexShrink = 0;
+                            lp.rightMargin = 20;
+                        }
                     }
 
                     @Override
