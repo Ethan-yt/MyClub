@@ -1,4 +1,4 @@
-package com.ethan.myclub.club.info.model;
+package com.ethan.myclub.club.model;
 
 import android.databinding.BaseObservable;
 import android.databinding.Bindable;

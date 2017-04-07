@@ -1,9 +1,9 @@
 package com.ethan.myclub.club.create.viewmodel;
 
 import android.app.Activity;
-import android.databinding.ObservableField;
+
 import com.ethan.myclub.club.create.view.ClubCreateActivity;
-import com.ethan.myclub.club.info.model.Club;
+import com.ethan.myclub.club.model.Club;
 import com.ethan.myclub.databinding.ActivityClubCreateBinding;
 import com.ethan.myclub.network.ApiHelper;
 

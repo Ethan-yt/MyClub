@@ -1,4 +1,4 @@
-package com.ethan.myclub.club.info.edit.view;
+package com.ethan.myclub.club.edit.view;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -7,11 +7,10 @@ import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 
 import com.ethan.myclub.R;
-import com.ethan.myclub.club.info.model.Club;
+import com.ethan.myclub.club.model.Club;
 import com.ethan.myclub.databinding.ActivityClubInfoEditBinding;
-import com.ethan.myclub.club.info.edit.viewmodel.ClubInfoEditViewModel;
+import com.ethan.myclub.club.edit.viewmodel.ClubInfoEditViewModel;
 import com.ethan.myclub.main.ImageSelectActivity;
-import com.ethan.myclub.user.profile.view.ProfileEditActivity;
 
 public class ClubInfoEditActivity extends ImageSelectActivity {
 

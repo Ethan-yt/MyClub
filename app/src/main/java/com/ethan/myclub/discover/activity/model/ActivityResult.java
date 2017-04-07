@@ -4,7 +4,7 @@ import com.chad.library.adapter.base.entity.MultiItemEntity;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Activity implements MultiItemEntity {
+public class ActivityResult implements MultiItemEntity {
 
     @SerializedName("id")
     @Expose

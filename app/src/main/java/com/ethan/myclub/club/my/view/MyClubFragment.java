@@ -1,4 +1,4 @@
-package com.ethan.myclub.club.main.view;
+package com.ethan.myclub.club.my.view;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 
 import com.ethan.myclub.R;
 import com.ethan.myclub.club.create.view.ClubCreateActivity;
-import com.ethan.myclub.club.main.viewmodel.ClubViewModel;
+import com.ethan.myclub.club.my.viewmodel.ClubViewModel;
 import com.ethan.myclub.databinding.FragmentClubBinding;
 import com.ethan.myclub.global.Preferences;
 import com.ethan.myclub.main.BaseActivity;

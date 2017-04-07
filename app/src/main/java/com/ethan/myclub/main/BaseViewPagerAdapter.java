@@ -4,7 +4,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.view.ViewGroup;
 
-import com.ethan.myclub.club.main.view.MyClubFragment;
+import com.ethan.myclub.club.my.view.MyClubFragment;
 import com.ethan.myclub.discover.main.DiscoverFragment;
 import com.ethan.myclub.user.main.view.UserFragment;
 

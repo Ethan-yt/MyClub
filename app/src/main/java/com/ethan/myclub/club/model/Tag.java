@@ -1,4 +1,4 @@
-package com.ethan.myclub.club.info.model;
+package com.ethan.myclub.club.model;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;

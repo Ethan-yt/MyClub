@@ -9,10 +9,8 @@ import com.bumptech.glide.request.target.Target;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.ethan.myclub.R;
-import com.ethan.myclub.club.main.viewmodel.ClubItemViewModel;
 import com.ethan.myclub.discover.club.ClubFragment;
 import com.ethan.myclub.discover.club.model.Hit;
-import com.ethan.myclub.discover.club.model.Source;
 
 import java.util.List;
 

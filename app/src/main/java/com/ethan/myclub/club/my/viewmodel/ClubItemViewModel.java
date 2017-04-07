@@ -1,4 +1,4 @@
-package com.ethan.myclub.club.main.viewmodel;
+package com.ethan.myclub.club.my.viewmodel;
 
 import android.databinding.BindingAdapter;
 import android.widget.ImageView;
@@ -8,7 +8,6 @@ import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.ethan.myclub.R;
-import com.ethan.myclub.network.ApiHelper;
 
 import jp.wasabeef.glide.transformations.CropCircleTransformation;
 

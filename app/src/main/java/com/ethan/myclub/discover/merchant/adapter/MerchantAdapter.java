@@ -9,10 +9,8 @@ import com.bumptech.glide.request.target.Target;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.ethan.myclub.R;
-import com.ethan.myclub.discover.club.ClubFragment;
-import com.ethan.myclub.discover.club.model.Hit;
 import com.ethan.myclub.discover.merchant.MerchantFragment;
-import com.ethan.myclub.discover.merchant.model.Merchant;
+import com.ethan.myclub.discover.merchant.model.MerchantResult;
 
 import java.util.List;
 
@@ -20,17 +18,17 @@ import java.util.List;
  * Created by ethan on 2017/4/6.
  */
 
-public class MerchantAdapter extends BaseQuickAdapter<Merchant, BaseViewHolder> {
+public class MerchantAdapter extends BaseQuickAdapter<MerchantResult, BaseViewHolder> {
 
     private MerchantFragment mMerchantFragment;
 
-    public MerchantAdapter(MerchantFragment merchantFragment, List<Merchant> data) {
+    public MerchantAdapter(MerchantFragment merchantFragment, List<MerchantResult> data) {
         super(R.layout.item_discover_merchant, data);
         mMerchantFragment = merchantFragment;
     }
 
     @Override
-    protected void convert(BaseViewHolder helper, Merchant item) {
+    protected void convert(BaseViewHolder helper, MerchantResult item) {
         helper.setText(R.id.tv_merchant_name, item.name);
         helper.setText(R.id.tv_support_activity, "赞助活动：" + item.supportActivity);
         helper.setText(R.id.tv_support_type, "赞助方式：" + item.supportType);

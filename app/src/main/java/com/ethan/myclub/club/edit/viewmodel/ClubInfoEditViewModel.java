@@ -1,24 +1,21 @@
-package com.ethan.myclub.club.info.edit.viewmodel;
+package com.ethan.myclub.club.edit.viewmodel;
 
 import android.app.Activity;
 import android.content.DialogInterface;
-import android.databinding.Observable;
 import android.databinding.ObservableField;
 import android.net.Uri;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
-import android.text.Editable;
 import android.text.TextUtils;
-import android.text.TextWatcher;
 import android.view.MenuItem;
 import android.view.View;
 
 import com.ethan.myclub.R;
-import com.ethan.myclub.club.info.edit.view.ClubInfoEditActivity;
-import com.ethan.myclub.club.info.model.Club;
-import com.ethan.myclub.club.info.model.Tag;
-import com.ethan.myclub.club.info.model.Tag2;
+import com.ethan.myclub.club.edit.view.ClubInfoEditActivity;
+import com.ethan.myclub.club.model.Club;
+import com.ethan.myclub.club.model.Tag;
+import com.ethan.myclub.club.model.Tag2;
 import com.ethan.myclub.databinding.ActivityClubInfoEditBinding;
 import com.ethan.myclub.global.Preferences;
 import com.ethan.myclub.main.ImageSelectActivity;

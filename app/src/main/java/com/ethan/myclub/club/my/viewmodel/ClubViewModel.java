@@ -1,14 +1,14 @@
-package com.ethan.myclub.club.main.viewmodel;
+package com.ethan.myclub.club.my.viewmodel;
 
 import android.support.v7.widget.GridLayoutManager;
 import android.util.Log;
 import android.view.View;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.ethan.myclub.club.main.adapter.ClubListAdapter;
-import com.ethan.myclub.club.main.model.MyClub;
-import com.ethan.myclub.club.main.view.MyClubFragment;
-import com.ethan.myclub.club.main.view.EmptyView;
+import com.ethan.myclub.club.my.adapter.ClubListAdapter;
+import com.ethan.myclub.club.my.model.MyClub;
+import com.ethan.myclub.club.my.view.MyClubFragment;
+import com.ethan.myclub.club.my.view.EmptyView;
 import com.ethan.myclub.club.operation.view.ClubOperationActivity;
 import com.ethan.myclub.databinding.FragmentClubBinding;
 import com.ethan.myclub.global.Preferences;
@@ -18,13 +18,10 @@ import com.ethan.myclub.util.CacheUtil;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Consumer;
 
 /**
  * Created by ethan on 2017/3/25.

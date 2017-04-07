@@ -3,7 +3,6 @@ package com.ethan.myclub.discover.main;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,7 +10,7 @@ import android.view.ViewGroup;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.ethan.myclub.R;
-import com.ethan.myclub.club.main.view.EmptyView;
+import com.ethan.myclub.club.my.view.EmptyView;
 import com.ethan.myclub.main.BaseActivity;
 
 import java.util.List;

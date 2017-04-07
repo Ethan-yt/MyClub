@@ -4,21 +4,13 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.util.Log;
 import android.view.View;
 
-import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.ethan.myclub.discover.activity.adapter.ActivityAdapter;
-import com.ethan.myclub.discover.activity.model.Activity;
+import com.ethan.myclub.discover.activity.model.ActivityResult;
 import com.ethan.myclub.discover.main.TabFragment;
-import com.ethan.myclub.discover.merchant.model.Merchant;
 import com.ethan.myclub.main.BaseActivity;
 import com.ethan.myclub.network.ApiHelper;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Queue;
-import java.util.Stack;
-import java.util.concurrent.ArrayBlockingQueue;
-import java.util.concurrent.LinkedBlockingDeque;
 import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Observable;
@@ -28,7 +20,7 @@ import io.reactivex.disposables.Disposable;
 
 public class ActivityFragment extends TabFragment {
 
-    private static final String TAG = "Discover Activity";
+    private static final String TAG = "Discover ActivityResult";
 
     public ActivityFragment(){
         mLayoutManager = new LinearLayoutManager(getContext());
@@ -46,7 +38,7 @@ public class ActivityFragment extends TabFragment {
                 .searchActivity(mKeyWord, page, items)
                 .delay(1, TimeUnit.SECONDS)
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<List<Activity>>() {
+                .subscribe(new Observer<List<ActivityResult>>() {
                     @Override
                     public void onSubscribe(Disposable d) {
                         //下拉刷新动画开始
@@ -55,7 +47,7 @@ public class ActivityFragment extends TabFragment {
                     }
 
                     @Override
-                    public void onNext(List<Activity> activityList) {
+                    public void onNext(List<ActivityResult> activityList) {
                         Log.i(TAG, "update: 获取Activity完成");
                         //允许读取更多
                         mAdapter.setEnableLoadMore(true);
@@ -118,9 +110,9 @@ public class ActivityFragment extends TabFragment {
                 });
     }
 
-    private void formatOrder(List<Activity> activityList) {
-        Activity specialActivity = null;
-        for (Activity activity : activityList) {
+    private void formatOrder(List<ActivityResult> activityList) {
+        ActivityResult specialActivity = null;
+        for (ActivityResult activity : activityList) {
             if(activity.isSpecial)
             {
                 specialActivity = activity;

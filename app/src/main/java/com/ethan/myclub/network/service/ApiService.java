@@ -1,11 +1,10 @@
 package com.ethan.myclub.network.service;
 
-import com.ethan.myclub.club.info.model.Club;
-import com.ethan.myclub.club.info.model.Club;
-import com.ethan.myclub.club.info.model.Tag2;
-import com.ethan.myclub.club.main.model.MyClub;
-import com.ethan.myclub.discover.activity.model.Activity;
-import com.ethan.myclub.discover.merchant.model.Merchant;
+import com.ethan.myclub.club.model.Club;
+import com.ethan.myclub.club.model.Tag2;
+import com.ethan.myclub.club.my.model.MyClub;
+import com.ethan.myclub.discover.activity.model.ActivityResult;
+import com.ethan.myclub.discover.merchant.model.MerchantResult;
 import com.ethan.myclub.user.profile.model.Profile;
 import com.ethan.myclub.user.login.model.Valid;
 import com.ethan.myclub.discover.club.model.ClubResult;
@@ -99,7 +98,7 @@ public interface ApiService {
 
     //搜索商家
     @GET("api/merchant/search/")
-    Observable<List<Merchant>> searchMerchant(@Query("keyword") String keyWord, @Query("page") int page, @Query("items") int items);
+    Observable<List<MerchantResult>> searchMerchant(@Query("keyword") String keyWord, @Query("page") int page, @Query("items") int items);
 
 
     //============================活动============================
@@ -109,7 +108,7 @@ public interface ApiService {
 
     //搜索商家
     @GET("api/activity/search/")
-    Observable<List<Activity>> searchActivity(@Query("keyword") String keyWord, @Query("page") int page, @Query("items") int items);
+    Observable<List<ActivityResult>> searchActivity(@Query("keyword") String keyWord, @Query("page") int page, @Query("items") int items);
 
     //============================课表============================
 

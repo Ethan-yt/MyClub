@@ -7,7 +7,7 @@ import com.google.gson.annotations.SerializedName;
  * Created by ethan on 2017/4/6.
  */
 
-public class Merchant {
+public class MerchantResult {
     @SerializedName("name")
     @Expose
     public String name;

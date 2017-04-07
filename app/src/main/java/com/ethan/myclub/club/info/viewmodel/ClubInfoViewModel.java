@@ -11,9 +11,9 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.ethan.myclub.R;
-import com.ethan.myclub.club.info.edit.view.ClubInfoEditActivity;
-import com.ethan.myclub.club.info.model.Club;
-import com.ethan.myclub.club.info.model.Tag;
+import com.ethan.myclub.club.edit.view.ClubInfoEditActivity;
+import com.ethan.myclub.club.model.Club;
+import com.ethan.myclub.club.model.Tag;
 import com.ethan.myclub.club.info.view.ClubInfoActivity;
 import com.ethan.myclub.databinding.ActivityClubInfoBinding;
 import com.ethan.myclub.main.BaseActivity;

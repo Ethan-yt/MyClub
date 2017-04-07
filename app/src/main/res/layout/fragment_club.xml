@@ -6,13 +6,13 @@
 
         <variable
             name="viewModel"
-            type="com.ethan.myclub.club.main.viewmodel.ClubViewModel"/>
+            type="com.ethan.myclub.club.my.viewmodel.ClubViewModel"/>
     </data>
 
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context="com.ethan.myclub.club.main.view.MyClubFragment">
+        tools:context="com.ethan.myclub.club.my.view.MyClubFragment">
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recycler_view"

@@ -7,11 +7,11 @@
 
         <variable
             name="club"
-            type="com.ethan.myclub.club.main.model.MyClub"/>
+            type="com.ethan.myclub.club.my.model.MyClub"/>
 
         <variable
             name="viewModel"
-            type="com.ethan.myclub.club.main.viewmodel.ClubItemViewModel"/>
+            type="com.ethan.myclub.club.my.viewmodel.ClubItemViewModel"/>
     </data>
 
     <android.support.constraint.ConstraintLayout

@@ -7,7 +7,7 @@ import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 
 import com.ethan.myclub.R;
-import com.ethan.myclub.club.main.model.MyClub;
+import com.ethan.myclub.club.my.model.MyClub;
 import com.ethan.myclub.databinding.ActivityClubOperationBinding;
 import com.ethan.myclub.main.BaseActivity;
 import com.ethan.myclub.club.operation.viewmodel.ClubOperationViewModel;

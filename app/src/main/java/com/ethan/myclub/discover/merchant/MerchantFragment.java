@@ -9,13 +9,9 @@ import android.util.Log;
 import android.view.View;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.ethan.myclub.club.info.view.ClubInfoActivity;
-import com.ethan.myclub.discover.club.adapter.ClubAdapter;
-import com.ethan.myclub.discover.club.model.ClubResult;
-import com.ethan.myclub.discover.club.model.Hit;
 import com.ethan.myclub.discover.main.TabFragment;
 import com.ethan.myclub.discover.merchant.adapter.MerchantAdapter;
-import com.ethan.myclub.discover.merchant.model.Merchant;
+import com.ethan.myclub.discover.merchant.model.MerchantResult;
 import com.ethan.myclub.main.BaseActivity;
 import com.ethan.myclub.network.ApiHelper;
 
@@ -29,7 +25,7 @@ import io.reactivex.disposables.Disposable;
 
 public class MerchantFragment extends TabFragment {
 
-    private static final String TAG = "Discover Merchant";
+    private static final String TAG = "Discover MerchantResult";
 
     public MerchantFragment() {
         mLayoutManager = new GridLayoutManager(getContext(), 2);
@@ -37,7 +33,7 @@ public class MerchantFragment extends TabFragment {
         mAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                final Merchant merchant = (Merchant) adapter.getItem(position);
+                final MerchantResult merchant = (MerchantResult) adapter.getItem(position);
 
                 new AlertDialog.Builder(getActivity())
                         .setMessage("️\uD83D\uDCDE 联系电话：" + merchant.contact + "\n\n" +
@@ -62,7 +58,7 @@ public class MerchantFragment extends TabFragment {
                 .searchMerchant(mKeyWord, page, items)
                 .delay(1, TimeUnit.SECONDS)
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<List<Merchant>>() {
+                .subscribe(new Observer<List<MerchantResult>>() {
                     @Override
                     public void onSubscribe(Disposable d) {
                         //下拉刷新动画开始
@@ -71,7 +67,7 @@ public class MerchantFragment extends TabFragment {
                     }
 
                     @Override
-                    public void onNext(List<Merchant> merchantList) {
+                    public void onNext(List<MerchantResult> merchantList) {
                         Log.i(TAG, "update: 获取Merchant完成");
                         //允许读取更多
                         mAdapter.setEnableLoadMore(true);

@@ -10,7 +10,7 @@ import com.chad.library.adapter.base.BaseMultiItemQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.ethan.myclub.R;
 import com.ethan.myclub.discover.activity.ActivityFragment;
-import com.ethan.myclub.discover.activity.model.Activity;
+import com.ethan.myclub.discover.activity.model.ActivityResult;
 import com.ethan.myclub.util.Utils;
 
 import java.util.List;
@@ -19,11 +19,11 @@ import java.util.List;
  * Created by ethan on 2017/4/7.
  */
 
-public class ActivityAdapter extends BaseMultiItemQuickAdapter<Activity, BaseViewHolder> {
+public class ActivityAdapter extends BaseMultiItemQuickAdapter<ActivityResult, BaseViewHolder> {
 
     private ActivityFragment mMerchantFragment;
 
-    public ActivityAdapter(ActivityFragment activityFragment, List<Activity> data) {
+    public ActivityAdapter(ActivityFragment activityFragment, List<ActivityResult> data) {
         super(data);
         addItemType(1, R.layout.item_discover_activity_special);
         addItemType(0, R.layout.item_discover_activity_normal);
@@ -31,7 +31,7 @@ public class ActivityAdapter extends BaseMultiItemQuickAdapter<Activity, BaseVie
     }
 
     @Override
-    protected void convert(BaseViewHolder helper, Activity item) {
+    protected void convert(BaseViewHolder helper, ActivityResult item) {
 //        switch (helper.getItemViewType()) {
 //            case 1:
 //                break;

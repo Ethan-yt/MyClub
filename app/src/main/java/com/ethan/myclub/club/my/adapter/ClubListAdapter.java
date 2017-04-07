@@ -1,4 +1,4 @@
-package com.ethan.myclub.club.main.adapter;
+package com.ethan.myclub.club.my.adapter;
 
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
@@ -8,8 +8,8 @@ import android.view.ViewGroup;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.ethan.myclub.R;
-import com.ethan.myclub.club.main.model.MyClub;
-import com.ethan.myclub.club.main.viewmodel.ClubItemViewModel;
+import com.ethan.myclub.club.my.model.MyClub;
+import com.ethan.myclub.club.my.viewmodel.ClubItemViewModel;
 import com.ethan.myclub.databinding.ItemClubBinding;
 
 import java.util.List;
