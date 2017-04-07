@@ -30,7 +30,7 @@ public class MainActivity extends BaseActivity {
     // UI
     private AHBottomNavigationViewPager viewPager;
 
-    private AHBottomNavigation bottomNavigation;
+    public AHBottomNavigation bottomNavigation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -1,7 +1,11 @@
 package com.ethan.myclub.user.main.viewmodel;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.databinding.BindingAdapter;
 import android.databinding.ObservableField;
+import android.support.design.widget.BottomSheetDialog;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.util.Pair;
 import android.text.TextUtils;
@@ -70,12 +74,26 @@ public class UserViewModel {
     }
 
     public void settings() {
+        new AlertDialog.Builder(mFragment.mBaseActivity)
+                .setMessage("确定要退出吗")
+                .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Preferences.setToken(mFragment.mBaseActivity, null);
+                        //getUserInfoCache();
+                        ((MainActivity) mFragment.getActivity()).bottomNavigation.setCurrentItem(0);
+                    }
+                })
+                .setNegativeButton("点错了", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
 
+                    }
+                }).show();
     }
 
     public void collection() {
-        Preferences.setToken(mFragment.mBaseActivity, null);
-        getUserInfoCache();
+
     }
 
     public void getUserInfoCache() {
@@ -105,7 +123,7 @@ public class UserViewModel {
                     public void onNext(Profile profile) {
                         Log.i(TAG, "updateUserInfo: 获取UserInfo完成");
                         profile.avatar += "?imageView2/0/w/300/h/300";
-                        if(profile.sex.equals("0"))
+                        if (profile.sex.equals("0"))
                             profile.sex = "男";
                         else
                             profile.sex = "女";

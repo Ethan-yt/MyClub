@@ -116,6 +116,11 @@ public class ClubViewModel {
     }
 
     public void updateUserClubList() {
+        if (!Preferences.sIsLogin.get()) {
+            Log.i(TAG, "updateUserClubList: 无法获取更新，用户没有登录");
+            notifyClubsObservable(null, GET_CLUBS_RESULT_NOT_LOGIN);
+            return;
+        }
         ApiHelper.getProxy(mFragment.mBaseActivity)
                 .getMyClubs()
                 //.delay(1, TimeUnit.SECONDS)

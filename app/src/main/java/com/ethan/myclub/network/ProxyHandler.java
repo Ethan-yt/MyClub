@@ -44,7 +44,7 @@ class ProxyHandler implements InvocationHandler {
         //先检查需要Token但是没有登录的情况
         if (mIsNeedToken && !Preferences.sIsLogin.get()) {
             //弹出登录提示
-            mActivity.showLoginSnackbar("您还没有登录");
+            mActivity.showLoginSnackbar("您还没有登录哦");
             mActivity = null;
             return Observable.empty();
         }
