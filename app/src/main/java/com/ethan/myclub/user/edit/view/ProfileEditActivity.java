@@ -1,4 +1,4 @@
-package com.ethan.myclub.user.profile.view;
+package com.ethan.myclub.user.edit.view;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -9,7 +9,8 @@ import android.support.v4.app.ActivityCompat;
 import com.ethan.myclub.R;
 import com.ethan.myclub.databinding.ActivityUserProfileEditBinding;
 import com.ethan.myclub.main.ImageSelectActivity;
-import com.ethan.myclub.user.profile.viewmodel.ProfileEditViewModel;
+import com.ethan.myclub.user.edit.viewmodel.ProfileEditViewModel;
+import com.ethan.myclub.user.model.Profile;
 
 public class ProfileEditActivity extends ImageSelectActivity {
 
@@ -28,9 +29,9 @@ public class ProfileEditActivity extends ImageSelectActivity {
         mViewModel.onBackPressed();
     }
 
-    public static void startActivityForResult(Activity activity, String imageUrl, Bundle bundle, int requestCode) {
+    public static void startActivityForResult(Activity activity, Profile  profile, Bundle bundle, int requestCode) {
         Intent intent = new Intent(activity, ProfileEditActivity.class);
-        intent.putExtra("ImageUrl", imageUrl);
+        intent.putExtra("profile", profile);
         ActivityCompat.startActivityForResult(activity, intent, requestCode, bundle);
     }
 }

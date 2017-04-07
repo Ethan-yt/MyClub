@@ -1,6 +1,7 @@
 package com.ethan.myclub.user.main.viewmodel;
 
 import android.databinding.BindingAdapter;
+import android.databinding.ObservableField;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.util.Pair;
 import android.text.TextUtils;
@@ -15,8 +16,8 @@ import com.ethan.myclub.global.Preferences;
 import com.ethan.myclub.main.BaseActivity;
 import com.ethan.myclub.main.MainActivity;
 import com.ethan.myclub.network.ApiHelper;
-import com.ethan.myclub.user.profile.model.Profile;
-import com.ethan.myclub.user.profile.view.ProfileEditActivity;
+import com.ethan.myclub.user.model.Profile;
+import com.ethan.myclub.user.edit.view.ProfileEditActivity;
 import com.ethan.myclub.user.main.view.UserFragment;
 import com.ethan.myclub.user.schedule.ScheduleActivity;
 import com.ethan.myclub.util.CacheUtil;
@@ -39,6 +40,8 @@ public class UserViewModel {
 
     private FragmentUserBinding mBinding;
 
+    public ObservableField<Profile> mProfile = new ObservableField<>();
+
     public UserViewModel(UserFragment fragment, FragmentUserBinding binding) {
         mFragment = fragment;
         mBinding = binding;
@@ -59,7 +62,7 @@ public class UserViewModel {
             ActivityOptionsCompat options = ActivityOptionsCompat
                     .makeSceneTransitionAnimation(mFragment.getActivity(),
                             Pair.create((View) mBinding.ivAvatar, "trans_iv_avatar"));
-            ProfileEditActivity.startActivityForResult(mFragment.getActivity(), mBinding.getProfile().avatar, options.toBundle(), MainActivity.REQUEST_EDIT_INFO);
+            ProfileEditActivity.startActivityForResult(mFragment.getActivity(), mProfile.get(), options.toBundle(), MainActivity.REQUEST_EDIT_INFO);
         } else
             mFragment.mBaseActivity.showLoginSnackbar("您还没有登录！");
 
@@ -82,24 +85,13 @@ public class UserViewModel {
             Log.i(TAG, "getUserInfoCache: 读取UserInfo缓存失败，强制获取更新");
             updateUserInfo();
         } else {
-            notifyInfoObservable((Profile) infoObj);
+            mProfile.set((Profile) infoObj);
             Log.i(TAG, "getUserInfoCache: 读取UserInfo缓存成功");
         }
 
     }
 
-    private void notifyInfoObservable(Profile profile) {
-
-        mBinding.setProfile(profile);
-
-    }
-
     public void updateUserInfo() {
-        if (!Preferences.sIsLogin.get()) {
-            Log.i(TAG, "updateUserInfo: 无法获取更新，用户没有登录");
-            notifyInfoObservable(null);
-            return;
-        }
         ApiHelper.getProxy((BaseActivity) mFragment.getActivity())
                 .getMyProfile()
                 .observeOn(AndroidSchedulers.mainThread())
@@ -113,7 +105,11 @@ public class UserViewModel {
                     public void onNext(Profile profile) {
                         Log.i(TAG, "updateUserInfo: 获取UserInfo完成");
                         profile.avatar += "?imageView2/0/w/300/h/300";
-                        notifyInfoObservable(profile);
+                        if(profile.sex.equals("0"))
+                            profile.sex = "男";
+                        else
+                            profile.sex = "女";
+                        mProfile.set(profile);
                         CacheUtil.get(mFragment.getActivity())
                                 .put(Preferences.CACHE_USER_INFO, profile, Preferences.CACHE_TIME_USER_INFO);
                     }
@@ -133,7 +129,11 @@ public class UserViewModel {
 
                     @Override
                     public void onComplete() {
-
+                        if (!Preferences.sIsLogin.get()) {
+                            Log.i(TAG, "updateUserInfo: 无法获取更新，用户没有登录");
+                            mProfile.set(null);
+                            return;
+                        }
                     }
                 });
 

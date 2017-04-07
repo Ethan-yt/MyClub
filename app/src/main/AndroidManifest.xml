@@ -46,7 +46,7 @@
         <activity
             android:name=".user.login.view.RegisterActivity2"
             android:theme="@style/AppTheme.Dark"/>
-        <activity android:name=".user.profile.view.ProfileEditActivity"/>
+        <activity android:name=".user.edit.view.ProfileEditActivity"/>
         <activity android:name=".user.message.messageActivity"/>
         <activity android:name=".club.create.view.ClubCreateActivity"/>
         <activity android:name=".club.operation.view.ClubOperationActivity"/>

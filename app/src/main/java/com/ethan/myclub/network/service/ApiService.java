@@ -6,12 +6,13 @@ import com.ethan.myclub.club.model.Tag2;
 import com.ethan.myclub.club.my.model.MyClub;
 import com.ethan.myclub.discover.activity.model.ActivityResult;
 import com.ethan.myclub.discover.merchant.model.MerchantResult;
-import com.ethan.myclub.user.profile.model.Profile;
+import com.ethan.myclub.user.model.Profile;
 import com.ethan.myclub.user.login.model.Valid;
 import com.ethan.myclub.discover.club.model.ClubResult;
 import com.ethan.myclub.user.schedule.model.Schedule;
 
 import java.util.List;
+import java.util.Objects;
 
 import io.reactivex.Observable;
 import okhttp3.MultipartBody;
@@ -121,6 +122,19 @@ public interface ApiService {
     @POST("api/user/schedule/")
     Observable<Object> updateSchedule(@Body List<Schedule> schedules);
 
+    //============================个人============================
+
+    //修改个人信息
+    @FormUrlEncoded
+    @PATCH("api/user/profile/")
+    Observable<Object>
+    modifyUserProfile(
+               @Field("nickname") String nickname,
+               @Field("student_number") String studentNumber,
+               @Field("sex") String sex,
+               @Field("name") String name,
+               @Field("birthday") String birthday,
+               @Field("brief_introduction") String briefIntroduction);
 
 
 }

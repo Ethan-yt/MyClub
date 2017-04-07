@@ -7,15 +7,9 @@
 
     <data>
 
-        <import type="android.view.View"/>
-
         <variable
             name="viewModel"
             type="com.ethan.myclub.user.main.viewmodel.UserViewModel"/>
-
-        <variable
-            name="profile"
-            type="com.ethan.myclub.user.profile.model.Profile"/>
 
     </data>
 
@@ -53,7 +47,7 @@
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="69dp"
                 android:transitionName="trans_iv_avatar"
-                app:imageUrl="@{profile.avatar ?? null}"/>
+                app:imageUrl="@{viewModel.mProfile.avatar ?? null}"/>
 
 
             <TextView
@@ -63,7 +57,7 @@
                 android:layout_below="@id/iv_avatar"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="10dp"
-                android:text="@{profile.username}"
+                android:text="@{viewModel.mProfile.username}"
                 android:textColor="#fff"
                 android:textSize="16sp"
                 tools:text="你好"/>
@@ -75,7 +69,7 @@
                 android:layout_below="@id/tv_username"
                 android:layout_centerHorizontal="true"
                 android:layout_margin="10dp"
-                android:text="@{profile.nickname}"
+                android:text="@{viewModel.mProfile.nickname}"
                 android:textColor="#fff"
                 android:textSize="20sp"
                 tools:text="你好"/>

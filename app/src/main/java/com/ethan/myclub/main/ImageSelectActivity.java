@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.databinding.BindingAdapter;
 import android.graphics.Bitmap;
 import android.net.Uri;
-import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomSheetDialog;
@@ -19,7 +18,7 @@ import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.ethan.myclub.R;
-import com.ethan.myclub.user.profile.view.ProfileEditActivity;
+import com.ethan.myclub.user.edit.view.ProfileEditActivity;
 
 import java.io.File;
 

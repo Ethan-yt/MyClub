@@ -1,4 +1,4 @@
-package com.ethan.myclub.user.profile.viewmodel;
+package com.ethan.myclub.user.edit.viewmodel;
 
 import android.app.Activity;
 import android.content.DialogInterface;
@@ -16,10 +16,12 @@ import com.ethan.myclub.databinding.ActivityUserProfileEditBinding;
 import com.ethan.myclub.global.Preferences;
 import com.ethan.myclub.main.ImageSelectActivity;
 import com.ethan.myclub.network.ApiHelper;
-import com.ethan.myclub.user.profile.view.ProfileEditActivity;
+import com.ethan.myclub.user.edit.view.ProfileEditActivity;
+import com.ethan.myclub.user.model.Profile;
 import com.ethan.myclub.util.CacheUtil;
 
 import java.io.File;
+import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -40,13 +42,16 @@ public class ProfileEditViewModel {
 
     public ObservableField<Uri> mImageUri = new ObservableField<>();
 
+    public Profile mProfile;
+
     public ProfileEditViewModel(ProfileEditActivity profileEditActivity, ActivityUserProfileEditBinding binding) {
         mActivity = profileEditActivity;
         mBinding = binding;
         mBinding.setViewModel(this);
-        String imageUrl = mActivity.getIntent().getStringExtra("ImageUrl");
-        if (!TextUtils.isEmpty(imageUrl))
-            mImageUri.set(Uri.parse(imageUrl));
+        mProfile = (Profile) mActivity.getIntent().getSerializableExtra("profile");
+
+        if (!TextUtils.isEmpty(mProfile.avatar))
+            mImageUri.set(Uri.parse(mProfile.avatar));
 
         mActivity.getToolbarWrapper()
                 .setTitle("编辑个人资料")
@@ -74,18 +79,16 @@ public class ProfileEditViewModel {
 
     private File mAvatarFile;
     private boolean mIsAvatarEdited = false;
-    private boolean mIsInfoEdited = false;
 
     private void saveChanges() {
         CacheUtil.get(mActivity).remove(Preferences.CACHE_USER_INFO);//先清空缓存，修改资料
         if (mIsAvatarEdited)
             saveAvatar();
-        else if (mIsInfoEdited)
+        else if (mProfile.mIsEdited)
             saveInfo();
         else
             mActivity.showSnackbar("并没有资料被修改");
     }
-
 
 
     public void editAvatar() {
@@ -154,7 +157,7 @@ public class ProfileEditViewModel {
                             @Override
                             public void onComplete() {
                                 mActivity.dismissDialog();
-                                if (!mIsInfoEdited) {
+                                if (!mProfile.mIsEdited) {
                                     finishEdit();
                                 } else
                                     saveInfo();
@@ -168,12 +171,41 @@ public class ProfileEditViewModel {
     }
 
     private void saveInfo() {
-        finishEdit();
+        ApiHelper.getProxy(mActivity)
+                .modifyUserProfile(mProfile.nickname, mProfile.studentNumber, mProfile.sex.equals("女") ? "1" : "0", mProfile.name, mProfile.birthday, mProfile.briefIntroduction)
+                .delay(1, TimeUnit.SECONDS)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<Object>() {
+
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                        mActivity.showWaitingDialog("请稍候", "修改信息中", d);
+                    }
+
+                    @Override
+                    public void onNext(Object o) {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        mActivity.showSnackbar("修改信息失败！" + e.getMessage());
+                        e.printStackTrace();
+                        mActivity.dismissDialog();
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        mActivity.dismissDialog();
+                        finishEdit();
+
+                    }
+                });
     }
 
 
     public void onBackPressed() {
-        if (mIsAvatarEdited || mIsInfoEdited)
+        if (mIsAvatarEdited || mProfile.mIsEdited)
             showAlertDialog();
         else
             ActivityCompat.finishAfterTransition(mActivity);
