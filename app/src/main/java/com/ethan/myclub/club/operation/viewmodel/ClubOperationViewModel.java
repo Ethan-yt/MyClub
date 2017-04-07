@@ -1,6 +1,7 @@
 package com.ethan.myclub.club.operation.viewmodel;
 
 import android.databinding.BindingAdapter;
+import android.databinding.ObservableField;
 import android.view.View;
 import android.widget.GridView;
 import android.widget.ImageView;
@@ -27,12 +28,15 @@ public class ClubOperationViewModel {
     private ActivityClubOperationBinding mBinding;
 
     public MyClub mClub;
+    public ObservableField<String> mClubNameAndTitle = new ObservableField<>();
 
     public ClubOperationViewModel(ClubOperationActivity activity, ActivityClubOperationBinding binding, MyClub club) {
         mActivity = activity;
         mBinding = binding;
         mBinding.setViewModel(this);
         mClub = club;
+        String str = club.clubName + "  " + getMyTitle();
+        mClubNameAndTitle.set(str);
 
         GridView gridView;
         List<Operation> operations;
@@ -86,5 +90,15 @@ public class ClubOperationViewModel {
                 return title.permissionsPart1;
         }
         return 0;
+    }
+
+    private String getMyTitle() {
+        if (mClub.isCreator)
+            return "社长";
+        for (Title title : mClub.titleTable) {
+            if (title.id.equals(mClub.titleId))
+                return title.titleName;
+        }
+        return "社员";
     }
 }

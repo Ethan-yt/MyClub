@@ -37,7 +37,7 @@
             android:layout_marginRight="8dp"
             android:layout_marginTop="8dp"
             android:ellipsize="end"
-            android:text="@{viewModel.mClub.clubName}"
+            android:text="@{viewModel.mClubNameAndTitle}"
             android:textAlignment="center"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintLeft_toLeftOf="parent"
