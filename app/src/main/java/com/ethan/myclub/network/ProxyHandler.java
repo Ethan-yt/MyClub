@@ -82,6 +82,7 @@ class ProxyHandler implements InvocationHandler {
                                     public boolean test(Object o) throws Exception {
                                         if (++count > 2) {
                                             mActivity.showLoginSnackbar("您的登录状态失效，需要重新登录");
+                                            Preferences.setToken(mActivity, null);
                                             mActivity = null;
                                             return false;//多次获取Token失败
                                         }

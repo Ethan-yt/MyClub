@@ -20,8 +20,10 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 
 /**
@@ -117,37 +119,44 @@ public class ClubViewModel {
     }
 
     public void updateUserClubList() {
-        if (!Preferences.sIsLogin.get()) {
-            Log.i(TAG, "updateUserClubList: 无法获取更新，用户没有登录");
-            notifyClubsObservable(null, GET_CLUBS_RESULT_NOT_LOGIN);
-            return;
-        }
-        mEmptyView.showLoadingView();
-        mAdapter.setNewData(null);
-        mBinding.recyclerView.setLayoutFrozen(true);
-        mAdapter.setEmptyView(mEmptyView);
-
         ApiHelper.getProxy(mFragment.mBaseActivity)
                 .getMyClubs()
-                .delay(1, TimeUnit.SECONDS)
+                //.delay(1, TimeUnit.SECONDS)
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<List<MyClub>>() {
+                .subscribe(new Observer<List<MyClub>>() {
                     @Override
-                    public void accept(@NonNull List<MyClub> clubs) throws Exception {
+                    public void onSubscribe(Disposable d) {
+                        mEmptyView.showLoadingView();
+                        mAdapter.setNewData(null);
+                        mBinding.recyclerView.setLayoutFrozen(true);
+                        mAdapter.setEmptyView(mEmptyView);
+                    }
+
+                    @Override
+                    public void onNext(List<MyClub> myClubs) {
                         Log.i(TAG, "updateUserClubList: 获取UserClubList完成");
-                        MyClub[] clubsArray = clubs.toArray(new MyClub[0]);
+                        MyClub[] clubsArray = myClubs.toArray(new MyClub[0]);
                         notifyClubsObservable(clubsArray, GET_CLUBS_RESULT_OK);
                         CacheUtil.get(mFragment.getActivity())
                                 .put(Preferences.CACHE_USER_CLUB_LIST, clubsArray, Preferences.CACHE_TIME_USER_CLUB_LIST);
                     }
-                }, new Consumer<Throwable>() {
+
                     @Override
-                    public void accept(@NonNull Throwable throwable) throws Exception {
+                    public void onError(Throwable e) {
                         Log.i(TAG, "updateUserInfo: 获取UserClubList失败");
-                        if (throwable instanceof ApiException && ((ApiException) throwable).getCode() == ApiException.NETWORK_ERROR)
+                        if (e instanceof ApiException && ((ApiException) e).getCode() == ApiException.NETWORK_ERROR)
                             notifyClubsObservable(null, GET_CLUBS_RESULT_NO_NETWORK);
                         else
                             notifyClubsObservable(null, GET_CLUBS_RESULT_ERROR);
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        if (!Preferences.sIsLogin.get()) {
+                            Log.i(TAG, "updateUserClubList: 无法获取更新，用户没有登录");
+                            notifyClubsObservable(null, GET_CLUBS_RESULT_NOT_LOGIN);
+                            return;
+                        }
                     }
                 });
     }
