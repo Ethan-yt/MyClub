@@ -4,6 +4,7 @@ import com.ethan.myclub.club.info.model.Club;
 import com.ethan.myclub.club.info.model.Club;
 import com.ethan.myclub.club.info.model.Tag2;
 import com.ethan.myclub.club.main.model.MyClub;
+import com.ethan.myclub.discover.activity.model.Activity;
 import com.ethan.myclub.discover.merchant.model.Merchant;
 import com.ethan.myclub.user.profile.model.Profile;
 import com.ethan.myclub.user.login.model.Valid;
@@ -99,6 +100,16 @@ public interface ApiService {
     //搜索商家
     @GET("api/merchant/search/")
     Observable<List<Merchant>> searchMerchant(@Query("keyword") String keyWord, @Query("page") int page, @Query("items") int items);
+
+
+    //============================活动============================
+    //获取商家搜索提示
+    @GET("api/activity/suggestion/")
+    Observable<List<String>> getActivitySuggestion(@Query("keyword") String keyWord);
+
+    //搜索商家
+    @GET("api/activity/search/")
+    Observable<List<Activity>> searchActivity(@Query("keyword") String keyWord, @Query("page") int page, @Query("items") int items);
 
     //============================课表============================
 

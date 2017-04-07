@@ -54,7 +54,6 @@ public class DiscoverFragment extends BaseFragment {
         mAdapter = new TabViewPagerAdapter(getChildFragmentManager());
         mViewPager.setAdapter(mAdapter);
         mViewPager.setOffscreenPageLimit(mViewPager.getAdapter().getCount());
-        setCurrentTab(1);
         willBeDisplayed();
 
         mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {

@@ -1,5 +1,6 @@
 package com.ethan.myclub.discover.club;
 
+import android.support.v7.widget.GridLayoutManager;
 import android.util.Log;
 import android.view.View;
 
@@ -25,6 +26,7 @@ public class ClubFragment extends TabFragment {
     private static final String TAG = "Discover Club";
 
     public ClubFragment() {
+        mLayoutManager = new GridLayoutManager(getContext(), 2);
         mAdapter = new ClubAdapter(this, null);
         mAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override

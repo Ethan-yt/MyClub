@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
+import android.support.v7.widget.GridLayoutManager;
 import android.util.Log;
 import android.view.View;
 
@@ -31,6 +32,7 @@ public class MerchantFragment extends TabFragment {
     private static final String TAG = "Discover Merchant";
 
     public MerchantFragment() {
+        mLayoutManager = new GridLayoutManager(getContext(), 2);
         mAdapter = new MerchantAdapter(this, null);
         mAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override

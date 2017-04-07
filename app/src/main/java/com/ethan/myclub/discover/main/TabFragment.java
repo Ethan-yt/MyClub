@@ -32,6 +32,7 @@ public abstract class TabFragment extends Fragment {
     public String mKeyWord = "";
     protected int mCurrentPage = 1;
     protected boolean mIsNoMore = false;
+    protected RecyclerView.LayoutManager mLayoutManager;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -68,7 +69,7 @@ public abstract class TabFragment extends Fragment {
         //预加载
         mAdapter.setAutoLoadMoreSize(4);
 
-        mRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
+        mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setAdapter(mAdapter);
         mEmptyView = new EmptyView(getActivity());
 

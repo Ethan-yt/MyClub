@@ -1,70 +1,139 @@
 package com.ethan.myclub.discover.activity;
 
-import android.content.Context;
-import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
+import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
 
-import com.ethan.myclub.R;
-import com.ethan.myclub.discover.dummy.DummyContent;
+import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.ethan.myclub.discover.activity.adapter.ActivityAdapter;
+import com.ethan.myclub.discover.activity.model.Activity;
+import com.ethan.myclub.discover.main.TabFragment;
+import com.ethan.myclub.discover.merchant.model.Merchant;
+import com.ethan.myclub.main.BaseActivity;
+import com.ethan.myclub.network.ApiHelper;
 
-public class ActivityFragment extends Fragment {
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Queue;
+import java.util.Stack;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.LinkedBlockingDeque;
+import java.util.concurrent.TimeUnit;
 
-    // TODO: Customize parameter argument names
-    private static final String ARG_COLUMN_COUNT = "column-count";
-    // TODO: Customize parameters
-    private int mColumnCount = 1;
+import io.reactivex.Observable;
+import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
 
-    /**
-     * Mandatory empty constructor for the fragment manager to instantiate the
-     * fragment (e.g. upon screen orientation changes).
-     */
-    public ActivityFragment() {
-    }
+public class ActivityFragment extends TabFragment {
 
-    // TODO: Customize parameter initialization
-    @SuppressWarnings("unused")
-    public static ActivityFragment newInstance(int columnCount) {
-        ActivityFragment fragment = new ActivityFragment();
-        Bundle args = new Bundle();
-        args.putInt(ARG_COLUMN_COUNT, columnCount);
-        fragment.setArguments(args);
-        return fragment;
+    private static final String TAG = "Discover Activity";
+
+    public ActivityFragment(){
+        mLayoutManager = new LinearLayoutManager(getContext());
+        mAdapter = new ActivityAdapter(this, null);
+//        mAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+//            }
+//        });
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    public void update(final int page, int items) {
+        ApiHelper.getProxyWithoutToken((BaseActivity) getActivity())
+                .searchActivity(mKeyWord, page, items)
+                .delay(1, TimeUnit.SECONDS)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<List<Activity>>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                        //下拉刷新动画开始
+                        if (page == 1)
+                            mSwipeRefreshLayout.setRefreshing(true);
+                    }
 
-        if (getArguments() != null) {
-            mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
-        }
+                    @Override
+                    public void onNext(List<Activity> activityList) {
+                        Log.i(TAG, "update: 获取Activity完成");
+                        //允许读取更多
+                        mAdapter.setEnableLoadMore(true);
+                        mCurrentPage++;
+                        if (page == 1) {
+                            if (activityList == null || activityList.size() == 0) {
+                                mEmptyView.showEmptyView("还没有这个活动", "请换一个关键字试试！");
+                                mAdapter.setNewData(null);
+                                mRecyclerView.setLayoutFrozen(true);
+                                mAdapter.setEmptyView(mEmptyView);
+                            } else {
+                                mRecyclerView.setLayoutFrozen(false);
+                                mAdapter.setNewData(activityList);
+                                formatOrder(activityList);
+                            }
+                        } else {
+                            //允许下拉刷新
+                            mSwipeRefreshLayout.setEnabled(true);
+                            mAdapter.loadMoreComplete();
+                            mAdapter.addData(activityList);
+                        }
+                        if (activityList.size() < 10) {
+                            mIsNoMore = true;
+                            mAdapter.loadMoreEnd();
+                        }
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        //允许读取更多
+                        mAdapter.setEnableLoadMore(true);
+                        e.printStackTrace();
+                        Log.i(TAG, "update: 获取ClubList失败");
+                        if (page == 1) {
+                            mSwipeRefreshLayout.setRefreshing(false);
+                            mEmptyView.showErrorView(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    update(1, 10);
+                                }
+                            });
+                            mAdapter.setNewData(null);
+                            mRecyclerView.setLayoutFrozen(true);
+                            mAdapter.setEmptyView(mEmptyView);
+                        } else {
+                            //允许下拉刷新
+                            mSwipeRefreshLayout.setEnabled(true);
+                            mAdapter.loadMoreFail();
+                        }
+
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        if (page == 1)
+                            mSwipeRefreshLayout.setRefreshing(false);
+                    }
+                });
     }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_discover_activity, container, false);
-
-        // Set the adapter
-        if (view instanceof RecyclerView) {
-            Context context = view.getContext();
-            RecyclerView recyclerView = (RecyclerView) view;
-            if (mColumnCount <= 1) {
-                recyclerView.setLayoutManager(new LinearLayoutManager(context));
-            } else {
-                recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
+    private void formatOrder(List<Activity> activityList) {
+        Activity specialActivity = null;
+        for (Activity activity : activityList) {
+            if(activity.isSpecial)
+            {
+                specialActivity = activity;
+                activityList.remove(activity);
+                break;
             }
-            recyclerView.setAdapter(new MyActivityRecyclerViewAdapter(DummyContent.ITEMS));
         }
-        return view;
+        if(specialActivity != null)
+            activityList.add(0,specialActivity);
     }
 
-
-
+    @Override
+    public Observable<List<String>> getSuggestionObservable(String query, BaseActivity activity) {
+        return ApiHelper.getProxyWithoutToken(activity).getActivitySuggestion(query);
+    }
 }
