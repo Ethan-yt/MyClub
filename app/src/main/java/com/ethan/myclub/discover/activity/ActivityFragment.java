@@ -4,9 +4,12 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.util.Log;
 import android.view.View;
 
+import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.ethan.myclub.activity.detail.view.ActivityDetailActivity;
 import com.ethan.myclub.discover.activity.adapter.ActivityAdapter;
 import com.ethan.myclub.discover.activity.model.ActivityResult;
 import com.ethan.myclub.discover.main.TabFragment;
+import com.ethan.myclub.global.Preferences;
 import com.ethan.myclub.main.BaseActivity;
 import com.ethan.myclub.network.ApiHelper;
 
@@ -25,11 +28,15 @@ public class ActivityFragment extends TabFragment {
     public ActivityFragment(){
         mLayoutManager = new LinearLayoutManager(getContext());
         mAdapter = new ActivityAdapter(this, null);
-//        mAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-//            }
-//        });
+        mAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                if(!Preferences.sIsLogin.get())
+                    ((BaseActivity) getActivity()).showLoginSnackbar("先登录才能查看活动哦");
+                else
+                    ActivityDetailActivity.start(getActivity(), (ActivityResult) adapter.getData().get(position));
+            }
+        });
     }
 
     @Override

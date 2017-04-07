@@ -9,6 +9,7 @@ import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v7.app.AppCompatActivity;
 
 import com.ethan.myclub.R;
+import com.ethan.myclub.activity.detail.view.ActivityDetailActivity;
 import com.ethan.myclub.global.Preferences;
 
 import java.util.concurrent.TimeUnit;

@@ -61,7 +61,6 @@ public class Club extends BaseObservable implements Serializable {
 
     @SerializedName("creator")
     @Expose
-
     public Integer creator;
     @SerializedName("club_name")
     @Expose

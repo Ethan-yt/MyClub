@@ -55,5 +55,9 @@
         <item name="android:textColor">@color/toolbarTitleText</item>
     </style>
 
+    <style name="activityDetailTextStyle" parent="TextAppearance.AppCompat.Widget.ActionBar.Title">
+        <item name="android:textSize">22sp</item>
+        <item name="android:textColor">@android:color/white</item>
+    </style>
 
 </resources>

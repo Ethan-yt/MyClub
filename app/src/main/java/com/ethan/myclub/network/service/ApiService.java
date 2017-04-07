@@ -1,5 +1,6 @@
 package com.ethan.myclub.network.service;
 
+import com.ethan.myclub.activity.model.Activity;
 import com.ethan.myclub.club.model.Club;
 import com.ethan.myclub.club.model.Tag2;
 import com.ethan.myclub.club.my.model.MyClub;
@@ -102,13 +103,17 @@ public interface ApiService {
 
 
     //============================活动============================
-    //获取商家搜索提示
+    //获取活动搜索提示
     @GET("api/activity/suggestion/")
     Observable<List<String>> getActivitySuggestion(@Query("keyword") String keyWord);
 
-    //搜索商家
+    //搜索活动
     @GET("api/activity/search/")
     Observable<List<ActivityResult>> searchActivity(@Query("keyword") String keyWord, @Query("page") int page, @Query("items") int items);
+
+    //获取指定ID活动信息
+    @GET("api/activity/{activityId}/")
+    Observable<Activity> getActivity(@Path("activityId") String activityId);
 
     //============================课表============================
 

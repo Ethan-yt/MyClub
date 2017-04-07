@@ -4,7 +4,9 @@ import com.chad.library.adapter.base.entity.MultiItemEntity;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class ActivityResult implements MultiItemEntity {
+import java.io.Serializable;
+
+public class ActivityResult implements MultiItemEntity, Serializable {
 
     @SerializedName("id")
     @Expose
@@ -30,9 +32,12 @@ public class ActivityResult implements MultiItemEntity {
     @SerializedName("publish_time")
     @Expose
     public String publishTime;
+    @SerializedName("special_index_image")
+    @Expose
+    public String specialIndexImage;
 
     @Override
     public int getItemType() {
-        return isSpecial?1:0;
+        return isSpecial ? 1 : 0;
     }
 }

@@ -50,7 +50,7 @@ public class ActivityAdapter extends BaseMultiItemQuickAdapter<ActivityResult, B
         if (imageUrl == null) {
             target = R.drawable.img_default_avatar;
         } else {
-            target = imageUrl + "?imageView2/0/w/300/h/300";
+            target = imageUrl + "?imageView2/0/w/500/h/500";
         }
         Glide.with(mMerchantFragment)
                 .load(target)
