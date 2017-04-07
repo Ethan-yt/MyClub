@@ -1,4 +1,4 @@
-package com.ethan.myclub.club.info.view;
+package com.ethan.myclub.club.detail.view;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -8,9 +8,8 @@ import android.support.v4.app.ActivityCompat;
 
 import com.ethan.myclub.R;
 import com.ethan.myclub.databinding.ActivityClubInfoBinding;
-import com.ethan.myclub.databinding.ActivityClubInfoBinding;
 import com.ethan.myclub.main.BaseActivity;
-import com.ethan.myclub.club.info.viewmodel.ClubInfoViewModel;
+import com.ethan.myclub.club.detail.viewmodel.ClubInfoViewModel;
 
 public class ClubInfoActivity extends BaseActivity {
 

@@ -51,7 +51,7 @@
         <activity android:name=".user.message.messageActivity"/>
         <activity android:name=".club.create.view.ClubCreateActivity"/>
         <activity android:name=".club.operation.view.ClubOperationActivity"/>
-        <activity android:name=".club.info.view.ClubInfoActivity"/>
+        <activity android:name=".club.detail.view.ClubInfoActivity"/>
         <activity android:name=".club.edit.view.ClubInfoEditActivity"/>
 
 

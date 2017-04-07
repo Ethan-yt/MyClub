@@ -7,7 +7,7 @@ import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.ethan.myclub.R;
-import com.ethan.myclub.club.info.view.ClubInfoActivity;
+import com.ethan.myclub.club.detail.view.ClubInfoActivity;
 import com.ethan.myclub.club.my.model.MyClub;
 import com.ethan.myclub.club.my.model.Title;
 import com.ethan.myclub.club.operation.adapter.GridViewAdapter;

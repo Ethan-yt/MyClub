@@ -5,7 +5,7 @@ import android.util.Log;
 import android.view.View;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.ethan.myclub.club.info.view.ClubInfoActivity;
+import com.ethan.myclub.club.detail.view.ClubInfoActivity;
 import com.ethan.myclub.discover.club.adapter.ClubAdapter;
 import com.ethan.myclub.discover.club.model.ClubResult;
 import com.ethan.myclub.discover.club.model.Hit;

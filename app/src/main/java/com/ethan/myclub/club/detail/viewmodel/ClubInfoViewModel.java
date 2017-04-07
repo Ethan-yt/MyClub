@@ -1,4 +1,4 @@
-package com.ethan.myclub.club.info.viewmodel;
+package com.ethan.myclub.club.detail.viewmodel;
 
 import android.databinding.BindingAdapter;
 import android.databinding.ObservableField;
@@ -14,7 +14,7 @@ import com.ethan.myclub.R;
 import com.ethan.myclub.club.edit.view.ClubInfoEditActivity;
 import com.ethan.myclub.club.model.Club;
 import com.ethan.myclub.club.model.Tag;
-import com.ethan.myclub.club.info.view.ClubInfoActivity;
+import com.ethan.myclub.club.detail.view.ClubInfoActivity;
 import com.ethan.myclub.databinding.ActivityClubInfoBinding;
 import com.ethan.myclub.main.BaseActivity;
 import com.ethan.myclub.network.ApiHelper;
