@@ -32,3 +32,5 @@
 -keepresourcexmlelements manifest/application/meta-data@value=GlideModule
 #Glide and OKHttp
 -keep class com.bumptech.glide.integration.okhttp3.OkHttpGlideModule
+
+-keep class com.ethan.myclub.push.MiPushMessageReceiver {*;}
