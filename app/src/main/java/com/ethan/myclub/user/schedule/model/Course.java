@@ -25,12 +25,15 @@ public class Course implements Parcelable {
     @SerializedName("courses_time")
     final private List<CourseTime> time;//时间
 
+    final private int color;
+
     private Course(Parcel in) {
         name = in.readString();
         type = in.readString();
         teacher = in.readString();
         time = new ArrayList<>();
         in.readList(time, CourseTime.class.getClassLoader());
+        color = in.readInt();
     }
 
 
@@ -52,6 +55,7 @@ public class Course implements Parcelable {
         type = builder.type;
         teacher = builder.teacher;
         time = builder.time;
+        color = builder.color;
     }
 
     @Override
@@ -65,6 +69,7 @@ public class Course implements Parcelable {
         parcel.writeString(type);
         parcel.writeString(teacher);
         parcel.writeList(time);
+        parcel.writeInt(color);
     }
 
     public String getName() {
@@ -83,6 +88,10 @@ public class Course implements Parcelable {
         return time;
     }
 
+    public int getColor() {
+        return color;
+    }
+
     /**
      * {@code Course} builder static inner class.
      */
@@ -91,6 +100,7 @@ public class Course implements Parcelable {
         private String name;
         private String type;
         private String teacher;
+        private int color;
         private List<CourseTime> time;
 
         public Builder() {
@@ -138,6 +148,17 @@ public class Course implements Parcelable {
          */
         public Builder time(List<CourseTime> val) {
             time = val;
+            return this;
+        }
+
+        /**
+         * Sets the {@code color} and returns a reference to this Builder so that the methods can be chained together.
+         *
+         * @param val the {@code color} to set
+         * @return a reference to this Builder
+         */
+        public Builder color(int val) {
+            color = val;
             return this;
         }
 

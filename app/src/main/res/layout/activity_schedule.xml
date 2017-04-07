@@ -7,10 +7,16 @@
     android:layout_height="match_parent"
     tools:context=".user.schedule.ScheduleActivity">
 
+    <com.ethan.myclub.club.my.view.EmptyView
+        android:layout_marginTop="100dp"
+        android:id="@+id/ev"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
     <com.ethan.myclub.user.schedule.ScheduleView
         android:id="@+id/scheduleView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="?attr/actionBarSize"
-        />
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
+
 </android.support.design.widget.CoordinatorLayout>

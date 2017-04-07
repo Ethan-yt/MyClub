@@ -15,9 +15,11 @@ import com.ethan.myclub.R;
 import com.ethan.myclub.user.schedule.model.Course;
 import com.ethan.myclub.user.schedule.model.CourseTime;
 import com.ethan.myclub.user.schedule.model.Schedule;
+import com.ethan.myclub.util.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 /**
  * Created by ethan on 2017/1/19.
@@ -29,6 +31,7 @@ public class ScheduleView extends LinearLayout {
 
     List<FrameLayout> mDayViews;
     Schedule mSchedule;
+    private int mCurrentWeek;
 
 
     public ScheduleView(Context context, AttributeSet attrs) {
@@ -45,11 +48,18 @@ public class ScheduleView extends LinearLayout {
     }
 
     private void initScheduleModels() {
+
         for (final Course course : mSchedule.getCourses()) {
 
             List<CourseTime> courseTimes = course.getTime();
 
             for (CourseTime courseTime : courseTimes) {
+
+                if (courseTime.getWeekBegin() > mCurrentWeek ||
+                        courseTime.getWeekEnd() < mCurrentWeek ||
+                        (courseTime.getWeekFlag() == 1 && mCurrentWeek % 2 == 0) ||
+                        (courseTime.getWeekFlag() == 2 && mCurrentWeek % 2 == 1))
+                    continue;
 
                 CardView cv = new CardView(getContext());
 
@@ -58,7 +68,7 @@ public class ScheduleView extends LinearLayout {
                 CardView.LayoutParams cvLp = new CardView.LayoutParams(
                         CardView.LayoutParams.MATCH_PARENT, (courseTime.getTimeEnd() - courseTime.getTimeBegin() + 1) * itemHeight);
 
-                cvLp.setMargins(5, 10+(courseTime.getTimeBegin() - 1) * (itemHeight+5), 5, 5);
+                cvLp.setMargins(5, mHeadHeight + 10 + (courseTime.getTimeBegin() - 1) * (itemHeight + 5), 5, 5);
 
                 TextView tv = new TextView(getContext());
                 tv.setGravity(Gravity.CENTER);
@@ -68,9 +78,8 @@ public class ScheduleView extends LinearLayout {
 
                 cv.setLayoutParams(cvLp);
                 cv.addView(tv);
-                cv.setBackgroundColor(Color.WHITE);
-                cv.setContentPadding(5,5,5,5);
-
+                cv.setContentPadding(5, 5, 5, 5);
+                cv.setBackgroundColor(course.getColor());
                 cv.setRadius(getResources().getDimensionPixelSize(R.dimen.ScheduleCourseRadius));
                 mDayViews.get(courseTime.getDay() - 1).addView(cv);
 
@@ -82,21 +91,41 @@ public class ScheduleView extends LinearLayout {
                 });
 
             }
-
-
         }
 
     }
 
 
+    private int mHeadHeight = Utils.dp2px(getContext(), 30);
+
     public void initDayView() {
         removeAllViews();
 
         mDayViews = new ArrayList<>();
-
+        String str[] = new String[]{"一", "二", "三", "四", "五", "六", "日"};
         for (int i = 0; i < 7; i++) {
             FrameLayout dayView = new FrameLayout(getContext());
-            dayView.setLayoutParams(new LinearLayout.LayoutParams(0, LayoutParams.MATCH_PARENT, 1.0f));
+            dayView.setLayoutParams(new LinearLayout.LayoutParams(0, LayoutParams.WRAP_CONTENT, 1.0f));
+
+            CardView cv = new CardView(getContext());
+            CardView.LayoutParams cvLp = new CardView.LayoutParams(
+                    CardView.LayoutParams.MATCH_PARENT, mHeadHeight);
+
+            cvLp.setMargins(5, 5, 5, 5);
+
+            TextView tv = new TextView(getContext());
+            tv.setGravity(Gravity.CENTER);
+            tv.setTextSize(12);
+            tv.setTextColor(Color.BLACK);
+            tv.setText("星期" + str[i]);
+            cv.setLayoutParams(cvLp);
+            cv.addView(tv);
+            cv.setBackgroundColor(Color.WHITE);
+            cv.setContentPadding(5, 5, 5, 5);
+
+            cv.setRadius(getResources().getDimensionPixelSize(R.dimen.ScheduleCourseRadius));
+            dayView.addView(cv);
+
             mDayViews.add(dayView);
             addView(dayView);
         }
@@ -108,8 +137,9 @@ public class ScheduleView extends LinearLayout {
         return mSchedule;
     }
 
-    public void setSchedule(Schedule schedule) {
+    public void setSchedule(Schedule schedule, int currentWeek) {
         mSchedule = schedule;
+        mCurrentWeek = currentWeek;
         initDayView();
         initScheduleModels();
     }

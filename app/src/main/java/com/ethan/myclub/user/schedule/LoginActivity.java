@@ -38,6 +38,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -451,7 +452,6 @@ public class LoginActivity extends BaseActivity {
                         intent.putParcelableArrayListExtra("Schedules", schedules);
                         intent.putExtra("Year", v.getYear());
                         intent.putExtra("Term", v.getTerm());
-                        //startActivity(intent);
                         setResult(RESULT_OK, intent);
                         finish();
                     }
@@ -494,6 +494,8 @@ public class LoginActivity extends BaseActivity {
         Elements rows = doc.getElementById("Table1").getElementsByTag("tr");
         if (rows.size() < 14)
             throw new Exception("课表结构出错");
+        Random random = new Random();
+
         for (int i = 2; i < 14; i++) {
             Element row = rows.get(i);
             Elements cells = row.getElementsByTag("td");
@@ -506,10 +508,18 @@ public class LoginActivity extends BaseActivity {
                 for (int j = 0; j < (info.length / 5); j++) {
                     Course course = scheduleMap.get(info[0]);
                     if (course == null) {
+                        int color = 0x88;
+                        color <<= 8;
+                        color |= random.nextInt(255);
+                        color <<= 8;
+                        color |= random.nextInt(255);
+                        color <<= 8;
+                        color |= random.nextInt(255);
                         course = new Course.Builder()
                                 .name(info[j * 5 + 0])
                                 .teacher(info[j * 5 + 3])
                                 .type(info[j * 5 + 1])
+                                .color(color)
                                 .build();
 
                         scheduleMap.put(info[j * 5 + 0], course);

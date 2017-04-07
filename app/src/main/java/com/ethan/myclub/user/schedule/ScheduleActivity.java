@@ -10,10 +10,13 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.NumberPicker;
 
 import com.ethan.myclub.R;
+import com.ethan.myclub.club.my.view.EmptyView;
 import com.ethan.myclub.main.BaseActivity;
 import com.ethan.myclub.user.login.view.RegisterActivity;
 import com.ethan.myclub.user.schedule.model.Schedule;
@@ -29,11 +32,22 @@ public class ScheduleActivity extends BaseActivity {
     ArrayList<Schedule> mSchedules = new ArrayList<>();
     String mCurrentYear;
     String mCurrentTerm;
+    EmptyView mEmptyView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_schedule);
+        initToolbar();
+
+        mScheduleView = (ScheduleView) findViewById(R.id.scheduleView);
+        mEmptyView = (EmptyView) findViewById(R.id.ev);
+        mEmptyView.showEmptyView("请导入课表", "请先点击右上角获取课程表哦！");
+        read();
+        refreshScheduleView();
+    }
+
+    private void initToolbar() {
         getToolbarWrapper()
                 .setTitle("时间管理")
                 .showBackIcon()
@@ -56,13 +70,17 @@ public class ScheduleActivity extends BaseActivity {
                                 }
                                 return true;
                             }
+                        }, new OnFinishCreateMenu() {
+                            @Override
+                            public void onFinish(Menu menu) {
+                                if(mSchedules.isEmpty()){
+                                    menu.findItem(R.id.action_setCurrentWeek).setVisible(false);
+                                    menu.findItem(R.id.action_settings).setVisible(false);
+                                }
+
+                            }
                         })
                 .show();
-
-        mScheduleView = (ScheduleView) findViewById(R.id.scheduleView);
-
-        read();
-        refreshScheduleView();
     }
 
     private void setCurrentSchedule() {
@@ -93,7 +111,7 @@ public class ScheduleActivity extends BaseActivity {
     }
 
     private void downloadSchedule() {
-        LoginActivity.startActivityForResult(this,REQUEST_LOGIN);
+        LoginActivity.startActivityForResult(this, REQUEST_LOGIN);
 
     }
 
@@ -101,6 +119,7 @@ public class ScheduleActivity extends BaseActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == ScheduleActivity.REQUEST_LOGIN && resultCode == RESULT_OK) {
+            initToolbar();
             mSchedules = data.getParcelableArrayListExtra("Schedules");
             mCurrentYear = data.getStringExtra("Year");
             mCurrentTerm = data.getStringExtra("Term");
@@ -128,14 +147,17 @@ public class ScheduleActivity extends BaseActivity {
     }
 
     public void refreshScheduleView() {
-
         for (Schedule schedule : mSchedules) {
             if (schedule.getYear().equals(mCurrentYear) &&
                     schedule.getTerm().equals(mCurrentTerm)) {
-                mScheduleView.setSchedule(schedule);
+                mEmptyView.setVisibility(View.INVISIBLE);
+                mScheduleView.setVisibility(View.VISIBLE);
+                mScheduleView.setSchedule(schedule, mCurrentWeek);
                 return;
             }
         }
+        mScheduleView.setVisibility(View.INVISIBLE);
+        mEmptyView.setVisibility(View.VISIBLE);
     }
 
     public void read() {
@@ -151,10 +173,11 @@ public class ScheduleActivity extends BaseActivity {
         mCurrentTerm = sharedPreferences.getString("CurrentTerm", "");
     }
 
+    int mCurrentWeek = 1;
 
     private void setCurrentWeek() {
 
-        NumberPicker np = new NumberPicker(this);
+        final NumberPicker np = new NumberPicker(this);
         String[] week_id = new String[20];
         for (int i = 0; i < 20; i++) {
             week_id[i] = "第" + (i + 1) + "周";
@@ -163,12 +186,17 @@ public class ScheduleActivity extends BaseActivity {
         np.setDisplayedValues(week_id);
         np.setMinValue(0);
         np.setMaxValue(week_id.length - 1);
+        np.setValue(mCurrentWeek - 1);
 
         mBottomSheetDialog = new BottomSheetDialog(this);
         mBottomSheetDialog.setContentView(np);
+
         mBottomSheetDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
             @Override
             public void onDismiss(DialogInterface dialog) {
+
+                mCurrentWeek = np.getValue() + 1;
+                refreshScheduleView();
                 mBottomSheetDialog = null;
             }
         });

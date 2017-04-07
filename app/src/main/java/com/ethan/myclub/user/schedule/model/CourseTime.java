@@ -22,7 +22,7 @@ public class CourseTime implements Parcelable {
     final private int weekEnd;// 第几周
     @Expose
     @SerializedName("week_flag")
-    final private int weekFlag; // 单双周标记 0为不限 1为单 2为双
+    final private int weekFlag; // 单双周标记 1为单 2为双 3为不限
     @Expose
     @SerializedName("time_begin")
     final private int timeBegin; // 节数
@@ -52,6 +52,9 @@ public class CourseTime implements Parcelable {
         return timeEnd;
     }
 
+    public int getWeekFlag() {
+        return weekFlag;
+    }
 
     public String getLocation() {
         return location;
