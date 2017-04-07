@@ -9,7 +9,7 @@
 
         <variable
             name="viewModel"
-            type="com.ethan.myclub.club.info.edit.viewmodel.ClubInfoEditViewModel"/>
+            type="com.ethan.myclub.club.edit.viewmodel.ClubInfoEditViewModel"/>
     </data>
 
     <android.support.design.widget.CoordinatorLayout
