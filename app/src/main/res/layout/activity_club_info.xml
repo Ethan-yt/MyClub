@@ -188,15 +188,14 @@
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="社团成员"
+                            android:text="社团活动"
                             android:textStyle="bold"/>
 
-                        <TextView
+                        <android.support.v7.widget.RecyclerView
+                            android:id="@+id/list"
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_marginTop="10dp"
-                            android:ellipsize="end"
-                            tools:text="噶的观点嘎达的嘎嘎三个法师烦恼萨芬撒即可发货就开始发神经啊回复就开始"/>
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="20dp"/>
                     </LinearLayout>
 
 

@@ -3,23 +3,37 @@ package com.ethan.myclub.club.detail.viewmodel;
 import android.databinding.BindingAdapter;
 import android.databinding.ObservableField;
 import android.graphics.Color;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.Toolbar;
+import android.view.Gravity;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextClock;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.ethan.myclub.R;
+import com.ethan.myclub.activity.detail.view.ActivityDetailActivity;
+import com.ethan.myclub.club.detail.adapter.ClubDetailActivityAdapter;
 import com.ethan.myclub.club.edit.view.ClubInfoEditActivity;
 import com.ethan.myclub.club.model.Club;
 import com.ethan.myclub.club.model.Tag;
 import com.ethan.myclub.club.detail.view.ClubInfoActivity;
 import com.ethan.myclub.club.my.model.MyClub;
+import com.ethan.myclub.club.my.view.EmptyView;
 import com.ethan.myclub.databinding.ActivityClubInfoBinding;
+import com.ethan.myclub.discover.activity.adapter.ActivityAdapter;
+import com.ethan.myclub.discover.activity.model.ActivityResult;
 import com.ethan.myclub.main.BaseActivity;
 import com.ethan.myclub.network.ApiHelper;
 import com.google.android.flexbox.FlexboxLayout;
+
+import java.util.List;
 
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -29,16 +43,20 @@ import jp.wasabeef.glide.transformations.CropCircleTransformation;
 public class ClubInfoViewModel {
 
 
+    private final ClubDetailActivityAdapter mAdapter;
+    private final TextView mEmptyView;
     private ClubInfoActivity mActivity;
     private ActivityClubInfoBinding mBinding;
 
     public ObservableField<Club> mClub = new ObservableField<>();
 
+    private MyClub mMyClub;
+
     public ClubInfoViewModel(ClubInfoActivity activity, ActivityClubInfoBinding binding, final MyClub myclub) {
         mActivity = activity;
         mBinding = binding;
         mBinding.setViewModel(this);
-
+        mMyClub = myclub;
         BaseActivity.ToolbarWrapper toolbar = mActivity.getToolbarWrapper()
                 .setTitle("社团简介", true)
                 .setColor(Color.WHITE)
@@ -59,15 +77,91 @@ public class ClubInfoViewModel {
         mBinding.swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                update(myclub.clubId);
+                updateClubDetail();
+                updateClubActivity();
             }
         });
-        update(myclub.clubId);
+        updateClubDetail();
+
+
+        mAdapter = new ClubDetailActivityAdapter(mActivity, null);
+        mAdapter.openLoadAnimation(BaseQuickAdapter.ALPHAIN);
+
+        mAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                ActivityDetailActivity.start(mActivity, (ActivityResult) adapter.getData().get(position));
+            }
+        });
+
+
+        mBinding.list.setLayoutManager(new LinearLayoutManager(mActivity, LinearLayoutManager.HORIZONTAL, false));
+        mBinding.list.setAdapter(mAdapter);
+        mEmptyView = new TextView(mActivity);
+        mEmptyView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+        mEmptyView.setGravity(Gravity.CENTER);
+        updateClubActivity();
     }
 
-    public void update(int id) {
+    private void updateClubActivity() {
         ApiHelper.getProxyWithoutToken(mActivity)
-                .getClub(String.valueOf(id))
+                .getClubActivity(String.valueOf(mMyClub.clubId))
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<List<ActivityResult>>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                        mEmptyView.setText("加载中");
+                        mAdapter.setNewData(null);
+                        mBinding.list.setLayoutFrozen(true);
+                        mAdapter.setEmptyView(mEmptyView);
+                    }
+
+                    @Override
+                    public void onNext(List<ActivityResult> activityResults) {
+                        if (activityResults == null || activityResults.size() == 0) {
+                            mEmptyView.setText("当前社团还未发布任何活动");
+                            mAdapter.setNewData(null);
+                            mBinding.list.setLayoutFrozen(true);
+                            mAdapter.setEmptyView(mEmptyView);
+                        } else {
+                            mBinding.list.setLayoutFrozen(false);
+                            formatOrder(activityResults);
+                            mAdapter.setNewData(activityResults);
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        mEmptyView.setText("发生了错误");
+                        mAdapter.setNewData(null);
+                        mBinding.list.setLayoutFrozen(true);
+                        mAdapter.setEmptyView(mEmptyView);
+                        mActivity.showSnackbar("错误：" + e.getMessage());
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+    }
+
+    private void formatOrder(List<ActivityResult> activityList) {
+        ActivityResult specialActivity = null;
+        for (ActivityResult activity : activityList) {
+            if (activity.isSpecial) {
+                specialActivity = activity;
+                activityList.remove(activity);
+                break;
+            }
+        }
+        if (specialActivity != null)
+            activityList.add(0, specialActivity);
+    }
+
+    public void updateClubDetail() {
+        ApiHelper.getProxyWithoutToken(mActivity)
+                .getClub(String.valueOf(mMyClub.clubId))
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<Club>() {
                     @Override
@@ -77,7 +171,7 @@ public class ClubInfoViewModel {
 
                     @Override
                     public void onNext(Club club) {
-                        mClub .set(club);
+                        mClub.set(club);
                         mBinding.flTags.removeAllViews();
                         for (Tag tag : club.tag) {
                             TextView tv = new TextView(mActivity);

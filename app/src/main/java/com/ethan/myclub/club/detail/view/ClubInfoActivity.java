@@ -38,7 +38,7 @@ public class ClubInfoActivity extends BaseActivity {
         if (resultCode == RESULT_OK) {
             switch (requestCode) {
                 case REQUEST_EDIT_CLUB_INFO:
-                    mViewModel.update(mViewModel.mClub.get().id);
+                    mViewModel.updateClubDetail();
                     showSnackbar("修改社团资料成功");
                     break;
             }
