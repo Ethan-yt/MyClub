@@ -124,6 +124,7 @@
         <activity android:name=".activity.create.view.ActivityCreateActivity"/>
         <activity android:name=".activity.edit.view.ActivityEditContentActivity"/>
         <activity android:name=".user.collection.view.UserCollectionActivity"/>
+        <activity android:name=".club.notification.view.ClubNotificationCreateActivity"/>
     </application>
 
 </manifest>

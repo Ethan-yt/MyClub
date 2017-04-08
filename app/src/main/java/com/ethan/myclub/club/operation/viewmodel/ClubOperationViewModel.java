@@ -13,6 +13,7 @@ import com.ethan.myclub.club.activitylist.view.ClubActivityListActivity;
 import com.ethan.myclub.club.detail.view.ClubInfoActivity;
 import com.ethan.myclub.club.my.model.MyClub;
 import com.ethan.myclub.club.my.model.Title;
+import com.ethan.myclub.club.notification.view.ClubNotificationCreateActivity;
 import com.ethan.myclub.club.operation.adapter.GridViewAdapter;
 import com.ethan.myclub.club.operation.adapter.ViewPagerAdapter;
 import com.ethan.myclub.club.operation.model.Operation;
@@ -60,6 +61,8 @@ public class ClubOperationViewModel {
         operations = new ArrayList<>();
         if (club.checkPermission(6))
             operations.add(new Operation(ActivityCreateActivity.class, "创建活动", R.drawable.ic_club_op_activity));
+        if (club.checkPermission(2))
+            operations.add(new Operation(ClubNotificationCreateActivity.class, "发布通知", R.drawable.ic_club_op_notification));
         operations.add(new Operation(null, "招新管理", R.drawable.ic_club_op_freshmen));
         operations.add(new Operation(null, "空课表", R.drawable.ic_club_op_schedule));
         gridView.setAdapter(new GridViewAdapter(mActivity, operations, mClub));

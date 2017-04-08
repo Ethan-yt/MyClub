@@ -161,6 +161,7 @@ public interface ApiService {
     @POST("api/activity/content_image/{activity}/")
     Observable<Object> uploadActivityContentImage(@Path("activity") String activityId,
                                                   @Part List<MultipartBody.Part> file);
+
     //活动内容文字
     @POST("api/activity/content_text/{activity}/")
     Observable<Object> uploadActivityContentText(@Path("activity") String activityId, @Body Content content);
@@ -197,6 +198,16 @@ public interface ApiService {
     //个人收藏
     @GET("api/activity/search/?is_like=true")
     Observable<List<ActivityResult>> getMyCollection();
+
+    //============================通知============================
+
+    //创建活动
+    @FormUrlEncoded
+    @POST("api/club/{clubId}/notification/")
+    Observable<Object>
+    sendNotification(@Path("clubId") String clubId,
+                     @Field("title") String title,
+                     @Field("content") String content);
 
 
 }
