@@ -231,7 +231,7 @@ public class ActivityDetailViewModel {
         if (mActivityDetail.get().likeStatus)
             mBinding.fab.setImageResource(R.drawable.ic_like_red);
         else
-            mBinding.fab.setImageResource(R.drawable.ic_like_white);`
+            mBinding.fab.setImageResource(R.drawable.ic_like_white);
         ApiHelper.getProxy(mActivity)
                 .changeLikeStatus(String.valueOf(mActivityResult.get().id))
                 .observeOn(AndroidSchedulers.mainThread())
