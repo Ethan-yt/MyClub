@@ -20,6 +20,7 @@ import com.ethan.myclub.global.Preferences;
 import com.ethan.myclub.main.BaseActivity;
 import com.ethan.myclub.main.MainActivity;
 import com.ethan.myclub.network.ApiHelper;
+import com.ethan.myclub.user.collection.view.UserCollectionActivity;
 import com.ethan.myclub.user.model.Profile;
 import com.ethan.myclub.user.edit.view.ProfileEditActivity;
 import com.ethan.myclub.user.main.view.UserFragment;
@@ -93,7 +94,7 @@ public class UserViewModel {
     }
 
     public void collection() {
-
+        UserCollectionActivity.start(mFragment.mBaseActivity);
     }
 
     public void getUserInfoCache() {

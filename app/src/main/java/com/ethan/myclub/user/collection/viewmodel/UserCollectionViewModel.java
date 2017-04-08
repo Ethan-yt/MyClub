@@ -1,4 +1,4 @@
-package com.ethan.myclub.club.activitylist.viewmodel;
+package com.ethan.myclub.user.collection.viewmodel;
 
 import android.graphics.Color;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -19,6 +19,8 @@ import com.ethan.myclub.discover.activity.adapter.ActivityAdapter;
 import com.ethan.myclub.discover.activity.model.ActivityResult;
 import com.ethan.myclub.main.BaseActivity;
 import com.ethan.myclub.network.ApiHelper;
+import com.ethan.myclub.user.collection.view.UserCollectionActivity;
+import com.ethan.myclub.databinding.ActivityUserCollectionBinding;
 
 import java.util.List;
 
@@ -26,22 +28,20 @@ import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 
-public class ClubActivityListViewModel {
+public class UserCollectionViewModel {
+
+    private UserCollectionActivity mActivity;
+    private ActivityUserCollectionBinding mBinding;
 
     private final EmptyView mEmptyView;
-    private ClubActivityListActivity mActivity;
-    private ActivityClubActivityListBinding mBinding;
     private ActivityAdapter mAdapter;
-    private boolean mEditMode = false;
-    private MyClub mMyClub;
 
-    public ClubActivityListViewModel(final ClubActivityListActivity activity, ActivityClubActivityListBinding binding, MyClub myClub) {
+    public UserCollectionViewModel(UserCollectionActivity activity, ActivityUserCollectionBinding binding) {
         mActivity = activity;
         mBinding = binding;
         mBinding.setViewModel(this);
-        mMyClub = myClub;
         mActivity.getToolbarWrapper()
-                .setTitle("社团活动列表")
+                .setTitle("我的收藏")
                 .showBackIcon()
                 .show();
 
@@ -58,11 +58,7 @@ public class ClubActivityListViewModel {
         mAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                if (mEditMode) {
-                    ActivityEditActivity.startForResult(mActivity, (ActivityResult) adapter.getData().get(position), ClubActivityListActivity.REQUEST_EDIT_ACTIVITY);
-                } else {
-                    ActivityDetailActivity.start(mActivity, (ActivityResult) adapter.getData().get(position));
-                }
+                ActivityDetailActivity.startForResult(mActivity, (ActivityResult) adapter.getData().get(position), UserCollectionActivity.REQUEST_ACTIVITY_DETAIL);
             }
         });
 
@@ -75,7 +71,7 @@ public class ClubActivityListViewModel {
 
     public void update() {
         ApiHelper.getProxyWithoutToken(mActivity)
-                .getClubActivity(String.valueOf(mMyClub.clubId))
+                .getMyCollection()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<List<ActivityResult>>() {
                     @Override
@@ -86,13 +82,8 @@ public class ClubActivityListViewModel {
                     @Override
                     public void onNext(List<ActivityResult> activityResults) {
 
-                        final BaseActivity.ToolbarWrapper toolbar = mActivity.getToolbarWrapper()
-                                .dismiss()
-                                .setTitle("社团活动列表")
-                                .setScrollable()
-                                .showBackIcon();
                         if (activityResults == null || activityResults.size() == 0) {
-                            mEmptyView.showEmptyView("没有活动", "当前社团还未发布任何活动");
+                            mEmptyView.showEmptyView("没有收藏", "快去给你喜欢的活动点赞吧！");
                             mAdapter.setNewData(null);
                             mBinding.list.setLayoutFrozen(true);
                             mAdapter.setEmptyView(mEmptyView);
@@ -100,24 +91,6 @@ public class ClubActivityListViewModel {
                             mBinding.list.setLayoutFrozen(false);
                             formatOrder(activityResults);
                             mAdapter.setNewData(activityResults);
-
-                            if (mMyClub.checkPermission(6))
-                                toolbar.setMenu(R.menu.toolbar_edit, new Toolbar.OnMenuItemClickListener() {
-                                    @Override
-                                    public boolean onMenuItemClick(MenuItem item) {
-                                        if (mEditMode) {
-                                            mActivity.showSnackbar("退出编辑模式，您可以查看活动详情");
-                                            toolbar.changeColor(Color.WHITE);
-                                        } else {
-                                            mActivity.showSnackbar("进入编辑模式，请选择你想修改的活动");
-                                            toolbar.changeColor(Color.YELLOW);
-                                        }
-                                        mEditMode = !mEditMode;
-                                        return false;
-                                    }
-                                });
-                            toolbar.show();
-
                         }
                     }
 

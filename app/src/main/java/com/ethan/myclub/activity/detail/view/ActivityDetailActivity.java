@@ -22,6 +22,12 @@ public class ActivityDetailActivity extends BaseActivity {
         ActivityCompat.startActivity(from, intent, null);
     }
 
+    public static void startForResult(Activity from, ActivityResult activityResult, int requestCode) {
+        Intent intent = new Intent(from, ActivityDetailActivity.class);
+        intent.putExtra("activityResult", activityResult);
+        ActivityCompat.startActivityForResult(from, intent, requestCode, null);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

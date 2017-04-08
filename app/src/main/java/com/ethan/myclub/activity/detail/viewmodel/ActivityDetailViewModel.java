@@ -29,6 +29,7 @@ import com.ethan.myclub.discover.activity.model.ActivityResult;
 import com.ethan.myclub.global.Preferences;
 import com.ethan.myclub.network.ApiHelper;
 import com.ethan.myclub.network.exception.ApiException;
+import com.ethan.myclub.user.collection.view.UserCollectionActivity;
 import com.ethan.myclub.util.Utils;
 import com.google.android.flexbox.FlexboxLayout;
 
@@ -227,6 +228,7 @@ public class ActivityDetailViewModel {
 
 
     public void like() {
+        mActivity.setResult(UserCollectionActivity.RESULT_CHANGED);
         mActivityDetail.get().likeStatus = !mActivityDetail.get().likeStatus;
         if (mActivityDetail.get().likeStatus)
             mBinding.fab.setImageResource(R.drawable.ic_like_red);

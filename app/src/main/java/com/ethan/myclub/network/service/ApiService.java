@@ -194,5 +194,9 @@ public interface ApiService {
             @Field("birthday") String birthday,
             @Field("brief_introduction") String briefIntroduction);
 
+    //个人收藏
+    @GET("api/activity/search/?is_like=true")
+    Observable<List<ActivityResult>> getMyCollection();
+
 
 }
