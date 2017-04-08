@@ -4,6 +4,7 @@ import com.ethan.myclub.global.Preferences;
 import com.ethan.myclub.main.BaseActivity;
 import com.ethan.myclub.network.converter.ApiExceptionConverterFactory;
 import com.ethan.myclub.network.service.OAuthService;
+import com.facebook.stetho.okhttp3.StethoInterceptor;
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 
 import java.io.IOException;
@@ -34,6 +35,7 @@ public class OAuthHelper {
         static {
             OkHttpClient client = new OkHttpClient
                     .Builder()
+                    .addNetworkInterceptor(new StethoInterceptor())
                     .followRedirects(false)
                     //设置拦截器，添加headers
                     .addInterceptor(new Interceptor() {

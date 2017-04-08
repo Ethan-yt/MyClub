@@ -28,9 +28,22 @@
   public *;
 }
 
-# for DexGuard only
--keepresourcexmlelements manifest/application/meta-data@value=GlideModule
+## for DexGuard only
+#-keepresourcexmlelements manifest/application/meta-data@value=GlideModule
 #Glide and OKHttp
 -keep class com.bumptech.glide.integration.okhttp3.OkHttpGlideModule
 
 -keep class com.ethan.myclub.push.MiPushMessageReceiver {*;}
+
+-dontwarn org.codehaus.**
+-dontwarn java.nio.**
+-dontwarn java.lang.invoke.**
+-dontwarn rx.**
+
+-dontwarn com.tencent.bugly.**
+-keep public class com.tencent.bugly.**{*;}
+-keep class android.support.**{*;}
+
+-dontwarn com.xiaomi.push.**
+-dontwarn org.junit.**
+-dontwarn android.test.**

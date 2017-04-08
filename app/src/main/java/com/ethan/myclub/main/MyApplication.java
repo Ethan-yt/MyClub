@@ -6,10 +6,15 @@ import android.content.Context;
 import android.os.Handler;
 import android.os.Message;
 import android.os.Process;
+import android.support.multidex.MultiDex;
 import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.ethan.myclub.BuildConfig;
+import com.facebook.stetho.Stetho;
+import com.tencent.bugly.Bugly;
+import com.tencent.bugly.beta.Beta;
 import com.xiaomi.channel.commonutils.logger.LoggerInterface;
 import com.xiaomi.mipush.sdk.Logger;
 import com.xiaomi.mipush.sdk.MiPushClient;
@@ -30,7 +35,11 @@ public class MyApplication extends Application {
 
     @Override
     public void onCreate() {
+        if (!BuildConfig.DEBUG) {
+            Bugly.init(this, "ff50329b00", false);
+        }
         super.onCreate();
+        Stetho.initializeWithDefaults(this);
 
         // 注册push服务，注册成功后会向DemoMessageReceiver发送广播
         // 可以从DemoMessageReceiver的onCommandResult方法中MiPushCommandMessage对象参数中获取注册信息
@@ -43,10 +52,12 @@ public class MyApplication extends Application {
             public void setTag(String tag) {
                 // ignore
             }
+
             @Override
             public void log(String content, Throwable t) {
                 Log.d(TAG, content, t);
             }
+
             @Override
             public void log(String content) {
                 Log.d(TAG, content);
@@ -66,5 +77,19 @@ public class MyApplication extends Application {
             }
         }
         return false;
+    }
+
+    @Override
+    protected void attachBaseContext(Context base) {
+        super.attachBaseContext(base);
+        if (!BuildConfig.DEBUG) {
+            // you must install multiDex whatever tinker is installed!
+            MultiDex.install(base);
+
+
+            // 安装tinker
+            Beta.installTinker();
+        }
+
     }
 }
