@@ -19,12 +19,14 @@ import com.bumptech.glide.request.target.Target;
 import com.ethan.myclub.R;
 import com.ethan.myclub.activity.detail.adapter.ActivityContentAdapter;
 import com.ethan.myclub.activity.detail.model.ActivityContent;
+import com.ethan.myclub.activity.detail.model.LikeStatus;
 import com.ethan.myclub.activity.detail.view.ActivityDetailActivity;
 import com.ethan.myclub.activity.model.Activity;
 import com.ethan.myclub.club.model.Tag;
 import com.ethan.myclub.club.my.view.EmptyView;
 import com.ethan.myclub.databinding.ActivityActivityDetailBinding;
 import com.ethan.myclub.discover.activity.model.ActivityResult;
+import com.ethan.myclub.global.Preferences;
 import com.ethan.myclub.network.ApiHelper;
 import com.ethan.myclub.network.exception.ApiException;
 import com.ethan.myclub.util.Utils;
@@ -111,6 +113,7 @@ public class ActivityDetailViewModel {
     }
 
     private static final int GET_ACTIVITY_RESULT_OK = -1;
+    private static final int GET_ACTIVITY_RESULT_NOT_LOGIN = 2;
     private static final int GET_ACTIVITY_RESULT_ERROR = 3;
     private static final int GET_ACTIVITY_RESULT_NO_NETWORK = 4;
 
@@ -120,6 +123,12 @@ public class ActivityDetailViewModel {
             mBinding.list.setLayoutFrozen(false);
 
             mActivityDetail.set(activity);
+
+            if (activity.likeStatus)
+                mBinding.fab.setImageResource(R.drawable.ic_like_red);
+            else
+                mBinding.fab.setImageResource(R.drawable.ic_like_white);
+
             List<ActivityContent> list = new ArrayList<>();
             int size1 = activity.contentImages.size();
             int size2 = activity.contentTexts.size();
@@ -156,6 +165,9 @@ public class ActivityDetailViewModel {
                 lp.order = tag.tagName.length();
             }
 
+
+
+
         } else {
             switch (resultCode) {
                 case GET_ACTIVITY_RESULT_ERROR:
@@ -168,6 +180,9 @@ public class ActivityDetailViewModel {
                     break;
                 case GET_ACTIVITY_RESULT_NO_NETWORK:
                     mEmptyView.showNoNetWorkError();
+                    break;
+                case GET_ACTIVITY_RESULT_NOT_LOGIN:
+                    mEmptyView.showNotLoginView();
                     break;
             }
             mAdapter.setNewData(null);
@@ -204,11 +219,45 @@ public class ActivityDetailViewModel {
 
                     @Override
                     public void onComplete() {
-
+                        if(!Preferences.sIsLogin.get())
+                            notifyFinished(null, GET_ACTIVITY_RESULT_NOT_LOGIN);
                     }
                 });
     }
 
+
+    public void like() {
+        if (mActivityDetail.get().likeStatus)
+            mBinding.fab.setImageResource(R.drawable.ic_like_red);
+        else
+            mBinding.fab.setImageResource(R.drawable.ic_like_white);
+        mActivityDetail.get().likeStatus = !mActivityDetail.get().likeStatus;
+        ApiHelper.getProxy(mActivity)
+                .changeLikeStatus(String.valueOf(mActivityResult.get().id))
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<LikeStatus>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(LikeStatus likeStatus) {
+                        mActivityResult.get().likeNum = likeStatus.likeNumber;
+                        mActivityResult.notifyChange();
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+    }
 
     @BindingAdapter({"activityDetailClubBadge"})
     public static void loadClubBadge(final ImageView view, String imageUrl) {

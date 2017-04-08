@@ -1,5 +1,6 @@
 package com.ethan.myclub.network.service;
 
+import com.ethan.myclub.activity.detail.model.LikeStatus;
 import com.ethan.myclub.activity.model.Activity;
 import com.ethan.myclub.activity.model.Content;
 import com.ethan.myclub.club.model.Club;
@@ -167,6 +168,11 @@ public interface ApiService {
     //删除活动
     @DELETE("api/activity/{activity}/")
     Observable<Object> deleteActivity(@Path("activity") String activityId);
+
+
+    //对活动点赞/取消赞
+    @GET("api/activity/{activityId}/change-like-status/")
+    Observable<LikeStatus> changeLikeStatus(@Path("activityId") String activityId);
 
     //============================课表============================
 

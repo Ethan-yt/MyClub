@@ -40,32 +40,10 @@ public class ClubActivityListViewModel {
         mBinding = binding;
         mBinding.setViewModel(this);
         mMyClub = myClub;
-        final BaseActivity.ToolbarWrapper toolbar = mActivity.getToolbarWrapper()
+        mActivity.getToolbarWrapper()
                 .setTitle("社团活动列表")
-                .setScrollable()
-                .showBackIcon();
-        if (myClub.checkPermission(6))
-            toolbar.setMenu(R.menu.toolbar_edit, new Toolbar.OnMenuItemClickListener() {
-                @Override
-                public boolean onMenuItemClick(MenuItem item) {
-                    if (mAdapter.getData() == null || mAdapter.getData().isEmpty())
-                        mActivity.showSnackbar("请先创建一个活动");
-                    else {
-                        if (mEditMode){
-                            mActivity.showSnackbar("退出编辑模式，您可以查看活动详情");
-                            toolbar.changeColor(Color.WHITE);
-                        }
-                        else{
-                            mActivity.showSnackbar("进入编辑模式，请选择你想修改的活动");
-                            toolbar.changeColor(Color.YELLOW);
-                        }
-
-                        mEditMode = !mEditMode;
-                    }
-                    return false;
-                }
-            });
-        toolbar.show();
+                .showBackIcon()
+                .show();
 
         mBinding.swipeLayout.setColorSchemeResources(R.color.colorAccent);
         mBinding.swipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -107,6 +85,11 @@ public class ClubActivityListViewModel {
 
                     @Override
                     public void onNext(List<ActivityResult> activityResults) {
+
+                        final BaseActivity.ToolbarWrapper toolbar = mActivity.getToolbarWrapper()
+                                .setTitle("社团活动列表")
+                                .setScrollable()
+                                .showBackIcon();
                         if (activityResults == null || activityResults.size() == 0) {
                             mEmptyView.showEmptyView("没有活动", "当前社团还未发布任何活动");
                             mAdapter.setNewData(null);
@@ -116,6 +99,24 @@ public class ClubActivityListViewModel {
                             mBinding.list.setLayoutFrozen(false);
                             formatOrder(activityResults);
                             mAdapter.setNewData(activityResults);
+
+                            if (mMyClub.checkPermission(6))
+                                toolbar.setMenu(R.menu.toolbar_edit, new Toolbar.OnMenuItemClickListener() {
+                                    @Override
+                                    public boolean onMenuItemClick(MenuItem item) {
+                                        if (mEditMode) {
+                                            mActivity.showSnackbar("退出编辑模式，您可以查看活动详情");
+                                            toolbar.changeColor(Color.WHITE);
+                                        } else {
+                                            mActivity.showSnackbar("进入编辑模式，请选择你想修改的活动");
+                                            toolbar.changeColor(Color.YELLOW);
+                                        }
+                                        mEditMode = !mEditMode;
+                                        return false;
+                                    }
+                                });
+                            toolbar.show();
+
                         }
                     }
 
