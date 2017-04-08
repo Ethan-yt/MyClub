@@ -116,9 +116,8 @@ public class ClubActivityListViewModel {
                                         return false;
                                     }
                                 });
-                            toolbar.show();
-
                         }
+                        toolbar.show();
                     }
 
                     @Override
