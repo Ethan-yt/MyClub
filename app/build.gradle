@@ -17,6 +17,9 @@ def checkRelease() {
         if (task.contains("assemble") && !task.contains("Debug")) {
             return true
         }
+        if (task.contains("Release")) {
+            return true
+        }
     }
     return false
 }
