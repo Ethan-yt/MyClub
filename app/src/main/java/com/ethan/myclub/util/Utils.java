@@ -297,33 +297,4 @@ public class Utils {
     public static float px2sp(Context context, float pxVal) {
         return (pxVal / context.getResources().getDisplayMetrics().scaledDensity);
     }
-
-    /**
-     * low
-     *
-     * @param bit        权限位
-     *                   low
-     *                   1: 修改基本信息
-     *                   2: 发布通知
-     *                   3: 查看导出课表
-     *                   4: 记账
-     *                   5: 审核新成员/踢普通成员
-     *                   6: 活动
-     *                   high
-     */
-    public static boolean checkPermission(int permission, int bit) {
-/*
-    现在的权限是  01101 MASK是00010
-
-    授权	    	01101|00010=01111
-
-    检查权限		01101&00010=00000
-
-    现在的权限是  01111 MASK是00010
-
-    撤销权限		01111&~00010=01111&11101=01101
- */
-        int mask = 1 << bit - 1;
-        return (permission & mask) == 1;
-    }
 }

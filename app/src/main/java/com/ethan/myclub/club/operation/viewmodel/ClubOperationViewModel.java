@@ -8,6 +8,8 @@ import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.ethan.myclub.R;
+import com.ethan.myclub.activity.create.view.ActivityCreateActivity;
+import com.ethan.myclub.club.activitylist.view.ClubActivityListActivity;
 import com.ethan.myclub.club.detail.view.ClubInfoActivity;
 import com.ethan.myclub.club.my.model.MyClub;
 import com.ethan.myclub.club.my.model.Title;
@@ -46,19 +48,21 @@ public class ClubOperationViewModel {
         operations = new ArrayList<>();
         operations.add(new Operation(ClubInfoActivity.class, "社团简介", R.drawable.ic_club_op_clubinfo));
         operations.add(new Operation(null, "成员列表", R.drawable.ic_club_op_member));
-        operations.add(new Operation(null, "活动列表", R.drawable.ic_club_op_activity));
+        operations.add(new Operation(ClubActivityListActivity.class, "活动列表", R.drawable.ic_club_op_activity));
         operations.add(new Operation(null, "社团账单", R.drawable.ic_club_op_budget));
         operations.add(new Operation(null, "社团通知", R.drawable.ic_club_op_notification));
         operations.add(new Operation(null, "退出社团", R.drawable.ic_club_op_quit));
-        gridView.setAdapter(new GridViewAdapter(mActivity, operations, mClub.clubId, getMyPermission()));
+        gridView.setAdapter(new GridViewAdapter(mActivity, operations, mClub));
         views.add(gridView);
 
 
         gridView = (GridView) View.inflate(mActivity, R.layout.item_club_operation_pager, null);
         operations = new ArrayList<>();
+        if (club.checkPermission(6))
+            operations.add(new Operation(ActivityCreateActivity.class, "创建活动", R.drawable.ic_club_op_activity));
         operations.add(new Operation(null, "招新管理", R.drawable.ic_club_op_freshmen));
         operations.add(new Operation(null, "空课表", R.drawable.ic_club_op_schedule));
-        gridView.setAdapter(new GridViewAdapter(mActivity, operations, mClub.clubId, getMyPermission()));
+        gridView.setAdapter(new GridViewAdapter(mActivity, operations, mClub));
         views.add(gridView);
 
         mBinding.viewPager.setAdapter(new ViewPagerAdapter(views));
@@ -80,16 +84,6 @@ public class ClubOperationViewModel {
                 .crossFade()
                 .bitmapTransform(new CropCircleTransformation(view.getContext()))
                 .into(view);
-    }
-
-    private int getMyPermission() {
-        if (mClub.isCreator)
-            return 0xFFFFFFFF;
-        for (Title title : mClub.titleTable) {
-            if (title.id.equals(mClub.titleId))
-                return title.permissionsPart1;
-        }
-        return 0;
     }
 
     private String getMyTitle() {

@@ -33,4 +33,45 @@ public class MyClub implements Serializable {
     @SerializedName("title_id")
     @Expose
     public Integer titleId;
+
+    public int getMyPermission() {
+        if (titleTable == null)
+            return 0;
+        if (isCreator)
+            return 0xFFFFFFFF;
+        for (Title title : titleTable) {
+            if (title.id.equals(titleId))
+                return title.permissionsPart1;
+        }
+        return 0;
+    }
+
+    /**
+     * low
+     *
+     * @param bit 权限位
+     *            low
+     *            1: 修改基本信息
+     *            2: 发布通知
+     *            3: 查看导出课表
+     *            4: 记账
+     *            5: 审核新成员/踢普通成员
+     *            6: 修改、发布、删除活动
+     *            high
+     */
+    public boolean checkPermission(int bit) {
+/*
+    现在的权限是  01101 MASK是00010
+
+    授权	    	01101|00010=01111
+
+    检查权限		01101&00010=00000
+
+    现在的权限是  01111 MASK是00010
+
+    撤销权限		01111&~00010=01111&11101=01101
+ */
+        int mask = 1 << bit - 1;
+        return (getMyPermission() & mask) != 0;
+    }
 }

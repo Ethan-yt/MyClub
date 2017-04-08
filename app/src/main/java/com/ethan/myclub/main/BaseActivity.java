@@ -215,6 +215,11 @@ public abstract class BaseActivity extends AppCompatActivity {
             return this;
         }
 
+        public void changeColor(int color) {
+            mAppBarLayout.setBackgroundColor(color);
+            mToolbar.setBackgroundColor(color);
+        }
+
 
         public void show() {
             show(-1);

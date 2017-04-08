@@ -6,6 +6,7 @@ import android.view.View;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.ethan.myclub.club.detail.view.ClubInfoActivity;
+import com.ethan.myclub.club.my.model.MyClub;
 import com.ethan.myclub.discover.club.adapter.ClubAdapter;
 import com.ethan.myclub.discover.club.model.ClubResult;
 import com.ethan.myclub.discover.club.model.Hit;
@@ -31,7 +32,9 @@ public class ClubFragment extends TabFragment {
         mAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                ClubInfoActivity.start(getActivity(), Integer.parseInt(((Hit) adapter.getItem(position)).id), 0);
+                MyClub club = new MyClub();
+                club.clubId = Integer.parseInt(((Hit) adapter.getItem(position)).id);
+                ClubInfoActivity.start(getActivity(), club);
             }
         });
     }

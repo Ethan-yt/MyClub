@@ -92,7 +92,7 @@ public class ProfileEditViewModel {
 
 
     public void editAvatar() {
-        mActivity.selectPicture("avatar.temp.jpg", new ImageSelectActivity.OnFinishSelectImageListener() {
+        mActivity.selectPicture("avatar.temp.jpg", 500, 500, 1, 1, new ImageSelectActivity.OnFinishSelectImageListener() {
             @Override
             public void onFinish(File outputFile, Uri outputUri) {
                 mImageUri.set(outputUri);

@@ -1,13 +1,83 @@
 package com.ethan.myclub.activity.model;
 
+import android.databinding.BaseObservable;
+import android.databinding.Bindable;
+
 import java.util.List;
 
+import com.android.databinding.library.baseAdapters.BR;
 import com.ethan.myclub.club.model.Club;
 import com.ethan.myclub.club.model.Tag;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Activity {
+public class Activity extends BaseObservable {
+
+    public boolean mIsInfoEdited = false;
+
+    @Bindable
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        if (!name.equals(this.name))
+            mIsInfoEdited = true;
+        this.name = name;
+        notifyPropertyChanged(BR.name);
+    }
+
+    @Bindable
+    public String getJoinMembersMax() {
+        return String.valueOf(joinMembersMax);
+    }
+
+    public void setJoinMembersMax(String joinMembersMax) {
+        if (!joinMembersMax.equals(String.valueOf(this.joinMembersMax)))
+            mIsInfoEdited = true;
+        try {
+            this.joinMembersMax = Integer.valueOf(joinMembersMax);
+        } catch (Throwable e) {
+            this.joinMembersMax = 0;
+        }
+        notifyPropertyChanged(BR.joinMembersMax);
+    }
+
+    @Bindable
+    public String getActivityTime() {
+        return activityTime;
+    }
+
+    public void setActivityTime(String activityTime) {
+        if (!activityTime.equals(this.activityTime))
+            mIsInfoEdited = true;
+        this.activityTime = activityTime;
+        notifyPropertyChanged(BR.activityTime);
+    }
+
+    @Bindable
+    public String getBriefIntroduction() {
+        return briefIntroduction;
+    }
+
+    public void setBriefIntroduction(String briefIntroduction) {
+        if (!briefIntroduction.equals(this.briefIntroduction))
+            mIsInfoEdited = true;
+        this.briefIntroduction = briefIntroduction;
+        notifyPropertyChanged(BR.briefIntroduction);
+    }
+
+    @Bindable
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        if (!location.equals(this.location))
+            mIsInfoEdited = true;
+        this.location = location;
+        notifyPropertyChanged(BR.location);
+    }
 
     @SerializedName("club")
     @Expose
@@ -57,5 +127,9 @@ public class Activity {
     @SerializedName("like_status")
     @Expose
     public Boolean likeStatus;
+    @SerializedName("special_index_image")
+    @Expose
+    public String specialIndexImage;
+
 
 }

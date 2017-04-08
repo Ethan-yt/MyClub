@@ -121,21 +121,27 @@ public class ActivityDetailViewModel {
 
             mActivityDetail.set(activity);
             List<ActivityContent> list = new ArrayList<>();
-            int size = activity.contentImages.size();
-            if(size == 0)
-            {
+            int size1 = activity.contentImages.size();
+            int size2 = activity.contentTexts.size();
+            if (size1 != size2) {
                 mAdapter.setNewData(null);
                 mBinding.list.setLayoutFrozen(true);
                 mAdapter.setEmptyView(mEmptyView);
-                mEmptyView.showEmptyView("空空如也","胡勇你个傻逼");
+                mEmptyView.showEmptyView("内容出错了", "内容的文字和照片数量不匹配");
+                return;
+            }
+            if (size1 == 0) {
+                mAdapter.setNewData(null);
+                mBinding.list.setLayoutFrozen(true);
+                mAdapter.setEmptyView(mEmptyView);
+                mEmptyView.showEmptyView("还没有内容", "活动发布者还未上传活动详情");
                 return;
             }
 
-            for (int i = 0; i < size; i++) {
+            for (int i = 0; i < size1; i++) {
                 ActivityContent content = new ActivityContent(activity.contentImages.get(i), activity.contentTexts.get(i));
                 list.add(content);
             }
-
 
 
             mAdapter.setNewData(list);

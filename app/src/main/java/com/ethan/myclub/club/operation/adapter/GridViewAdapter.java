@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.ethan.myclub.R;
+import com.ethan.myclub.club.my.model.MyClub;
 import com.ethan.myclub.club.operation.model.Operation;
 
 import java.lang.reflect.Method;
@@ -23,15 +24,13 @@ public class GridViewAdapter extends BaseAdapter {
 
     private Activity mContext;
     private List<Operation> mLists;//数据源
-    private int mClubId;
-    private int mPermission;
+    private MyClub mMyClub;
 
 
-    public GridViewAdapter(Activity context, List<Operation> lists, int clubId, int permission) {
+    public GridViewAdapter(Activity context, List<Operation> lists, MyClub myClub) {
         mContext = context;
         mLists = lists;
-        mClubId = clubId;
-        mPermission = permission;
+        mMyClub = myClub;
     }
 
     @Override
@@ -69,8 +68,8 @@ public class GridViewAdapter extends BaseAdapter {
             public void onClick(View v) {
                 Class<?> activity = mLists.get(position).mActivity;
                 try {
-                    Method method = activity.getMethod("start", Activity.class, int.class, int.class);
-                    method.invoke(null, mContext, mClubId, mPermission);
+                    Method method = activity.getMethod("start", Activity.class, MyClub.class);
+                    method.invoke(null, mContext, mMyClub);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

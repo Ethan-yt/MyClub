@@ -105,6 +105,10 @@
 
         <!-- ==================MiPush End================== -->
         <activity android:name=".activity.detail.view.ActivityDetailActivity"/>
+        <activity android:name=".club.activitylist.view.ClubActivityListActivity"/>
+        <activity android:name=".activity.edit.view.ActivityEditActivity"/>
+        <activity android:name=".activity.create.view.ActivityCreateActivity"/>
+        <activity android:name=".activity.edit.view.ActivityEditContentActivity"/>
     </application>
 
 </manifest>

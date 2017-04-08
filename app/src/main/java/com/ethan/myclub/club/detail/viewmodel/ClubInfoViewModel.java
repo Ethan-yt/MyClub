@@ -15,10 +15,10 @@ import com.ethan.myclub.club.edit.view.ClubInfoEditActivity;
 import com.ethan.myclub.club.model.Club;
 import com.ethan.myclub.club.model.Tag;
 import com.ethan.myclub.club.detail.view.ClubInfoActivity;
+import com.ethan.myclub.club.my.model.MyClub;
 import com.ethan.myclub.databinding.ActivityClubInfoBinding;
 import com.ethan.myclub.main.BaseActivity;
 import com.ethan.myclub.network.ApiHelper;
-import com.ethan.myclub.util.Utils;
 import com.google.android.flexbox.FlexboxLayout;
 
 import io.reactivex.Observer;
@@ -34,7 +34,7 @@ public class ClubInfoViewModel {
 
     public ObservableField<Club> mClub = new ObservableField<>();
 
-    public ClubInfoViewModel(ClubInfoActivity activity, ActivityClubInfoBinding binding, final int clubId, int permission) {
+    public ClubInfoViewModel(ClubInfoActivity activity, ActivityClubInfoBinding binding, final MyClub myclub) {
         mActivity = activity;
         mBinding = binding;
         mBinding.setViewModel(this);
@@ -45,8 +45,8 @@ public class ClubInfoViewModel {
                 .transparent()
                 .showBackIcon()
                 .target(mBinding.constraintLayout);
-        if (Utils.checkPermission(permission, 1))
-            toolbar.setMenu(R.menu.toolbar_club_info, new Toolbar.OnMenuItemClickListener() {
+        if (myclub.checkPermission(1))
+            toolbar.setMenu(R.menu.toolbar_edit_white, new Toolbar.OnMenuItemClickListener() {
                 @Override
                 public boolean onMenuItemClick(MenuItem item) {
                     ClubInfoEditActivity.startForResult(mActivity, mClub.get(), ClubInfoActivity.REQUEST_EDIT_CLUB_INFO);
@@ -59,10 +59,10 @@ public class ClubInfoViewModel {
         mBinding.swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                update(clubId);
+                update(myclub.clubId);
             }
         });
-        update(clubId);
+        update(myclub.clubId);
     }
 
     public void update(int id) {

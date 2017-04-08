@@ -3,7 +3,7 @@
       xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
 
-        android:title="修改资料"
+        android:title="修改"
         android:id="@+id/action_edit"
         android:icon="@drawable/ic_toolbar_edit_white"
         app:showAsAction="always"

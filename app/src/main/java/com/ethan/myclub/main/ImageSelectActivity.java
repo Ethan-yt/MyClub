@@ -37,6 +37,45 @@ public abstract class ImageSelectActivity extends BaseActivity {
     public int mImageWidth = 500;
     public int mImageHeight = 500;
 
+    public int mAspectX = 1;
+    public int mAspectY = 1;
+
+    @BindingAdapter({"selectedRectImageUri"})
+    public static void loadImageRect(final ImageView view, Uri imageUri) {
+        Object target;
+        if (imageUri == null) {
+            target = R.drawable.img_default_avatar;
+        } else {
+            target = imageUri;
+        }
+        Boolean skipMemoryCache = true;
+        DiskCacheStrategy diskCacheStrategy = DiskCacheStrategy.NONE;
+
+        if (imageUri != null && imageUri.getScheme().equals("http")) {
+            skipMemoryCache = false;
+            diskCacheStrategy = DiskCacheStrategy.ALL;
+        }
+
+        Glide.with(view.getContext())
+                .load(target)
+                .listener(new RequestListener<Object, GlideDrawable>() {
+                    @Override
+                    public boolean onException(Exception e, Object model, Target<GlideDrawable> target, boolean isFirstResource) {
+                        e.printStackTrace();
+                        return false;
+                    }
+
+                    @Override
+                    public boolean onResourceReady(GlideDrawable resource, Object model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
+                        return false;
+                    }
+                })
+                .crossFade()
+                .skipMemoryCache(skipMemoryCache)
+                .diskCacheStrategy(diskCacheStrategy)
+                .into(view);
+    }
+
     @BindingAdapter({"selectedImageUri"})
     public static void loadImage(final ImageView view, Uri imageUri) {
         Object target;
@@ -77,7 +116,12 @@ public abstract class ImageSelectActivity extends BaseActivity {
     private Uri mOutputUri;
     private File mOutputFile;
 
-    public void selectPicture(String fileName, @NonNull OnFinishSelectImageListener onFinishSelectImageListener) {
+    public void selectPicture(String fileName, int imageWidth, int imageHeight, int aspectX, int aspectY, @NonNull OnFinishSelectImageListener onFinishSelectImageListener) {
+        mImageHeight = imageHeight;
+        mImageWidth = imageWidth;
+        mAspectX = aspectX;
+        mAspectY = aspectY;
+
         mOnFinishSelectImageListener = onFinishSelectImageListener;
         mOutputFile = new File(getExternalCacheDir(), fileName);
         mOutputUri = Uri.fromFile(mOutputFile);
@@ -124,8 +168,8 @@ public abstract class ImageSelectActivity extends BaseActivity {
         // crop=true是设置在开启的Intent中设置显示的VIEW可裁剪
         intent.putExtra("crop", true);
         // aspectX aspectY 是宽高的比例
-        intent.putExtra("aspectX", 1);
-        intent.putExtra("aspectY", 1);
+        intent.putExtra("aspectX", mAspectX);
+        intent.putExtra("aspectY", mAspectY);
         // outputX outputY 是裁剪图片宽高
         intent.putExtra("outputX", mImageWidth);
         intent.putExtra("outputY", mImageHeight);

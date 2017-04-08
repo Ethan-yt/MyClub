@@ -25,13 +25,13 @@ public class ActivityFragment extends TabFragment {
 
     private static final String TAG = "Discover ActivityResult";
 
-    public ActivityFragment(){
+    public ActivityFragment() {
         mLayoutManager = new LinearLayoutManager(getContext());
         mAdapter = new ActivityAdapter(this, null);
         mAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                if(!Preferences.sIsLogin.get())
+                if (!Preferences.sIsLogin.get())
                     ((BaseActivity) getActivity()).showLoginSnackbar("先登录才能查看活动哦");
                 else
                     ActivityDetailActivity.start(getActivity(), (ActivityResult) adapter.getData().get(position));
@@ -67,8 +67,8 @@ public class ActivityFragment extends TabFragment {
                                 mAdapter.setEmptyView(mEmptyView);
                             } else {
                                 mRecyclerView.setLayoutFrozen(false);
-                                mAdapter.setNewData(activityList);
                                 formatOrder(activityList);
+                                mAdapter.setNewData(activityList);
                             }
                         } else {
                             //允许下拉刷新
@@ -120,15 +120,14 @@ public class ActivityFragment extends TabFragment {
     private void formatOrder(List<ActivityResult> activityList) {
         ActivityResult specialActivity = null;
         for (ActivityResult activity : activityList) {
-            if(activity.isSpecial)
-            {
+            if (activity.isSpecial) {
                 specialActivity = activity;
                 activityList.remove(activity);
                 break;
             }
         }
-        if(specialActivity != null)
-            activityList.add(0,specialActivity);
+        if (specialActivity != null)
+            activityList.add(0, specialActivity);
     }
 
     @Override

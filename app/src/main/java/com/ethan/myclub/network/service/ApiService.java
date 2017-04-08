@@ -1,6 +1,7 @@
 package com.ethan.myclub.network.service;
 
 import com.ethan.myclub.activity.model.Activity;
+import com.ethan.myclub.activity.model.Content;
 import com.ethan.myclub.club.model.Club;
 import com.ethan.myclub.club.model.Tag2;
 import com.ethan.myclub.club.my.model.MyClub;
@@ -17,6 +18,7 @@ import java.util.Objects;
 import io.reactivex.Observable;
 import okhttp3.MultipartBody;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
@@ -93,6 +95,11 @@ public interface ApiService {
     @POST("api/club/{clubId}/tag/")
     Observable<Club> editClubTags(@Path("clubId") String clubId, @Body Tag2 tags);
 
+    //获取社团活动
+    @GET("api/activity/club/{clubId}/")
+    Observable<List<ActivityResult>> getClubActivity(@Path("clubId") String clubId);
+
+
     //============================商家============================
     //获取商家搜索提示
     @GET("api/merchant/suggestion/")
@@ -116,6 +123,51 @@ public interface ApiService {
     @GET("api/activity/{activityId}/")
     Observable<Activity> getActivity(@Path("activityId") String activityId);
 
+    //创建活动
+    @FormUrlEncoded
+    @POST("api/activity/club/{clubId}/")
+    Observable<Object>
+    createActivity(@Path("clubId") String clubId,
+                   @Field("name") String name,
+                   @Field("join_members_max") String joinMembersMax,
+                   @Field("activity_time") String activityTime,
+                   @Field("brief_introduction") String briefIntroduction,
+                   @Field("location") String location);
+
+    //上传活动图片
+    @Multipart
+    @PATCH("api/activity/image/{activity}/")
+    Observable<Object> uploadActivityImage(@Path("activity") String activityId,
+                                           @Part MultipartBody.Part file);
+
+    //修改活动
+    @FormUrlEncoded
+    @PATCH("api/activity/{activity}/")
+    Observable<Object>
+    modifyActivity(@Path("activity") String activityId,
+                   @Field("name") String name,
+                   @Field("join_members_max") String joinMembersMax,
+                   @Field("activity_time") String activityTime,
+                   @Field("brief_introduction") String briefIntroduction,
+                   @Field("location") String location);
+
+    //修改活动tags
+    @POST("api/activity/tag/{activity}/")
+    Observable<Object> editActivityTags(@Path("activity") String activityId, @Body Tag2 tags);
+
+    //活动内容图片
+    @Multipart
+    @POST("api/activity/content_image/{activity}/")
+    Observable<Object> uploadActivityContentImage(@Path("activity") String activityId,
+                                                  @Part List<MultipartBody.Part> file);
+    //活动内容文字
+    @POST("api/activity/content_text/{activity}/")
+    Observable<Object> uploadActivityContentText(@Path("activity") String activityId, @Body Content content);
+
+    //删除活动
+    @DELETE("api/activity/{activity}/")
+    Observable<Object> deleteActivity(@Path("activity") String activityId);
+
     //============================课表============================
 
     //上传课表
@@ -129,12 +181,12 @@ public interface ApiService {
     @PATCH("api/user/profile/")
     Observable<Object>
     modifyUserProfile(
-               @Field("nickname") String nickname,
-               @Field("student_number") String studentNumber,
-               @Field("sex") String sex,
-               @Field("name") String name,
-               @Field("birthday") String birthday,
-               @Field("brief_introduction") String briefIntroduction);
+            @Field("nickname") String nickname,
+            @Field("student_number") String studentNumber,
+            @Field("sex") String sex,
+            @Field("name") String name,
+            @Field("birthday") String birthday,
+            @Field("brief_introduction") String briefIntroduction);
 
 
 }

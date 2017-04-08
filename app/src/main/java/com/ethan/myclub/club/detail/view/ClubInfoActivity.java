@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 
 import com.ethan.myclub.R;
+import com.ethan.myclub.club.my.model.MyClub;
 import com.ethan.myclub.databinding.ActivityClubInfoBinding;
 import com.ethan.myclub.main.BaseActivity;
 import com.ethan.myclub.club.detail.viewmodel.ClubInfoViewModel;
@@ -16,10 +17,9 @@ public class ClubInfoActivity extends BaseActivity {
     private ClubInfoViewModel mViewModel;
     public static final int REQUEST_EDIT_CLUB_INFO = 10086;
 
-    public static void start(Activity from, int clubId, int permission) {
+    public static void start(Activity from, MyClub myClub) {
         Intent intent = new Intent(from, ClubInfoActivity.class);
-        intent.putExtra("MyClub", clubId);
-        intent.putExtra("Permission", permission);
+        intent.putExtra("MyClub", myClub);
         ActivityCompat.startActivity(from, intent, null);
     }
 
@@ -28,10 +28,8 @@ public class ClubInfoActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         ActivityClubInfoBinding binding =
                 DataBindingUtil.setContentView(this, R.layout.activity_club_info);
-        int clubId = getIntent().getIntExtra("MyClub", -1);
-        int permission = getIntent().getIntExtra("Permission", 0);
-
-        mViewModel = new ClubInfoViewModel(this, binding, clubId, permission);
+        MyClub myClub = (MyClub) getIntent().getSerializableExtra("MyClub");
+        mViewModel = new ClubInfoViewModel(this, binding, myClub);
 
     }
 

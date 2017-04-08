@@ -77,12 +77,13 @@ public class ClubInfoEditViewModel {
 
     private File mBadgeFile;
     private boolean mIsBadgeEdited = false;
-    private boolean isTagsEdited(){
+
+    private boolean isTagsEdited() {
         return !originTags.equals(mTags.get());
     }
 
     public void editBadge() {
-        mActivity.selectPicture("badge.temp.jpg", new ImageSelectActivity.OnFinishSelectImageListener() {
+        mActivity.selectPicture("badge.temp.jpg", 500, 500, 1, 1, new ImageSelectActivity.OnFinishSelectImageListener() {
             @Override
             public void onFinish(File outputFile, Uri outputUri) {
                 mImageUri.set(outputUri);
@@ -100,8 +101,10 @@ public class ClubInfoEditViewModel {
             saveInfo();
         else if (isTagsEdited())
             saveTags();
-        else
-            mActivity.showSnackbar("并没有资料被修改");
+        else{
+            finishEdit();
+        }
+
     }
 
     private void saveTags() {
@@ -109,11 +112,11 @@ public class ClubInfoEditViewModel {
         String[] tags = mTags.get().trim().split(" ");
         tag.tagName = new ArrayList<>();
         for (String s : tags) {
-            if(!TextUtils.isEmpty(s))
+            if (!TextUtils.isEmpty(s))
                 tag.tagName.add(s);
         }
         ApiHelper.getProxy(mActivity)
-                .editClubTags(String.valueOf(mClub.id),tag)
+                .editClubTags(String.valueOf(mClub.id), tag)
                 .delay(1, TimeUnit.SECONDS)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<Club>() {
@@ -137,7 +140,8 @@ public class ClubInfoEditViewModel {
                     @Override
                     public void onComplete() {
                         mActivity.dismissDialog();
-                        finishEdit();
+                        originTags = mTags.get();
+                        saveChanges();
                     }
                 });
 
@@ -169,10 +173,8 @@ public class ClubInfoEditViewModel {
                     @Override
                     public void onComplete() {
                         mActivity.dismissDialog();
-                        if (!isTagsEdited()) {
-                            finishEdit();
-                        } else
-                            saveTags();
+                        mClub.mIsInfoEdited = false;
+                        saveChanges();
                     }
                 });
     }
@@ -207,10 +209,8 @@ public class ClubInfoEditViewModel {
                             @Override
                             public void onComplete() {
                                 mActivity.dismissDialog();
-                                if (!mClub.mIsInfoEdited) {
-                                    finishEdit();
-                                } else
-                                    saveInfo();
+                                mIsBadgeEdited = false;
+                                saveChanges();
                             }
                         });
     }
