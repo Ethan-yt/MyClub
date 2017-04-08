@@ -48,7 +48,7 @@ public class OAuthHelper {
                     })
                     .build();
 
-            final String BASE_URL = "http://zhujian.nghuyong.top/";
+            final String BASE_URL = "https://zhujian.nghuyong.top/";
 
             Retrofit retrofit = new Retrofit.Builder()
                     .baseUrl(BASE_URL)

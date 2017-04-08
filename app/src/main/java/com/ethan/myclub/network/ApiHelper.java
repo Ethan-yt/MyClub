@@ -19,7 +19,7 @@ import retrofit2.Retrofit;
  */
 
 public class ApiHelper {
-    public static final String BASE_URL = "http://zhujian.nghuyong.top/";
+    public static final String BASE_URL = "https://zhujian.nghuyong.top/";
 
     private ApiHelper() {
 
