@@ -21,7 +21,7 @@
 
         <RelativeLayout
             android:layout_width="fill_parent"
-            android:layout_height="252dp"
+            android:layout_height="232dp"
             android:elevation="3dp"
             android:outlineProvider="bounds">
 
@@ -48,6 +48,7 @@
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="69dp"
                 android:transitionName="trans_iv_avatar"
+                tools:src="@drawable/img_default_avatar"
                 app:imageUrl="@{viewModel.mProfile.avatar ?? null}"/>
 
 
@@ -58,6 +59,7 @@
                 android:layout_below="@id/iv_avatar"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="10dp"
+                android:visibility="gone"
                 android:text="@{viewModel.mProfile.username}"
                 android:textColor="#fff"
                 android:textSize="16sp"
@@ -69,7 +71,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/tv_username"
                 android:layout_centerHorizontal="true"
-                android:layout_margin="10dp"
+                android:layout_margin="20dp"
                 android:text="@{viewModel.mProfile.nickname}"
                 android:textColor="#fff"
                 android:textSize="20sp"

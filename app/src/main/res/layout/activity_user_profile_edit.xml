@@ -25,8 +25,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
                 android:clipToPadding="false"
+                android:orientation="vertical"
                 android:padding="24dp">
 
                 <RelativeLayout
@@ -72,12 +72,13 @@
                             android:layout_height="wrap_content"
                             android:gravity="top"
                             android:hint="昵称"
-                            android:inputType="textMultiLine"
-                            android:minLines="1"
+                            android:inputType="textImeMultiLine"
+                            android:maxLines="1"
                             android:text="@={viewModel.mProfile.nickname}"/>
 
                     </android.support.design.widget.TextInputLayout>
                 </android.support.v7.widget.CardView>
+
                 <android.support.v7.widget.CardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -94,8 +95,8 @@
                             android:layout_height="wrap_content"
                             android:gravity="top"
                             android:hint="姓名"
-                            android:inputType="textMultiLine"
-                            android:minLines="1"
+                            android:inputType="textImeMultiLine"
+                            android:maxLines="1"
                             android:text="@={viewModel.mProfile.name}"/>
 
                     </android.support.design.widget.TextInputLayout>
@@ -118,12 +119,13 @@
                             android:layout_height="wrap_content"
                             android:gravity="top"
                             android:hint="性别"
-                            android:inputType="textMultiLine"
-                            android:minLines="1"
+                            android:inputType="textImeMultiLine"
+                            android:maxLines="1"
                             android:text="@={viewModel.mProfile.sex}"/>
 
                     </android.support.design.widget.TextInputLayout>
                 </android.support.v7.widget.CardView>
+
                 <android.support.v7.widget.CardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -140,12 +142,13 @@
                             android:layout_height="wrap_content"
                             android:gravity="top"
                             android:hint="学号"
-                            android:inputType="textMultiLine"
-                            android:minLines="1"
+                            android:inputType="textImeMultiLine"
+                            android:maxLines="1"
                             android:text="@={viewModel.mProfile.studentNumber}"/>
 
                     </android.support.design.widget.TextInputLayout>
                 </android.support.v7.widget.CardView>
+
                 <android.support.v7.widget.CardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -162,12 +165,13 @@
                             android:layout_height="wrap_content"
                             android:gravity="top"
                             android:hint="生日"
-                            android:inputType="textMultiLine"
-                            android:minLines="1"
+                            android:inputType="textImeMultiLine"
+                            android:maxLines="1"
                             android:text="@={viewModel.mProfile.birthday}"/>
 
                     </android.support.design.widget.TextInputLayout>
                 </android.support.v7.widget.CardView>
+
                 <android.support.v7.widget.CardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
