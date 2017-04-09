@@ -118,24 +118,25 @@ public class MainActivity extends BaseActivity {
         若想获取更新 弃用缓存 可以用两种方法
         1.refresh
         2.删除缓存，再getCache，此时缓存为空，就会强制获取更新。
+        限制第一种方法以及被废除。全部采用第二种方式
          */
 
         if (resultCode == RESULT_OK) {
             switch (requestCode) {
                 case REQUEST_REGISTER:
                 case REQUEST_LOGIN:
-                    adapter.getItem(1).refresh();
-                    adapter.getItem(2).refresh();
+//                    adapter.getItem(1).refresh();
+//                    adapter.getItem(2).refresh();
                     break;
                 case REQUEST_ADD_CLUB:
                     ((DiscoverFragment) adapter.getItem(0)).setCurrentTab(1);
                     bottomNavigation.setCurrentItem(0);
                     break;
                 case REQUEST_EDIT_INFO:
-                    adapter.getItem(2).refresh();
+//                    adapter.getItem(2).refresh();
                     break;
                 case REQUEST_CREATE_CLUB:
-                    adapter.getItem(1).refresh();
+//                    adapter.getItem(1).refresh();
                     showSnackbar("创建社团成功！");
                     break;
                 case REQUEST_GIVE_CLUB:

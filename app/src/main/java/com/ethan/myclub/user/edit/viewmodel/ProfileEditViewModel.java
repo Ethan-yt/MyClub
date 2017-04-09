@@ -166,6 +166,7 @@ public class ProfileEditViewModel {
     }
 
     private void finishEdit() {
+
         mActivity.setResult(Activity.RESULT_OK);
         ActivityCompat.finishAfterTransition(mActivity);
     }

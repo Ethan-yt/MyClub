@@ -9,6 +9,7 @@ import com.ethan.myclub.club.model.Tag2;
 import com.ethan.myclub.club.my.model.MyClub;
 import com.ethan.myclub.discover.activity.model.ActivityResult;
 import com.ethan.myclub.discover.merchant.model.MerchantResult;
+import com.ethan.myclub.user.model.MessageFeedBack;
 import com.ethan.myclub.user.model.Profile;
 import com.ethan.myclub.user.login.model.Valid;
 import com.ethan.myclub.discover.club.model.ClubResult;
@@ -47,9 +48,13 @@ public interface ApiService {
     @PATCH("/api/user/avatar/")
     Observable<Object> uploadAvatar(@Part MultipartBody.Part file);
 
-    //获取我的信息
+    //获取我的资料
     @GET("api/user/profile/")
     Observable<Profile> getMyProfile();
+
+    //获取我的消息列表
+    @GET("api/user/notification/")
+    Observable<List<MessageFeedBack>> getMyMessage();
 
     //获取我的社团
     @GET("api/club/my-club-list/")

@@ -27,8 +27,10 @@ public class Preferences {
     //--------------Cache--------------
     public static final int CACHE_TIME_USER_INFO = CacheUtil.TIME_HOUR * 2;
     public static final int CACHE_TIME_USER_CLUB_LIST = CacheUtil.TIME_HOUR * 2;
+    public static final int CACHE_TIME_USER_MSG = CacheUtil.TIME_HOUR * 2;
 
     public static final String CACHE_USER_INFO = "userInfo";
+    public static final String CACHE_USER_MSG = "userMsg";
     public static final String CACHE_USER_CLUB_LIST = "userClubList";
 
 

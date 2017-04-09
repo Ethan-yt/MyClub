@@ -142,7 +142,7 @@ public class ClubViewModel {
 
                     @Override
                     public void onNext(List<MyClub> myClubs) {
-                        Log.i(TAG, "updateUserClubList: 获取UserClubList完成");
+                        Log.i(TAG, "updateUserClubList: 更新UserClubList完成");
                         MyClub[] clubsArray = myClubs.toArray(new MyClub[0]);
                         notifyClubsObservable(clubsArray, GET_CLUBS_RESULT_OK);
                         CacheUtil.get(mFragment.getActivity())
@@ -151,7 +151,7 @@ public class ClubViewModel {
 
                     @Override
                     public void onError(Throwable e) {
-                        Log.i(TAG, "updateUserInfo: 获取UserClubList失败");
+                        Log.i(TAG, "updateUserInfo: 更新UserClubList失败");
                         if (e instanceof ApiException && ((ApiException) e).getCode() == ApiException.NETWORK_ERROR)
                             notifyClubsObservable(null, GET_CLUBS_RESULT_NO_NETWORK);
                         else
