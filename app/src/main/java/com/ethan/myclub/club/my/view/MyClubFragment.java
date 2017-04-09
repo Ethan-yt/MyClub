@@ -32,6 +32,7 @@ public class MyClubFragment extends BaseFragment {
                              Bundle savedInstanceState) {
         FragmentClubBinding fragmentClubBinding = (FragmentClubBinding) onCreateDataBindingView(inflater, R.layout.fragment_club, container);
         mViewModel = new ClubViewModel(this, fragmentClubBinding);
+        mViewModel.getUserClubListCache();
         return fragmentClubBinding.getRoot();
     }
 
@@ -64,9 +65,6 @@ public class MyClubFragment extends BaseFragment {
 
             Utils.StatusBarLightMode(mBaseActivity, true);
         }
-        if (mViewModel != null)
-            mViewModel.getUserClubListCache();
-
     }
 
     private class MyMenuItemClickListener implements Toolbar.OnMenuItemClickListener {

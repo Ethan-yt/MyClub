@@ -66,8 +66,6 @@ public abstract class BaseActivity extends AppCompatActivity {
             if (requestCode == REQUEST_REGISTER) {
                 showSnackbar("注册成功！已经帮您自动登录！");
             }
-            if (requestCode == REQUEST_REGISTER || requestCode == REQUEST_LOGIN)
-                CacheUtil.get(this).remove(Preferences.CACHE_USER_INFO);//登录或者注册成功，清除缓存
         }
     }
 

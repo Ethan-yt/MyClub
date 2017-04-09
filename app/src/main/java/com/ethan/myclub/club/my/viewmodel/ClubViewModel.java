@@ -62,6 +62,8 @@ public class ClubViewModel {
     private static final int GET_CLUBS_RESULT_ERROR = 3;
     private static final int GET_CLUBS_RESULT_NO_NETWORK = 4;
 
+
+    private boolean cached = false;
     public void getUserClubListCache() {
 
         Object clubsObj = CacheUtil.get(mFragment.getActivity()).getAsObject(Preferences.CACHE_USER_CLUB_LIST);
@@ -69,8 +71,12 @@ public class ClubViewModel {
             Log.i(TAG, "getUserClubListCache: 读取UserClubList缓存失败，强制获取更新");
             updateUserClubList();
         } else {
-            notifyClubsObservable((MyClub[]) clubsObj, GET_CLUBS_RESULT_OK);
-            Log.i(TAG, "getUserClubListCache: 读取UserClubList缓存成功");
+            if(!cached)
+            {
+                cached = true;
+                notifyClubsObservable((MyClub[]) clubsObj, GET_CLUBS_RESULT_OK);
+                Log.i(TAG, "getUserClubListCache: 读取UserClubList缓存成功");
+            }
         }
 
     }

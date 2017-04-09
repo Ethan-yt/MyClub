@@ -1,5 +1,6 @@
 package com.ethan.myclub.user.main.viewmodel;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.databinding.BindingAdapter;
@@ -53,13 +54,6 @@ public class UserViewModel {
         mFragment = fragment;
         mBinding = binding;
         mBinding.setViewModel(this);
-        mProfile.addOnPropertyChangedCallback(new Observable.OnPropertyChangedCallback() {
-            @Override
-            public void onPropertyChanged(Observable observable, int i) {
-                if (!TextUtils.isEmpty(mProfile.get().getNickname()))
-                    MobclickAgent.onProfileSignIn(mProfile.get().getName() + mProfile.get().getNickname() + sPushRegID);
-            }
-        });
         //new BaseFragment.ToolbarWrapper(mFragment,"个人中心").show();
     }
 
@@ -90,8 +84,8 @@ public class UserViewModel {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         Preferences.setToken(mFragment.mBaseActivity, null);
-                        //getUserInfoCache();
-                        ((MainActivity) mFragment.getActivity()).bottomNavigation.setCurrentItem(0);
+                        MainActivity.startActivity(mFragment.getActivity(),MainActivity.REQUEST_EXIT, Activity.RESULT_OK);
+
                     }
                 })
                 .setNegativeButton("点错了", new DialogInterface.OnClickListener() {
@@ -113,8 +107,15 @@ public class UserViewModel {
             Log.i(TAG, "getUserInfoCache: 读取UserInfo缓存失败，强制获取更新");
             updateUserInfo();
         } else {
-            mProfile.set((Profile) infoObj);
-            Log.i(TAG, "getUserInfoCache: 读取UserInfo缓存成功");
+            if(mProfile.get() == null){
+                mProfile.set((Profile) infoObj);
+                if (!TextUtils.isEmpty(mProfile.get().getNickname())) {
+                    String id = mProfile.get().userId + "_" + mProfile.get().getName() + "_" + mProfile.get().getNickname() + "_" + sPushRegID;
+                    MobclickAgent.onProfileSignIn(id);
+                    Log.i(TAG, "getUserInfoCache: 设置统计账号：" + id);
+                }
+                Log.i(TAG, "getUserInfoCache: 读取UserInfo缓存成功");
+            }
         }
 
     }
@@ -140,6 +141,11 @@ public class UserViewModel {
                         mProfile.set(profile);
                         CacheUtil.get(mFragment.getActivity())
                                 .put(Preferences.CACHE_USER_INFO, profile, Preferences.CACHE_TIME_USER_INFO);
+                        if (!TextUtils.isEmpty(mProfile.get().getNickname())) {
+                            String id = mProfile.get().userId + "_" + mProfile.get().getName() + "_" + mProfile.get().getNickname() + "_" + sPushRegID;
+                            MobclickAgent.onProfileSignIn(id);
+                            Log.i(TAG, "getUserInfoCache: 设置统计账号：" + id);
+                        }
                     }
 
                     @Override

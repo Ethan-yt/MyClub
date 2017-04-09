@@ -27,6 +27,7 @@ public class UserFragment extends BaseFragment {
                              Bundle savedInstanceState) {
         FragmentUserBinding viewDataBinding = (FragmentUserBinding) onCreateDataBindingView(inflater, R.layout.fragment_user, container);
         mViewModel = new UserViewModel(this, viewDataBinding);
+        mViewModel.getUserInfoCache();
         return viewDataBinding.getRoot();
     }
 
@@ -43,9 +44,5 @@ public class UserFragment extends BaseFragment {
             mBaseActivity.getToolbarWrapper().changeScrollable(true).close();
             Utils.StatusBarLightMode(mBaseActivity, false);
         }
-
-
-        if (mViewModel != null)
-            mViewModel.getUserInfoCache();
     }
 }
