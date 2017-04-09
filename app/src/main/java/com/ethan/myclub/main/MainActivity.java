@@ -86,7 +86,7 @@ public class MainActivity extends BaseActivity {
                         return false;
                     }
                 }
-                if(position == 1)
+                if (position == 1)
                     bottomNavigation.setBehaviorTranslationEnabled(false);
                 else
                     bottomNavigation.setBehaviorTranslationEnabled(true);
@@ -144,7 +144,7 @@ public class MainActivity extends BaseActivity {
                     break;
                 case REQUEST_EXIT:
                     bottomNavigation.setCurrentItem(0);
-                    bottomNavigation.setNotification((AHNotification) null , 2);
+                    bottomNavigation.setNotification("", 2);
                     break;
             }
         }

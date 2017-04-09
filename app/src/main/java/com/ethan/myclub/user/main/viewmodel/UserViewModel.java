@@ -77,19 +77,17 @@ public class UserViewModel {
             public void onPropertyChanged(Observable observable, int i) {
                 int count = 0;
                 for (MessageFeedBack messageFeedBack : mMsg.get()) {
-                    if(!messageFeedBack.checked)
+                    if (!messageFeedBack.checked)
                         count++;
                 }
                 mUnreadNum.set(String.valueOf(count));
                 MainActivity mainActivity = (MainActivity) mFragment.getActivity();
-                if(count != 0)
-                {
+                if (count != 0) {
                     mainActivity.bottomNavigation.setNotification(String.valueOf(count), 2);
-                }
-                else
+                } else
 
                 {
-                    mainActivity.bottomNavigation.setNotification((AHNotification) null, 2);
+                    mainActivity.bottomNavigation.setNotification("", 2);
                 }
             }
         });
