@@ -100,7 +100,10 @@ public class ClubActivityListViewModel {
                             mBinding.list.setLayoutFrozen(false);
                             formatOrder(activityResults);
                             mAdapter.setNewData(activityResults);
-
+                            if(mEditMode)
+                                toolbar.changeColor(Color.YELLOW);
+                            else
+                                toolbar.changeColor(Color.WHITE);
                             if (mMyClub.checkPermission(6))
                                 toolbar.setMenu(R.menu.toolbar_edit, new Toolbar.OnMenuItemClickListener() {
                                     @Override
