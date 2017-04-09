@@ -212,11 +212,27 @@ public abstract class BaseActivity extends AppCompatActivity {
             return this;
         }
 
-        public void changeColor(int color) {
+        public ToolbarWrapper changeColor(int color) {
             mAppBarLayout.setBackgroundColor(color);
             mToolbar.setBackgroundColor(color);
+            return this;
         }
 
+        public ToolbarWrapper changeScrollable(boolean flag) {
+            AppBarLayout.LayoutParams params =
+                    (AppBarLayout.LayoutParams) mToolbar.getLayoutParams();
+            if (flag && !mIsScroll) {
+                mIsScroll = true;
+                params.setScrollFlags(AppBarLayout.LayoutParams.SCROLL_FLAG_SCROLL
+                        | AppBarLayout.LayoutParams.SCROLL_FLAG_ENTER_ALWAYS);
+                return this;
+            }
+            if(!flag && mIsScroll){
+                params.setScrollFlags(0);
+                return this;
+            }
+            return this;
+        }
 
         public void show() {
             show(-1);

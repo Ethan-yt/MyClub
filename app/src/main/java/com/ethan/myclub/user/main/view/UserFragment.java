@@ -40,7 +40,7 @@ public class UserFragment extends BaseFragment {
     public void willBeDisplayed() {
         super.willBeDisplayed();
         if (mBaseActivity != null) {
-            mBaseActivity.getToolbarWrapper().close();
+            mBaseActivity.getToolbarWrapper().changeScrollable(true).close();
             Utils.StatusBarLightMode(mBaseActivity, false);
         }
 

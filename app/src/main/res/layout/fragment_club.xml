@@ -19,6 +19,8 @@
             android:layout_width="match_parent"
             android:layout_marginLeft="24dp"
             android:layout_marginRight="24dp"
+            android:paddingBottom="60dp"
+            android:clipToPadding="false"
             android:layout_height="match_parent"
             tools:listitem="@layout/item_club"/>
 

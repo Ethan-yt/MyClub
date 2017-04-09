@@ -25,8 +25,12 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <meta-data android:value="58e904138f4a9d2daa001471" android:name="UMENG_APPKEY"/>
-        <meta-data android:value="default" android:name="UMENG_CHANNEL"/>
+        <meta-data
+            android:name="UMENG_APPKEY"
+            android:value="58e904138f4a9d2daa001471"/>
+        <meta-data
+            android:name="UMENG_CHANNEL"
+            android:value="default"/>
 
         <provider
             android:name="android.support.v4.content.FileProvider"
@@ -128,6 +132,9 @@
         <activity android:name=".activity.edit.view.ActivityEditContentActivity"/>
         <activity android:name=".user.collection.view.UserCollectionActivity"/>
         <activity android:name=".club.notification.view.ClubNotificationCreateActivity"/>
+        <activity android:name=".club.member.view.ClubMemberListActivity"/>
+        <activity android:name=".club.member.view.ClubMemberDetailActivity"/>
+        <activity android:name=".user.detail.view.UserDetailActivity"/>
     </application>
 
 </manifest>

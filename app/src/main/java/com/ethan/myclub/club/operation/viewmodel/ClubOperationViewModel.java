@@ -11,6 +11,7 @@ import com.ethan.myclub.R;
 import com.ethan.myclub.activity.create.view.ActivityCreateActivity;
 import com.ethan.myclub.club.activitylist.view.ClubActivityListActivity;
 import com.ethan.myclub.club.detail.view.ClubInfoActivity;
+import com.ethan.myclub.club.member.view.ClubMemberListActivity;
 import com.ethan.myclub.club.my.model.MyClub;
 import com.ethan.myclub.club.my.model.Title;
 import com.ethan.myclub.club.notification.view.ClubNotificationCreateActivity;
@@ -38,7 +39,7 @@ public class ClubOperationViewModel {
         mBinding = binding;
         mBinding.setViewModel(this);
         mClub = club;
-        String str = club.clubName + "  " + getMyTitle();
+        String str = club.clubName + "  " + club.getMyTitle();
         mClubNameAndTitle.set(str);
 
         GridView gridView;
@@ -48,7 +49,7 @@ public class ClubOperationViewModel {
         gridView = (GridView) View.inflate(mActivity, R.layout.item_club_operation_pager, null);
         operations = new ArrayList<>();
         operations.add(new Operation(ClubInfoActivity.class, "社团简介", R.drawable.ic_club_op_clubinfo));
-        operations.add(new Operation(null, "成员列表", R.drawable.ic_club_op_member));
+        operations.add(new Operation(ClubMemberListActivity.class, "成员列表", R.drawable.ic_club_op_member));
         operations.add(new Operation(ClubActivityListActivity.class, "活动列表", R.drawable.ic_club_op_activity));
         operations.add(new Operation(null, "社团账单", R.drawable.ic_club_op_budget));
         operations.add(new Operation(null, "社团通知", R.drawable.ic_club_op_notification));
@@ -87,15 +88,5 @@ public class ClubOperationViewModel {
                 .crossFade()
                 .bitmapTransform(new CropCircleTransformation(view.getContext()))
                 .into(view);
-    }
-
-    private String getMyTitle() {
-        if (mClub.isCreator)
-            return "社长";
-        for (Title title : mClub.titleTable) {
-            if (title.id.equals(mClub.titleId))
-                return title.titleName;
-        }
-        return "社员";
     }
 }

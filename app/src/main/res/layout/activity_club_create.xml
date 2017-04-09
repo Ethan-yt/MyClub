@@ -125,6 +125,7 @@
             android:layout_marginTop="16dp"
             android:onClick="@{()->viewModel.createClub()}"
             android:text="创建社团"
+            android:textColor="@android:color/white"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/cardView5"/>
 

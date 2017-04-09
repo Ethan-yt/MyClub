@@ -4,6 +4,7 @@ import com.ethan.myclub.activity.detail.model.LikeStatus;
 import com.ethan.myclub.activity.model.Activity;
 import com.ethan.myclub.activity.model.Content;
 import com.ethan.myclub.club.model.Club;
+import com.ethan.myclub.club.model.MemberResult;
 import com.ethan.myclub.club.model.Tag2;
 import com.ethan.myclub.club.my.model.MyClub;
 import com.ethan.myclub.discover.activity.model.ActivityResult;
@@ -54,6 +55,26 @@ public interface ApiService {
     @GET("api/club/my-club-list/")
     Observable<List<MyClub>> getMyClubs();
 
+    //修改个人信息
+    @FormUrlEncoded
+    @PATCH("api/user/profile/")
+    Observable<Object>
+    modifyUserProfile(
+            @Field("nickname") String nickname,
+            @Field("student_number") String studentNumber,
+            @Field("sex") String sex,
+            @Field("name") String name,
+            @Field("birthday") String birthday,
+            @Field("brief_introduction") String briefIntroduction);
+
+    //个人收藏
+    @GET("api/activity/search/?is_like=true")
+    Observable<List<ActivityResult>> getMyCollection();
+
+    //获取用户信息
+    @GET("api/user/profile/{userId}/")
+    Observable<Profile> getUserProfile(@Path("userId") String userId);
+
     //============================社团============================
     //获取社团搜索提示
     @GET("api/club/suggestion/")
@@ -99,6 +120,25 @@ public interface ApiService {
     //获取社团活动
     @GET("api/activity/club/{clubId}/")
     Observable<List<ActivityResult>> getClubActivity(@Path("clubId") String clubId);
+
+
+    //获取社团成员列表
+    @GET("api/club/{clubId}/member/")
+    Observable<List<MemberResult>> getClubMemberList(@Path("clubId") String clubId);
+
+
+    //转让
+    @POST("api/club/{clubId}/change-creator/{userId}/")
+    Observable<Object> changeCreator(@Path("clubId") String clubId, @Path("userId") String userId);
+
+    //踢人
+    @DELETE("api/club/{clubId}/member/{userId}/")
+    Observable<Object> removeClubMember(@Path("clubId") String clubId, @Path("userId") String userId);
+
+    //授权
+    @PATCH("api/club/{clubId}/member/{userId}/")
+    @FormUrlEncoded
+    Observable<Object> grantClubTitle(@Path("clubId") String clubId, @Path("userId") String userId, @Field("title") String titleId);
 
 
     //============================商家============================
@@ -180,24 +220,6 @@ public interface ApiService {
     //上传课表
     @POST("api/user/schedule/")
     Observable<Object> updateSchedule(@Body List<Schedule> schedules);
-
-    //============================个人============================
-
-    //修改个人信息
-    @FormUrlEncoded
-    @PATCH("api/user/profile/")
-    Observable<Object>
-    modifyUserProfile(
-            @Field("nickname") String nickname,
-            @Field("student_number") String studentNumber,
-            @Field("sex") String sex,
-            @Field("name") String name,
-            @Field("birthday") String birthday,
-            @Field("brief_introduction") String briefIntroduction);
-
-    //个人收藏
-    @GET("api/activity/search/?is_like=true")
-    Observable<List<ActivityResult>> getMyCollection();
 
     //============================通知============================
 

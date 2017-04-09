@@ -28,8 +28,6 @@ final class GsonResponseBodyConverter<T> implements Converter<ResponseBody, T> {
     public T convert(ResponseBody value) throws IOException {
         try {
             ApiResponse apiResponse = (ApiResponse) adapter.fromJson(value.charStream());
-            if(apiResponse.data == null)
-                throw new ServerException(apiResponse.code, "服务端返回格式错误");
             if (apiResponse.code != 0) {
                 List<Error> errors = apiResponse.errors;
                 if (errors != null && errors.size() != 0) {
@@ -42,6 +40,8 @@ final class GsonResponseBodyConverter<T> implements Converter<ResponseBody, T> {
                 } else
                     throw new ServerException(apiResponse.code, apiResponse.message);
             }
+            if(apiResponse.data == null)
+                throw new ServerException(apiResponse.code, "服务端返回格式错误");
             // 没有错误，返回data
             return (T) apiResponse.data;
         } finally {

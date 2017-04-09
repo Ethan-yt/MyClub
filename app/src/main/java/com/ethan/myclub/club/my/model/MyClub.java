@@ -1,5 +1,6 @@
 package com.ethan.myclub.club.my.model;
 
+import com.ethan.myclub.club.model.MemberResult;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -44,6 +45,26 @@ public class MyClub implements Serializable {
                 return title.permissionsPart1;
         }
         return 0;
+    }
+
+    public String getMyTitle() {
+        if (isCreator)
+            return "社长";
+        for (Title title : titleTable) {
+            if (title.id.equals(titleId))
+                return title.titleName;
+        }
+        return "社员";
+    }
+
+    public String getTitleNameFromMemberResult(MemberResult memberResult) {
+        if (memberResult.isCreator)
+            return "社长";
+        for (Title title : titleTable) {
+            if (title.id.equals(memberResult.title))
+                return title.titleName;
+        }
+        return "社员";
     }
 
     /**

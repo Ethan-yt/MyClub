@@ -19,6 +19,7 @@ public class MainActivity extends BaseActivity {
     public static final int REQUEST_ADD_CLUB = 10306;
     public static final int REQUEST_EDIT_INFO = 10307;
     public static final int REQUEST_CREATE_CLUB = 10308;
+    public static final int REQUEST_GIVE_CLUB = 10309;
 
     private BaseFragment currentFragment;
     private BaseViewPagerAdapter adapter;
@@ -123,6 +124,10 @@ public class MainActivity extends BaseActivity {
                 case REQUEST_CREATE_CLUB:
                     adapter.getItem(1).refresh();
                     showSnackbar("创建社团成功！");
+                    break;
+                case REQUEST_GIVE_CLUB:
+                    adapter.getItem(1).refresh();
+                    showSnackbar("社团转让成功！您现在是管理员。");
                     break;
             }
 

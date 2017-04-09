@@ -40,7 +40,6 @@ public class MyClubFragment extends BaseFragment {
         BaseActivity.ToolbarWrapper toolbarWrapper = mBaseActivity.getToolbarWrapper()
                 .dismiss()
                 .withAnimate()
-                .setScrollable()
                 .setTitle("我的社团", true);
         if (Preferences.sIsLogin.get())
             toolbarWrapper.setMenu(R.menu.toolbar_club, new MyMenuItemClickListener());
@@ -56,7 +55,6 @@ public class MyClubFragment extends BaseFragment {
             BaseActivity.ToolbarWrapper toolbarWrapper = mBaseActivity.getToolbarWrapper()
                     .dismiss()
                     .withAnimate()
-                    .setScrollable()
                     .setTitle("我的社团", true);
 
             if (Preferences.sIsLogin.get())

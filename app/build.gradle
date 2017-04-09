@@ -34,8 +34,8 @@ android {
         applicationId "com.ethan.myclub"
         minSdkVersion 14
         targetSdkVersion 25
-        versionCode 3
-        versionName "1.0.1.1 alpha"
+        versionCode 4
+        versionName "1.2.1 alpha"
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         jackOptions {
@@ -116,6 +116,7 @@ dependencies {
 
     compile 'com.facebook.stetho:stetho:1.4.2'
     compile 'com.facebook.stetho:stetho-okhttp3:1.4.2'
+    compile 'com.chauthai.swipereveallayout:swipe-reveal-layout:1.4.0'
 }
 
 repositories {
