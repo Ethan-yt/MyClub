@@ -3,11 +3,13 @@ package com.ethan.myclub.user.model;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
+
 /**
  * Created by ethan on 2017/4/9.
  */
 
-public class Notification {
+public class Notification implements Serializable {
     @SerializedName("id")
     @Expose
     public Integer id;

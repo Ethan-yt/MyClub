@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 
+import com.aurelhubert.ahbottomnavigation.notification.AHNotification;
 import com.bumptech.glide.Glide;
 import com.ethan.myclub.R;
 import com.ethan.myclub.databinding.FragmentUserBinding;
@@ -54,6 +55,8 @@ public class UserViewModel {
 
     public ObservableField<Profile> mProfile = new ObservableField<>();
     public ObservableField<List<MessageFeedBack>> mMsg = new ObservableField<>();
+    public ObservableField<String> mUnreadNum = new ObservableField<>();
+
 
     public UserViewModel(UserFragment fragment, FragmentUserBinding binding) {
         mFragment = fragment;
@@ -72,7 +75,22 @@ public class UserViewModel {
         mMsg.addOnPropertyChangedCallback(new Observable.OnPropertyChangedCallback() {
             @Override
             public void onPropertyChanged(Observable observable, int i) {
+                int count = 0;
+                for (MessageFeedBack messageFeedBack : mMsg.get()) {
+                    if(!messageFeedBack.checked)
+                        count++;
+                }
+                mUnreadNum.set(String.valueOf(count));
+                MainActivity mainActivity = (MainActivity) mFragment.getActivity();
+                if(count != 0)
+                {
+                    mainActivity.bottomNavigation.setNotification(String.valueOf(count), 2);
+                }
+                else
 
+                {
+                    mainActivity.bottomNavigation.setNotification((AHNotification) null, 2);
+                }
             }
         });
 

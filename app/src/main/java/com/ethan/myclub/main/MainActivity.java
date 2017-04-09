@@ -12,6 +12,7 @@ import android.util.Log;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationAdapter;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationViewPager;
+import com.aurelhubert.ahbottomnavigation.notification.AHNotification;
 import com.ethan.myclub.R;
 import com.ethan.myclub.club.my.view.MyClubFragment;
 import com.ethan.myclub.discover.club.ClubFragment;
@@ -85,6 +86,10 @@ public class MainActivity extends BaseActivity {
                         return false;
                     }
                 }
+                if(position == 1)
+                    bottomNavigation.setBehaviorTranslationEnabled(false);
+                else
+                    bottomNavigation.setBehaviorTranslationEnabled(true);
 
                 if (currentFragment != null) {
                     currentFragment.willBeHidden();
@@ -93,11 +98,6 @@ public class MainActivity extends BaseActivity {
                 viewPager.setCurrentItem(position, false);
                 currentFragment = adapter.getItem(position);
                 currentFragment.willBeDisplayed();
-
-//                if (position == 1) {
-//                    bottomNavigation.setNotification("", 1);
-//
-//                }
 
                 return true;
             }
@@ -144,6 +144,7 @@ public class MainActivity extends BaseActivity {
                     break;
                 case REQUEST_EXIT:
                     bottomNavigation.setCurrentItem(0);
+                    bottomNavigation.setNotification((AHNotification) null , 2);
                     break;
             }
         }

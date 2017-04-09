@@ -76,6 +76,7 @@ public class Preferences {
         Parcel parcel = Parcel.obtain();
         if (token == null) {
             CacheUtil.get(context).remove(CACHE_USER_INFO);//退出登录，清除个人信息缓存
+            CacheUtil.get(context).remove(CACHE_USER_MSG);
             CacheUtil.get(context).remove(CACHE_USER_CLUB_LIST);
         } else
             token.writeToParcel(parcel, 0);//保存token

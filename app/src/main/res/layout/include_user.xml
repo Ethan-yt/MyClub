@@ -1,15 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
         <variable
             name="viewModel"
             type="com.ethan.myclub.user.main.viewmodel.UserViewModel"/>
+
+        <import type="android.view.View"/>
     </data>
 
     <LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:divider="@drawable/divider_user_main"
@@ -17,14 +19,37 @@
         android:paddingTop="24dp"
         android:showDividers="middle">
 
-        <TextView
-            android:id="@+id/notification"
-            style="@style/item_user_main"
-            android:drawableLeft="@drawable/ic_user_message"
-            android:drawableStart="@drawable/ic_user_message"
-            android:onClick="@{()->viewModel.message()}"
-            android:text="消 息 通 知"/>
 
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/notification"
+                style="@style/item_user_main"
+                android:drawableLeft="@drawable/ic_user_message"
+                android:drawableStart="@drawable/ic_user_message"
+                android:onClick="@{()->viewModel.message()}"
+                android:text="消 息 通 知"/>
+
+            <TextView
+                android:elevation="3dp"
+                android:layout_width="17dp"
+                android:layout_height="17dp"
+                android:textSize="10sp"
+                android:layout_alignBaseline="@+id/notification"
+                android:layout_alignBottom="@+id/notification"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginEnd="41dp"
+                android:layout_marginRight="41dp"
+                android:background="@drawable/bg_notification_red"
+                android:gravity="center"
+                android:text="@{viewModel.mUnreadNum}"
+                android:textColor="@android:color/white"
+                android:visibility="@{viewModel.mUnreadNum.equals(&quot;0&quot;) ? View.GONE :View.VISIBLE}"
+                tools:text="1"/>
+        </RelativeLayout>
 
         <TextView
             android:id="@+id/basicInfo"
