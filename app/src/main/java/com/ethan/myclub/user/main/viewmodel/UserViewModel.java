@@ -1,11 +1,10 @@
 package com.ethan.myclub.user.main.viewmodel;
 
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.DialogInterface;
 import android.databinding.BindingAdapter;
+import android.databinding.Observable;
 import android.databinding.ObservableField;
-import android.support.design.widget.BottomSheetDialog;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.util.Pair;
 import android.text.TextUtils;
@@ -16,7 +15,7 @@ import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 import com.ethan.myclub.R;
 import com.ethan.myclub.databinding.FragmentUserBinding;
-import com.ethan.myclub.global.Preferences;
+import com.ethan.myclub.main.Preferences;
 import com.ethan.myclub.main.BaseActivity;
 import com.ethan.myclub.main.MainActivity;
 import com.ethan.myclub.network.ApiHelper;
@@ -26,11 +25,14 @@ import com.ethan.myclub.user.edit.view.ProfileEditActivity;
 import com.ethan.myclub.user.main.view.UserFragment;
 import com.ethan.myclub.user.schedule.ScheduleActivity;
 import com.ethan.myclub.util.CacheUtil;
+import com.umeng.analytics.MobclickAgent;
 
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import jp.wasabeef.glide.transformations.CropCircleTransformation;
+
+import static com.ethan.myclub.main.Preferences.sPushRegID;
 
 /**
  * Created by ethan on 2017/3/20.
@@ -51,6 +53,13 @@ public class UserViewModel {
         mFragment = fragment;
         mBinding = binding;
         mBinding.setViewModel(this);
+        mProfile.addOnPropertyChangedCallback(new Observable.OnPropertyChangedCallback() {
+            @Override
+            public void onPropertyChanged(Observable observable, int i) {
+                if (!TextUtils.isEmpty(mProfile.get().getNickname()))
+                    MobclickAgent.onProfileSignIn(mProfile.get().getName() + mProfile.get().getNickname() + sPushRegID);
+            }
+        });
         //new BaseFragment.ToolbarWrapper(mFragment,"个人中心").show();
     }
 

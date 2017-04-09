@@ -47,3 +47,8 @@
 -dontwarn com.xiaomi.push.**
 -dontwarn org.junit.**
 -dontwarn android.test.**
+
+-keepclassmembers class * {
+   public <init> (org.json.JSONObject);
+}
+

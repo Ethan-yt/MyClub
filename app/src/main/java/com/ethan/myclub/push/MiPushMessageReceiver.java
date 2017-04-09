@@ -2,9 +2,8 @@ package com.ethan.myclub.push;
 
 import android.content.Context;
 import android.text.TextUtils;
-import android.util.Log;
 
-import com.ethan.myclub.global.Preferences;
+import com.ethan.myclub.main.Preferences;
 import com.xiaomi.mipush.sdk.ErrorCode;
 import com.xiaomi.mipush.sdk.MiPushClient;
 import com.xiaomi.mipush.sdk.MiPushCommandMessage;

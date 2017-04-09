@@ -1,17 +1,12 @@
 package com.ethan.myclub.user.login.viewmodel;
 
-import android.content.Intent;
 import android.databinding.ObservableField;
-import android.os.Build;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.util.Pair;
 import android.view.View;
-import android.view.WindowManager;
 
 import com.ethan.myclub.databinding.ActivityLoginBinding;
-import com.ethan.myclub.global.Preferences;
-import com.ethan.myclub.network.ApiHelper;
+import com.ethan.myclub.main.Preferences;
 import com.ethan.myclub.network.OAuthHelper;
 import com.ethan.myclub.user.login.model.Token;
 import com.ethan.myclub.user.login.view.LoginActivity;
@@ -20,7 +15,6 @@ import com.ethan.myclub.user.login.view.RegisterActivity;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
-import okhttp3.Credentials;
 
 import static android.app.Activity.RESULT_OK;
 

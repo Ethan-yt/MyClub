@@ -17,7 +17,7 @@ import com.ethan.myclub.club.model.Club;
 import com.ethan.myclub.club.model.Tag;
 import com.ethan.myclub.club.model.Tag2;
 import com.ethan.myclub.databinding.ActivityClubInfoEditBinding;
-import com.ethan.myclub.global.Preferences;
+import com.ethan.myclub.main.Preferences;
 import com.ethan.myclub.main.ImageSelectActivity;
 import com.ethan.myclub.network.ApiHelper;
 import com.ethan.myclub.util.CacheUtil;

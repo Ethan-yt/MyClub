@@ -2,17 +2,13 @@ package com.ethan.myclub.activity.detail.viewmodel;
 
 import android.databinding.BindingAdapter;
 import android.databinding.ObservableField;
-import android.support.design.widget.AppBarLayout;
 import android.support.v7.widget.LinearLayoutManager;
-import android.view.DragEvent;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
@@ -26,7 +22,7 @@ import com.ethan.myclub.club.model.Tag;
 import com.ethan.myclub.club.my.view.EmptyView;
 import com.ethan.myclub.databinding.ActivityActivityDetailBinding;
 import com.ethan.myclub.discover.activity.model.ActivityResult;
-import com.ethan.myclub.global.Preferences;
+import com.ethan.myclub.main.Preferences;
 import com.ethan.myclub.network.ApiHelper;
 import com.ethan.myclub.network.exception.ApiException;
 import com.ethan.myclub.user.collection.view.UserCollectionActivity;

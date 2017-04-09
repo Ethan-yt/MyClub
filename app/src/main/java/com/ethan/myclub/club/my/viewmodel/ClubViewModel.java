@@ -11,7 +11,7 @@ import com.ethan.myclub.club.my.view.MyClubFragment;
 import com.ethan.myclub.club.my.view.EmptyView;
 import com.ethan.myclub.club.operation.view.ClubOperationActivity;
 import com.ethan.myclub.databinding.FragmentClubBinding;
-import com.ethan.myclub.global.Preferences;
+import com.ethan.myclub.main.Preferences;
 import com.ethan.myclub.network.ApiHelper;
 import com.ethan.myclub.network.exception.ApiException;
 import com.ethan.myclub.util.CacheUtil;

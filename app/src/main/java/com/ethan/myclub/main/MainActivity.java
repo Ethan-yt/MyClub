@@ -1,12 +1,10 @@
 package com.ethan.myclub.main;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.content.ContextCompat;
 
 
@@ -15,8 +13,6 @@ import com.aurelhubert.ahbottomnavigation.AHBottomNavigationAdapter;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationViewPager;
 import com.ethan.myclub.R;
 import com.ethan.myclub.discover.main.DiscoverFragment;
-import com.ethan.myclub.global.Preferences;
-import com.ethan.myclub.user.login.view.RegisterActivity2;
 
 public class MainActivity extends BaseActivity {
 

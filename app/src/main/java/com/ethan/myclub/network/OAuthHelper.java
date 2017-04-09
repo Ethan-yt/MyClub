@@ -1,6 +1,6 @@
 package com.ethan.myclub.network;
 
-import com.ethan.myclub.global.Preferences;
+import com.ethan.myclub.main.Preferences;
 import com.ethan.myclub.main.BaseActivity;
 import com.ethan.myclub.network.converter.ApiExceptionConverterFactory;
 import com.ethan.myclub.network.service.OAuthService;

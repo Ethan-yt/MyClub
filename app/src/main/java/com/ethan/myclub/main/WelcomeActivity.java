@@ -1,16 +1,11 @@
 package com.ethan.myclub.main;
 
-import android.app.ActivityOptions;
-import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.ActivityOptionsCompat;
-import android.support.v7.app.AppCompatActivity;
 
+import com.ethan.myclub.BuildConfig;
 import com.ethan.myclub.R;
-import com.ethan.myclub.activity.detail.view.ActivityDetailActivity;
-import com.ethan.myclub.global.Preferences;
+import com.tencent.bugly.Bugly;
 
 import java.util.concurrent.TimeUnit;
 
@@ -29,7 +24,12 @@ public class WelcomeActivity extends BaseActivity {
 
         //读取配置项
         Preferences.initPreferencesEngine(this);
-        Observable.timer(0, TimeUnit.SECONDS, AndroidSchedulers.mainThread())
+        int delay = 0;
+        if (!BuildConfig.DEBUG) {
+            delay = 2;
+        }
+
+        Observable.timer(delay, TimeUnit.SECONDS, AndroidSchedulers.mainThread())
                 .subscribe(new Consumer<Long>() {
                     @Override
                     public void accept(@NonNull Long aLong) throws Exception {

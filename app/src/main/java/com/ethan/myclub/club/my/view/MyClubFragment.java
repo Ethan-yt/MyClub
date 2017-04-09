@@ -12,7 +12,7 @@ import com.ethan.myclub.R;
 import com.ethan.myclub.club.create.view.ClubCreateActivity;
 import com.ethan.myclub.club.my.viewmodel.ClubViewModel;
 import com.ethan.myclub.databinding.FragmentClubBinding;
-import com.ethan.myclub.global.Preferences;
+import com.ethan.myclub.main.Preferences;
 import com.ethan.myclub.main.BaseActivity;
 import com.ethan.myclub.main.BaseFragment;
 import com.ethan.myclub.main.MainActivity;

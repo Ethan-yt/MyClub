@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.ethan.myclub.R;
 import com.ethan.myclub.club.my.model.MyClub;
 import com.ethan.myclub.club.operation.model.Operation;
+import com.umeng.analytics.MobclickAgent;
 
 import java.lang.reflect.Method;
 import java.util.List;
@@ -66,6 +67,9 @@ public class GridViewAdapter extends BaseAdapter {
         holder.cardview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                String eventId = "op_" + mLists.get(position).mName;
+                Log.e("onEvent", "onClick: " + eventId);
+                MobclickAgent.onEvent(mContext, eventId);
                 Class<?> activity = mLists.get(position).mActivity;
                 try {
                     Method method = activity.getMethod("start", Activity.class, MyClub.class);

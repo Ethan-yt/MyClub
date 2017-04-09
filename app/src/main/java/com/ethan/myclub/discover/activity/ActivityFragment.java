@@ -9,7 +9,7 @@ import com.ethan.myclub.activity.detail.view.ActivityDetailActivity;
 import com.ethan.myclub.discover.activity.adapter.ActivityAdapter;
 import com.ethan.myclub.discover.activity.model.ActivityResult;
 import com.ethan.myclub.discover.main.TabFragment;
-import com.ethan.myclub.global.Preferences;
+import com.ethan.myclub.main.Preferences;
 import com.ethan.myclub.main.BaseActivity;
 import com.ethan.myclub.network.ApiHelper;
 

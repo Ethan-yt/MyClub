@@ -112,6 +112,8 @@ dependencies {
     compile 'com.tencent.bugly:nativecrashreport:latest.release'
     compile "com.android.support:multidex:1.0.1" // 多dex配置
 
+    compile 'com.umeng.analytics:analytics:latest.integration'
+
     compile 'com.facebook.stetho:stetho:1.4.2'
     compile 'com.facebook.stetho:stetho-okhttp3:1.4.2'
 }

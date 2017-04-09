@@ -9,7 +9,7 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.ethan.myclub.R;
-import com.ethan.myclub.global.Preferences;
+import com.ethan.myclub.main.Preferences;
 import com.ethan.myclub.network.OAuthHelper;
 import com.ethan.myclub.user.login.model.Token;
 import com.ethan.myclub.main.MainActivity;
@@ -17,9 +17,7 @@ import com.ethan.myclub.main.BaseActivity;
 
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Consumer;
 
 public class RegisterActivity2 extends BaseActivity {
 

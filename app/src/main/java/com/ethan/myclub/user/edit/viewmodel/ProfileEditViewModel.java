@@ -13,7 +13,7 @@ import android.view.View;
 
 import com.ethan.myclub.R;
 import com.ethan.myclub.databinding.ActivityUserProfileEditBinding;
-import com.ethan.myclub.global.Preferences;
+import com.ethan.myclub.main.Preferences;
 import com.ethan.myclub.main.ImageSelectActivity;
 import com.ethan.myclub.network.ApiHelper;
 import com.ethan.myclub.user.edit.view.ProfileEditActivity;

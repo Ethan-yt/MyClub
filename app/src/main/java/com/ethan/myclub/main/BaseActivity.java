@@ -9,9 +9,7 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
-import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.LayoutRes;
@@ -26,16 +24,15 @@ import android.util.TypedValue;
 import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.TextView;
 
 import com.ethan.myclub.R;
-import com.ethan.myclub.global.Preferences;
 import com.ethan.myclub.user.login.view.LoginActivity;
 import com.ethan.myclub.util.CacheUtil;
+import com.umeng.analytics.MobclickAgent;
 
 import io.reactivex.disposables.Disposable;
 
@@ -418,4 +415,16 @@ public abstract class BaseActivity extends AppCompatActivity {
         LoginActivity.startActivityForResult(this, BaseActivity.REQUEST_LOGIN);
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        MobclickAgent.onResume(this);
+
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        MobclickAgent.onPause(this);
+    }
 }

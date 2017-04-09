@@ -15,6 +15,7 @@ import com.ethan.myclub.BuildConfig;
 import com.facebook.stetho.Stetho;
 import com.tencent.bugly.Bugly;
 import com.tencent.bugly.beta.Beta;
+import com.umeng.analytics.MobclickAgent;
 import com.xiaomi.channel.commonutils.logger.LoggerInterface;
 import com.xiaomi.mipush.sdk.Logger;
 import com.xiaomi.mipush.sdk.MiPushClient;
@@ -37,6 +38,8 @@ public class MyApplication extends Application {
     public void onCreate() {
         if (!BuildConfig.DEBUG) {
             Bugly.init(this, "ff50329b00", false);
+        } else {
+            MobclickAgent.setDebugMode(true);
         }
         super.onCreate();
         Stetho.initializeWithDefaults(this);

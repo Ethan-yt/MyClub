@@ -3,7 +3,7 @@ package com.ethan.myclub.network;
 import android.text.TextUtils;
 import android.util.Log;
 
-import com.ethan.myclub.global.Preferences;
+import com.ethan.myclub.main.Preferences;
 import com.ethan.myclub.network.exception.ApiException;
 import com.ethan.myclub.network.exception.ExceptionEngine;
 import com.ethan.myclub.main.BaseActivity;
@@ -15,7 +15,6 @@ import java.lang.reflect.Method;
 
 import io.reactivex.Observable;
 import io.reactivex.ObservableSource;
-import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Function;
 import io.reactivex.functions.Predicate;
 import io.reactivex.schedulers.Schedulers;

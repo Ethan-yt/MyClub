@@ -1,4 +1,4 @@
-package com.ethan.myclub.global;
+package com.ethan.myclub.main;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -11,6 +11,7 @@ import android.util.Log;
 import com.ethan.myclub.user.login.model.Token;
 import com.ethan.myclub.util.CacheUtil;
 import com.ethan.myclub.util.Utils;
+import com.umeng.analytics.MobclickAgent;
 
 import org.w3c.dom.Text;
 
@@ -61,7 +62,7 @@ public class Preferences {
 
     //--------------------------------MI PUSH--------------------------------
 
-    static public String sPushRegID = "123";
+    static public String sPushRegID = "";
 
     //-----------------------------------------------------------------------
 
