@@ -32,6 +32,11 @@ public class MerchantAdapter extends BaseQuickAdapter<MerchantResult, BaseViewHo
         helper.setText(R.id.tv_merchant_name, item.name);
         helper.setText(R.id.tv_support_activity, "赞助活动：" + item.supportActivity);
         helper.setText(R.id.tv_support_type, "赞助方式：" + item.supportType);
+        String star = "";
+        for (int i = 0; i < item.starLevel; i++)
+            star += "\u2b50";
+        helper.setText(R.id.tv_star, star);
+
         String imageUrl = item.logoUrl;
         Object target;
         if (imageUrl == null) {
