@@ -17,10 +17,9 @@ import com.ethan.myclub.club.model.Club;
 import com.ethan.myclub.club.model.Tag;
 import com.ethan.myclub.club.model.Tag2;
 import com.ethan.myclub.databinding.ActivityClubInfoEditBinding;
-import com.ethan.myclub.main.Preferences;
 import com.ethan.myclub.main.ImageSelectActivity;
+import com.ethan.myclub.main.MainActivity;
 import com.ethan.myclub.network.ApiHelper;
-import com.ethan.myclub.util.CacheUtil;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -101,7 +100,7 @@ public class ClubInfoEditViewModel {
             saveInfo();
         else if (isTagsEdited())
             saveTags();
-        else{
+        else {
             finishEdit();
         }
 
@@ -241,7 +240,7 @@ public class ClubInfoEditViewModel {
     }
 
     private void finishEdit() {
-        CacheUtil.get(mActivity).remove(Preferences.CACHE_USER_CLUB_LIST);
+        MainActivity.needUpdateFlag.clubList = true;
         mActivity.setResult(Activity.RESULT_OK);
         ActivityCompat.finishAfterTransition(mActivity);
     }

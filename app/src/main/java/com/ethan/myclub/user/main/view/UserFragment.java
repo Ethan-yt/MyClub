@@ -8,7 +8,6 @@ import android.view.ViewGroup;
 
 import com.ethan.myclub.R;
 import com.ethan.myclub.databinding.FragmentUserBinding;
-import com.ethan.myclub.main.BaseActivity;
 import com.ethan.myclub.main.BaseFragment;
 import com.ethan.myclub.user.main.viewmodel.UserViewModel;
 import com.ethan.myclub.util.Utils;
@@ -27,23 +26,23 @@ public class UserFragment extends BaseFragment {
                              Bundle savedInstanceState) {
         FragmentUserBinding viewDataBinding = (FragmentUserBinding) onCreateDataBindingView(inflater, R.layout.fragment_user, container);
         mViewModel = new UserViewModel(this, viewDataBinding);
-        mViewModel.getUserInfoCache();
+        mViewModel.updateUserProfileAttempt();
         return viewDataBinding.getRoot();
     }
 
     @Override
     public void refresh() {
         super.refresh();
-        mViewModel.updateUserInfo();
-        mViewModel.updateUserMsg();
+        mViewModel.updateUserProfile();
+        //mViewModel.updateUserMsg();
     }
 
     @Override
     public void willBeDisplayed() {
         super.willBeDisplayed();
-        if (mBaseActivity != null) {
-            mBaseActivity.getToolbarWrapper().changeScrollable(true).close();
-            Utils.StatusBarLightMode(mBaseActivity, false);
+        if (mMainActivity != null) {
+            mMainActivity.getToolbarWrapper().changeScrollable(true).close();
+            Utils.StatusBarLightMode(mMainActivity, false);
         }
     }
 }

@@ -32,7 +32,6 @@ import android.widget.TextView;
 
 import com.ethan.myclub.R;
 import com.ethan.myclub.user.login.view.LoginActivity;
-import com.ethan.myclub.util.CacheUtil;
 import com.umeng.analytics.MobclickAgent;
 
 import io.reactivex.disposables.Disposable;
@@ -41,8 +40,10 @@ public abstract class BaseActivity extends AppCompatActivity {
     static {
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
     }
-    public static final int REQUEST_LOGIN = 10304;
-    public static final int REQUEST_REGISTER = 10305;
+
+    public static final int REQUEST_LOGIN = 10204;
+    public static final int REQUEST_REGISTER = 10205;
+    public static final int REQUEST_LOGOUT = 10206;
 
     protected ViewGroup mRootLayout;
     private ToolbarWrapper mToolbarWrapper;
@@ -69,6 +70,12 @@ public abstract class BaseActivity extends AppCompatActivity {
             if (requestCode == REQUEST_REGISTER) {
                 showSnackbar("注册成功！已经帮您自动登录！");
             }
+            if (requestCode == REQUEST_LOGIN || requestCode == REQUEST_REGISTER || requestCode == REQUEST_LOGOUT) {
+                MainActivity.needUpdateFlag.userProfile = true;
+                MainActivity.needUpdateFlag.clubList = true;
+                MainActivity.needUpdateFlag.userUnreadCount = true;
+            }
+
         }
     }
 
@@ -228,7 +235,7 @@ public abstract class BaseActivity extends AppCompatActivity {
                         | AppBarLayout.LayoutParams.SCROLL_FLAG_ENTER_ALWAYS);
                 return this;
             }
-            if(!flag && mIsScroll){
+            if (!flag && mIsScroll) {
                 params.setScrollFlags(0);
                 return this;
             }

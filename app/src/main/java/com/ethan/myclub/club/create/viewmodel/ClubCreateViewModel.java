@@ -5,9 +5,8 @@ import android.app.Activity;
 import com.ethan.myclub.club.create.view.ClubCreateActivity;
 import com.ethan.myclub.club.model.Club;
 import com.ethan.myclub.databinding.ActivityClubCreateBinding;
-import com.ethan.myclub.main.Preferences;
+import com.ethan.myclub.main.MainActivity;
 import com.ethan.myclub.network.ApiHelper;
-import com.ethan.myclub.util.CacheUtil;
 
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -47,7 +46,7 @@ public class ClubCreateViewModel {
 
                     @Override
                     public void onNext(Club club) {
-                        CacheUtil.get(mActivity).remove(Preferences.CACHE_USER_CLUB_LIST);
+                        MainActivity.needUpdateFlag.clubList = true;
                         mActivity.setResult(Activity.RESULT_OK);
                         mActivity.finish();
                     }

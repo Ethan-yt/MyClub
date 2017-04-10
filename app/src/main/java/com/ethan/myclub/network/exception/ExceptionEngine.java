@@ -47,7 +47,7 @@ public class ExceptionEngine extends Throwable {
             } catch (Exception e1) {
                 e1.printStackTrace();
             }
-            Log.e("Network", "handleException: " + errorBody);
+            Log.e("ExceptionEngine", "HTTP " + httpException.code() + " :\r" + errorBody);
             switch (httpException.code()) {
                 case BAD_REQUEST:
                     ex = new ApiException(e, ApiException.HTTP_ERROR, "格式出错 " + errorDescription);

@@ -12,7 +12,7 @@ import com.ethan.myclub.R;
 import com.ethan.myclub.club.create.view.ClubCreateActivity;
 import com.ethan.myclub.club.my.viewmodel.ClubViewModel;
 import com.ethan.myclub.databinding.FragmentClubBinding;
-import com.ethan.myclub.main.Preferences;
+import com.ethan.myclub.main.MyApplication;
 import com.ethan.myclub.main.BaseActivity;
 import com.ethan.myclub.main.BaseFragment;
 import com.ethan.myclub.main.MainActivity;
@@ -32,17 +32,17 @@ public class MyClubFragment extends BaseFragment {
                              Bundle savedInstanceState) {
         FragmentClubBinding fragmentClubBinding = (FragmentClubBinding) onCreateDataBindingView(inflater, R.layout.fragment_club, container);
         mViewModel = new ClubViewModel(this, fragmentClubBinding);
-        mViewModel.getUserClubListCache();
+        mViewModel.updateUserClubListAttempt();
         return fragmentClubBinding.getRoot();
     }
 
     @Override
     public void refresh() {
-        BaseActivity.ToolbarWrapper toolbarWrapper = mBaseActivity.getToolbarWrapper()
+        BaseActivity.ToolbarWrapper toolbarWrapper = mMainActivity.getToolbarWrapper()
                 .dismiss()
                 .withAnimate()
                 .setTitle("我的社团", true);
-        if (Preferences.sIsLogin.get())
+        if (MyApplication.isLogin())
             toolbarWrapper.setMenu(R.menu.toolbar_club, new MyMenuItemClickListener());
 
         toolbarWrapper.show();
@@ -52,18 +52,18 @@ public class MyClubFragment extends BaseFragment {
     @Override
     public void willBeDisplayed() {
         super.willBeDisplayed();
-        if (mBaseActivity != null) {
-            BaseActivity.ToolbarWrapper toolbarWrapper = mBaseActivity.getToolbarWrapper()
+        if (mMainActivity != null) {
+            BaseActivity.ToolbarWrapper toolbarWrapper = mMainActivity.getToolbarWrapper()
                     .dismiss()
                     .withAnimate()
                     .setTitle("我的社团", true);
 
-            if (Preferences.sIsLogin.get())
+            if (MyApplication.isLogin())
                 toolbarWrapper.setMenu(R.menu.toolbar_club, new MyMenuItemClickListener());
 
             toolbarWrapper.show();
 
-            Utils.StatusBarLightMode(mBaseActivity, true);
+            Utils.StatusBarLightMode(mMainActivity, true);
         }
     }
 
@@ -73,13 +73,13 @@ public class MyClubFragment extends BaseFragment {
         public boolean onMenuItemClick(MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.action_scan:
-                    mBaseActivity.showSnackbar("愚人节快乐");
+                    mMainActivity.showSnackbar("愚人节快乐");
                     break;
                 case R.id.action_add:
-                    mBaseActivity.startActivity(mBaseActivity, MainActivity.REQUEST_ADD_CLUB, Activity.RESULT_OK);
+                    mMainActivity.startActivity(mMainActivity, MainActivity.REQUEST_ADD_CLUB, Activity.RESULT_OK);
                     break;
                 case R.id.action_create:
-                    ClubCreateActivity.startForResult(mBaseActivity, MainActivity.REQUEST_CREATE_CLUB);
+                    ClubCreateActivity.startForResult(mMainActivity, MainActivity.REQUEST_CREATE_CLUB);
                     break;
             }
 

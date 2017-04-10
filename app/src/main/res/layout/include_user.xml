@@ -33,10 +33,8 @@
                 android:text="消 息 通 知"/>
 
             <TextView
-                android:elevation="3dp"
                 android:layout_width="17dp"
                 android:layout_height="17dp"
-                android:textSize="10sp"
                 android:layout_alignBaseline="@+id/notification"
                 android:layout_alignBottom="@+id/notification"
                 android:layout_alignParentEnd="true"
@@ -44,10 +42,12 @@
                 android:layout_marginEnd="41dp"
                 android:layout_marginRight="41dp"
                 android:background="@drawable/bg_notification_red"
+                android:elevation="3dp"
                 android:gravity="center"
-                android:text="@{viewModel.mUnreadNum}"
+                android:text="@{String.valueOf(viewModel.mUnreadNum)}"
                 android:textColor="@android:color/white"
-                android:visibility="@{viewModel.mUnreadNum.equals(&quot;0&quot;) ? View.GONE :View.VISIBLE}"
+                android:textSize="10sp"
+                android:visibility="@{viewModel.mUnreadNum == 0 ||viewModel.mUnreadNum == -1? View.GONE :View.VISIBLE}"
                 tools:text="1"/>
         </RelativeLayout>
 

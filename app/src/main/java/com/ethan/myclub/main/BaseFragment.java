@@ -2,12 +2,8 @@ package com.ethan.myclub.main;
 
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
-import android.os.Bundle;
-import android.support.annotation.MenuRes;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.Toolbar;
-import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,7 +17,7 @@ public abstract class BaseFragment extends Fragment {
 
     private ViewGroup mFragmentAnimationChild;
     public ViewGroup mFragmentRootLayout;
-    public MainActivity mBaseActivity;
+    public MainActivity mMainActivity;
     /**
      * Called when a fragment will be displayed
      */
@@ -47,7 +43,7 @@ public abstract class BaseFragment extends Fragment {
         ViewDataBinding viewDataBinding = DataBindingUtil.inflate(inflater, layoutId, container, false);
         mFragmentRootLayout = (ViewGroup) viewDataBinding.getRoot();
         mFragmentAnimationChild = mFragmentRootLayout;
-        mBaseActivity = (MainActivity) getActivity();
+        mMainActivity = (MainActivity) getActivity();
         return viewDataBinding;
 
     }
@@ -57,7 +53,7 @@ public abstract class BaseFragment extends Fragment {
         ViewGroup view = (ViewGroup) inflater.inflate(layoutId, container, false);
         mFragmentRootLayout = view;
         mFragmentAnimationChild = view;
-        mBaseActivity = (MainActivity) getActivity();
+        mMainActivity = (MainActivity) getActivity();
         return view;
     }
 

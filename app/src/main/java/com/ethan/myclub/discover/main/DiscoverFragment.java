@@ -95,8 +95,8 @@ public class DiscoverFragment extends BaseFragment {
     @Override
     public void willBeDisplayed() {
         super.willBeDisplayed();
-        if (mBaseActivity != null) {
-            mBaseActivity.getToolbarWrapper()
+        if (mMainActivity != null) {
+            mMainActivity.getToolbarWrapper()
                     .dismiss()
                     .setScrollable()
                     .withAnimate()
@@ -116,7 +116,7 @@ public class DiscoverFragment extends BaseFragment {
 
                                     mSearchView.setSubmitButtonEnabled(true);
                                     mSearchView.setSuggestionsAdapter(new SimpleCursorAdapter(
-                                            mBaseActivity, android.R.layout.simple_list_item_1,
+                                            mMainActivity, android.R.layout.simple_list_item_1,
                                             null,
                                             new String[]{SearchManager.SUGGEST_COLUMN_TEXT_1},
                                             new int[]{android.R.id.text1},
@@ -174,7 +174,7 @@ public class DiscoverFragment extends BaseFragment {
                                             TabFragment fragment = (TabFragment) mAdapter.getItem(mViewPager.getCurrentItem());
                                             fragment.mKeyWord = query;
                                             if (query.length() >= 2) {
-                                                fragment.getSuggestionObservable(query, mBaseActivity)
+                                                fragment.getSuggestionObservable(query, mMainActivity)
                                                         .observeOn(AndroidSchedulers.mainThread())
                                                         .subscribe(new Consumer<List<String>>() {
                                                             @Override
@@ -231,7 +231,7 @@ public class DiscoverFragment extends BaseFragment {
                     .show(R.layout.view_toolbar_discover);
 
 
-            Utils.StatusBarLightMode(mBaseActivity, true);
+            Utils.StatusBarLightMode(mMainActivity, true);
         }
 
         TabLayout tabLayout = (TabLayout) getActivity().findViewById(R.id.tabs);

@@ -5,7 +5,6 @@ import android.support.v4.app.ActivityOptionsCompat;
 
 import com.ethan.myclub.BuildConfig;
 import com.ethan.myclub.R;
-import com.tencent.bugly.Bugly;
 
 import java.util.concurrent.TimeUnit;
 
@@ -23,7 +22,6 @@ public class WelcomeActivity extends BaseActivity {
         //程序初始化操作
 
         //读取配置项
-        Preferences.initPreferencesEngine(this);
         int delay = 0;
         if (!BuildConfig.DEBUG) {
             delay = 2;

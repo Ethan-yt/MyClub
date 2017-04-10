@@ -5,8 +5,9 @@ import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.util.Pair;
 import android.view.View;
 
+import com.ethan.myclub.BuildConfig;
 import com.ethan.myclub.databinding.ActivityLoginBinding;
-import com.ethan.myclub.main.Preferences;
+import com.ethan.myclub.main.MyApplication;
 import com.ethan.myclub.network.OAuthHelper;
 import com.ethan.myclub.user.login.model.Token;
 import com.ethan.myclub.user.login.view.LoginActivity;
@@ -26,8 +27,8 @@ public class LoginViewModel {
 
     private LoginActivity mView;
     private ActivityLoginBinding mBinding;
-    public ObservableField<String> userName = new ObservableField<>();
-    public ObservableField<String> password = new ObservableField<>();
+    public ObservableField<String> userName = new ObservableField<>(BuildConfig.DEBUG ? "admin" : "");
+    public ObservableField<String> password = new ObservableField<>(BuildConfig.DEBUG ? "123456" : "");
 
 
     public LoginViewModel(LoginActivity loginActivity, ActivityLoginBinding binding) {
@@ -49,7 +50,7 @@ public class LoginViewModel {
 
     public void login() {
         OAuthHelper.getProxy(mView)
-                .login("password", userName.get(), password.get(), Preferences.sPushRegID)
+                .login("password", userName.get(), password.get(), MyApplication.sPushRegID)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         new Observer<Token>() {
@@ -60,7 +61,7 @@ public class LoginViewModel {
 
                             @Override
                             public void onNext(Token token) {
-                                Preferences.setToken(mView, token);
+                                MyApplication.setToken(mView, token);
                                 mView.setResult(RESULT_OK);
                                 mView.finish();
                             }

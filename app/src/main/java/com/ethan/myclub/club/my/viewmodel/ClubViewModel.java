@@ -11,12 +11,11 @@ import com.ethan.myclub.club.my.view.MyClubFragment;
 import com.ethan.myclub.club.my.view.EmptyView;
 import com.ethan.myclub.club.operation.view.ClubOperationActivity;
 import com.ethan.myclub.databinding.FragmentClubBinding;
-import com.ethan.myclub.main.Preferences;
+import com.ethan.myclub.main.MainActivity;
+import com.ethan.myclub.main.MyApplication;
 import com.ethan.myclub.network.ApiHelper;
 import com.ethan.myclub.network.exception.ApiException;
-import com.ethan.myclub.util.CacheUtil;
 
-import java.util.Arrays;
 import java.util.List;
 
 import io.reactivex.Observer;
@@ -54,80 +53,50 @@ public class ClubViewModel {
         mBinding.recyclerView.setLayoutManager(new GridLayoutManager(mFragment.getContext(), 2));
         mBinding.recyclerView.setAdapter(mAdapter);
 
-        mEmptyView = new EmptyView(mFragment.mBaseActivity);
+        mEmptyView = new EmptyView(mFragment.mMainActivity);
     }
 
-    private static final int GET_CLUBS_RESULT_OK = -1;
     private static final int GET_CLUBS_RESULT_NOT_LOGIN = 1;
     private static final int GET_CLUBS_RESULT_ERROR = 3;
     private static final int GET_CLUBS_RESULT_NO_NETWORK = 4;
 
-
-    private boolean cached = false;
-    public void getUserClubListCache() {
-
-        Object clubsObj = CacheUtil.get(mFragment.getActivity()).getAsObject(Preferences.CACHE_USER_CLUB_LIST);
-        if (clubsObj == null || !(clubsObj instanceof MyClub[])) {
-            Log.i(TAG, "getUserClubListCache: 读取UserClubList缓存失败，强制获取更新");
+    public void updateUserClubListAttempt() {
+        if (MainActivity.needUpdateFlag.clubList) {
+            Log.i(TAG, "updateUserClubListAttempt: 更新UserClubList");
             updateUserClubList();
-        } else {
-            if(!cached)
-            {
-                cached = true;
-                notifyClubsObservable((MyClub[]) clubsObj, GET_CLUBS_RESULT_OK);
-                Log.i(TAG, "getUserClubListCache: 读取UserClubList缓存成功");
-            }
         }
-
     }
 
 
-    private void notifyClubsObservable(MyClub[] clubsArray, int resultCode) {
-
-        if (resultCode == GET_CLUBS_RESULT_OK) {
-            if (clubsArray == null || clubsArray.length == 0) {
-                mEmptyView.showEmptyView("还没有加入社团哦", "快去发现你喜欢的社团吧！");
-                mAdapter.setNewData(null);
-                mBinding.recyclerView.setLayoutFrozen(true);
-                mAdapter.setEmptyView(mEmptyView);
-            }
-            else
-            {
-                mBinding.recyclerView.setLayoutFrozen(false);
-                List<MyClub> dataList = Arrays.asList(clubsArray);
-                mAdapter.setNewData(dataList);
-            }
-        } else {
-            CacheUtil.get(mFragment.getContext()).remove(Preferences.CACHE_USER_CLUB_LIST);//登录或者注册成功，清除缓存
-            switch (resultCode) {
-                case GET_CLUBS_RESULT_NOT_LOGIN:
-                    mEmptyView.showNotLoginView();
-                    break;
-                case GET_CLUBS_RESULT_ERROR:
-                    mEmptyView.showErrorView(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            updateUserClubList();
-                        }
-                    });
-                    break;
-                case GET_CLUBS_RESULT_NO_NETWORK:
-                    mEmptyView.showNoNetWorkError();
-                    break;
-            }
-            mAdapter.setNewData(null);
-            mBinding.recyclerView.setLayoutFrozen(true);
-            mAdapter.setEmptyView(mEmptyView);
+    private void showEmptyView(int resultCode) {
+        switch (resultCode) {
+            case GET_CLUBS_RESULT_NOT_LOGIN:
+                mEmptyView.showNotLoginView();
+                break;
+            case GET_CLUBS_RESULT_ERROR:
+                mEmptyView.showErrorView(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        updateUserClubList();
+                    }
+                });
+                break;
+            case GET_CLUBS_RESULT_NO_NETWORK:
+                mEmptyView.showNoNetWorkError();
+                break;
         }
+        mAdapter.setNewData(null);
+        mBinding.recyclerView.setLayoutFrozen(true);
+        mAdapter.setEmptyView(mEmptyView);
     }
 
     public void updateUserClubList() {
-        if (!Preferences.sIsLogin.get()) {
+        if (!MyApplication.isLogin()) {
             Log.i(TAG, "updateUserClubList: 无法获取更新，用户没有登录");
-            notifyClubsObservable(null, GET_CLUBS_RESULT_NOT_LOGIN);
+            showEmptyView(GET_CLUBS_RESULT_NOT_LOGIN);
             return;
         }
-        ApiHelper.getProxy(mFragment.mBaseActivity)
+        ApiHelper.getProxy(mFragment.mMainActivity)
                 .getMyClubs()
                 //.delay(1, TimeUnit.SECONDS)
                 .observeOn(AndroidSchedulers.mainThread())
@@ -143,26 +112,33 @@ public class ClubViewModel {
                     @Override
                     public void onNext(List<MyClub> myClubs) {
                         Log.i(TAG, "updateUserClubList: 更新UserClubList完成");
-                        MyClub[] clubsArray = myClubs.toArray(new MyClub[0]);
-                        notifyClubsObservable(clubsArray, GET_CLUBS_RESULT_OK);
-                        CacheUtil.get(mFragment.getActivity())
-                                .put(Preferences.CACHE_USER_CLUB_LIST, clubsArray, Preferences.CACHE_TIME_USER_CLUB_LIST);
+
+                        if (myClubs == null || myClubs.size() == 0) {
+                            mEmptyView.showEmptyView("还没有加入社团哦", "快去发现你喜欢的社团吧！");
+                            mAdapter.setNewData(null);
+                            mBinding.recyclerView.setLayoutFrozen(true);
+                            mAdapter.setEmptyView(mEmptyView);
+                        } else {
+                            mBinding.recyclerView.setLayoutFrozen(false);
+                            mAdapter.setNewData(myClubs);
+                            MainActivity.needUpdateFlag.clubList = false;
+                        }
                     }
 
                     @Override
                     public void onError(Throwable e) {
-                        Log.i(TAG, "updateUserInfo: 更新UserClubList失败");
+                        Log.i(TAG, "updateUserClubList: 更新UserClubList失败");
                         if (e instanceof ApiException && ((ApiException) e).getCode() == ApiException.NETWORK_ERROR)
-                            notifyClubsObservable(null, GET_CLUBS_RESULT_NO_NETWORK);
+                            showEmptyView(GET_CLUBS_RESULT_NO_NETWORK);
                         else
-                            notifyClubsObservable(null, GET_CLUBS_RESULT_ERROR);
+                            showEmptyView(GET_CLUBS_RESULT_ERROR);
                     }
 
                     @Override
                     public void onComplete() {
-                        if (!Preferences.sIsLogin.get()) {
+                        if (!MyApplication.isLogin()) {
                             Log.i(TAG, "updateUserClubList: 无法获取更新，用户没有登录");
-                            notifyClubsObservable(null, GET_CLUBS_RESULT_NOT_LOGIN);
+                            showEmptyView(GET_CLUBS_RESULT_NOT_LOGIN);
                             return;
                         }
                     }

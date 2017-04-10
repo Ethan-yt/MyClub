@@ -1,7 +1,7 @@
 package com.ethan.myclub.network;
 
 import com.ethan.myclub.BuildConfig;
-import com.ethan.myclub.main.Preferences;
+import com.ethan.myclub.main.MyApplication;
 import com.ethan.myclub.network.converter.ApiExceptionConverterFactory;
 import com.ethan.myclub.network.service.ApiService;
 import com.ethan.myclub.main.BaseActivity;
@@ -47,8 +47,8 @@ public class ApiHelper {
                 public okhttp3.Response intercept(Chain chain) throws IOException {
                     Request.Builder request = chain.request()
                             .newBuilder();
-                    if (Preferences.sIsLogin.get())
-                        request.addHeader("Authorization", Preferences.getToken().mTokenType + " " + Preferences.getToken().mAccessToken);
+                    if (MyApplication.isLogin())
+                        request.addHeader("Authorization", MyApplication.getToken().mTokenType + " " + MyApplication.getToken().mAccessToken);
                     return chain.proceed(request.build());
                 }
             })

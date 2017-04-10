@@ -3,15 +3,15 @@ package com.ethan.myclub.main;
 import android.app.ActivityManager;
 import android.app.Application;
 import android.content.Context;
-import android.os.Handler;
-import android.os.Message;
+import android.os.Parcel;
 import android.os.Process;
 import android.support.multidex.MultiDex;
 import android.text.TextUtils;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.ethan.myclub.BuildConfig;
+import com.ethan.myclub.user.login.model.Token;
+import com.ethan.myclub.util.Utils;
 import com.facebook.stetho.Stetho;
 import com.tencent.bugly.Bugly;
 import com.tencent.bugly.beta.Beta;
@@ -32,18 +32,58 @@ public class MyApplication extends Application {
 
     private static final String APP_KEY = "5211756044870";
 
-    public static final String TAG = "MiPushLog";
+    public static final String TAG = "MyApplication";
+    public static final String MIPUSH_TAG = "MIPUSH";
+
+    public static final String FILE_NAME_TOKEN = "Token.dat";
+
+    static public String sPushRegID = "";  // RegID只在登录时，注册时和刚更新时使用
+    static private Token sToken;
+
+    public static void setToken(Context context, Token token) {
+        Parcel parcel = Parcel.obtain();
+        if (token != null)
+            token.writeToParcel(parcel, 0);// 保存token
+        Utils.saveParcelToFile(context, FILE_NAME_TOKEN, parcel);
+        sToken = token;
+    }
+
+    public static Token getToken() {
+        return sToken;
+    }
+
+    public static boolean isLogin() {
+        return (sToken != null && !TextUtils.isEmpty(sToken.mAccessToken));
+    }
+
+
+    public void readToken(Context context) {
+        Parcel parcel = Utils.readParcelFromFile(context, FILE_NAME_TOKEN);
+        if (parcel == null) {
+            Log.e(TAG, "readToken: Failed!,parcel = null!");
+            return;
+        }
+        sToken = Token.CREATOR.createFromParcel(parcel);
+        parcel.recycle();
+        if (isLogin())
+            Log.i(TAG, "readToken: Finished!: token is: " + sToken.mAccessToken);
+    }
 
     @Override
     public void onCreate() {
-        if (!BuildConfig.DEBUG) {
-            Bugly.init(this, "ff50329b00", false);
+        if (BuildConfig.DEBUG) {
+            Stetho.initializeWithDefaults(this); //启用Stetho的Debug模式
+            MobclickAgent.setDebugMode(true);//启用umeng统计的Debug模式
         } else {
-            Stetho.initializeWithDefaults(this);
-            MobclickAgent.setDebugMode(true);
+            Bugly.init(this, "ff50329b00", false); //若非Debug模式记录Bugly日志
         }
         super.onCreate();
+        readToken(getApplicationContext());//读取登录状态
 
+        initMiPush();//初始化小米推送
+    }
+
+    private void initMiPush() {
         // 注册push服务，注册成功后会向DemoMessageReceiver发送广播
         // 可以从DemoMessageReceiver的onCommandResult方法中MiPushCommandMessage对象参数中获取注册信息
         if (shouldInit()) {
@@ -58,12 +98,12 @@ public class MyApplication extends Application {
 
             @Override
             public void log(String content, Throwable t) {
-                Log.d(TAG, content, t);
+                Log.d(MIPUSH_TAG, content, t);
             }
 
             @Override
             public void log(String content) {
-                Log.d(TAG, content);
+                Log.d(MIPUSH_TAG, content);
             }
         };
         Logger.setLogger(this, newLogger);
@@ -88,8 +128,6 @@ public class MyApplication extends Application {
         if (!BuildConfig.DEBUG) {
             // you must install multiDex whatever tinker is installed!
             MultiDex.install(base);
-
-
             // 安装tinker
             Beta.installTinker();
         }

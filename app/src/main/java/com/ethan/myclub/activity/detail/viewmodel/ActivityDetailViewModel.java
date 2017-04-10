@@ -22,7 +22,7 @@ import com.ethan.myclub.club.model.Tag;
 import com.ethan.myclub.club.my.view.EmptyView;
 import com.ethan.myclub.databinding.ActivityActivityDetailBinding;
 import com.ethan.myclub.discover.activity.model.ActivityResult;
-import com.ethan.myclub.main.Preferences;
+import com.ethan.myclub.main.MyApplication;
 import com.ethan.myclub.network.ApiHelper;
 import com.ethan.myclub.network.exception.ApiException;
 import com.ethan.myclub.user.collection.view.UserCollectionActivity;
@@ -216,7 +216,7 @@ public class ActivityDetailViewModel {
 
                     @Override
                     public void onComplete() {
-                        if(!Preferences.sIsLogin.get())
+                        if(!MyApplication.isLogin())
                             notifyFinished(null, GET_ACTIVITY_RESULT_NOT_LOGIN);
                     }
                 });

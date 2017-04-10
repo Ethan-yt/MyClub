@@ -3,13 +3,12 @@ package com.ethan.myclub.network;
 import android.text.TextUtils;
 import android.util.Log;
 
-import com.ethan.myclub.main.Preferences;
+import com.ethan.myclub.main.MyApplication;
 import com.ethan.myclub.network.exception.ApiException;
 import com.ethan.myclub.network.exception.ExceptionEngine;
 import com.ethan.myclub.main.BaseActivity;
 import com.ethan.myclub.user.login.model.Token;
 import com.jakewharton.retrofit2.adapter.rxjava2.HttpException;
-import com.tencent.bugly.crashreport.CrashReport;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
@@ -42,7 +41,7 @@ class ProxyHandler implements InvocationHandler {
     @Override
     public Object invoke(final Object proxy, final Method method, final Object[] args) throws Throwable {
         //先检查需要Token但是没有登录的情况
-        if (mIsNeedToken && !Preferences.sIsLogin.get()) {
+        if (mIsNeedToken && !MyApplication.isLogin()) {
             //弹出登录提示
             mActivity.showLoginSnackbar("您还没有登录哦");
             mActivity = null;
@@ -64,7 +63,7 @@ class ProxyHandler implements InvocationHandler {
                                         {
                                             Log.e(TAG, "apply: TOKEN竟然过期了 赶快refresh一下");
                                             return OAuthHelper.getInstance()
-                                                    .refreshToken("refresh_token", Preferences.getToken().mRefreshToken)
+                                                    .refreshToken("refresh_token", MyApplication.getToken().mRefreshToken)
                                                     .onErrorResumeNext(new Function<Throwable, ObservableSource<? extends Token>>() {
                                                         @Override
                                                         public ObservableSource<? extends Token> apply(Throwable throwable) throws Exception {
@@ -82,7 +81,7 @@ class ProxyHandler implements InvocationHandler {
                                     public boolean test(Object o) throws Exception {
                                         if (++count > 2) {
                                             mActivity.showLoginSnackbar("您的登录状态失效，需要重新登录");
-                                            Preferences.setToken(mActivity, null);
+                                            MyApplication.setToken(mActivity, null);
                                             mActivity = null;
                                             return false;//多次获取Token失败
                                         }
@@ -91,7 +90,7 @@ class ProxyHandler implements InvocationHandler {
                                             if (TextUtils.isEmpty(token.mAccessToken)) {
                                                 return true;//TOKEN refresh也失败了！再试一次！
                                             } else {
-                                                Preferences.setToken(mActivity, token);
+                                                MyApplication.setToken(mActivity, token);
                                                 return true;//设置新Token 并重试
                                             }
                                         }
@@ -102,7 +101,6 @@ class ProxyHandler implements InvocationHandler {
                 })
                 .subscribeOn(Schedulers.io());
     }
-
 
 
 }

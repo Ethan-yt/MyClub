@@ -2,15 +2,10 @@ package com.ethan.myclub.club.member.adapter;
 
 import android.app.Activity;
 import android.content.DialogInterface;
-import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.drawable.GlideDrawable;
@@ -23,13 +18,10 @@ import com.ethan.myclub.R;
 import com.ethan.myclub.club.member.viewmodel.ClubMemberListViewModel;
 import com.ethan.myclub.club.model.MemberResult;
 import com.ethan.myclub.club.my.model.MyClub;
-import com.ethan.myclub.club.my.model.Title;
 import com.ethan.myclub.main.BaseActivity;
 import com.ethan.myclub.main.MainActivity;
-import com.ethan.myclub.main.Preferences;
 import com.ethan.myclub.network.ApiHelper;
 import com.ethan.myclub.user.detail.view.UserDetailActivity;
-import com.ethan.myclub.util.CacheUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -205,7 +197,7 @@ public class MemberAdapter extends BaseQuickAdapter<MemberResult, BaseViewHolder
                                 .subscribe(new Consumer<Long>() {
                                     @Override
                                     public void accept(@NonNull Long aLong) throws Exception {
-                                        CacheUtil.get(mBaseActivity).remove(Preferences.CACHE_USER_CLUB_LIST);
+                                        MainActivity.needUpdateFlag.clubList = true;
                                         MainActivity.startActivity(mBaseActivity, MainActivity.REQUEST_GIVE_CLUB, Activity.RESULT_OK);
                                     }
                                 });

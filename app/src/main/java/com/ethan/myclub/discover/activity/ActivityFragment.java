@@ -9,7 +9,7 @@ import com.ethan.myclub.activity.detail.view.ActivityDetailActivity;
 import com.ethan.myclub.discover.activity.adapter.ActivityAdapter;
 import com.ethan.myclub.discover.activity.model.ActivityResult;
 import com.ethan.myclub.discover.main.TabFragment;
-import com.ethan.myclub.main.Preferences;
+import com.ethan.myclub.main.MyApplication;
 import com.ethan.myclub.main.BaseActivity;
 import com.ethan.myclub.network.ApiHelper;
 
@@ -31,7 +31,7 @@ public class ActivityFragment extends TabFragment {
         mAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                if (!Preferences.sIsLogin.get())
+                if (!MyApplication.isLogin())
                     ((BaseActivity) getActivity()).showLoginSnackbar("先登录才能查看活动哦");
                 else
                     ActivityDetailActivity.start(getActivity(), (ActivityResult) adapter.getData().get(position));
@@ -88,7 +88,7 @@ public class ActivityFragment extends TabFragment {
                         //允许读取更多
                         mAdapter.setEnableLoadMore(true);
                         e.printStackTrace();
-                        Log.i(TAG, "updateClubDetail: 获取ClubList失败");
+                        Log.i(TAG, "updateClubDetail: 获取Discover Activity失败");
                         if (page == 1) {
                             mSwipeRefreshLayout.setRefreshing(false);
                             mEmptyView.showErrorView(new View.OnClickListener() {

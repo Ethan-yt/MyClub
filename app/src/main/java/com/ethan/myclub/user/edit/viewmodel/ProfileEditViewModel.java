@@ -13,12 +13,11 @@ import android.view.View;
 
 import com.ethan.myclub.R;
 import com.ethan.myclub.databinding.ActivityUserProfileEditBinding;
-import com.ethan.myclub.main.Preferences;
 import com.ethan.myclub.main.ImageSelectActivity;
+import com.ethan.myclub.main.MainActivity;
 import com.ethan.myclub.network.ApiHelper;
 import com.ethan.myclub.user.edit.view.ProfileEditActivity;
 import com.ethan.myclub.user.model.Profile;
-import com.ethan.myclub.util.CacheUtil;
 
 import java.io.File;
 import java.util.concurrent.TimeUnit;
@@ -81,7 +80,6 @@ public class ProfileEditViewModel {
     private boolean mIsAvatarEdited = false;
 
     private void saveChanges() {
-        CacheUtil.get(mActivity).remove(Preferences.CACHE_USER_INFO);//先清空缓存，修改资料
         if (mIsAvatarEdited)
             saveAvatar();
         else if (mProfile.mIsEdited)
@@ -166,7 +164,7 @@ public class ProfileEditViewModel {
     }
 
     private void finishEdit() {
-
+        MainActivity.needUpdateFlag.userProfile = true;
         mActivity.setResult(Activity.RESULT_OK);
         ActivityCompat.finishAfterTransition(mActivity);
     }

@@ -9,7 +9,7 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.ethan.myclub.R;
-import com.ethan.myclub.main.Preferences;
+import com.ethan.myclub.main.MyApplication;
 import com.ethan.myclub.network.OAuthHelper;
 import com.ethan.myclub.user.login.model.Token;
 import com.ethan.myclub.main.MainActivity;
@@ -46,7 +46,7 @@ public class RegisterActivity2 extends BaseActivity {
             @Override
             public void onClick(View v) {
                 OAuthHelper.getProxy(RegisterActivity2.this)
-                        .register(mUsername, mEtPassword.getText().toString(), mEtNickname.getText().toString(), Preferences.sPushRegID)
+                        .register(mUsername, mEtPassword.getText().toString(), mEtNickname.getText().toString(), MyApplication.sPushRegID)
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(new Observer<Token>() {
                             @Override
@@ -56,7 +56,7 @@ public class RegisterActivity2 extends BaseActivity {
 
                             @Override
                             public void onNext(Token token) {
-                                Preferences.setToken(RegisterActivity2.this, token);
+                                MyApplication.setToken(RegisterActivity2.this, token);
                                 MainActivity.startActivity(RegisterActivity2.this, BaseActivity.REQUEST_REGISTER, BaseActivity.RESULT_OK);
                             }
 

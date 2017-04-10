@@ -69,7 +69,22 @@ public class RegisterViewModel {
     }
 
     public void selectCountry() {
-        mActivity.showWaitingDialog("请稍候", "正在获取国家列表");
+        final Disposable disposable = new Disposable() {
+            @Override
+            public void dispose() {
+                SMSSDK.unregisterAllEventHandler();//防止内存泄漏
+                isDisposed = true;
+            }
+
+            @Override
+            public boolean isDisposed() {
+                return isDisposed;
+            }
+
+            boolean isDisposed = false;
+        };
+
+        mActivity.showWaitingDialog("请稍候", "正在获取国家列表", disposable);
 
         //Log.e("0", "-------线程:" + Thread.currentThread().getName());
         Observable.create(new ObservableOnSubscribe<ArrayList>() {
@@ -78,7 +93,9 @@ public class RegisterViewModel {
                 SMSSDK.registerEventHandler(new EventHandler() {
                     @Override
                     public void afterEvent(int event, int result, Object data) {
-                        if (result == SMSSDK.RESULT_COMPLETE) {
+                        if (disposable.isDisposed())
+                            e.onComplete();
+                        else if (result == SMSSDK.RESULT_COMPLETE) {
                             if (event == SMSSDK.EVENT_GET_SUPPORTED_COUNTRIES) {
                                 //返回支持发送验证码的国家列表
                                 if (data instanceof ArrayList) {
@@ -114,59 +131,58 @@ public class RegisterViewModel {
                         return countryRules;
                     }
                 })
-                .delay(1, TimeUnit.SECONDS)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Consumer<HashMap>() {
-                    @Override
-                    public void accept(final HashMap hashMap) throws Exception {
-                        //成功
-                        Log.e("3", "-------线程:" + Thread.currentThread().getName());
-                        final CountryListView countryListView = new CountryListView(mActivity);
-
-                        final AlertDialog dialog = new AlertDialog.Builder(mActivity)
-                                .setTitle("请选择国家或地区")
-                                .setView(countryListView)
-                                .setNegativeButton("取消", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialogInterface, int i) {
-
-                                    }
-                                })
-                                .create();
-
-                        countryListView.setOnItemClickListener(new GroupListView.OnItemClickListener() {
                             @Override
-                            public void onItemClick(GroupListView groupListView, View view, int group, int position) {
-                                if (position >= 0) {
-                                    String[] country = countryListView.getCountry(group, position);
-                                    if (hashMap != null && hashMap.containsKey(country[1])) {
-                                        mActivity.showSnackbar("已经设置您的国家代码为：" + country[1]);
-                                        String countryCode = country[1];
-                                        String countryName = country[0];
-                                        mCountryCode.set(countryCode);
-                                        mCountryName.set(countryName);
-                                        dialog.dismiss();
-                                    } else {
-                                        mActivity.showSnackbar("暂时不支持这个国家或地区");
+                            public void accept(final HashMap hashMap) throws Exception {
+                                //成功
+                                Log.e("3", "-------线程:" + Thread.currentThread().getName());
+                                final CountryListView countryListView = new CountryListView(mActivity);
+
+                                final AlertDialog dialog = new AlertDialog.Builder(mActivity)
+                                        .setTitle("请选择国家或地区")
+                                        .setView(countryListView)
+                                        .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialogInterface, int i) {
+
+                                            }
+                                        })
+                                        .create();
+
+                                countryListView.setOnItemClickListener(new GroupListView.OnItemClickListener() {
+                                    @Override
+                                    public void onItemClick(GroupListView groupListView, View view, int group, int position) {
+                                        if (position >= 0) {
+                                            String[] country = countryListView.getCountry(group, position);
+                                            if (hashMap != null && hashMap.containsKey(country[1])) {
+                                                mActivity.showSnackbar("已经设置您的国家代码为：" + country[1]);
+                                                String countryCode = country[1];
+                                                String countryName = country[0];
+                                                mCountryCode.set(countryCode);
+                                                mCountryName.set(countryName);
+                                                dialog.dismiss();
+                                            } else {
+                                                mActivity.showSnackbar("暂时不支持这个国家或地区");
+                                            }
+                                        }
                                     }
-                                }
+                                });
+
+                                mActivity.dismissDialog();
+                                dialog.show();
+
+
+                            }
+                        }, new Consumer<Throwable>() {
+                            @Override
+                            public void accept(Throwable throwable) throws Exception {
+                                //失败
+                                throwable.printStackTrace();
+                                mActivity.showSnackbar(parseErrorMessage(throwable));
+                                mActivity.dismissDialog();
                             }
                         });
-
-                        mActivity.dismissDialog();
-                        dialog.show();
-
-
-                    }
-                }, new Consumer<Throwable>() {
-                    @Override
-                    public void accept(Throwable throwable) throws Exception {
-                        //失败
-                        throwable.printStackTrace();
-                        mActivity.showSnackbar(parseErrorMessage(throwable));
-                        mActivity.dismissDialog();
-                    }
-                });
     }
 
     public void sendSMS() {

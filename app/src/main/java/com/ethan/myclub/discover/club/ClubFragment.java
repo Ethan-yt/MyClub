@@ -86,7 +86,7 @@ public class ClubFragment extends TabFragment {
                         //允许读取更多
                         mAdapter.setEnableLoadMore(true);
                         e.printStackTrace();
-                        Log.i(TAG, "updateClubDetail: 获取ClubList失败");
+                        Log.i(TAG, "updateClubDetail: 获取Discover Club失败");
                         if (page == 1) {
                             mSwipeRefreshLayout.setRefreshing(false);
                             mEmptyView.showErrorView(new View.OnClickListener() {

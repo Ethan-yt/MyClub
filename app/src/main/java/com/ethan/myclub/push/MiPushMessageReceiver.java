@@ -5,7 +5,7 @@ import android.support.annotation.Keep;
 import android.text.TextUtils;
 import android.util.Log;
 
-import com.ethan.myclub.main.Preferences;
+import com.ethan.myclub.main.MyApplication;
 import com.ethan.myclub.network.ApiHelper;
 import com.xiaomi.mipush.sdk.ErrorCode;
 import com.xiaomi.mipush.sdk.MiPushClient;
@@ -83,7 +83,7 @@ public class MiPushMessageReceiver extends PushMessageReceiver {
         String cmdArg2 = ((arguments != null && arguments.size() > 1) ? arguments.get(1) : null);
         if (MiPushClient.COMMAND_REGISTER.equals(command)) {
             if (message.getResultCode() == ErrorCode.SUCCESS) {
-                if (Preferences.sIsLogin.get() && Preferences.sPushRegID.isEmpty())
+                if (MyApplication.isLogin() && MyApplication.sPushRegID.isEmpty())
                     ApiHelper.getInstance()
                             .submitRegId(cmdArg1)
                             .subscribeOn(Schedulers.io())
@@ -121,7 +121,7 @@ public class MiPushMessageReceiver extends PushMessageReceiver {
                                 }
                             });
                 else
-                    Preferences.sPushRegID = cmdArg1;
+                    MyApplication.sPushRegID = cmdArg1;
             }
         } else if (MiPushClient.COMMAND_SET_ALIAS.equals(command)) {
             if (message.getResultCode() == ErrorCode.SUCCESS) {

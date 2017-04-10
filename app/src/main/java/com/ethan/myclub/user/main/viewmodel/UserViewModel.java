@@ -4,8 +4,8 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.databinding.BindingAdapter;
-import android.databinding.Observable;
 import android.databinding.ObservableField;
+import android.databinding.ObservableInt;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.util.Pair;
 import android.text.TextUtils;
@@ -13,35 +13,26 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 
-import com.aurelhubert.ahbottomnavigation.notification.AHNotification;
 import com.bumptech.glide.Glide;
 import com.ethan.myclub.R;
 import com.ethan.myclub.databinding.FragmentUserBinding;
-import com.ethan.myclub.main.Preferences;
 import com.ethan.myclub.main.BaseActivity;
 import com.ethan.myclub.main.MainActivity;
+import com.ethan.myclub.main.MyApplication;
 import com.ethan.myclub.network.ApiHelper;
 import com.ethan.myclub.user.collection.view.UserCollectionActivity;
-import com.ethan.myclub.user.message.view.UserMessageActivity;
-import com.ethan.myclub.user.model.MessageFeedBack;
-import com.ethan.myclub.user.model.Profile;
 import com.ethan.myclub.user.edit.view.ProfileEditActivity;
 import com.ethan.myclub.user.main.view.UserFragment;
+import com.ethan.myclub.user.model.Profile;
 import com.ethan.myclub.user.schedule.ScheduleActivity;
-import com.ethan.myclub.util.CacheUtil;
 import com.ethan.myclub.util.Utils;
 import com.tencent.bugly.crashreport.CrashReport;
 import com.umeng.analytics.MobclickAgent;
-
-import java.util.Arrays;
-import java.util.List;
 
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import jp.wasabeef.glide.transformations.CropCircleTransformation;
-
-import static com.ethan.myclub.main.Preferences.sPushRegID;
 
 /**
  * Created by ethan on 2017/3/20.
@@ -57,72 +48,42 @@ public class UserViewModel {
     private FragmentUserBinding mBinding;
 
     public ObservableField<Profile> mProfile = new ObservableField<>();
-    public ObservableField<List<MessageFeedBack>> mMsg = new ObservableField<>();
-    public ObservableField<String> mUnreadNum = new ObservableField<>();
-
+    public ObservableInt mUnreadNum = new ObservableInt(-1);
 
     public UserViewModel(UserFragment fragment, FragmentUserBinding binding) {
         mFragment = fragment;
         mBinding = binding;
         mBinding.setViewModel(this);
-        mProfile.addOnPropertyChangedCallback(new Observable.OnPropertyChangedCallback() {
-            @Override
-            public void onPropertyChanged(Observable observable, int i) {
-                if (mProfile.get() != null && !TextUtils.isEmpty(mProfile.get().getNickname())) {
-                    String id = mProfile.get().userId + "_" + mProfile.get().username;
-                    MobclickAgent.onProfileSignIn(id);
-                    Log.i(TAG, "设置统计账号：" + id);
-                    CrashReport.setUserId(id);
-                }
-            }
-        });
-        mMsg.addOnPropertyChangedCallback(new Observable.OnPropertyChangedCallback() {
-            @Override
-            public void onPropertyChanged(Observable observable, int i) {
-                int count = 0;
-                for (MessageFeedBack messageFeedBack : mMsg.get()) {
-                    if (!messageFeedBack.checked)
-                        count++;
-                }
-                mUnreadNum.set(String.valueOf(count));
-                MainActivity mainActivity = (MainActivity) mFragment.getActivity();
-                if (count != 0) {
-                    mainActivity.bottomNavigation.setNotification(String.valueOf(count), 2);
-                } else {
-                    mainActivity.bottomNavigation.setNotification("", 2);
-                }
-            }
-        });
     }
 
     public void timeManagement() {
-        if (Preferences.sIsLogin.get()) {
+        if (MyApplication.isLogin()) {
             ScheduleActivity.startActivity(mFragment.getActivity(), null);
         } else
-            mFragment.mBaseActivity.showLoginSnackbar("您还没有登录！");
+            mFragment.mMainActivity.showLoginSnackbar("您还没有登录！");
     }
 
     public void info() {
-        if (Preferences.sIsLogin.get()) {
+        if (MyApplication.isLogin()) {
             @SuppressWarnings("unchecked")
             ActivityOptionsCompat options = ActivityOptionsCompat
                     .makeSceneTransitionAnimation(mFragment.getActivity(),
                             Pair.create((View) mBinding.ivAvatar, "trans_iv_avatar"));
-            ProfileEditActivity.startActivityForResult(mFragment.getActivity(), mProfile.get(), options.toBundle(), MainActivity.REQUEST_EDIT_INFO);
+            ProfileEditActivity.start(mFragment.getActivity(), mProfile.get(), options.toBundle());
         } else
-            mFragment.mBaseActivity.showLoginSnackbar("您还没有登录！");
+            mFragment.mMainActivity.showLoginSnackbar("您还没有登录！");
 
 
     }
 
     public void settings() {
-        new AlertDialog.Builder(mFragment.mBaseActivity)
+        new AlertDialog.Builder(mFragment.mMainActivity)
                 .setMessage("确定要退出吗")
                 .setPositiveButton("确定", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        Preferences.setToken(mFragment.mBaseActivity, null);
-                        MainActivity.startActivity(mFragment.getActivity(), MainActivity.REQUEST_EXIT, Activity.RESULT_OK);
+                        MyApplication.setToken(mFragment.mMainActivity, null);
+                        MainActivity.startActivity(mFragment.getActivity(), BaseActivity.REQUEST_LOGOUT, Activity.RESULT_OK);
 
                     }
                 })
@@ -135,70 +96,71 @@ public class UserViewModel {
     }
 
     public void collection() {
-        UserCollectionActivity.start(mFragment.mBaseActivity);
+        UserCollectionActivity.start(mFragment.mMainActivity);
     }
 
-    public void getUserInfoCache() {
-        if (!Preferences.sIsLogin.get())
+    public void updateUserProfileAttempt() {
+        if (!MyApplication.isLogin())
+        {
+            mFragment.mMainActivity.bottomNavigation.setNotification("", 2);
             return;
+        }
+
 
         //获取用户基本资料
-        Object infoObj = CacheUtil.get(mFragment.getActivity()).getAsObject(Preferences.CACHE_USER_INFO);
-        if (infoObj == null || !(infoObj instanceof Profile)) {
-            Log.i(TAG, "getUserInfoCache: 读取UserInfo缓存失败，强制获取更新");
-            updateUserInfo();
-        } else {
-            if (mProfile.get() == null) {
-                mProfile.set((Profile) infoObj);
-                Log.i(TAG, "getUserInfoCache: 读取UserInfo缓存成功");
-            }
+        if (MainActivity.needUpdateFlag.userProfile || mProfile.get() == null) {
+            Log.i(TAG, "updateUserProfileAttempt: 更新userProfile");
+            updateUserProfile();
         }
 
+//        mUnreadNum.addOnPropertyChangedCallback(new Observable.OnPropertyChangedCallback() {
+//            @Override
+//            public void onPropertyChanged(Observable observable, int i) {
+//                MainActivity mainActivity = (MainActivity) mFragment.getActivity();
+//                if (mUnreadNum.get() != 0) {
+//                    mainActivity.bottomNavigation.setNotification(String.valueOf(mUnreadNum.get()), 2);
+//                } else {
+//                    mainActivity.bottomNavigation.setNotification("", 2);
+//                }
+//            }
+//        });
         //获取用户消息
-        Object msgsObj = CacheUtil.get(mFragment.getActivity()).getAsObject(Preferences.CACHE_USER_MSG);
-        if (msgsObj == null || !(msgsObj instanceof MessageFeedBack[])) {
-            Log.i(TAG, "getUserInfoCache: 读取UserMsgList缓存失败，强制获取更新");
-            updateUserMsg();
-        } else {
-            if (mMsg.get() == null) {
-                mMsg.set(Arrays.asList((MessageFeedBack[]) msgsObj));
-                Log.i(TAG, "getUserInfoCache: 读取UserMsgList缓存成功");
-            }
-        }
+//        if (MainActivity.needUpdateFlag.userUnreadCount || mUnreadNum.get() == -1) {
+//            Log.i(TAG, "updateUserProfileAttempt: 更新mUnreadNum");
+//            updateUserProfile();
+//        }
     }
 
-    public void updateUserMsg() {
-        ApiHelper.getProxy((BaseActivity) mFragment.getActivity())
-                .getMyMessage()
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<List<MessageFeedBack>>() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
+//    public void updateUserMsg() {
+//        ApiHelper.getProxy((BaseActivity) mFragment.getActivity())
+//                .getMyMessage()
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribe(new Observer<List<MessageFeedBack>>() {
+//                    @Override
+//                    public void onSubscribe(Disposable d) {
+//
+//                    }
+//
+//                    @Override
+//                    public void onNext(List<MessageFeedBack> messageFeedBacks) {
+//                        Log.i(TAG, "updateUserProfile: 更新UserMsgList完成");
+//                        MessageFeedBack[] msgsArray = messageFeedBacks.toArray(new MessageFeedBack[0]);
+//                        mMsg.set(messageFeedBacks);
+//                    }
+//
+//                    @Override
+//                    public void onError(Throwable e) {
+//                        Log.i(TAG, "updateUserProfile: 更新UserMsgList失败");
+//                    }
+//
+//                    @Override
+//                    public void onComplete() {
+//
+//                    }
+//                });
+//    }
 
-                    }
-
-                    @Override
-                    public void onNext(List<MessageFeedBack> messageFeedBacks) {
-                        Log.i(TAG, "updateUserInfo: 更新UserMsgList完成");
-                        MessageFeedBack[] msgsArray = messageFeedBacks.toArray(new MessageFeedBack[0]);
-                        CacheUtil.get(mFragment.getActivity())
-                                .put(Preferences.CACHE_USER_MSG, msgsArray, Preferences.CACHE_TIME_USER_MSG);
-                        mMsg.set(messageFeedBacks);
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        Log.i(TAG, "updateUserInfo: 更新UserMsgList失败");
-                    }
-
-                    @Override
-                    public void onComplete() {
-
-                    }
-                });
-    }
-
-    public void updateUserInfo() {
+    public void updateUserProfile() {
         ApiHelper.getProxy((BaseActivity) mFragment.getActivity())
                 .getMyProfile()
                 .observeOn(AndroidSchedulers.mainThread())
@@ -210,37 +172,37 @@ public class UserViewModel {
 
                     @Override
                     public void onNext(Profile profile) {
-                        Log.i(TAG, "updateUserInfo: 更新UserInfo完成");
+                        Log.i(TAG, "updateUserProfile: 更新UserInfo完成");
                         profile.avatar += "?imageView2/0/w/300/h/300";
                         if (profile.sex.equals("0"))
                             profile.sex = "男";
                         else
                             profile.sex = "女";
                         mProfile.set(profile);
-                        CacheUtil.get(mFragment.getActivity())
-                                .put(Preferences.CACHE_USER_INFO, profile, Preferences.CACHE_TIME_USER_INFO);
+
+                        String id = mProfile.get().userId + "_" + mProfile.get().username;
+                        MobclickAgent.onProfileSignIn(id);
+                        Log.i(TAG, "设置统计账号：" + id);
+                        CrashReport.setUserId(id);
+                        MainActivity.needUpdateFlag.userProfile = false;
                     }
 
                     @Override
                     public void onError(Throwable e) {
-                        Log.i(TAG, "updateUserInfo: 更新UserInfo失败");
-                        mFragment.mBaseActivity.showSnackbar("获取用户信息失败：" + e.getMessage(),
+                        Log.i(TAG, "updateUserProfile: 更新UserInfo失败");
+                        mFragment.mMainActivity.showSnackbar("获取用户信息失败：" + e.getMessage(),
                                 "重试",
                                 new View.OnClickListener() {
                                     @Override
                                     public void onClick(View v) {
-                                        updateUserInfo();
+                                        updateUserProfile();
                                     }
                                 });
                     }
 
                     @Override
                     public void onComplete() {
-                        if (!Preferences.sIsLogin.get()) {
-                            Log.i(TAG, "updateUserInfo: 无法获取更新，用户没有登录");
-                            mProfile.set(null);
-                            return;
-                        }
+
                     }
                 });
 
@@ -264,6 +226,6 @@ public class UserViewModel {
     }
 
     public void message() {
-        UserMessageActivity.start(mFragment.getActivity(), mMsg.get());
+//        UserMessageActivity.start(mFragment.getActivity(), mMsg.get());
     }
 }
