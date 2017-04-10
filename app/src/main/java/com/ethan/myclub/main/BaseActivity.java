@@ -19,6 +19,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.Toolbar;
 import android.util.TypedValue;
 import android.view.Menu;
@@ -37,7 +38,9 @@ import com.umeng.analytics.MobclickAgent;
 import io.reactivex.disposables.Disposable;
 
 public abstract class BaseActivity extends AppCompatActivity {
-
+    static {
+        AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
+    }
     public static final int REQUEST_LOGIN = 10304;
     public static final int REQUEST_REGISTER = 10305;
 

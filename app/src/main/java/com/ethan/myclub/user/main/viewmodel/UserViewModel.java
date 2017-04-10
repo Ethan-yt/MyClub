@@ -28,6 +28,8 @@ import com.ethan.myclub.user.edit.view.ProfileEditActivity;
 import com.ethan.myclub.user.main.view.UserFragment;
 import com.ethan.myclub.user.schedule.ScheduleActivity;
 import com.ethan.myclub.util.CacheUtil;
+import com.ethan.myclub.util.Utils;
+import com.tencent.bugly.crashreport.CrashReport;
 import com.umeng.analytics.MobclickAgent;
 
 import java.util.Arrays;
@@ -69,6 +71,7 @@ public class UserViewModel {
                     String id = mProfile.get().userId + "_" + mProfile.get().getName() + "_" + mProfile.get().getNickname() + "_" + sPushRegID;
                     MobclickAgent.onProfileSignIn(id);
                     Log.i(TAG, "设置统计账号：" + id);
+                    CrashReport.setUserId(id);
                 }
             }
         });
@@ -248,6 +251,8 @@ public class UserViewModel {
 
     @BindingAdapter({"imageUrl"})
     public static void loadImage(final ImageView view, String imageUrl) {
+        if (!Utils.isActivityRunning(view.getContext()))
+            return;
         Object target;
         if (TextUtils.isEmpty(imageUrl)) {
             target = R.drawable.img_default_avatar;

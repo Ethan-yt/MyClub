@@ -9,6 +9,7 @@ import com.ethan.myclub.network.exception.ExceptionEngine;
 import com.ethan.myclub.main.BaseActivity;
 import com.ethan.myclub.user.login.model.Token;
 import com.jakewharton.retrofit2.adapter.rxjava2.HttpException;
+import com.tencent.bugly.crashreport.CrashReport;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
@@ -59,6 +60,7 @@ class ProxyHandler implements InvocationHandler {
                                     @Override
                                     public ObservableSource<?> apply(Throwable throwable) throws Exception {
                                         ApiException apiException = ExceptionEngine.handleException(throwable);
+                                        CrashReport.postCatchedException(apiException);
                                         if (apiException.getCode() == ApiException.HTTP_UNAUTHORIZED)//token过期时
                                         {
                                             Log.e(TAG, "apply: TOKEN竟然过期了 赶快refresh一下");

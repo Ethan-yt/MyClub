@@ -20,6 +20,7 @@ import com.ethan.myclub.club.operation.adapter.ViewPagerAdapter;
 import com.ethan.myclub.club.operation.model.Operation;
 import com.ethan.myclub.club.operation.view.ClubOperationActivity;
 import com.ethan.myclub.databinding.ActivityClubOperationBinding;
+import com.ethan.myclub.util.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -77,6 +78,8 @@ public class ClubOperationViewModel {
 
     @BindingAdapter({"clubOperationBadge"})
     public static void loadImage(final ImageView view, String imageUrl) {
+        if (!Utils.isActivityRunning(view.getContext()))
+            return;
         Object target;
         if (imageUrl == null) {
             target = R.drawable.img_default_avatar;

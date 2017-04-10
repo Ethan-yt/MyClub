@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.support.annotation.Keep;
 import android.support.v4.app.ActivityCompat;
 
 import com.ethan.myclub.R;
@@ -11,7 +12,7 @@ import com.ethan.myclub.club.my.model.MyClub;
 import com.ethan.myclub.databinding.ActivityClubNotificationCreateBinding;
 import com.ethan.myclub.main.BaseActivity;
 import com.ethan.myclub.club.notification.viewmodel.ClubNotificationCreateViewModel;
-
+@Keep
 public class ClubNotificationCreateActivity extends BaseActivity {
 
     private ClubNotificationCreateViewModel mViewModel;

@@ -1,5 +1,6 @@
 package com.ethan.myclub.network;
 
+import com.ethan.myclub.BuildConfig;
 import com.ethan.myclub.main.Preferences;
 import com.ethan.myclub.network.converter.ApiExceptionConverterFactory;
 import com.ethan.myclub.network.service.ApiService;
@@ -34,21 +35,23 @@ public class ApiHelper {
         private static ApiService sApiService;
 
         static {
-            OkHttpClient client = new OkHttpClient
+            OkHttpClient.Builder builder = new OkHttpClient
                     .Builder()
-                    .addNetworkInterceptor(new StethoInterceptor())
-                    .followRedirects(false)
-                    //设置拦截器，添加headers
-                    .addInterceptor(new Interceptor() {
-                        @Override
-                        public okhttp3.Response intercept(Chain chain) throws IOException {
-                            Request.Builder request = chain.request()
-                                    .newBuilder();
-                            if (Preferences.sIsLogin.get())
-                                request.addHeader("Authorization", Preferences.getToken().mTokenType + " " + Preferences.getToken().mAccessToken);
-                            return chain.proceed(request.build());
-                        }
-                    })
+                    .followRedirects(false);
+            //设置拦截器，添加headers
+            if (BuildConfig.DEBUG)
+                builder.addNetworkInterceptor(new StethoInterceptor());
+
+            OkHttpClient client = builder.addInterceptor(new Interceptor() {
+                @Override
+                public okhttp3.Response intercept(Chain chain) throws IOException {
+                    Request.Builder request = chain.request()
+                            .newBuilder();
+                    if (Preferences.sIsLogin.get())
+                        request.addHeader("Authorization", Preferences.getToken().mTokenType + " " + Preferences.getToken().mAccessToken);
+                    return chain.proceed(request.build());
+                }
+            })
                     .build();
 
 

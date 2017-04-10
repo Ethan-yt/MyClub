@@ -49,6 +49,7 @@ public class ScheduleActivity extends BaseActivity {
 
     private void initToolbar() {
         getToolbarWrapper()
+                .dismiss()
                 .setTitle("时间管理")
                 .showBackIcon()
                 .setMenu(R.menu.toolbar_user_schedule,

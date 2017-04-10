@@ -259,6 +259,8 @@ public class ActivityDetailViewModel {
 
     @BindingAdapter({"activityDetailClubBadge"})
     public static void loadClubBadge(final ImageView view, String imageUrl) {
+        if (!Utils.isActivityRunning(view.getContext()))
+            return;
         Object target;
         if (imageUrl == null) {
             target = R.drawable.img_default_avatar;

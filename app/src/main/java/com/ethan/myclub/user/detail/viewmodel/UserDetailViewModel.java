@@ -22,6 +22,7 @@ import com.ethan.myclub.network.ApiHelper;
 import com.ethan.myclub.user.detail.view.UserDetailActivity;
 import com.ethan.myclub.databinding.ActivityUserDetailBinding;
 import com.ethan.myclub.user.model.Profile;
+import com.ethan.myclub.util.Utils;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -106,6 +107,8 @@ public class UserDetailViewModel {
 
     @BindingAdapter({"avatarImageUri"})
     public static void loadImage(final ImageView view, Uri imageUri) {
+        if (!Utils.isActivityRunning(view.getContext()))
+            return;
         Object target;
         if (imageUri == null) {
             target = R.drawable.img_default_avatar;

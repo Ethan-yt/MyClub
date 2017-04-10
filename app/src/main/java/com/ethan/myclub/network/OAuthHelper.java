@@ -1,5 +1,6 @@
 package com.ethan.myclub.network;
 
+import com.ethan.myclub.BuildConfig;
 import com.ethan.myclub.main.Preferences;
 import com.ethan.myclub.main.BaseActivity;
 import com.ethan.myclub.network.converter.ApiExceptionConverterFactory;
@@ -33,21 +34,22 @@ public class OAuthHelper {
         private static OAuthService sOAuthService;
 
         static {
-            OkHttpClient client = new OkHttpClient
+            OkHttpClient.Builder builder = new OkHttpClient
                     .Builder()
-                    .addNetworkInterceptor(new StethoInterceptor())
-                    .followRedirects(false)
-                    //设置拦截器，添加headers
-                    .addInterceptor(new Interceptor() {
-                        @Override
-                        public okhttp3.Response intercept(Chain chain) throws IOException {
-                            Request.Builder request = chain.request()
-                                    .newBuilder();
+                    .followRedirects(false);
+            //设置拦截器，添加headers
+            if (BuildConfig.DEBUG)
+                builder.addNetworkInterceptor(new StethoInterceptor());
 
-                            request.addHeader("Authorization", Preferences.CLIENT_CREDENTIALS);
-                            return chain.proceed(request.build());
-                        }
-                    })
+            OkHttpClient client = builder.addInterceptor(new Interceptor() {
+                @Override
+                public okhttp3.Response intercept(Chain chain) throws IOException {
+                    Request.Builder request = chain.request()
+                            .newBuilder();
+                    request.addHeader("Authorization", Preferences.CLIENT_CREDENTIALS);
+                    return chain.proceed(request.build());
+                }
+            })
                     .build();
 
             final String BASE_URL = "https://zhujian.nghuyong.top/";

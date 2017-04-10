@@ -34,8 +34,8 @@ android {
         applicationId "com.ethan.myclub"
         minSdkVersion 14
         targetSdkVersion 25
-        versionCode 4
-        versionName "1.2.1 alpha"
+        versionCode 6
+        versionName "1.2.3 alpha"
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         jackOptions {
@@ -62,9 +62,13 @@ android {
             signingConfig signingConfigs.release
         }
         release {
-            signingConfig signingConfigs.release
+            //是否优化zip
+            zipAlignEnabled true
+            // 移除无用的resource文件
+            shrinkResources true
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
         }
     }
     compileOptions {

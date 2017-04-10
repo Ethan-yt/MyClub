@@ -29,6 +29,7 @@ public class CourseTime implements Parcelable {
     @Expose
     @SerializedName("time_end")
     final private int timeEnd; // 节数
+    @SerializedName("location")
     @Expose
     final private String location;// 教室 1教1B411
 

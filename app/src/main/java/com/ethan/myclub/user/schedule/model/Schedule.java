@@ -4,6 +4,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,10 +15,13 @@ import java.util.List;
 
 public class Schedule implements Parcelable {
     @Expose
+    @SerializedName("year")
     final private String year;
     @Expose
+    @SerializedName("term")
     final private String term;
     @Expose
+    @SerializedName("courses")
     final private List<Course> courses;
 
     private Schedule(Parcel in) {

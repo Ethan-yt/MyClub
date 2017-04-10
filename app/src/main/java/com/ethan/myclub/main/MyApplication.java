@@ -39,10 +39,10 @@ public class MyApplication extends Application {
         if (!BuildConfig.DEBUG) {
             Bugly.init(this, "ff50329b00", false);
         } else {
+            Stetho.initializeWithDefaults(this);
             MobclickAgent.setDebugMode(true);
         }
         super.onCreate();
-        Stetho.initializeWithDefaults(this);
 
         // 注册push服务，注册成功后会向DemoMessageReceiver发送广播
         // 可以从DemoMessageReceiver的onCommandResult方法中MiPushCommandMessage对象参数中获取注册信息

@@ -80,6 +80,11 @@ public interface ApiService {
     @GET("api/user/profile/{userId}/")
     Observable<Profile> getUserProfile(@Path("userId") String userId);
 
+
+    // 提交REGID
+    @POST("api/user/regid/")
+    @FormUrlEncoded
+    Observable<Object> submitRegId(@Field("userId") String regId);
     //============================社团============================
     //获取社团搜索提示
     @GET("api/club/suggestion/")

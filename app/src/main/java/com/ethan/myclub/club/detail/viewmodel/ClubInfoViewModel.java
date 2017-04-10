@@ -31,6 +31,7 @@ import com.ethan.myclub.discover.activity.adapter.ActivityAdapter;
 import com.ethan.myclub.discover.activity.model.ActivityResult;
 import com.ethan.myclub.main.BaseActivity;
 import com.ethan.myclub.network.ApiHelper;
+import com.ethan.myclub.util.Utils;
 import com.google.android.flexbox.FlexboxLayout;
 
 import java.util.List;
@@ -199,6 +200,8 @@ public class ClubInfoViewModel {
 
     @BindingAdapter({"clubInfoBadge"})
     public static void loadImage(final ImageView view, String imageUrl) {
+        if (!Utils.isActivityRunning(view.getContext()))
+            return;
         Object target;
         if (imageUrl == null) {
             target = R.drawable.img_default_avatar;

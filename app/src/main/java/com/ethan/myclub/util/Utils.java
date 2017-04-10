@@ -297,4 +297,14 @@ public class Utils {
     public static float px2sp(Context context, float pxVal) {
         return (pxVal / context.getResources().getDisplayMetrics().scaledDensity);
     }
+
+
+    public static boolean isActivityRunning(Context context)
+    {
+        if(!(context instanceof Activity))
+            return false;
+        final Activity activity = (Activity) context;
+
+        return !activity.isFinishing();
+    }
 }

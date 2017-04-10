@@ -19,6 +19,7 @@ import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.ethan.myclub.R;
 import com.ethan.myclub.user.edit.view.ProfileEditActivity;
+import com.ethan.myclub.util.Utils;
 
 import java.io.File;
 
@@ -42,6 +43,8 @@ public abstract class ImageSelectActivity extends BaseActivity {
 
     @BindingAdapter({"selectedRectImageUri"})
     public static void loadImageRect(final ImageView view, Uri imageUri) {
+        if (!Utils.isActivityRunning(view.getContext()))
+            return;
         Object target;
         if (imageUri == null) {
             target = R.drawable.img_default_avatar;
@@ -78,6 +81,8 @@ public abstract class ImageSelectActivity extends BaseActivity {
 
     @BindingAdapter({"selectedImageUri"})
     public static void loadImage(final ImageView view, Uri imageUri) {
+        if (!Utils.isActivityRunning(view.getContext()))
+            return;
         Object target;
         if (imageUri == null) {
             target = R.drawable.img_default_avatar;

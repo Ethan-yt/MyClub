@@ -15,10 +15,13 @@ import java.util.List;
 
 
 public class Course implements Parcelable {
+    @SerializedName("name")
     @Expose
     final private String name;// 课程名 信号系统
+    @SerializedName("type")
     @Expose
     final private String type;// 属性 专选
+    @SerializedName("teacher")
     @Expose
     final private String teacher;// 教师 孔军
     @Expose

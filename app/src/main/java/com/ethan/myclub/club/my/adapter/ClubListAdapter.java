@@ -2,6 +2,7 @@ package com.ethan.myclub.club.my.adapter;
 
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
+import android.support.annotation.Keep;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -57,6 +58,7 @@ public class ClubListAdapter extends BaseQuickAdapter<MyClub, ClubListAdapter.Vi
         return view;
     }
 
+    @Keep
     public class ViewHolder extends BaseViewHolder {
 
         public ViewHolder(View view) {
