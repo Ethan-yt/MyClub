@@ -1,5 +1,6 @@
 package com.ethan.myclub.main;
 
+import android.content.ActivityNotFoundException;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.databinding.BindingAdapter;
@@ -150,7 +151,11 @@ public abstract class ImageSelectActivity extends BaseActivity {
                         Intent takeIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                         //下面这句指定调用相机拍照后的照片存储的路径
                         takeIntent.putExtra(MediaStore.EXTRA_OUTPUT, mOutputUri);
-                        startActivityForResult(takeIntent, ProfileEditActivity.REQUEST_CODE_CAMERA);
+                        try {
+                            startActivityForResult(takeIntent, ProfileEditActivity.REQUEST_CODE_CAMERA);
+                        } catch (ActivityNotFoundException e) {
+                            showSnackbar("您的系统不支持这个操作，请选择图片");
+                        }
                         mBottomSheetDialog.dismiss();
                     }
                 });

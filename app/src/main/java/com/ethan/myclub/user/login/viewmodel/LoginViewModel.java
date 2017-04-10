@@ -26,8 +26,8 @@ public class LoginViewModel {
 
     private LoginActivity mView;
     private ActivityLoginBinding mBinding;
-    public ObservableField<String> userName = new ObservableField<>("admin");
-    public ObservableField<String> password = new ObservableField<>("123456");
+    public ObservableField<String> userName = new ObservableField<>();
+    public ObservableField<String> password = new ObservableField<>();
 
 
     public LoginViewModel(LoginActivity loginActivity, ActivityLoginBinding binding) {

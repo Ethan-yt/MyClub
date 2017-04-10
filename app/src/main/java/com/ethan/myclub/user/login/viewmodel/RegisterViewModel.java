@@ -48,8 +48,8 @@ public class RegisterViewModel {
 
     private final RegisterActivity mActivity;
     private ActivityLoginRegisterBinding mBinding;
-    public ObservableField<String> mCountryName = new ObservableField<>("台湾");
-    public ObservableField<String> mCountryCode = new ObservableField<>("886");
+    public ObservableField<String> mCountryName = new ObservableField<>("中国");
+    public ObservableField<String> mCountryCode = new ObservableField<>("86");
     public ObservableField<String> mPhoneNumber = new ObservableField<>();
     public ObservableBoolean mIsSendBtnClickable = new ObservableBoolean(true);
     public ObservableField<String> mSendBtnText = new ObservableField<>("发送验证码");

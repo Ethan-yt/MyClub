@@ -12,7 +12,7 @@ import com.ethan.myclub.R;
  * Created by Administrator on 2017/3/10.
  */
 
-public class messageActivity extends AppCompatActivity {
+public class unused_messageActivity extends AppCompatActivity {
     private Button message,message1;
     @Override
     protected void onCreate(Bundle savedInstanceState) {

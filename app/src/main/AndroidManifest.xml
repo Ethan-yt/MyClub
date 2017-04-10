@@ -68,7 +68,7 @@
             android:name=".user.login.view.RegisterActivity2"
             android:theme="@style/AppTheme.Dark"/>
         <activity android:name=".user.edit.view.ProfileEditActivity"/>
-        <activity android:name=".user.message.messageActivity"/>
+        <activity android:name=".user.message.unused_messageActivity"/>
         <activity android:name=".club.create.view.ClubCreateActivity"/>
         <activity android:name=".club.operation.view.ClubOperationActivity"/>
         <activity android:name=".club.detail.view.ClubInfoActivity"/>
@@ -135,6 +135,7 @@
         <activity android:name=".club.member.view.ClubMemberListActivity"/>
         <activity android:name=".club.member.view.ClubMemberDetailActivity"/>
         <activity android:name=".user.detail.view.UserDetailActivity"/>
+        <activity android:name=".user.message.view.UserMessageActivity"/>
     </application>
 
 </manifest>

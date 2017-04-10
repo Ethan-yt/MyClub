@@ -22,6 +22,7 @@ import com.ethan.myclub.main.BaseActivity;
 import com.ethan.myclub.main.MainActivity;
 import com.ethan.myclub.network.ApiHelper;
 import com.ethan.myclub.user.collection.view.UserCollectionActivity;
+import com.ethan.myclub.user.message.view.UserMessageActivity;
 import com.ethan.myclub.user.model.MessageFeedBack;
 import com.ethan.myclub.user.model.Profile;
 import com.ethan.myclub.user.edit.view.ProfileEditActivity;
@@ -68,7 +69,7 @@ public class UserViewModel {
             @Override
             public void onPropertyChanged(Observable observable, int i) {
                 if (mProfile.get() != null && !TextUtils.isEmpty(mProfile.get().getNickname())) {
-                    String id = mProfile.get().userId + "_" + mProfile.get().getName() + "_" + mProfile.get().getNickname() + "_" + sPushRegID;
+                    String id = mProfile.get().userId + "_" + mProfile.get().username;
                     MobclickAgent.onProfileSignIn(id);
                     Log.i(TAG, "设置统计账号：" + id);
                     CrashReport.setUserId(id);
@@ -87,15 +88,11 @@ public class UserViewModel {
                 MainActivity mainActivity = (MainActivity) mFragment.getActivity();
                 if (count != 0) {
                     mainActivity.bottomNavigation.setNotification(String.valueOf(count), 2);
-                } else
-
-                {
+                } else {
                     mainActivity.bottomNavigation.setNotification("", 2);
                 }
             }
         });
-
-        //new BaseFragment.ToolbarWrapper(mFragment,"个人中心").show();
     }
 
     public void timeManagement() {
@@ -170,7 +167,7 @@ public class UserViewModel {
         }
     }
 
-    private void updateUserMsg() {
+    public void updateUserMsg() {
         ApiHelper.getProxy((BaseActivity) mFragment.getActivity())
                 .getMyMessage()
                 .observeOn(AndroidSchedulers.mainThread())
@@ -267,6 +264,6 @@ public class UserViewModel {
     }
 
     public void message() {
-
+        UserMessageActivity.start(mFragment.getActivity(), mMsg.get());
     }
 }

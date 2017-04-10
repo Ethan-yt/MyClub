@@ -35,6 +35,7 @@ public class UserFragment extends BaseFragment {
     public void refresh() {
         super.refresh();
         mViewModel.updateUserInfo();
+        mViewModel.updateUserMsg();
     }
 
     @Override
