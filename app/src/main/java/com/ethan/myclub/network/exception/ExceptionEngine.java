@@ -5,6 +5,7 @@ import android.util.Log;
 
 import com.google.gson.JsonParseException;
 import com.jakewharton.retrofit2.adapter.rxjava2.HttpException;
+import com.tencent.bugly.crashreport.CrashReport;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -54,13 +55,15 @@ public class ExceptionEngine extends Throwable {
                 case UNAUTHORIZED:
                     if (errorDescription.equals("Invalid credentials given."))
                         ex = new ApiException(e, ApiException.API_ERROR, "用户名或密码错误");
-                    else if (errorType.equals("invalid_client"))
+                    else if (errorType.equals("invalid_client")) {
                         ex = new ApiException(e, ApiException.API_ERROR, "内部错误：客户端ID失效，请联系管理员");
-                    else
+                        CrashReport.postCatchedException(ex);
+                    } else
                         ex = new ApiException(e, ApiException.HTTP_UNAUTHORIZED, "token过期");
                     break;
                 case FORBIDDEN:
                     ex = new ApiException(e, ApiException.HTTP_FORBIDDEN, "权限不足");
+                    CrashReport.postCatchedException(ex);
                     break;
                 case NOT_FOUND:
                 case REQUEST_TIMEOUT:
@@ -71,6 +74,8 @@ public class ExceptionEngine extends Throwable {
                 default:
                     //均视为网络错误
                     ex = new ApiException(e, ApiException.HTTP_ERROR, "网络错误 HTTP" + httpException.code());
+                    if (httpException.code() / 100 == 5)
+                        CrashReport.postCatchedException(ex);
                     break;
             }
             return ex;
@@ -83,6 +88,7 @@ public class ExceptionEngine extends Throwable {
                 || e instanceof JSONException
                 || e instanceof ParseException) {
             ex = new ApiException(e, ApiException.PARSE_ERROR, "解析错误");
+            CrashReport.postCatchedException(ex);
             return ex;
         } else if (e instanceof ConnectException
                 || e instanceof UnknownHostException) {
@@ -94,6 +100,7 @@ public class ExceptionEngine extends Throwable {
         } else {
             ex = new ApiException(e, ApiException.UNKNOWN_ERROR, "未知错误");
             e.printStackTrace();
+            CrashReport.postCatchedException(ex);
             return ex;
         }
     }

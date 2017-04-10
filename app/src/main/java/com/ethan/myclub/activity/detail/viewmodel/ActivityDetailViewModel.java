@@ -225,6 +225,8 @@ public class ActivityDetailViewModel {
 
     public void like() {
         mActivity.setResult(UserCollectionActivity.RESULT_CHANGED);
+        if(mActivityDetail.get() == null)
+            return;
         mActivityDetail.get().likeStatus = !mActivityDetail.get().likeStatus;
         if (mActivityDetail.get().likeStatus)
             mBinding.fab.setImageResource(R.drawable.ic_like_red);
