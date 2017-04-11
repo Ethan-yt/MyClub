@@ -42,7 +42,6 @@ public class UserFragment extends BaseFragment {
         super.willBeDisplayed();
         if (mMainActivity != null) {
             mMainActivity.getToolbarWrapper().changeScrollable(true).close();
-            Utils.StatusBarLightMode(mMainActivity, false);
         }
     }
 }

@@ -1,5 +1,4 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools">
 
     <data>
@@ -17,11 +16,11 @@
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recycler_view"
             android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_marginLeft="24dp"
             android:layout_marginRight="24dp"
-            android:paddingBottom="60dp"
             android:clipToPadding="false"
-            android:layout_height="match_parent"
+            android:paddingBottom="60dp"
             tools:listitem="@layout/item_club"/>
 
     </FrameLayout>

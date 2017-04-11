@@ -6,18 +6,21 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.view.View;
 
 
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationAdapter;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationViewPager;
 import com.ethan.myclub.R;
+import com.ethan.myclub.club.create.view.ClubCreateActivity;
 import com.ethan.myclub.club.my.view.MyClubFragment;
 import com.ethan.myclub.discover.main.DiscoverFragment;
 import com.ethan.myclub.user.main.view.UserFragment;
-public class MainActivity extends BaseActivity {
+import com.ethan.myclub.util.Utils;
+import com.github.clans.fab.FloatingActionMenu;
 
-    public static final int REQUEST_ADD_CLUB = 10306;
+public class MainActivity extends BaseActivity {
     public static final int REQUEST_CREATE_CLUB = 10308;
     public static final int REQUEST_GIVE_CLUB = 10309;
     private static final String TAG = "MainActivity";
@@ -29,8 +32,9 @@ public class MainActivity extends BaseActivity {
     private AHBottomNavigationViewPager viewPager;
 
     public AHBottomNavigation bottomNavigation;
+    private FloatingActionMenu mFabMenu;
 
-    static public class needUpdateFlag{
+    static public class needUpdateFlag {
         static public boolean clubList = true;
         static public boolean userProfile = true;
         static public boolean userUnreadCount = true;
@@ -64,6 +68,34 @@ public class MainActivity extends BaseActivity {
         bottomNavigation.setInactiveColor(ContextCompat.getColor(this, R.color.colorBottomNavigationInactive));
         bottomNavigation.setAccentColor(ContextCompat.getColor(this, R.color.colorAccent));
 
+        mFabMenu = (FloatingActionMenu) findViewById(R.id.fab_menu);
+        mFabMenu.setClosedOnTouchOutside(true);
+        mFabMenu.hideMenuButton(false);
+
+        findViewById(R.id.fab_create).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mFabMenu.close(true);
+                ClubCreateActivity.startForResult(MainActivity.this, MainActivity.REQUEST_CREATE_CLUB);
+            }
+        });
+        findViewById(R.id.fab_join).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mFabMenu.close(true);
+                ((DiscoverFragment) adapter.getItem(0)).setCurrentTab(1);
+                bottomNavigation.setCurrentItem(0);
+            }
+        });
+        findViewById(R.id.fab_scan).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mFabMenu.close(true);
+                showSnackbar("愚人节快乐");
+            }
+        });
+
+
         bottomNavigation.setOnTabSelectedListener(new AHBottomNavigation.OnTabSelectedListener() {
             @Override
             public boolean onTabSelected(int position, boolean wasSelected) {
@@ -78,16 +110,23 @@ public class MainActivity extends BaseActivity {
                 }
                 //切换到个人页面前
                 if (position == 2) {
+                    Utils.StatusBarLightMode(MainActivity.this, false);
                     //检查是否已经登录
                     if (!MyApplication.isLogin()) {
                         showLoginSnackbar("您还没有登录哦");
                         return false;
                     }
+                } else {
+                    Utils.StatusBarLightMode(MainActivity.this, true);
                 }
-                if (position == 1)
+                //切换到社团列表前
+                if (position == 1) {
                     bottomNavigation.setBehaviorTranslationEnabled(false);
-                else
+                    mFabMenu.showMenuButton(true);
+                } else {
                     bottomNavigation.setBehaviorTranslationEnabled(true);
+                    mFabMenu.hideMenuButton(true);
+                }
 
                 if (currentFragment != null) {
                     currentFragment.willBeHidden();
@@ -109,13 +148,8 @@ public class MainActivity extends BaseActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-
         if (resultCode == RESULT_OK) {
             switch (requestCode) {
-                case REQUEST_ADD_CLUB:
-                    ((DiscoverFragment) adapter.getItem(0)).setCurrentTab(1);
-                    bottomNavigation.setCurrentItem(0);
-                    break;
                 case REQUEST_CREATE_CLUB:
                     showSnackbar("创建社团成功！");
                     break;

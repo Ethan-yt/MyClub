@@ -230,8 +230,6 @@ public class DiscoverFragment extends BaseFragment {
                     })
                     .show(R.layout.view_toolbar_discover);
 
-
-            Utils.StatusBarLightMode(mMainActivity, true);
         }
 
         TabLayout tabLayout = (TabLayout) getActivity().findViewById(R.id.tabs);

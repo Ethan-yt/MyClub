@@ -38,14 +38,6 @@ public class MyClubFragment extends BaseFragment {
 
     @Override
     public void refresh() {
-        BaseActivity.ToolbarWrapper toolbarWrapper = mMainActivity.getToolbarWrapper()
-                .dismiss()
-                .withAnimate()
-                .setTitle("我的社团", true);
-        if (MyApplication.isLogin())
-            toolbarWrapper.setMenu(R.menu.toolbar_club, new MyMenuItemClickListener());
-
-        toolbarWrapper.show();
         mViewModel.updateUserClubList();
     }
 
@@ -53,37 +45,12 @@ public class MyClubFragment extends BaseFragment {
     public void willBeDisplayed() {
         super.willBeDisplayed();
         if (mMainActivity != null) {
-            BaseActivity.ToolbarWrapper toolbarWrapper = mMainActivity.getToolbarWrapper()
+            mMainActivity.getToolbarWrapper()
                     .dismiss()
                     .withAnimate()
-                    .setTitle("我的社团", true);
+                    .setTitle("我的社团", true)
+                    .show();
 
-            if (MyApplication.isLogin())
-                toolbarWrapper.setMenu(R.menu.toolbar_club, new MyMenuItemClickListener());
-
-            toolbarWrapper.show();
-
-            Utils.StatusBarLightMode(mMainActivity, true);
-        }
-    }
-
-    private class MyMenuItemClickListener implements Toolbar.OnMenuItemClickListener {
-
-        @Override
-        public boolean onMenuItemClick(MenuItem item) {
-            switch (item.getItemId()) {
-                case R.id.action_scan:
-                    mMainActivity.showSnackbar("愚人节快乐");
-                    break;
-                case R.id.action_add:
-                    mMainActivity.startActivity(mMainActivity, MainActivity.REQUEST_ADD_CLUB, Activity.RESULT_OK);
-                    break;
-                case R.id.action_create:
-                    ClubCreateActivity.startForResult(mMainActivity, MainActivity.REQUEST_CREATE_CLUB);
-                    break;
-            }
-
-            return false;
         }
     }
 }

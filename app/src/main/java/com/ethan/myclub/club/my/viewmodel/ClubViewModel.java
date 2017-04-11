@@ -1,10 +1,13 @@
 package com.ethan.myclub.club.my.viewmodel;
 
+import android.app.Activity;
 import android.support.v7.widget.GridLayoutManager;
 import android.util.Log;
 import android.view.View;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.ethan.myclub.R;
+import com.ethan.myclub.club.create.view.ClubCreateActivity;
 import com.ethan.myclub.club.my.adapter.ClubListAdapter;
 import com.ethan.myclub.club.my.model.MyClub;
 import com.ethan.myclub.club.my.view.MyClubFragment;
@@ -32,7 +35,7 @@ public class ClubViewModel {
     private final EmptyView mEmptyView;
 
     private MyClubFragment mFragment;
-    private FragmentClubBinding mBinding;
+    public FragmentClubBinding mBinding;
 
     private ClubListAdapter mAdapter;
 
