@@ -42,82 +42,9 @@ public abstract class ImageSelectActivity extends BaseActivity {
     public int mAspectX = 1;
     public int mAspectY = 1;
 
-    @BindingAdapter({"selectedRectImageUri"})
-    public static void loadImageRect(final ImageView view, Uri imageUri) {
-        if (!Utils.isActivityRunning(view.getContext()))
-            return;
-        Object target;
-        if (imageUri == null) {
-            target = R.drawable.img_default_avatar;
-        } else {
-            target = imageUri;
-        }
-        Boolean skipMemoryCache = true;
-        DiskCacheStrategy diskCacheStrategy = DiskCacheStrategy.NONE;
 
-        if (imageUri != null && imageUri.getScheme().equals("http")) {
-            skipMemoryCache = false;
-            diskCacheStrategy = DiskCacheStrategy.ALL;
-        }
 
-        Glide.with(view.getContext())
-                .load(target)
-                .listener(new RequestListener<Object, GlideDrawable>() {
-                    @Override
-                    public boolean onException(Exception e, Object model, Target<GlideDrawable> target, boolean isFirstResource) {
-                        e.printStackTrace();
-                        return false;
-                    }
 
-                    @Override
-                    public boolean onResourceReady(GlideDrawable resource, Object model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
-                        return false;
-                    }
-                })
-                .crossFade()
-                .skipMemoryCache(skipMemoryCache)
-                .diskCacheStrategy(diskCacheStrategy)
-                .into(view);
-    }
-
-    @BindingAdapter({"selectedImageUri"})
-    public static void loadImage(final ImageView view, Uri imageUri) {
-        if (!Utils.isActivityRunning(view.getContext()))
-            return;
-        Object target;
-        if (imageUri == null) {
-            target = R.drawable.img_default_avatar;
-        } else {
-            target = imageUri;
-        }
-        Boolean skipMemoryCache = true;
-        DiskCacheStrategy diskCacheStrategy = DiskCacheStrategy.NONE;
-
-        if (imageUri != null && imageUri.getScheme().equals("http")) {
-            skipMemoryCache = false;
-            diskCacheStrategy = DiskCacheStrategy.ALL;
-        }
-
-        Glide.with(view.getContext())
-                .load(target)
-                .listener(new RequestListener<Object, GlideDrawable>() {
-                    @Override
-                    public boolean onException(Exception e, Object model, Target<GlideDrawable> target, boolean isFirstResource) {
-                        e.printStackTrace();
-                        return false;
-                    }
-
-                    @Override
-                    public boolean onResourceReady(GlideDrawable resource, Object model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
-                        return false;
-                    }
-                })
-                .crossFade()
-                .skipMemoryCache(skipMemoryCache)
-                .diskCacheStrategy(diskCacheStrategy)
-                .bitmapTransform(new CropCircleTransformation(view.getContext()))
-                .into(view);
-    }
 
     private Uri mOutputUri;
     private File mOutputFile;

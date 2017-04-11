@@ -45,7 +45,7 @@
                     android:layout_width="60dp"
                     android:layout_height="60dp"
                     android:scaleType="centerCrop"
-                    app:clubItemBadgeUrl="@{club.clubBadge}"
+                    app:image_url="@{club.clubBadge}"
                     tools:src="@drawable/img_default_avatar"/>
 
                 <TextView

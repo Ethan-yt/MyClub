@@ -28,7 +28,7 @@ public class ClubFragment extends TabFragment {
 
     public ClubFragment() {
         mLayoutManager = new GridLayoutManager(getContext(), 2);
-        mAdapter = new ClubAdapter(this, null);
+        mAdapter = new ClubAdapter(null);
         mAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
@@ -58,8 +58,11 @@ public class ClubFragment extends TabFragment {
                         //允许读取更多
                         mAdapter.setEnableLoadMore(true);
                         mCurrentPage++;
+                        for (Hit hit : clubResult.hits.hits) {
+                            hit.source.badge += "?imageView2/0/w/300/h/300";
+                        }
                         if (page == 1) {
-                            if (clubResult.hits.hits == null || clubResult.hits.hits.size() == 0) {
+                            if (clubResult.hits.hits.size() == 0) {
                                 mEmptyView.showEmptyView("还没有这个社团", "你可以创建这个社团哦！");
                                 mAdapter.setNewData(null);
                                 mRecyclerView.setLayoutFrozen(true);

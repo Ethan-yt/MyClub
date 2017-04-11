@@ -27,7 +27,7 @@ public class ActivityFragment extends TabFragment {
 
     public ActivityFragment() {
         mLayoutManager = new LinearLayoutManager(getContext());
-        mAdapter = new ActivityAdapter(this, null);
+        mAdapter = new ActivityAdapter(null);
         mAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
@@ -59,6 +59,11 @@ public class ActivityFragment extends TabFragment {
                         //允许读取更多
                         mAdapter.setEnableLoadMore(true);
                         mCurrentPage++;
+
+                        for (ActivityResult activityResult : activityList) {
+                            activityResult.homePageImg += "?imageView2/0/w/500/h/500";
+                        }
+
                         if (page == 1) {
                             if (activityList == null || activityList.size() == 0) {
                                 mEmptyView.showEmptyView("还没有这个活动", "请换一个关键字试试！");

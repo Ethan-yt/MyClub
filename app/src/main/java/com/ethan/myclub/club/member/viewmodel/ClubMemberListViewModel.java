@@ -82,7 +82,6 @@ public class ClubMemberListViewModel {
 
                     @Override
                     public void onNext(List<MemberResult> memberResults) {
-
                         if (memberResults == null || memberResults.size() == 0) {
                             mEmptyView.showErrorView(new View.OnClickListener() {
                                 @Override
@@ -94,6 +93,9 @@ public class ClubMemberListViewModel {
                             mBinding.list.setLayoutFrozen(true);
                             mAdapter.setEmptyView(mEmptyView);
                         } else {
+                            for (MemberResult memberResult : memberResults) {
+                                memberResult.avatar += "?imageView2/0/w/300/h/300";
+                            }
                             mBinding.list.setLayoutFrozen(false);
                             mAdapter.setNewData(memberResults);
                         }

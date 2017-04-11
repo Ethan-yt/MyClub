@@ -35,16 +35,6 @@ public class ClubListAdapter extends BaseQuickAdapter<MyClub, ClubListAdapter.Vi
         binding.setClub(item);
         binding.setViewModel(mViewModel);
         binding.executePendingBindings();
-//        switch (helper.getLayoutPosition() %
-//                2) {
-//            case 0:
-//                helper.setImageResource(R.id.iv, R.mipmap.m_img1);
-//                break;
-//            case 1:
-//                helper.setImageResource(R.id.iv, R.mipmap.m_img2);
-//                break;
-//
-//        }
     }
 
     @Override

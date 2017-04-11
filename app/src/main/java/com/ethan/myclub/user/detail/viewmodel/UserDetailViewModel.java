@@ -105,32 +105,4 @@ public class UserDetailViewModel {
                 });
     }
 
-    @BindingAdapter({"avatarImageUri"})
-    public static void loadImage(final ImageView view, Uri imageUri) {
-        if (!Utils.isActivityRunning(view.getContext()))
-            return;
-        Object target;
-        if (imageUri == null) {
-            target = R.drawable.img_default_avatar;
-        } else {
-            target = imageUri;
-        }
-        Glide.with(view.getContext())
-                .load(target)
-                .listener(new RequestListener<Object, GlideDrawable>() {
-                    @Override
-                    public boolean onException(Exception e, Object model, Target<GlideDrawable> target, boolean isFirstResource) {
-                        e.printStackTrace();
-                        return false;
-                    }
-
-                    @Override
-                    public boolean onResourceReady(GlideDrawable resource, Object model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
-                        return false;
-                    }
-                })
-                .crossFade()
-                .bitmapTransform(new CropCircleTransformation(view.getContext()))
-                .into(view);
-    }
 }

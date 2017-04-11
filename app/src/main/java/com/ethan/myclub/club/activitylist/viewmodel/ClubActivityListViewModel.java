@@ -52,7 +52,7 @@ public class ClubActivityListViewModel {
                 update();
             }
         });
-        mAdapter = new ActivityAdapter(mActivity, null);
+        mAdapter = new ActivityAdapter(null);
         mAdapter.openLoadAnimation(BaseQuickAdapter.ALPHAIN);
 
         mAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
@@ -98,6 +98,9 @@ public class ClubActivityListViewModel {
                             mAdapter.setEmptyView(mEmptyView);
                             toolbar.show();
                         } else {
+                            for (ActivityResult activityResult : activityResults) {
+                                activityResult.homePageImg += "?imageView2/0/w/500/h/500";
+                            }
                             mBinding.list.setLayoutFrozen(false);
                             formatOrder(activityResults);
                             mAdapter.setNewData(activityResults);

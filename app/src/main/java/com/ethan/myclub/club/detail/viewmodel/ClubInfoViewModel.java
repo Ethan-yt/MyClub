@@ -7,6 +7,7 @@ import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
@@ -33,6 +34,8 @@ import com.ethan.myclub.main.BaseActivity;
 import com.ethan.myclub.network.ApiHelper;
 import com.ethan.myclub.util.Utils;
 import com.google.android.flexbox.FlexboxLayout;
+
+import org.w3c.dom.Text;
 
 import java.util.List;
 
@@ -119,7 +122,11 @@ public class ClubInfoViewModel {
 
                     @Override
                     public void onNext(List<ActivityResult> activityResults) {
-                        if (activityResults == null || activityResults.size() == 0) {
+                        for (ActivityResult activityResult : activityResults) {
+                            activityResult.homePageImg += "?imageView2/0/w/300/h/300";
+                        }
+
+                        if (activityResults.size() == 0) {
                             mEmptyView.setText("当前社团还未发布任何活动");
                             mAdapter.setNewData(null);
                             mBinding.list.setLayoutFrozen(true);
@@ -172,6 +179,7 @@ public class ClubInfoViewModel {
 
                     @Override
                     public void onNext(Club club) {
+                        club.badge = club.badge + "?imageView2/0/w/300/h/300";
                         mClub.set(club);
                         mBinding.flTags.removeAllViews();
                         for (Tag tag : club.tag) {
@@ -196,22 +204,5 @@ public class ClubInfoViewModel {
                         mBinding.swipeRefreshLayout.setRefreshing(false);
                     }
                 });
-    }
-
-    @BindingAdapter({"clubInfoBadge"})
-    public static void loadImage(final ImageView view, String imageUrl) {
-        if (!Utils.isActivityRunning(view.getContext()))
-            return;
-        Object target;
-        if (imageUrl == null) {
-            target = R.drawable.img_default_avatar;
-        } else {
-            target = imageUrl + "?imageView2/0/w/300/h/300";
-        }
-        Glide.with(view.getContext())
-                .load(target)
-                .crossFade()
-                .bitmapTransform(new CropCircleTransformation(view.getContext()))
-                .into(view);
     }
 }

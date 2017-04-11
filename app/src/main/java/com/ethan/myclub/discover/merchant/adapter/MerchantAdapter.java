@@ -11,6 +11,7 @@ import com.chad.library.adapter.base.BaseViewHolder;
 import com.ethan.myclub.R;
 import com.ethan.myclub.discover.merchant.MerchantFragment;
 import com.ethan.myclub.discover.merchant.model.MerchantResult;
+import com.ethan.myclub.util.ImageUtils;
 
 import java.util.List;
 
@@ -20,11 +21,8 @@ import java.util.List;
 
 public class MerchantAdapter extends BaseQuickAdapter<MerchantResult, BaseViewHolder> {
 
-    private MerchantFragment mMerchantFragment;
-
-    public MerchantAdapter(MerchantFragment merchantFragment, List<MerchantResult> data) {
+    public MerchantAdapter(List<MerchantResult> data) {
         super(R.layout.item_discover_merchant, data);
-        mMerchantFragment = merchantFragment;
     }
 
     @Override
@@ -37,29 +35,7 @@ public class MerchantAdapter extends BaseQuickAdapter<MerchantResult, BaseViewHo
             star += "\u2b50";
         helper.setText(R.id.tv_star, star);
 
-        String imageUrl = item.logoUrl;
-        Object target;
-        if (imageUrl == null) {
-            target = R.drawable.img_default_avatar;
-        } else {
-            target = imageUrl + "?imageView2/0/w/300/h/300";
-        }
-        Glide.with(mMerchantFragment)
-                .load(target)
-                .listener(new RequestListener<Object, GlideDrawable>() {
-                    @Override
-                    public boolean onException(Exception e, Object model, Target<GlideDrawable> target, boolean isFirstResource) {
-                        e.printStackTrace();
-                        return false;
-                    }
-
-                    @Override
-                    public boolean onResourceReady(GlideDrawable resource, Object model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
-                        return false;
-                    }
-                })
-                .crossFade()
-                .into((ImageView) helper.getView(R.id.iv_merchant_logo));
+        ImageUtils.loadImageUrlRect((ImageView) helper.getView(R.id.iv_merchant_logo),item.logoUrl);
     }
 
 }

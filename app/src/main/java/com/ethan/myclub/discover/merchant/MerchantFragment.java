@@ -29,7 +29,7 @@ public class MerchantFragment extends TabFragment {
 
     public MerchantFragment() {
         mLayoutManager = new GridLayoutManager(getContext(), 2);
-        mAdapter = new MerchantAdapter(this, null);
+        mAdapter = new MerchantAdapter(null);
         mAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
@@ -41,9 +41,9 @@ public class MerchantFragment extends TabFragment {
                         .setPositiveButton("拨打电话", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                Intent intent=new Intent();
+                                Intent intent = new Intent();
                                 intent.setAction(Intent.ACTION_DIAL);   //android.intent.action.DIAL
-                                intent.setData(Uri.parse("tel:"+merchant.contact));
+                                intent.setData(Uri.parse("tel:" + merchant.contact));
                                 startActivity(intent);
                             }
                         })
@@ -72,6 +72,10 @@ public class MerchantFragment extends TabFragment {
                         //允许读取更多
                         mAdapter.setEnableLoadMore(true);
                         mCurrentPage++;
+                        for (MerchantResult merchantResult : merchantList) {
+                            merchantResult.logoUrl += "?imageView2/0/w/300/h/300";
+                        }
+
                         if (page == 1) {
                             if (merchantList == null || merchantList.size() == 0) {
                                 mEmptyView.showEmptyView("还没有这个商家", "请换一个关键字试试哦");

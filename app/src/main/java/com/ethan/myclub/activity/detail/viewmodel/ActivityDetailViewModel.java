@@ -26,6 +26,7 @@ import com.ethan.myclub.main.MyApplication;
 import com.ethan.myclub.network.ApiHelper;
 import com.ethan.myclub.network.exception.ApiException;
 import com.ethan.myclub.user.collection.view.UserCollectionActivity;
+import com.ethan.myclub.util.ImageUtils;
 import com.ethan.myclub.util.Utils;
 import com.google.android.flexbox.FlexboxLayout;
 
@@ -75,38 +76,39 @@ public class ActivityDetailViewModel {
 
         mEmptyView = new EmptyView(mActivity);
 
-        String target;
+        final String url;
         if (activityResult.isSpecial) {
-            target = activityResult.specialIndexImage + "?imageView2/0/w/720/h/1080";
+            url = activityResult.specialIndexImage + "?imageView2/0/w/720/h/1080";
         } else {
             ViewGroup.LayoutParams layoutParams = mBinding.appbar.getLayoutParams();
             layoutParams.height = Utils.dp2px(mActivity, 300);
-            target = activityResult.homePageImg + "?imageView2/0/w/300/h/300";
+            url = activityResult.homePageImg;
         }
-
-        Glide.with(mActivity)
-                .load(target)
-                .listener(new RequestListener<String, GlideDrawable>() {
-                    @Override
-                    public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
-                        return false;
-                    }
-
-                    @Override
-                    public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
-                        Observable.timer(500, TimeUnit.MILLISECONDS, AndroidSchedulers.mainThread())
-                                .subscribe(new Consumer<Long>() {
-                                    @Override
-                                    public void accept(@NonNull Long aLong) throws Exception {
-                                        mBinding.clBg.setVisibility(View.VISIBLE);
-                                        mBinding.appbar.setExpanded(true);
-                                    }
-                                });
-                        return false;
-                    }
-                })
-                .into(mBinding.ivActivityLogo);
         update();
+        Observable.timer(500, TimeUnit.MILLISECONDS, AndroidSchedulers.mainThread())
+                .subscribe(new Consumer<Long>() {
+                    @Override
+                    public void accept(@NonNull Long aLong) throws Exception {
+
+                        Glide.with(mActivity)
+                                .load(url)
+                                .listener(new RequestListener<Object, GlideDrawable>() {
+                                    @Override
+                                    public boolean onException(Exception e, Object model, Target<GlideDrawable> target, boolean isFirstResource) {
+                                        e.printStackTrace();
+                                        return false;
+                                    }
+
+                                    @Override
+                                    public boolean onResourceReady(GlideDrawable resource, Object model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
+                                        mBinding.appbar.setExpanded(true);
+                                        return false;
+                                    }
+                                })
+                                .crossFade()
+                                .into(mBinding.ivActivityLogo);
+                    }
+                });
     }
 
     private static final int GET_ACTIVITY_RESULT_OK = -1;
@@ -119,6 +121,7 @@ public class ActivityDetailViewModel {
         if (resultCode == GET_ACTIVITY_RESULT_OK) {
             mBinding.list.setLayoutFrozen(false);
 
+            activity.club.badge += "?imageView2/0/w/300/h/300";
             mActivityDetail.set(activity);
 
             if (activity.likeStatus)
@@ -146,6 +149,7 @@ public class ActivityDetailViewModel {
 
             for (int i = 0; i < size1; i++) {
                 ActivityContent content = new ActivityContent(activity.contentImages.get(i), activity.contentTexts.get(i));
+                content.url += "?imageView2/0/w/1080/h/720";
                 list.add(content);
             }
 
@@ -161,8 +165,6 @@ public class ActivityDetailViewModel {
                 lp.setMargins(10, 10, 10, 10);
                 lp.order = tag.tagName.length();
             }
-
-
 
 
         } else {
@@ -216,7 +218,7 @@ public class ActivityDetailViewModel {
 
                     @Override
                     public void onComplete() {
-                        if(!MyApplication.isLogin())
+                        if (!MyApplication.isLogin())
                             notifyFinished(null, GET_ACTIVITY_RESULT_NOT_LOGIN);
                     }
                 });
@@ -225,7 +227,7 @@ public class ActivityDetailViewModel {
 
     public void like() {
         mActivity.setResult(UserCollectionActivity.RESULT_CHANGED);
-        if(mActivityDetail.get() == null)
+        if (mActivityDetail.get() == null)
             return;
         mActivityDetail.get().likeStatus = !mActivityDetail.get().likeStatus;
         if (mActivityDetail.get().likeStatus)
@@ -259,20 +261,4 @@ public class ActivityDetailViewModel {
                 });
     }
 
-    @BindingAdapter({"activityDetailClubBadge"})
-    public static void loadClubBadge(final ImageView view, String imageUrl) {
-        if (!Utils.isActivityRunning(view.getContext()))
-            return;
-        Object target;
-        if (imageUrl == null) {
-            target = R.drawable.img_default_avatar;
-        } else {
-            target = imageUrl + "?imageView2/0/w/300/h/300";
-        }
-        Glide.with(view.getContext())
-                .load(target)
-                .crossFade()
-                .bitmapTransform(new CropCircleTransformation(view.getContext()))
-                .into(view);
-    }
 }

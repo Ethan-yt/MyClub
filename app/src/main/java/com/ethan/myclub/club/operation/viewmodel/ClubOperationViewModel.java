@@ -75,21 +75,4 @@ public class ClubOperationViewModel {
         mBinding.indicator.setViewPager(mBinding.viewPager);
 
     }
-
-    @BindingAdapter({"clubOperationBadge"})
-    public static void loadImage(final ImageView view, String imageUrl) {
-        if (!Utils.isActivityRunning(view.getContext()))
-            return;
-        Object target;
-        if (imageUrl == null) {
-            target = R.drawable.img_default_avatar;
-        } else {
-            target = imageUrl + "?imageView2/0/w/300/h/300";
-        }
-        Glide.with(view.getContext())
-                .load(target)
-                .crossFade()
-                .bitmapTransform(new CropCircleTransformation(view.getContext()))
-                .into(view);
-    }
 }

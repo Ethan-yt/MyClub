@@ -20,6 +20,7 @@ import com.ethan.myclub.databinding.ActivityActivityEditContentBinding;
 import com.ethan.myclub.main.ImageSelectActivity;
 import com.ethan.myclub.main.MainActivity;
 import com.ethan.myclub.network.ApiHelper;
+import com.ethan.myclub.util.ImageUtils;
 import com.ethan.myclub.util.Utils;
 import com.google.android.flexbox.FlexboxLayout;
 
@@ -152,12 +153,12 @@ public class ActivityEditContentViewModel {
 
                                         mBinding.flImgs.addView(iv);
                                         FlexboxLayout.LayoutParams lp = (FlexboxLayout.LayoutParams) iv.getLayoutParams();
-                                        lp.height = Utils.dp2px(mActivity,80);
+                                        lp.height = Utils.dp2px(mActivity, 80);
                                         lp.width = lp.height;
-                                        int margin = Utils.dp2px(mActivity,10);
+                                        int margin = Utils.dp2px(mActivity, 10);
                                         lp.setMargins(margin, margin, margin, margin);
 
-                                        ImageSelectActivity.loadImageRect(iv, outputUri);
+                                        ImageUtils.loadImageUriRect(iv, outputUri);
                                         files.add(outputFile);
                                         contents.add(input);
                                         mActivity.showSnackbar("添加成功！");

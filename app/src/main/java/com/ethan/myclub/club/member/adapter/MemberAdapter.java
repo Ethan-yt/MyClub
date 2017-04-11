@@ -22,6 +22,7 @@ import com.ethan.myclub.main.BaseActivity;
 import com.ethan.myclub.main.MainActivity;
 import com.ethan.myclub.network.ApiHelper;
 import com.ethan.myclub.user.detail.view.UserDetailActivity;
+import com.ethan.myclub.util.ImageUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -60,31 +61,8 @@ public class MemberAdapter extends BaseQuickAdapter<MemberResult, BaseViewHolder
         helper.setText(R.id.tv_username, name);
         helper.setText(R.id.tv_title_name, mMyClub.getTitleNameFromMemberResult(item));
         helper.setText(R.id.tv_nickname, "昵称 " + item.nickname);
-        String imageUrl = item.avatar;
-        Object target;
-        if (imageUrl == null) {
-            target = R.drawable.img_default_avatar;
-        } else {
-            target = imageUrl + "?imageView2/0/w/300/h/300";
-        }
 
-        Glide.with(mBaseActivity)
-                .load(target)
-                .listener(new RequestListener<Object, GlideDrawable>() {
-                    @Override
-                    public boolean onException(Exception e, Object model, Target<GlideDrawable> target, boolean isFirstResource) {
-                        e.printStackTrace();
-                        return false;
-                    }
-
-                    @Override
-                    public boolean onResourceReady(GlideDrawable resource, Object model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
-                        return false;
-                    }
-                })
-                .crossFade()
-                .bitmapTransform(new CropCircleTransformation(mBaseActivity))
-                .into((ImageView) helper.getView(R.id.iv_avatar));
+        ImageUtils.loadImageUrl((ImageView) helper.getView(R.id.iv_avatar), item.avatar);
 
 
         helper.getView(R.id.cv)

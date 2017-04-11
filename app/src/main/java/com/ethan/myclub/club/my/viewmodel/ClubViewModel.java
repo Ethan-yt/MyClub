@@ -119,6 +119,9 @@ public class ClubViewModel {
                             mBinding.recyclerView.setLayoutFrozen(true);
                             mAdapter.setEmptyView(mEmptyView);
                         } else {
+                            for (MyClub myClub : myClubs) {
+                                myClub.clubBadge += "?imageView2/0/w/300/h/300";
+                            }
                             mBinding.recyclerView.setLayoutFrozen(false);
                             mAdapter.setNewData(myClubs);
                             MainActivity.needUpdateFlag.clubList = false;

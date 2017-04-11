@@ -208,23 +208,6 @@ public class UserViewModel {
 
     }
 
-    @BindingAdapter({"imageUrl"})
-    public static void loadImage(final ImageView view, String imageUrl) {
-        if (!Utils.isActivityRunning(view.getContext()))
-            return;
-        Object target;
-        if (TextUtils.isEmpty(imageUrl)) {
-            target = R.drawable.img_default_avatar;
-        } else {
-            target = imageUrl;
-        }
-        Glide.with(view.getContext())
-                .load(target)
-                .crossFade()
-                .bitmapTransform(new CropCircleTransformation(view.getContext()))
-                .into(view);
-    }
-
     public void message() {
 //        UserMessageActivity.start(mFragment.getActivity(), mMsg.get());
     }

@@ -11,6 +11,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.ethan.myclub.R;
 import com.ethan.myclub.activity.detail.model.ActivityContent;
+import com.ethan.myclub.util.ImageUtils;
 
 import java.util.List;
 
@@ -22,18 +23,16 @@ public class ActivityContentAdapter extends BaseQuickAdapter<ActivityContent, Ba
 
     private Context mContext;
 
-    public ActivityContentAdapter(Context context , List<ActivityContent> data) {
+    public ActivityContentAdapter(Context context, List<ActivityContent> data) {
         super(R.layout.item_activity_content, data);
         mContext = context;
     }
 
     @Override
     protected void convert(BaseViewHolder helper, ActivityContent item) {
-        helper.setText(R.id.tv_text,item.text);
-        Glide.with(mContext)
-                .load(item.url+ "?imageView2/0/w/500/h/500")
-                .crossFade()
-                .into((ImageView) helper.getView(R.id.iv_image));
+        helper.setText(R.id.tv_text, item.text);
+
+        ImageUtils.loadImageUrlRect((ImageView) helper.getView(R.id.iv_image), item.url);
 
     }
 

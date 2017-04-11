@@ -44,7 +44,7 @@
                         android:layout_centerHorizontal="true"
                         android:src="@drawable/img_default_avatar"
                         android:transitionName="trans_iv_avatar"
-                        app:selectedImageUri="@{viewModel.mImageUri}"/>
+                        app:image_uri="@{viewModel.mImageUri}"/>
 
                     <ImageView
                         android:layout_width="25dp"

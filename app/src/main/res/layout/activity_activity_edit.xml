@@ -177,7 +177,7 @@
                             android:layout_width="240dp"
                             android:layout_height="160dp"
                             android:layout_centerHorizontal="true"
-                            app:selectedRectImageUri="@{viewModel.mImage1Uri}"
+                            app:image_uri_rect="@{viewModel.mImage1Uri}"
                             tools:scaleType="centerCrop"
                             tools:src="@drawable/img_default_avatar"/>
 
@@ -219,7 +219,7 @@
                             android:layout_height="240dp"
                             android:layout_centerHorizontal="true"
                             android:src="@drawable/img_default_avatar"
-                            app:selectedRectImageUri="@{viewModel.mImage2Uri}"
+                            app:image_uri_rect="@{viewModel.mImage2Uri}"
                             tools:scaleType="centerCrop"/>
 
                         <ImageView
