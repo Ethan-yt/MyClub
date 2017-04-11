@@ -122,7 +122,8 @@ public class MainActivity extends BaseActivity {
                 //切换到社团列表前
                 if (position == 1) {
                     bottomNavigation.setBehaviorTranslationEnabled(false);
-                    mFabMenu.showMenuButton(true);
+                    if (MyApplication.isLogin())
+                        mFabMenu.showMenuButton(true);
                 } else {
                     bottomNavigation.setBehaviorTranslationEnabled(true);
                     mFabMenu.hideMenuButton(true);
@@ -150,6 +151,11 @@ public class MainActivity extends BaseActivity {
 
         if (resultCode == RESULT_OK) {
             switch (requestCode) {
+                case REQUEST_LOGIN:
+                case REQUEST_REGISTER:
+                    if (currentFragment instanceof MyClubFragment && MyApplication.isLogin())
+                        mFabMenu.showMenuButton(true);
+                    break;
                 case REQUEST_CREATE_CLUB:
                     showSnackbar("创建社团成功！");
                     break;
