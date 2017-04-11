@@ -27,6 +27,7 @@
         android:layout_alignParentRight="true"
         android:layout_marginBottom="50dp"
         android:padding="10dp"
+        app:layout_behavior="com.ethan.myclub.main.behavior.FloatingActionMenuBehavior"
         fab:menu_backgroundColor="#ccffffff"
         fab:menu_colorNormal="#4DD0E1"
         fab:menu_colorPressed="#3da4b1"
