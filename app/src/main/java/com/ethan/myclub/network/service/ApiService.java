@@ -9,7 +9,8 @@ import com.ethan.myclub.club.model.Tag2;
 import com.ethan.myclub.club.my.model.MyClub;
 import com.ethan.myclub.discover.activity.model.ActivityResult;
 import com.ethan.myclub.discover.merchant.model.MerchantResult;
-import com.ethan.myclub.user.model.MessageFeedBack;
+import com.ethan.myclub.message.model.Message;
+import com.ethan.myclub.message.model.UnreadNumber;
 import com.ethan.myclub.user.model.Profile;
 import com.ethan.myclub.user.login.model.Valid;
 import com.ethan.myclub.discover.club.model.ClubResult;
@@ -37,6 +38,40 @@ import retrofit2.http.Query;
  */
 
 public interface ApiService {
+
+    //============================消息============================
+    //获取我的消息列表
+    @GET("api/message/all/")
+    Observable<List<Message>> getMyMessage();
+
+
+    //获取未读消息数
+    @GET("api/message/unread-number/")
+    Observable<UnreadNumber> getUnreadNumber();
+
+    //发布社团通知
+    @FormUrlEncoded
+    @POST("api/message/{clubId}/notification/")
+    Observable<Object>
+    sendClubNotification(@Path("clubId") String clubId,
+                         @Field("title") String title,
+                         @Field("content") String content);
+
+    //获取社团发布的通知
+    @GET("api/club/{clubId}/message/")
+    Observable<List<Message>>
+    getAllClubMessage(@Path("clubId") String clubId);
+
+    //变更消息已阅状态
+    @GET("api/message/{msgId}/read/")
+    Observable<Object>
+    setUserReadStatus(@Path("msgId") String msgId);
+
+    //用户删除某个消息
+    @DELETE("api/message/{msgId}/read/")
+    Observable<Object>
+    removeUserMessage(@Path("msgId") String msgId);
+
     //============================账户============================
     //验证账户可用性
     @FormUrlEncoded
@@ -51,10 +86,6 @@ public interface ApiService {
     //获取我的资料
     @GET("api/user/profile/")
     Observable<Profile> getMyProfile();
-
-    //获取我的消息列表
-    @GET("api/user/notification/")
-    Observable<List<MessageFeedBack>> getMyMessage();
 
     //获取我的社团
     @GET("api/club/my-club-list/")
@@ -84,7 +115,8 @@ public interface ApiService {
     // 提交REGID
     @POST("api/user/regid/")
     @FormUrlEncoded
-    Observable<Object> submitRegId(@Field("userId") String regId);
+    Observable<Object> submitRegId(@Field("regID") String regId);
+
     //============================社团============================
     //获取社团搜索提示
     @GET("api/club/suggestion/")
@@ -230,16 +262,4 @@ public interface ApiService {
     //上传课表
     @POST("api/user/schedule/")
     Observable<Object> updateSchedule(@Body List<Schedule> schedules);
-
-    //============================通知============================
-
-    //创建活动
-    @FormUrlEncoded
-    @POST("api/club/{clubId}/notification/")
-    Observable<Object>
-    sendNotification(@Path("clubId") String clubId,
-                     @Field("title") String title,
-                     @Field("content") String content);
-
-
 }

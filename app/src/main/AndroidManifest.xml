@@ -9,7 +9,6 @@
     <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
     <uses-permission android:name="android.permission.READ_LOGS"/>
     <uses-permission android:name="android.permission.GET_TASKS"/>
-    <uses-permission android:name="com.ethan.myclub.permission.MIPUSH_RECEIVE"/>
     <uses-permission
         android:name="android.permission.WRITE_EXTERNAL_STORAGE"
         android:maxSdkVersion="18"/>
@@ -17,6 +16,8 @@
     <permission
         android:name="com.ethan.myclub.permission.MIPUSH_RECEIVE"
         android:protectionLevel="signature"/>
+
+    <uses-permission android:name="com.ethan.myclub.permission.MIPUSH_RECEIVE"/>
 
     <application
         android:name=".main.MyApplication"
@@ -68,7 +69,7 @@
             android:name=".user.login.view.RegisterActivity2"
             android:theme="@style/AppTheme.Dark"/>
         <activity android:name=".user.edit.view.ProfileEditActivity"/>
-        <activity android:name=".user.message.unused_messageActivity"/>
+        <activity android:name=".message.unused_messageActivity"/>
         <activity android:name=".club.create.view.ClubCreateActivity"/>
         <activity android:name=".club.operation.view.ClubOperationActivity"/>
         <activity android:name=".club.detail.view.ClubInfoActivity"/>
@@ -94,7 +95,7 @@
             android:enabled="true"/>
 
         <receiver
-            android:name=".push.MiPushMessageReceiver"
+            android:name=".message.receiver.MiPushMessageReceiver"
             android:exported="true">
             <intent-filter>
                 <action android:name="com.xiaomi.mipush.RECEIVE_MESSAGE"/>
@@ -133,9 +134,11 @@
         <activity android:name=".user.collection.view.UserCollectionActivity"/>
         <activity android:name=".club.notification.view.ClubNotificationCreateActivity"/>
         <activity android:name=".club.member.view.ClubMemberListActivity"/>
-        <activity android:name=".club.member.view.ClubMemberDetailActivity"/>
         <activity android:name=".user.detail.view.UserDetailActivity"/>
-        <activity android:name=".user.message.view.UserMessageActivity"/>
+        <activity
+            android:name=".message.view.MessageListActivity"
+            android:launchMode="singleTask"/>
+        <activity android:name=".message.view.MessageDetailClubActivity"/>
     </application>
 
 </manifest>

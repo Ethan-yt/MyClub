@@ -19,6 +19,8 @@ import com.ethan.myclub.databinding.FragmentUserBinding;
 import com.ethan.myclub.main.BaseActivity;
 import com.ethan.myclub.main.MainActivity;
 import com.ethan.myclub.main.MyApplication;
+import com.ethan.myclub.message.model.UnreadNumber;
+import com.ethan.myclub.message.view.MessageListActivity;
 import com.ethan.myclub.network.ApiHelper;
 import com.ethan.myclub.user.collection.view.UserCollectionActivity;
 import com.ethan.myclub.user.edit.view.ProfileEditActivity;
@@ -99,66 +101,55 @@ public class UserViewModel {
         UserCollectionActivity.start(mFragment.mMainActivity);
     }
 
-    public void updateUserProfileAttempt() {
-        if (!MyApplication.isLogin())
-        {
+    public void updateUserUnreadNumberAttempt() {
+        if (!MyApplication.isLogin()) {
             mFragment.mMainActivity.bottomNavigation.setNotification("", 2);
             return;
         }
+        //获取用户消息数量
+        if (MainActivity.needUpdateFlag.userUnreadCount || mUnreadNum.get() == -1) {
+            Log.i(TAG, "updateUserProfileAttempt: 更新mUnreadNum");
+            updateUserUnreadNumber();
+        }
+    }
 
-
+    public void updateUserProfileAttempt() {
         //获取用户基本资料
         if (MainActivity.needUpdateFlag.userProfile || mProfile.get() == null) {
             Log.i(TAG, "updateUserProfileAttempt: 更新userProfile");
             updateUserProfile();
         }
-
-//        mUnreadNum.addOnPropertyChangedCallback(new Observable.OnPropertyChangedCallback() {
-//            @Override
-//            public void onPropertyChanged(Observable observable, int i) {
-//                MainActivity mainActivity = (MainActivity) mFragment.getActivity();
-//                if (mUnreadNum.get() != 0) {
-//                    mainActivity.bottomNavigation.setNotification(String.valueOf(mUnreadNum.get()), 2);
-//                } else {
-//                    mainActivity.bottomNavigation.setNotification("", 2);
-//                }
-//            }
-//        });
-        //获取用户消息
-//        if (MainActivity.needUpdateFlag.userUnreadCount || mUnreadNum.get() == -1) {
-//            Log.i(TAG, "updateUserProfileAttempt: 更新mUnreadNum");
-//            updateUserProfile();
-//        }
     }
 
-//    public void updateUserMsg() {
-//        ApiHelper.getProxy((BaseActivity) mFragment.getActivity())
-//                .getMyMessage()
-//                .observeOn(AndroidSchedulers.mainThread())
-//                .subscribe(new Observer<List<MessageFeedBack>>() {
-//                    @Override
-//                    public void onSubscribe(Disposable d) {
-//
-//                    }
-//
-//                    @Override
-//                    public void onNext(List<MessageFeedBack> messageFeedBacks) {
-//                        Log.i(TAG, "updateUserProfile: 更新UserMsgList完成");
-//                        MessageFeedBack[] msgsArray = messageFeedBacks.toArray(new MessageFeedBack[0]);
-//                        mMsg.set(messageFeedBacks);
-//                    }
-//
-//                    @Override
-//                    public void onError(Throwable e) {
-//                        Log.i(TAG, "updateUserProfile: 更新UserMsgList失败");
-//                    }
-//
-//                    @Override
-//                    public void onComplete() {
-//
-//                    }
-//                });
-//    }
+    public void updateUserUnreadNumber() {
+        ApiHelper.getProxy((BaseActivity) mFragment.getActivity())
+                .getUnreadNumber()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<UnreadNumber>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(UnreadNumber unreadNumber) {
+                        Log.i(TAG, "updateUserUnreadNumber: 更新未读消息数完成");
+                        mFragment.mMainActivity.bottomNavigation.setNotification(unreadNumber.unreadNumber == 0 ? "" : String.valueOf(unreadNumber.unreadNumber), 2);
+                        MainActivity.needUpdateFlag.userUnreadCount = false;
+                        mUnreadNum.set(unreadNumber.unreadNumber);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Log.i(TAG, "updateUserUnreadNumber: 更新未读消息数失败");
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+    }
 
     public void updateUserProfile() {
         ApiHelper.getProxy((BaseActivity) mFragment.getActivity())
@@ -209,6 +200,8 @@ public class UserViewModel {
     }
 
     public void message() {
-//        UserMessageActivity.start(mFragment.getActivity(), mMsg.get());
+        MessageListActivity.start(mFragment.getActivity(), null);
     }
+
+
 }

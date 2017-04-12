@@ -1,8 +1,10 @@
 package com.ethan.myclub.main;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -16,9 +18,11 @@ import com.ethan.myclub.R;
 import com.ethan.myclub.club.create.view.ClubCreateActivity;
 import com.ethan.myclub.club.my.view.MyClubFragment;
 import com.ethan.myclub.discover.main.DiscoverFragment;
+import com.ethan.myclub.message.receiver.MiPushMessageReceiver;
 import com.ethan.myclub.user.main.view.UserFragment;
 import com.ethan.myclub.util.Utils;
 import com.github.clans.fab.FloatingActionMenu;
+import com.xiaomi.mipush.sdk.MiPushMessage;
 
 public class MainActivity extends BaseActivity {
     public static final int REQUEST_CREATE_CLUB = 10308;
@@ -30,9 +34,11 @@ public class MainActivity extends BaseActivity {
     private AHBottomNavigationAdapter navigationAdapter;
     // UI
     private AHBottomNavigationViewPager viewPager;
-
     public AHBottomNavigation bottomNavigation;
     private FloatingActionMenu mFabMenu;
+
+    private MiPushMessageReceiver receiver = null;
+
 
     static public class needUpdateFlag {
         static public boolean clubList = true;
@@ -194,13 +200,39 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        getCache();
+        updateUserProfileAttempt();
+        updateUserClubListAttempt();
+        updateUserUnreadNumberAttempt();
+        if (receiver == null) {
+            receiver = new MiPushMessageReceiver() {
+                @Override
+                public void onReceivePassThroughMessage(Context context, MiPushMessage message1) {
+                    super.onReceivePassThroughMessage(context, message1);
+                    updateUserUnreadNumberAttempt();
+                }
+            };
+            IntentFilter intentFilter = new IntentFilter();
+            intentFilter.addAction("com.xiaomi.mipush.RECEIVE_MESSAGE");
+            intentFilter.addAction("com.xiaomi.mipush.MESSAGE_ARRIVED");
+            intentFilter.addAction("com.xiaomi.mipush.ERROR");
+            registerReceiver(receiver, intentFilter);
+        }
+
     }
 
-    private void getCache() {
+    private void updateUserUnreadNumberAttempt() {
+        UserFragment userFragment = (UserFragment) adapter.getItem(2);
+        if (userFragment.mViewModel != null)
+            userFragment.mViewModel.updateUserUnreadNumberAttempt();
+    }
+
+    private void updateUserProfileAttempt() {
         UserFragment userFragment = (UserFragment) adapter.getItem(2);
         if (userFragment.mViewModel != null)
             userFragment.mViewModel.updateUserProfileAttempt();
+    }
+
+    private void updateUserClubListAttempt() {
 
         MyClubFragment clubFragment = (MyClubFragment) adapter.getItem(1);
         if (clubFragment.mViewModel != null)
@@ -210,7 +242,10 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onPause() {
         super.onPause();
-
+        if (receiver != null) {
+            unregisterReceiver(receiver);
+            receiver = null;
+        }
     }
 
 

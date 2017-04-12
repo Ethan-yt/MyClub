@@ -14,6 +14,7 @@ import com.bumptech.glide.request.target.Target;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.chauthai.swipereveallayout.SwipeRevealLayout;
+import com.chauthai.swipereveallayout.ViewBinderHelper;
 import com.ethan.myclub.R;
 import com.ethan.myclub.club.member.viewmodel.ClubMemberListViewModel;
 import com.ethan.myclub.club.model.MemberResult;
@@ -42,6 +43,7 @@ import jp.wasabeef.glide.transformations.CropCircleTransformation;
 
 public class MemberAdapter extends BaseQuickAdapter<MemberResult, BaseViewHolder> {
 
+    private final ViewBinderHelper binderHelper;
     private BaseActivity mBaseActivity;
     private MyClub mMyClub;
     private ClubMemberListViewModel mViewModel;
@@ -51,6 +53,11 @@ public class MemberAdapter extends BaseQuickAdapter<MemberResult, BaseViewHolder
         mBaseActivity = baseActivity;
         mMyClub = myClub;
         mViewModel = viewModel;
+        if (mMyClub.isCreator) {
+            binderHelper = new ViewBinderHelper();
+            binderHelper.setOpenOnlyOne(true);
+        } else
+            binderHelper = null;
     }
 
     @Override
@@ -75,6 +82,7 @@ public class MemberAdapter extends BaseQuickAdapter<MemberResult, BaseViewHolder
 
         if (mMyClub.isCreator) {
             final SwipeRevealLayout swipeLayout = helper.getView(R.id.swipeLayout);
+            binderHelper.bind(swipeLayout, String.valueOf(item.userAccount));
             helper.getView(R.id.btn_give)
                     .setOnClickListener(new View.OnClickListener() {
                         @Override

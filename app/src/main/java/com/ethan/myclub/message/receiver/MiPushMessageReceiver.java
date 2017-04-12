@@ -1,12 +1,28 @@
-package com.ethan.myclub.push;
+package com.ethan.myclub.message.receiver;
 
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
+import android.graphics.Bitmap;
 import android.support.annotation.Keep;
+import android.support.v4.app.NotificationCompat;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.animation.GlideAnimation;
+import com.bumptech.glide.request.target.SimpleTarget;
+import com.bumptech.glide.request.target.Target;
+import com.ethan.myclub.R;
+import com.ethan.myclub.main.MainActivity;
 import com.ethan.myclub.main.MyApplication;
+import com.ethan.myclub.message.model.Message;
+import com.ethan.myclub.message.view.MessageListActivity;
 import com.ethan.myclub.network.ApiHelper;
+import com.google.gson.Gson;
 import com.xiaomi.mipush.sdk.ErrorCode;
 import com.xiaomi.mipush.sdk.MiPushClient;
 import com.xiaomi.mipush.sdk.MiPushCommandMessage;
@@ -16,14 +32,18 @@ import com.xiaomi.mipush.sdk.PushMessageReceiver;
 import java.util.List;
 
 import io.reactivex.Observable;
+import io.reactivex.ObservableEmitter;
+import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.ObservableSource;
 import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.BiFunction;
 import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
+
 
 @Keep
 public class MiPushMessageReceiver extends PushMessageReceiver {
@@ -40,15 +60,38 @@ public class MiPushMessageReceiver extends PushMessageReceiver {
     private String mEndTime;
 
     @Override
-    public void onReceivePassThroughMessage(Context context, MiPushMessage message) {
-        mMessage = message.getContent();
-        if (!TextUtils.isEmpty(message.getTopic())) {
-            mTopic = message.getTopic();
-        } else if (!TextUtils.isEmpty(message.getAlias())) {
-            mAlias = message.getAlias();
-        } else if (!TextUtils.isEmpty(message.getUserAccount())) {
-            mUserAccount = message.getUserAccount();
+    public void onReceivePassThroughMessage(final Context context, MiPushMessage message1) {
+        Log.i(TAG, "onReceivePassThroughMessage: ");
+        final Message message = new Gson().fromJson(message1.getContent(), Message.class);
+        MainActivity.needUpdateFlag.userUnreadCount = true;
+
+        switch (message.getItemType()) {
+            case 0:
+                Intent intent = new Intent(context, MessageListActivity.class);
+                //PendingIntent.FLAG_ONE_SHOT
+                PendingIntent pendingIntent = PendingIntent.getActivity(context,message.getItemType() , intent, 0);
+
+                NotificationCompat.Builder mBuilder =
+                        new NotificationCompat.Builder(context)
+                                .setSmallIcon(R.mipmap.ic_launcher)
+                                .setContentTitle(message.title)
+                                .setContentText(message.content)
+                                .setContentIntent(pendingIntent)
+                                .setPriority(NotificationCompat.PRIORITY_HIGH)
+                                .setDefaults(Notification.DEFAULT_VIBRATE);
+
+                NotificationManager mNotifyMgr =
+                        (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+
+                mNotifyMgr.notify(message.id, mBuilder.build());
         }
+//        if (!TextUtils.isEmpty(message.getTopic())) {
+//            mTopic = message.getTopic();
+//        } else if (!TextUtils.isEmpty(message.getAlias())) {
+//            mAlias = message.getAlias();
+//        } else if (!TextUtils.isEmpty(message.getUserAccount())) {
+//            mUserAccount = message.getUserAccount();
+//        }
     }
 
     @Override
@@ -93,6 +136,7 @@ public class MiPushMessageReceiver extends PushMessageReceiver {
                                     return throwableObservable.zipWith(Observable.range(1, 3), new BiFunction<Throwable, Integer, Object>() {
                                         @Override
                                         public Object apply(@NonNull Throwable throwable, @NonNull Integer integer) throws Exception {
+                                            Log.e(TAG, "onNext: RegId submitted error! test" + integer, throwable);
                                             return integer;
                                         }
                                     });
@@ -112,7 +156,6 @@ public class MiPushMessageReceiver extends PushMessageReceiver {
 
                                 @Override
                                 public void onError(Throwable e) {
-                                    Log.e(TAG, "onNext: RegId has submitted error!", e);
                                 }
 
                                 @Override

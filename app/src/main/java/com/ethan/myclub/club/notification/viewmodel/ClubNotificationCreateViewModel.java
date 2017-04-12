@@ -59,7 +59,7 @@ public class ClubNotificationCreateViewModel {
 
     private void send() {
         ApiHelper.getProxy(mActivity)
-                .sendNotification(String.valueOf(mMyClub.clubId), mTitle.get(), mContent.get())
+                .sendClubNotification(String.valueOf(mMyClub.clubId), mTitle.get(), mContent.get())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<Object>() {
                     @Override

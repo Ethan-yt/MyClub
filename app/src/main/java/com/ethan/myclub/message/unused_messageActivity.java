@@ -1,4 +1,4 @@
-package com.ethan.myclub.user.message;
+package com.ethan.myclub.message;
 
 import android.graphics.Color;
 import android.os.Bundle;

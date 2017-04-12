@@ -3,13 +3,13 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.ethan.myclub.user.message.UserMessageActivity">
+    tools:context=".message.UserMessageActivity">
 
     <data>
 
         <variable
             name="viewModel"
-            type="com.ethan.myclub.user.message.viewmodel.UserMessageViewModel"/>
+            type="com.ethan.myclub.message.viewmodel.MessageListViewModel"/>
     </data>
 
     <android.support.design.widget.CoordinatorLayout
@@ -27,7 +27,7 @@
                 android:id="@+id/list"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                tools:listitem="@layout/item_discover_activity_special"/>
+                tools:listitem="@layout/item_message_club"/>
         </android.support.v4.widget.SwipeRefreshLayout>
 
     </android.support.design.widget.CoordinatorLayout>

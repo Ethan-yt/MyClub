@@ -27,6 +27,7 @@ public class UserFragment extends BaseFragment {
         FragmentUserBinding viewDataBinding = (FragmentUserBinding) onCreateDataBindingView(inflater, R.layout.fragment_user, container);
         mViewModel = new UserViewModel(this, viewDataBinding);
         mViewModel.updateUserProfileAttempt();
+        mViewModel.updateUserUnreadNumberAttempt();
         return viewDataBinding.getRoot();
     }
 
@@ -34,7 +35,7 @@ public class UserFragment extends BaseFragment {
     public void refresh() {
         super.refresh();
         mViewModel.updateUserProfile();
-        //mViewModel.updateUserMsg();
+        mViewModel.updateUserUnreadNumber();
     }
 
     @Override

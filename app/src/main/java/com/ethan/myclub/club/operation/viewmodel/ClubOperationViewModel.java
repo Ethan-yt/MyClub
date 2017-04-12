@@ -20,6 +20,7 @@ import com.ethan.myclub.club.operation.adapter.ViewPagerAdapter;
 import com.ethan.myclub.club.operation.model.Operation;
 import com.ethan.myclub.club.operation.view.ClubOperationActivity;
 import com.ethan.myclub.databinding.ActivityClubOperationBinding;
+import com.ethan.myclub.message.view.MessageListActivity;
 import com.ethan.myclub.util.Utils;
 
 import java.util.ArrayList;
@@ -53,7 +54,7 @@ public class ClubOperationViewModel {
         operations.add(new Operation(ClubMemberListActivity.class, "成员列表", R.drawable.ic_club_op_member));
         operations.add(new Operation(ClubActivityListActivity.class, "活动列表", R.drawable.ic_club_op_activity));
         operations.add(new Operation(null, "社团账单", R.drawable.ic_club_op_budget));
-        operations.add(new Operation(null, "社团通知", R.drawable.ic_club_op_notification));
+        operations.add(new Operation(MessageListActivity.class, "社团通知", R.drawable.ic_club_op_notification));
         operations.add(new Operation(null, "退出社团", R.drawable.ic_club_op_quit));
         gridView.setAdapter(new GridViewAdapter(mActivity, operations, mClub));
         views.add(gridView);
