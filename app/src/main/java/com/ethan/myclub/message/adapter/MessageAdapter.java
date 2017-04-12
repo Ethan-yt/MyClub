@@ -1,5 +1,6 @@
 package com.ethan.myclub.message.adapter;
 
+import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -34,7 +35,7 @@ public class MessageAdapter extends BaseMultiItemQuickAdapter<Message, BaseViewH
     private MessageListViewModel mMessageListViewModel;
     private MyClub mMyClub;
 
-    public MessageAdapter(List<Message> data, MyClub myclub, BaseActivity baseActivity, MessageListViewModel messageListViewModel) {
+    public MessageAdapter(List<Message> data, @Nullable MyClub myclub, BaseActivity baseActivity, MessageListViewModel messageListViewModel) {
         super(data);
         addItemType(0, R.layout.item_message_club);
         binderHelper = new ViewBinderHelper();

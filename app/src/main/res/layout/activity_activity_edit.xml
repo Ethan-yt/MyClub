@@ -2,6 +2,7 @@
 <layout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:fab="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.ethan.myclub.activity.edit.ActivityEditActivity">
 
@@ -232,30 +233,51 @@
 
                     </RelativeLayout>
                 </android.support.v7.widget.CardView>
-                <Button
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="end"
-                    android:layout_marginTop="16dp"
-                    android:textColor="@android:color/white"
-                    android:background="@drawable/btn_big"
-                    android:onClick="@{()->viewModel.uploadContent()}"
-                    android:text="上传活动内容"/>
-
-                <Button
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="end"
-                    android:layout_marginTop="16dp"
-                    android:textColor="@android:color/white"
-                    android:background="@drawable/btn_big_red"
-                    android:onClick="@{()->viewModel.delete()}"
-                    android:text="删除活动"/>
 
             </LinearLayout>
 
-
         </android.support.v4.widget.NestedScrollView>
 
+        <com.github.clans.fab.FloatingActionMenu
+            android:id="@+id/fab_menu"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:padding="16dp"
+            app:layout_behavior="com.ethan.myclub.main.behavior.FloatingActionMenuBehavior"
+            fab:menu_backgroundColor="#ccffffff"
+            fab:menu_colorNormal="#4DD0E1"
+            fab:menu_colorPressed="#3da4b1"
+            fab:menu_colorRipple="#308691"
+            fab:menu_labels_ellipsize="end"
+            fab:menu_labels_singleLine="true">
+
+            <com.github.clans.fab.FloatingActionButton
+                android:id="@+id/fab_delete"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="@{()->viewModel.delete()}"
+                android:src="@drawable/ic_delete"
+                fab:fab_label="删除活动"
+                fab:fab_size="mini"
+                fab:menu_colorNormal="#ff2137"
+                fab:menu_colorPressed="#a40003"
+                fab:menu_colorRipple="#ff4447"/>
+
+            <com.github.clans.fab.FloatingActionButton
+                android:id="@+id/fab_edit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="@{()->viewModel.uploadContent()}"
+                android:src="@drawable/ic_create"
+                app:fab_colorNormal="#4DD0E1"
+                app:fab_colorPressed="#3da4b1"
+                app:fab_colorRipple="#308691"
+                fab:fab_label="上传活动内容"
+                fab:fab_size="mini"/>
+
+        </com.github.clans.fab.FloatingActionMenu>
     </android.support.design.widget.CoordinatorLayout>
 </layout>

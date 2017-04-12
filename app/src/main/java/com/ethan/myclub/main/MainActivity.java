@@ -109,11 +109,6 @@ public class MainActivity extends BaseActivity {
                 if (currentFragment == null) {
                     currentFragment = adapter.getCurrentFragment();
                 }
-
-                if (wasSelected) {
-                    currentFragment.refresh();
-                    return true;
-                }
                 //切换到个人页面前
                 if (position == 2) {
                     Utils.StatusBarLightMode(MainActivity.this, false);
@@ -134,6 +129,12 @@ public class MainActivity extends BaseActivity {
                     bottomNavigation.setBehaviorTranslationEnabled(true);
                     mFabMenu.hideMenuButton(true);
                 }
+
+                if (wasSelected) {
+                    currentFragment.refresh();
+                    return true;
+                }
+
 
                 if (currentFragment != null) {
                     currentFragment.willBeHidden();

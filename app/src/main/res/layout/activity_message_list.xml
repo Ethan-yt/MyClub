@@ -2,10 +2,13 @@
 <layout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:fab="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".message.UserMessageActivity">
 
     <data>
+
+        <import type="android.view.View"/>
 
         <variable
             name="viewModel"
@@ -29,6 +32,22 @@
                 android:layout_height="match_parent"
                 tools:listitem="@layout/item_message_club"/>
         </android.support.v4.widget.SwipeRefreshLayout>
+
+        <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/fab_create"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_margin="16dp"
+            android:onClick="@{()->viewModel.create()}"
+            android:src="@drawable/ic_create"
+            android:visibility="@{viewModel.mHasPermission?View.VISIBLE:View.INVISIBLE}"
+            app:fab_colorNormal="#4DD0E1"
+            app:fab_colorPressed="#3da4b1"
+            app:fab_colorRipple="#308691"
+            app:layout_behavior="com.ethan.myclub.main.behavior.FloatingActionMenuBehavior"
+            fab:fab_label="发布通知"
+            fab:fab_size="normal"/>
 
     </android.support.design.widget.CoordinatorLayout>
 </layout>

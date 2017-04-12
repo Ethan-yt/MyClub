@@ -2,6 +2,8 @@ package com.ethan.myclub.message.viewmodel;
 
 import android.app.NotificationManager;
 import android.content.Context;
+import android.databinding.ObservableBoolean;
+import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.text.TextUtils;
@@ -11,6 +13,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.ethan.myclub.R;
 import com.ethan.myclub.club.my.model.MyClub;
 import com.ethan.myclub.club.my.view.EmptyView;
+import com.ethan.myclub.club.notification.view.ClubNotificationCreateActivity;
 import com.ethan.myclub.databinding.ActivityMessageListBinding;
 import com.ethan.myclub.main.MainActivity;
 import com.ethan.myclub.message.adapter.MessageAdapter;
@@ -37,8 +40,9 @@ public class MessageListViewModel {
     private final EmptyView mEmptyView;
     final private MessageAdapter mAdapter;
 
+    public ObservableBoolean mHasPermission = new ObservableBoolean(false);
 
-    public MessageListViewModel(MessageListActivity activity, ActivityMessageListBinding binding, MyClub myClub) {
+    public MessageListViewModel(MessageListActivity activity, ActivityMessageListBinding binding,@Nullable MyClub myClub) {
         mActivity = activity;
         mBinding = binding;
         mBinding.setViewModel(this);
@@ -69,6 +73,8 @@ public class MessageListViewModel {
         NotificationManager nm =(NotificationManager)mActivity.getSystemService(Context.NOTIFICATION_SERVICE);
         nm.cancelAll();
 
+        if (mMyClub!= null && mMyClub.checkPermission(6))
+            mHasPermission.set(true);
     }
 
     public void update() {
@@ -126,5 +132,10 @@ public class MessageListViewModel {
                         mBinding.swipeLayout.setRefreshing(false);
                     }
                 });
+    }
+
+    public void create()
+    {
+        ClubNotificationCreateActivity.start(mActivity,mMyClub);
     }
 }

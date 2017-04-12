@@ -113,22 +113,22 @@
             </android.support.design.widget.TextInputLayout>
         </android.support.v7.widget.CardView>
 
-
-        <Button
-            android:id="@+id/button"
-            android:background="@drawable/btn_middle"
+        <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/fab_create"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="32dp"
-            android:layout_marginRight="32dp"
-            android:layout_marginStart="32dp"
-            android:layout_marginTop="16dp"
+            android:layout_gravity="bottom|end"
+            android:layout_margin="16dp"
             android:onClick="@{()->viewModel.createClub()}"
-            android:text="创建社团"
-            android:textColor="@android:color/white"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/cardView5"/>
-
+            android:src="@drawable/ic_finish"
+            app:fab_colorNormal="#4DD0E1"
+            app:fab_colorPressed="#3da4b1"
+            app:fab_colorRipple="#308691"
+            app:layout_behavior="com.ethan.myclub.main.behavior.FloatingActionMenuBehavior"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginBottom="16dp"
+            android:layout_marginRight="16dp"
+            app:layout_constraintRight_toRightOf="parent"/>
 
     </android.support.constraint.ConstraintLayout>
 </layout>

@@ -62,10 +62,6 @@ public class ClubOperationViewModel {
 
         gridView = (GridView) View.inflate(mActivity, R.layout.item_club_operation_pager, null);
         operations = new ArrayList<>();
-        if (club.checkPermission(6))
-            operations.add(new Operation(ActivityCreateActivity.class, "创建活动", R.drawable.ic_club_op_activity));
-        if (club.checkPermission(2))
-            operations.add(new Operation(ClubNotificationCreateActivity.class, "发布通知", R.drawable.ic_club_op_notification));
         operations.add(new Operation(null, "招新管理", R.drawable.ic_club_op_freshmen));
         operations.add(new Operation(null, "空课表", R.drawable.ic_club_op_schedule));
         gridView.setAdapter(new GridViewAdapter(mActivity, operations, mClub));

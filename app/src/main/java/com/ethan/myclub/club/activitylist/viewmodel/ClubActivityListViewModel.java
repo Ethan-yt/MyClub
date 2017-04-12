@@ -1,5 +1,6 @@
 package com.ethan.myclub.club.activitylist.viewmodel;
 
+import android.databinding.ObservableBoolean;
 import android.graphics.Color;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -9,6 +10,7 @@ import android.view.View;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.ethan.myclub.R;
+import com.ethan.myclub.activity.create.view.ActivityCreateActivity;
 import com.ethan.myclub.activity.detail.view.ActivityDetailActivity;
 import com.ethan.myclub.activity.edit.view.ActivityEditActivity;
 import com.ethan.myclub.club.activitylist.view.ClubActivityListActivity;
@@ -29,21 +31,25 @@ import io.reactivex.disposables.Disposable;
 public class ClubActivityListViewModel {
 
     private final EmptyView mEmptyView;
+    private final BaseActivity.ToolbarWrapper mToolbar;
     private ClubActivityListActivity mActivity;
     private ActivityClubActivityListBinding mBinding;
     private ActivityAdapter mAdapter;
     private boolean mEditMode = false;
     private MyClub mMyClub;
 
+    public ObservableBoolean mHasPermission = new ObservableBoolean(false);
+
     public ClubActivityListViewModel(final ClubActivityListActivity activity, ActivityClubActivityListBinding binding, MyClub myClub) {
         mActivity = activity;
         mBinding = binding;
         mBinding.setViewModel(this);
         mMyClub = myClub;
-        mActivity.getToolbarWrapper()
+        mToolbar = mActivity.getToolbarWrapper()
                 .setTitle("社团活动列表")
-                .showBackIcon()
-                .show();
+                .showBackIcon();
+
+        mToolbar.show();
 
         mBinding.swipeLayout.setColorSchemeResources(R.color.colorAccent);
         mBinding.swipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -70,6 +76,12 @@ public class ClubActivityListViewModel {
         mBinding.list.setLayoutManager(new LinearLayoutManager(mActivity));
         mBinding.list.setAdapter(mAdapter);
         mEmptyView = new EmptyView(mActivity);
+
+        mBinding.fabMenu.setClosedOnTouchOutside(true);
+
+        if (mMyClub.checkPermission(6))
+            mHasPermission.set(true);
+
         update();
     }
 
@@ -86,17 +98,11 @@ public class ClubActivityListViewModel {
                     @Override
                     public void onNext(List<ActivityResult> activityResults) {
 
-                        final BaseActivity.ToolbarWrapper toolbar = mActivity.getToolbarWrapper()
-                                .dismiss()
-                                .setTitle("社团活动列表")
-                                .setScrollable()
-                                .showBackIcon();
                         if (activityResults == null || activityResults.size() == 0) {
                             mEmptyView.showEmptyView("没有活动", "当前社团还未发布任何活动");
                             mAdapter.setNewData(null);
                             mBinding.list.setLayoutFrozen(true);
                             mAdapter.setEmptyView(mEmptyView);
-                            toolbar.show();
                         } else {
                             for (ActivityResult activityResult : activityResults) {
                                 activityResult.homePageImg += "?imageView2/0/w/500/h/500";
@@ -104,26 +110,6 @@ public class ClubActivityListViewModel {
                             mBinding.list.setLayoutFrozen(false);
                             formatOrder(activityResults);
                             mAdapter.setNewData(activityResults);
-                            if (mMyClub.checkPermission(6))
-                                toolbar.setMenu(R.menu.toolbar_edit, new Toolbar.OnMenuItemClickListener() {
-                                    @Override
-                                    public boolean onMenuItemClick(MenuItem item) {
-                                        if (mEditMode) {
-                                            mActivity.showSnackbar("退出编辑模式，您可以查看活动详情");
-                                            toolbar.changeColor(Color.WHITE);
-                                        } else {
-                                            mActivity.showSnackbar("进入编辑模式，请选择你想修改的活动");
-                                            toolbar.changeColor(Color.YELLOW);
-                                        }
-                                        mEditMode = !mEditMode;
-                                        return false;
-                                    }
-                                });
-                            toolbar.show();
-                            if (mEditMode)
-                                toolbar.changeColor(Color.YELLOW);
-                            else
-                                toolbar.changeColor(Color.WHITE);
                         }
 
                     }
@@ -152,5 +138,23 @@ public class ClubActivityListViewModel {
         }
         if (specialActivity != null)
             activityList.add(0, specialActivity);
+    }
+
+    public void create() {
+        mBinding.fabMenu.close(true);
+        ActivityCreateActivity.start(mActivity, mMyClub);
+    }
+
+    public void edit() {
+        mBinding.fabMenu.close(true);
+        if (mEditMode) {
+            mActivity.showSnackbar("退出编辑模式，您可以查看活动详情");
+            mToolbar.changeColor(Color.WHITE);
+        } else {
+            mActivity.showSnackbar("进入编辑模式，请选择你想修改的活动");
+            mToolbar.changeColor(Color.YELLOW);
+        }
+        mEditMode = !mEditMode;
+
     }
 }

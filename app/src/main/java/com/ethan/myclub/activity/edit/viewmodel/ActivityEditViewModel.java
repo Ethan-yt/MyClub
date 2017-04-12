@@ -96,13 +96,17 @@ public class ActivityEditViewModel {
 
         getDetail();
 
+        mBinding.fabMenu.setClosedOnTouchOutside(true);
+
     }
 
     public void uploadContent() {
+        mBinding.fabMenu.close(true);
         ActivityEditContentActivity.start(mActivity, String.valueOf(mActivityResult.id));
     }
 
     public void delete() {
+        mBinding.fabMenu.close(true);
         new AlertDialog.Builder(mActivity)
                 .setTitle("提示")
                 .setMessage("真的要删除这个活动吗？")

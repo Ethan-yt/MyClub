@@ -133,19 +133,21 @@
                     android:text="活动创建成功后您可以在活动列表中找到您的活动，再上传图片和内容"
                     />
 
-                <Button
-                    android:id="@+id/button"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="end"
-                    android:layout_marginTop="16dp"
-                    android:background="@drawable/btn_middle"
-                    android:onClick="@{()->viewModel.createActivity()}"
-                    android:text="创建活动"
-                    android:textColor="@android:color/white"/>
-
             </LinearLayout>
         </android.support.v4.widget.NestedScrollView>
+
+        <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/fab_finish"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_margin="16dp"
+            android:onClick="@{()->viewModel.createActivity()}"
+            android:src="@drawable/ic_finish"
+            app:fab_colorNormal="#4DD0E1"
+            app:fab_colorPressed="#3da4b1"
+            app:fab_colorRipple="#308691"
+            app:layout_behavior="com.ethan.myclub.main.behavior.FloatingActionMenuBehavior"/>
     </android.support.design.widget.CoordinatorLayout>
 
 
