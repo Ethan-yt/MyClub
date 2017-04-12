@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.ethan.myclub.R;
 import com.ethan.myclub.club.my.model.MyClub;
 import com.ethan.myclub.club.operation.model.Operation;
+import com.ethan.myclub.main.BaseActivity;
 import com.umeng.analytics.MobclickAgent;
 
 import java.lang.reflect.Method;

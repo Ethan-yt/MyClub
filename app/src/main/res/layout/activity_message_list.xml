@@ -30,24 +30,61 @@
                 android:id="@+id/list"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                tools:listitem="@layout/item_message_club"/>
+                tools:listitem="@layout/item_message"/>
         </android.support.v4.widget.SwipeRefreshLayout>
 
-        <com.github.clans.fab.FloatingActionButton
-            android:id="@+id/fab_create"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|end"
-            android:layout_margin="16dp"
-            android:onClick="@{()->viewModel.create()}"
-            android:src="@drawable/ic_create"
+        <com.github.clans.fab.FloatingActionMenu
+            android:id="@+id/fab_menu"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
             android:visibility="@{viewModel.mHasPermission?View.VISIBLE:View.INVISIBLE}"
-            app:fab_colorNormal="#4DD0E1"
-            app:fab_colorPressed="#3da4b1"
-            app:fab_colorRipple="#308691"
+            android:padding="16dp"
             app:layout_behavior="com.ethan.myclub.main.behavior.FloatingActionMenuBehavior"
-            fab:fab_label="发布通知"
-            fab:fab_size="normal"/>
+            fab:menu_backgroundColor="#ccffffff"
+            fab:menu_colorNormal="#4DD0E1"
+            fab:menu_colorPressed="#3da4b1"
+            fab:menu_colorRipple="#308691"
+            fab:menu_labels_ellipsize="end"
+            fab:menu_labels_singleLine="true">
 
+            <com.github.clans.fab.FloatingActionButton
+                android:id="@+id/fab_delete"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="@{()->viewModel.deleteMode()}"
+                android:src="@drawable/ic_delete"
+                fab:fab_label="删除通知"
+                fab:fab_size="mini"
+                fab:menu_colorNormal="#ff2137"
+                fab:menu_colorPressed="#a40003"
+                fab:menu_colorRipple="#ff4447"/>
+
+            <com.github.clans.fab.FloatingActionButton
+                android:id="@+id/fab_edit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_create"
+                android:onClick="@{()->viewModel.create()}"
+                app:fab_colorNormal="#4DD0E1"
+                app:fab_colorPressed="#3da4b1"
+                app:fab_colorRipple="#308691"
+                fab:fab_label="发布新通知"
+                fab:fab_size="mini"/>
+
+            <com.github.clans.fab.FloatingActionButton
+                android:id="@+id/fab_analysis"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_analysis"
+                android:onClick="@{()->viewModel.analysis()}"
+                app:fab_colorNormal="#4DD0E1"
+                app:fab_colorPressed="#3da4b1"
+                app:fab_colorRipple="#308691"
+                fab:fab_label="查看统计"
+                fab:fab_size="mini"/>
+        </com.github.clans.fab.FloatingActionMenu>
     </android.support.design.widget.CoordinatorLayout>
 </layout>

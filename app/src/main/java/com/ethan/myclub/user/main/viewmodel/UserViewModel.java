@@ -3,18 +3,13 @@ package com.ethan.myclub.user.main.viewmodel;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.databinding.BindingAdapter;
 import android.databinding.ObservableField;
 import android.databinding.ObservableInt;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.util.Pair;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
-import android.widget.ImageView;
 
-import com.bumptech.glide.Glide;
-import com.ethan.myclub.R;
 import com.ethan.myclub.databinding.FragmentUserBinding;
 import com.ethan.myclub.main.BaseActivity;
 import com.ethan.myclub.main.MainActivity;
@@ -22,19 +17,21 @@ import com.ethan.myclub.main.MyApplication;
 import com.ethan.myclub.message.model.UnreadNumber;
 import com.ethan.myclub.message.view.MessageListActivity;
 import com.ethan.myclub.network.ApiHelper;
+import com.ethan.myclub.network.OAuthHelper;
 import com.ethan.myclub.user.collection.view.UserCollectionActivity;
 import com.ethan.myclub.user.edit.view.ProfileEditActivity;
+import com.ethan.myclub.user.login.model.Token;
 import com.ethan.myclub.user.main.view.UserFragment;
 import com.ethan.myclub.user.model.Profile;
-import com.ethan.myclub.user.schedule.ScheduleActivity;
-import com.ethan.myclub.util.Utils;
+import com.ethan.myclub.schedule.view.ScheduleActivity;
 import com.tencent.bugly.crashreport.CrashReport;
 import com.umeng.analytics.MobclickAgent;
 
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
-import jp.wasabeef.glide.transformations.CropCircleTransformation;
+import io.reactivex.functions.Consumer;
 
 /**
  * Created by ethan on 2017/3/20.
@@ -84,17 +81,26 @@ public class UserViewModel {
                 .setPositiveButton("确定", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        MyApplication.setToken(mFragment.mMainActivity, null);
-                        MainActivity.startActivity(mFragment.getActivity(), BaseActivity.REQUEST_LOGOUT, Activity.RESULT_OK);
-
+                        logout();
                     }
                 })
-                .setNegativeButton("点错了", new DialogInterface.OnClickListener() {
+                .setNegativeButton("点错了", null)
+                .show();
+
+    }
+
+    private void logout() {
+
+        OAuthHelper.getProxy(mFragment.mMainActivity)
+                .revokeToken(MyApplication.getToken().mAccessToken)
+                .subscribe(new Consumer<Object>() {
                     @Override
-                    public void onClick(DialogInterface dialog, int which) {
+                    public void accept(Object object) throws Exception {
 
                     }
-                }).show();
+                });
+        MyApplication.setToken(mFragment.mMainActivity, null);
+        MainActivity.startActivity(mFragment.getActivity(), BaseActivity.REQUEST_LOGOUT, Activity.RESULT_OK);
     }
 
     public void collection() {

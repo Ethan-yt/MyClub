@@ -191,7 +191,7 @@ public class ActivityDetailViewModel {
     }
 
     public void update() {
-        ApiHelper.getProxyWithoutToken(mActivity)
+        ApiHelper.getProxy(mActivity)
                 .getActivity(String.valueOf(mActivityResult.get().id))
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<Activity>() {

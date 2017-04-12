@@ -86,7 +86,7 @@ public class ClubActivityListViewModel {
     }
 
     public void update() {
-        ApiHelper.getProxyWithoutToken(mActivity)
+        ApiHelper.getProxy(mActivity)
                 .getClubActivity(String.valueOf(mMyClub.clubId))
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<List<ActivityResult>>() {

@@ -15,6 +15,9 @@ import com.ethan.myclub.club.member.view.ClubMemberListActivity;
 import com.ethan.myclub.club.my.model.MyClub;
 import com.ethan.myclub.club.my.model.Title;
 import com.ethan.myclub.club.notification.view.ClubNotificationCreateActivity;
+import com.ethan.myclub.club.operation.DeleteClub;
+import com.ethan.myclub.club.operation.QuitClub;
+import com.ethan.myclub.club.operation.ScheduleAnalysis;
 import com.ethan.myclub.club.operation.adapter.GridViewAdapter;
 import com.ethan.myclub.club.operation.adapter.ViewPagerAdapter;
 import com.ethan.myclub.club.operation.model.Operation;
@@ -53,17 +56,23 @@ public class ClubOperationViewModel {
         operations.add(new Operation(ClubInfoActivity.class, "社团简介", R.drawable.ic_club_op_clubinfo));
         operations.add(new Operation(ClubMemberListActivity.class, "成员列表", R.drawable.ic_club_op_member));
         operations.add(new Operation(ClubActivityListActivity.class, "活动列表", R.drawable.ic_club_op_activity));
-        operations.add(new Operation(null, "社团账单", R.drawable.ic_club_op_budget));
+        //operations.add(new Operation(null, "社团账单", R.drawable.ic_club_op_budget));
         operations.add(new Operation(MessageListActivity.class, "社团通知", R.drawable.ic_club_op_notification));
-        operations.add(new Operation(null, "退出社团", R.drawable.ic_club_op_quit));
         gridView.setAdapter(new GridViewAdapter(mActivity, operations, mClub));
         views.add(gridView);
 
 
         gridView = (GridView) View.inflate(mActivity, R.layout.item_club_operation_pager, null);
         operations = new ArrayList<>();
-        operations.add(new Operation(null, "招新管理", R.drawable.ic_club_op_freshmen));
-        operations.add(new Operation(null, "空课表", R.drawable.ic_club_op_schedule));
+        if (mClub.checkPermission(5))
+            operations.add(new Operation(null, "招新管理", R.drawable.ic_club_op_freshmen));
+        if (mClub.checkPermission(3))
+            operations.add(new Operation(ScheduleAnalysis.class, "空课表", R.drawable.ic_club_op_schedule));
+        if (mClub.isCreator)
+            operations.add(new Operation(DeleteClub.class, "解散社团", R.drawable.ic_club_op_quit));
+        else
+            operations.add(new Operation(QuitClub.class, "退出社团", R.drawable.ic_club_op_quit));
+
         gridView.setAdapter(new GridViewAdapter(mActivity, operations, mClub));
         views.add(gridView);
 

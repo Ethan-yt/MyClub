@@ -37,4 +37,5 @@ public class MemberResult implements Serializable{
     @Expose
     public Boolean isCreator;
 
+    public boolean selected = false;
 }

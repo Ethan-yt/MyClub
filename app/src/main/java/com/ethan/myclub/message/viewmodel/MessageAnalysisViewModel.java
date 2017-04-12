@@ -1,31 +1,20 @@
-package com.ethan.myclub.club.member.viewmodel;
+package com.ethan.myclub.message.viewmodel;
 
-import android.app.Activity;
-import android.content.Intent;
-import android.graphics.Color;
+import android.databinding.ObservableField;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.Toolbar;
-import android.view.MenuItem;
 import android.view.View;
 
-import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.ethan.myclub.R;
-import com.ethan.myclub.activity.detail.view.ActivityDetailActivity;
-import com.ethan.myclub.activity.edit.view.ActivityEditActivity;
-import com.ethan.myclub.club.activitylist.view.ClubActivityListActivity;
 import com.ethan.myclub.club.member.adapter.MemberAdapter;
-import com.ethan.myclub.club.member.view.ClubMemberListActivity;
 import com.ethan.myclub.club.model.MemberResult;
 import com.ethan.myclub.club.my.model.MyClub;
 import com.ethan.myclub.club.my.view.EmptyView;
-import com.ethan.myclub.databinding.ActivityClubMemberListBinding;
-import com.ethan.myclub.discover.activity.adapter.ActivityAdapter;
-import com.ethan.myclub.discover.activity.model.ActivityResult;
-import com.ethan.myclub.main.BaseActivity;
+import com.ethan.myclub.message.adapter.UnreadMemberAdapter;
+import com.ethan.myclub.message.model.Message;
+import com.ethan.myclub.message.view.MessageAnalysisActivity;
+import com.ethan.myclub.databinding.ActivityMessageAnalysisBinding;
 import com.ethan.myclub.network.ApiHelper;
-import com.ethan.myclub.user.detail.view.UserDetailActivity;
-import com.ethan.myclub.user.detail.viewmodel.UserDetailViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,24 +23,30 @@ import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 
-public class ClubMemberListViewModel {
+public class MessageAnalysisViewModel {
 
-    private ClubMemberListActivity mActivity;
-    private ActivityClubMemberListBinding mBinding;
+    private MessageAnalysisActivity mActivity;
+    private ActivityMessageAnalysisBinding mBinding;
+
     private MyClub mMyClub;
+    private Message mMessage;
+
     private final EmptyView mEmptyView;
-    private MemberAdapter mAdapter;
+    private UnreadMemberAdapter mAdapter;
 
-    final private boolean mIsChooseMember;
+    public ObservableField<String> mReadNum = new ObservableField<>();
+    public ObservableField<String> mUnreadNum = new ObservableField<>();
+    public ObservableField<String> mReadRate = new ObservableField<>();
 
-    public ClubMemberListViewModel(ClubMemberListActivity activity, ActivityClubMemberListBinding binding, MyClub myClub, boolean isChooseMember) {
+
+    public MessageAnalysisViewModel(MessageAnalysisActivity activity, ActivityMessageAnalysisBinding binding, MyClub myClub, Message message) {
         mActivity = activity;
         mBinding = binding;
         mBinding.setViewModel(this);
         mMyClub = myClub;
-        mIsChooseMember = isChooseMember;
+        mMessage = message;
         mActivity.getToolbarWrapper()
-                .setTitle(mIsChooseMember ? "请选择社团成员" : "社团通讯录")
+                .setTitle("消息阅读情况")
                 .showBackIcon()
                 .show();
         mEmptyView = new EmptyView(mActivity);
@@ -63,36 +58,27 @@ public class ClubMemberListViewModel {
                 update();
             }
         });
-
-        if (mIsChooseMember) {
-            mBinding.list.mIsSelectable = true;
-            mAdapter = new MemberAdapter(R.layout.item_club_member_checkbox, null, mActivity, myClub, this);
-        } else if (myClub.isCreator)
-            mAdapter = new MemberAdapter(R.layout.item_club_member_creator, null, mActivity, myClub, this);
-        else
-            mAdapter = new MemberAdapter(R.layout.item_club_member, null, mActivity, myClub, this);
-        mAdapter.openLoadAnimation(BaseQuickAdapter.ALPHAIN);
-
+        mAdapter = new UnreadMemberAdapter(R.layout.item_club_member, null);
         mBinding.list.setLayoutManager(new LinearLayoutManager(mActivity));
         mBinding.list.setAdapter(mAdapter);
 
         update();
-
     }
 
-    public void update() {
+    private void update() {
+
         ApiHelper.getProxy(mActivity)
-                .getClubMemberList(String.valueOf(mMyClub.clubId))
+                .getClubMessageReadList(String.valueOf(mMyClub.clubId), String.valueOf(mMessage.contentId))
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<List<MemberResult>>() {
+                .subscribe(new Observer<List<Message>>() {
                     @Override
                     public void onSubscribe(Disposable d) {
                         mBinding.swipeLayout.setRefreshing(true);
                     }
 
                     @Override
-                    public void onNext(List<MemberResult> memberResults) {
-                        if (memberResults == null || memberResults.size() == 0) {
+                    public void onNext(List<Message> messages) {
+                        if (messages == null || messages.size() == 0) {
                             mEmptyView.showErrorView(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
@@ -103,11 +89,37 @@ public class ClubMemberListViewModel {
                             mBinding.list.setLayoutFrozen(true);
                             mAdapter.setEmptyView(mEmptyView);
                         } else {
-                            for (MemberResult memberResult : memberResults) {
-                                memberResult.avatar += "?imageView2/0/w/300/h/300";
+                            for (Message memberResult : messages) {
+                                memberResult.image += "?imageView2/0/w/300/h/300";
                             }
                             mBinding.list.setLayoutFrozen(false);
-                            mAdapter.setNewData(memberResults);
+
+                            List<Message> readList = new ArrayList<Message>();
+                            List<Message> unReadList = new ArrayList<Message>();
+
+                            for (Message message : messages) {
+                                if (message.isChecked)
+                                    readList.add(message);
+                                else
+                                    unReadList.add(message);
+                            }
+                            int read = readList.size();
+                            int unread = unReadList.size();
+                            mReadNum.set(String.valueOf(read));
+                            mUnreadNum.set(String.valueOf(unread));
+                            int rate = (int) ((read / (float) (read + unread)) * 100);
+                            mReadRate.set(rate + "%");
+                            if(unread == 0)
+                            {
+                                mEmptyView.showEmptyView("太棒了！","所有成员都收到了公告！");
+                                mAdapter.setNewData(null);
+                                mBinding.list.setLayoutFrozen(true);
+                                mAdapter.setEmptyView(mEmptyView);
+                            }
+                            else
+                            {
+                                mAdapter.setNewData(unReadList);
+                            }
                         }
                     }
 
@@ -133,15 +145,5 @@ public class ClubMemberListViewModel {
                 });
     }
 
-    public void finishSelect() {
-        Intent resultIntent = new Intent();
-        List<String> memberList = new ArrayList<>();
-        for (MemberResult memberResult : mAdapter.getData()) {
-            if (memberResult.selected)
-                memberList.add(memberResult.userAccount);
-        }
-        resultIntent.putExtra("MemberArray", memberList.toArray(new String[0]));
-        mActivity.setResult(Activity.RESULT_OK, resultIntent);
-        mActivity.finish();
-    }
+
 }

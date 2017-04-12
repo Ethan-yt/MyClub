@@ -1,6 +1,11 @@
 package com.ethan.myclub.message.adapter;
 
+import android.app.NotificationManager;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AlertDialog;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -12,6 +17,7 @@ import com.ethan.myclub.R;
 import com.ethan.myclub.club.my.model.MyClub;
 import com.ethan.myclub.main.BaseActivity;
 import com.ethan.myclub.message.model.Message;
+import com.ethan.myclub.message.view.MessageAnalysisActivity;
 import com.ethan.myclub.message.view.MessageDetailClubActivity;
 import com.ethan.myclub.message.viewmodel.MessageListViewModel;
 import com.ethan.myclub.network.ApiHelper;
@@ -34,10 +40,12 @@ public class MessageAdapter extends BaseMultiItemQuickAdapter<Message, BaseViewH
     private BaseActivity mBaseActivity;
     private MessageListViewModel mMessageListViewModel;
     private MyClub mMyClub;
+    public boolean mAnalysisMode = false;
+    public boolean mDeleteMode = false;
 
     public MessageAdapter(List<Message> data, @Nullable MyClub myclub, BaseActivity baseActivity, MessageListViewModel messageListViewModel) {
         super(data);
-        addItemType(0, R.layout.item_message_club);
+        addItemType(0, R.layout.item_message);
         binderHelper = new ViewBinderHelper();
         binderHelper.setOpenOnlyOne(true);
         mBaseActivity = baseActivity;
@@ -47,32 +55,116 @@ public class MessageAdapter extends BaseMultiItemQuickAdapter<Message, BaseViewH
 
     @Override
     protected void convert(final BaseViewHolder helper, final Message item) {
-        int typeId = item.getItemType();
+        String typeId = item.type;
         SwipeRevealLayout swipeRevealLayout = helper.getView(R.id.swipeLayout);
         if (mMyClub != null)
             swipeRevealLayout.setLockDrag(true);
+        else
+            binderHelper.bind(swipeRevealLayout, String.valueOf(item.id));
+        String msgContent;
+        helper.setText(R.id.tv_title, item.generateTitle());
+        helper.setText(R.id.tv_content, item.generateContent());
+        helper.setText(R.id.tv_time, item.standardTime);
+        helper.getView(R.id.iv_not_read).setVisibility(item.isChecked ? View.INVISIBLE : View.VISIBLE);
+        ImageUtils.loadImageUrl((ImageView) helper.getView(R.id.iv_image), item.image);
+        helper.getView(R.id.btn_remove).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                removeMessage(String.valueOf(item.id));
+            }
+        });
 
         switch (typeId) {
-            case 0:
-                helper.setText(R.id.tv_clubname, item.club);
-                helper.setText(R.id.tv_time, item.standardTime);
-                helper.setText(R.id.tv_brief, item.title);
-                helper.getView(R.id.iv_not_read).setVisibility(item.isChecked ? View.INVISIBLE : View.VISIBLE);
-                ImageUtils.loadImageUrl((ImageView) helper.getView(R.id.iv_avatar), item.image);
-                binderHelper.bind(swipeRevealLayout, String.valueOf(item.id));
+            case "0": //社团通知
                 helper.getView(R.id.cv).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        MessageDetailClubActivity.start(mBaseActivity, item);
+                        if (mAnalysisMode) {
+                            MessageAnalysisActivity.start(mBaseActivity, mMyClub, item);
+                        } else if (mDeleteMode) {
+                            new AlertDialog.Builder(mBaseActivity)
+                                    .setTitle("提示")
+                                    .setMessage("确定要将这条公告删除吗？")
+                                    .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialogInterface, int i) {
+                                            removeClubMessage(String.valueOf(item.contentId));
+                                        }
+                                    })
+                                    .setNeutralButton("点错了", null)
+                                    .show();
+                        } else {
+                            MessageDetailClubActivity.start(mBaseActivity, item);
+                        }
+
                     }
                 });
-                helper.getView(R.id.btn_remove).setOnClickListener(new View.OnClickListener() {
+                break;
+            case "1": //申请加入社团
+
+                helper.getView(R.id.cv).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        removeMessage(String.valueOf(item.id));
+                        helper.getView(R.id.iv_not_read).setVisibility(View.INVISIBLE);
+                        setChecked(item);
+                        NotificationManager nm = (NotificationManager) mBaseActivity.getSystemService(Context.NOTIFICATION_SERVICE);
+                        nm.cancel(item.id);
+
+                        new AlertDialog.Builder(mBaseActivity)
+                                .setTitle("请处理")
+                                .setMessage(item.generateContent())
+                                .setPositiveButton("通过", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                        manageApply("1", String.valueOf(item.senderId));
+                                    }
+                                })
+                                .setNeutralButton("取消", null)
+                                .setNegativeButton("拒绝", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        manageApply("0", String.valueOf(item.senderId));
+                                    }
+                                })
+                                .show();
                     }
                 });
+                break;
+            case "2": //加入通过或拒绝
+                NotificationManager nm = (NotificationManager) mBaseActivity.getSystemService(Context.NOTIFICATION_SERVICE);
+                nm.cancel(item.id);
+                helper.getView(R.id.iv_not_read).setVisibility(View.INVISIBLE);
+                setChecked(item);
+                break;
         }
+    }
+
+    private void manageApply(String i, String userId) {
+        ApiHelper.getProxy(mBaseActivity)
+                .manageApply(String.valueOf(mMyClub.clubId), userId, i)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<Object>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(Object o) {
+                        mBaseActivity.showSnackbar("操作成功！");
+                        mMessageListViewModel.update();
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        mBaseActivity.showSnackbar(e.getMessage());
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
     }
 
     private void removeMessage(String msgId) {
@@ -87,7 +179,63 @@ public class MessageAdapter extends BaseMultiItemQuickAdapter<Message, BaseViewH
 
                     @Override
                     public void onNext(Object o) {
+                        mBaseActivity.showSnackbar("删除成功！");
                         mMessageListViewModel.update();
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        mBaseActivity.showSnackbar(e.getMessage());
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+    }
+
+    private void removeClubMessage(String contentId) {
+        ApiHelper.getProxy(mBaseActivity)
+                .deleteClubMessage(String.valueOf(mMyClub.clubId), contentId)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<Object>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(Object o) {
+                        mMessageListViewModel.update();
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        mBaseActivity.showSnackbar(e.getMessage());
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+    }
+
+
+    private void setChecked(Message msg) {
+        ApiHelper.getProxy(mBaseActivity)
+                .setUserReadStatus(String.valueOf(msg.id))
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<Object>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(Object o) {
+
                     }
 
                     @Override
@@ -100,5 +248,6 @@ public class MessageAdapter extends BaseMultiItemQuickAdapter<Message, BaseViewH
 
                     }
                 });
+
     }
 }

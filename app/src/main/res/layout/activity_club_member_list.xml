@@ -24,12 +24,25 @@
             android:orientation="vertical"
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-            <android.support.v7.widget.RecyclerView
+            <com.ethan.myclub.club.member.view.ScrollCheckBoxRecyclerView
                 android:id="@+id/list"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 tools:listitem="@layout/item_discover_activity_special"/>
         </android.support.v4.widget.SwipeRefreshLayout>
+
+        <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/fab_ok"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_margin="16dp"
+            android:onClick="@{()->viewModel.finishSelect()}"
+            android:src="@drawable/ic_finish"
+            app:fab_colorNormal="#4DD0E1"
+            app:fab_colorPressed="#3da4b1"
+            app:fab_colorRipple="#308691"
+            app:layout_behavior="com.ethan.myclub.main.behavior.FloatingActionMenuBehavior"/>
 
     </android.support.design.widget.CoordinatorLayout>
 </layout>

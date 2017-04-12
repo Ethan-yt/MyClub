@@ -57,8 +57,8 @@
             android:name=".main.MainActivity"
             android:launchMode="singleTask"
             android:windowSoftInputMode="adjustPan"/>
-        <activity android:name=".user.schedule.ScheduleActivity"/>
-        <activity android:name=".user.schedule.LoginActivity"/>
+        <activity android:name=".schedule.view.ScheduleActivity"/>
+        <activity android:name=".schedule.view.LoginActivity"/>
         <activity
             android:name=".user.login.view.LoginActivity"
             android:theme="@style/AppTheme.Dark"/>
@@ -139,6 +139,8 @@
             android:name=".message.view.MessageListActivity"
             android:launchMode="singleTask"/>
         <activity android:name=".message.view.MessageDetailClubActivity"/>
+        <activity android:name=".message.view.MessageAnalysisActivity"/>
+        <activity android:name=".schedule.view.ScheduleAnalysisActivity"/>
     </application>
 
 </manifest>

@@ -5,6 +5,8 @@ import android.content.DialogInterface;
 import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
@@ -48,12 +50,22 @@ public class MemberAdapter extends BaseQuickAdapter<MemberResult, BaseViewHolder
     private MyClub mMyClub;
     private ClubMemberListViewModel mViewModel;
 
+    final private int mMode;
+
     public MemberAdapter(int layout, List<MemberResult> data, BaseActivity baseActivity, MyClub myClub, ClubMemberListViewModel viewModel) {
         super(layout, data);
         mBaseActivity = baseActivity;
         mMyClub = myClub;
         mViewModel = viewModel;
-        if (mMyClub.isCreator) {
+
+        if (layout == R.layout.item_club_member_checkbox)
+            mMode = 1; //选择模式
+        else if (layout == R.layout.item_club_member_creator)
+            mMode = 2; //创建者踢人模式
+        else
+            mMode = 3; //普通模式
+
+        if (mMode == 2) {
             binderHelper = new ViewBinderHelper();
             binderHelper.setOpenOnlyOne(true);
         } else
@@ -80,7 +92,17 @@ public class MemberAdapter extends BaseQuickAdapter<MemberResult, BaseViewHolder
                     }
                 });
 
-        if (mMyClub.isCreator) {
+        if (mMode == 1) {
+            CheckBox checkBox = helper.getView(R.id.scroll_checkbox);
+            checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    item.selected = isChecked;
+                }
+            });
+        }
+
+        if (mMode == 2) {
             final SwipeRevealLayout swipeLayout = helper.getView(R.id.swipeLayout);
             binderHelper.bind(swipeLayout, String.valueOf(item.userAccount));
             helper.getView(R.id.btn_give)

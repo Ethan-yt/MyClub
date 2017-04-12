@@ -46,7 +46,6 @@ public class MessageDetailClubViewModel {
 
                     @Override
                     public void onNext(Object o) {
-                        if (mMessage.getItemType() == 0)
                             mActivity.showSnackbar("消息已阅");
                     }
 

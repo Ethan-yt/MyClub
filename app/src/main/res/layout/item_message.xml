@@ -49,36 +49,35 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/tv_club_name"
                 android:layout_marginBottom="46dp"
-                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:ellipsize="end"
+                android:textColor="#A1A1A1"
+                android:textSize="12sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                tools:text="3小时前"
+                app:layout_constraintLeft_toRightOf="@+id/tv_title"
+                android:layout_marginLeft="8dp"/>
+
+            <TextView
+                android:id="@+id/tv_content"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tv_club_name"
+                android:layout_marginBottom="24dp"
+                android:layout_marginLeft="8dp"
                 android:layout_marginRight="16dp"
                 android:ellipsize="end"
                 android:textColor="#A1A1A1"
                 android:textSize="12sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintLeft_toRightOf="@+id/tv_clubname"
+                app:layout_constraintLeft_toRightOf="@+id/iv_image"
                 app:layout_constraintRight_toRightOf="parent"
-                tools:text="3小时前"/>
-
-            <TextView
-                android:id="@+id/tv_brief"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/tv_club_name"
-                android:layout_marginBottom="24dp"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
-                android:ellipsize="end"
-                android:textColor="#A1A1A1"
-                android:textSize="12sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintLeft_toRightOf="@+id/iv_avatar"
-                app:layout_constraintRight_toRightOf="parent"
-                tools:text="今晚8点开会，不来不行"
-                app:layout_constraintHorizontal_bias="0.0"/>
+                tools:text="今晚8点开会，不来不行"/>
 
             <ImageView
-                android:id="@+id/iv_avatar"
+                android:id="@+id/iv_image"
                 android:layout_width="62dp"
                 android:layout_height="63dp"
                 android:layout_marginBottom="8dp"
@@ -93,27 +92,27 @@
 
             <ImageView
                 android:id="@+id/iv_not_read"
-                android:layout_width="15dp"
-                android:layout_height="15dp"
+                android:layout_width="13dp"
+                android:layout_height="13dp"
                 android:layout_marginRight="0dp"
                 android:layout_marginTop="0dp"
                 android:src="@drawable/bg_notification_red"
-                app:layout_constraintRight_toRightOf="@+id/iv_avatar"
-                app:layout_constraintTop_toTopOf="@+id/iv_avatar"/>
+                app:layout_constraintRight_toRightOf="@+id/iv_image"
+                app:layout_constraintTop_toTopOf="@+id/iv_image"/>
 
             <TextView
-                android:id="@+id/tv_clubname"
+                android:id="@+id/tv_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/iv_club_badge"
-                android:layout_marginLeft="16dp"
+                android:layout_marginLeft="8dp"
                 android:layout_marginTop="24dp"
                 android:ellipsize="end"
                 android:lines="1"
                 android:textColor="#909090"
                 android:textSize="16sp"
                 app:layout_constraintHorizontal_weight="1"
-                app:layout_constraintLeft_toRightOf="@+id/iv_avatar"
+                app:layout_constraintLeft_toRightOf="@+id/iv_image"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:text="德云社"/>
 

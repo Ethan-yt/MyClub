@@ -61,7 +61,11 @@ public class MainActivity extends BaseActivity {
 
     @Override
     public void onBackPressed() {
-        moveTaskToBack(false);
+        if (bottomNavigation.isHidden())
+            bottomNavigation.restoreBottomNavigation();
+        else
+            moveTaskToBack(false);
+
     }
 
     private void initUI() {

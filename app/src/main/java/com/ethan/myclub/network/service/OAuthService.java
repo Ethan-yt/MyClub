@@ -29,7 +29,7 @@ public interface OAuthService {
 
     @FormUrlEncoded
     @POST("api/o/revoke-token/")
-    Observable<Token> revokeToken(@Field("token") String accessToken);
+    Observable<Object> revokeToken(@Field("token") String accessToken);
 
     @FormUrlEncoded
     @POST("api/user/register/")

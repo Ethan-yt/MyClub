@@ -54,7 +54,7 @@ public class ClubInfoViewModel {
 
     public ObservableField<Club> mClub = new ObservableField<>();
 
-    private MyClub mMyClub;
+    public MyClub mMyClub;
 
     public ClubInfoViewModel(ClubInfoActivity activity, ActivityClubInfoBinding binding, final MyClub myclub) {
         mActivity = activity;
@@ -204,5 +204,33 @@ public class ClubInfoViewModel {
                         mBinding.swipeRefreshLayout.setRefreshing(false);
                     }
                 });
+    }
+
+    public void add() {
+        ApiHelper.getProxy(mActivity)
+                .joinClub(String.valueOf(mClub.get().id))
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<Object>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(Object club) {
+                        mActivity.showSnackbar("请求已提交");
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        mActivity.showSnackbar(e.getMessage());
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+
     }
 }

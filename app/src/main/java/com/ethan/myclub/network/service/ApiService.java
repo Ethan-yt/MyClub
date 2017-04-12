@@ -11,13 +11,14 @@ import com.ethan.myclub.discover.activity.model.ActivityResult;
 import com.ethan.myclub.discover.merchant.model.MerchantResult;
 import com.ethan.myclub.message.model.Message;
 import com.ethan.myclub.message.model.UnreadNumber;
+import com.ethan.myclub.schedule.model.ScheduleResult;
+import com.ethan.myclub.schedule.model.ScheduleStatus;
 import com.ethan.myclub.user.model.Profile;
 import com.ethan.myclub.user.login.model.Valid;
 import com.ethan.myclub.discover.club.model.ClubResult;
-import com.ethan.myclub.user.schedule.model.Schedule;
+import com.ethan.myclub.schedule.model.Schedule;
 
 import java.util.List;
-import java.util.Objects;
 
 import io.reactivex.Observable;
 import okhttp3.MultipartBody;
@@ -72,6 +73,15 @@ public interface ApiService {
     Observable<Object>
     removeUserMessage(@Path("msgId") String msgId);
 
+    //管理员获取某社团某消息的阅读状态
+    @GET("api/club/{clubId}/feedback/{msgContentId}/")
+    Observable<List<Message>> getClubMessageReadList(@Path("clubId") String clubId, @Path("msgContentId") String msgContentId);
+
+
+    //管理员删除某社团某消息的阅读状态
+    @DELETE("api/club/{clubId}/feedback/{msgContentId}/")
+    Observable<Object> deleteClubMessage(@Path("clubId") String clubId, @Path("msgContentId") String msgContentId);
+
     //============================账户============================
     //验证账户可用性
     @FormUrlEncoded
@@ -118,6 +128,28 @@ public interface ApiService {
     Observable<Object> submitRegId(@Field("regID") String regId);
 
     //============================社团============================
+
+    //解散社团
+    @DELETE("api/club/{clubId}/")
+    Observable<Object>
+    quitClub(@Path("clubId") String clubId);
+
+    //退出社团
+    @DELETE("api/club/{clubId}/my-club-list/")
+    Observable<Object>
+    deleteClub(@Path("clubId") String clubId);
+
+    //申请加入社团
+    @POST("api/club/{clubId}/enroll/")
+    Observable<Object>
+    joinClub(@Path("clubId") String clubId);
+
+    //处理加入申请
+    @POST("api/club/{clubId}/approval/{userId}/")
+    @FormUrlEncoded
+    Observable<Object>
+    manageApply(@Path("clubId") String clubId, @Path("userId") String userId,@Field("passed") String passed);
+
     //获取社团搜索提示
     @GET("api/club/suggestion/")
     Observable<List<String>> getClubSuggestion(@Query("keyword") String keyWord);
@@ -262,4 +294,10 @@ public interface ApiService {
     //上传课表
     @POST("api/user/schedule/")
     Observable<Object> updateSchedule(@Body List<Schedule> schedules);
+
+    //查看空课表
+    @POST("api/club/{clubId}/spare-time/")
+    Observable<List<List<ScheduleResult>>> analysisSchedule(@Path("clubId") String clubId, @Body ScheduleStatus scheduleStatus);
+
+
 }

@@ -1,4 +1,4 @@
-package com.ethan.myclub.user.schedule;
+package com.ethan.myclub.schedule.view;
 
 import android.content.Context;
 import android.util.AttributeSet;
@@ -6,7 +6,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.NumberPicker;
 
-import com.ethan.myclub.user.schedule.model.Schedule;
+import com.ethan.myclub.schedule.model.Schedule;
 
 import java.util.ArrayList;
 import java.util.Collections;

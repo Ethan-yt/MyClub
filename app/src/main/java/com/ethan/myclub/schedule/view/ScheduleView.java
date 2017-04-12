@@ -1,8 +1,9 @@
-package com.ethan.myclub.user.schedule;
+package com.ethan.myclub.schedule.view;
 
 import android.content.Context;
 import android.graphics.Color;
 import android.support.v7.widget.CardView;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.View;
@@ -12,14 +13,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ethan.myclub.R;
-import com.ethan.myclub.user.schedule.model.Course;
-import com.ethan.myclub.user.schedule.model.CourseTime;
-import com.ethan.myclub.user.schedule.model.Schedule;
+import com.ethan.myclub.schedule.model.Course;
+import com.ethan.myclub.schedule.model.CourseTime;
+import com.ethan.myclub.schedule.model.Schedule;
 import com.ethan.myclub.util.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 /**
  * Created by ethan on 2017/1/19.
@@ -32,7 +32,7 @@ public class ScheduleView extends LinearLayout {
     List<FrameLayout> mDayViews;
     Schedule mSchedule;
     private int mCurrentWeek;
-
+    private OnClickListener mOnClickListener;
 
     public ScheduleView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -42,6 +42,9 @@ public class ScheduleView extends LinearLayout {
         super(context, attrs, defStyleAttr);
     }
 
+    public void setListener(OnClickListener onClickListener) {
+        mOnClickListener = onClickListener;
+    }
 
     public ScheduleView(Context context) {
         super(context);
@@ -53,7 +56,7 @@ public class ScheduleView extends LinearLayout {
 
             List<CourseTime> courseTimes = course.getTime();
 
-            for (CourseTime courseTime : courseTimes) {
+            for (final CourseTime courseTime : courseTimes) {
 
                 if (courseTime.getWeekBegin() > mCurrentWeek ||
                         courseTime.getWeekEnd() < mCurrentWeek ||
@@ -74,7 +77,8 @@ public class ScheduleView extends LinearLayout {
                 tv.setGravity(Gravity.CENTER);
                 tv.setTextSize(12);
                 tv.setTextColor(Color.BLACK);
-                tv.setText(course.getName() + "\n @" + courseTime.getLocation());
+                String location = courseTime.getLocation();
+                tv.setText(course.getName() + (TextUtils.isEmpty(location) ? "" : "\n @" + courseTime.getLocation()));
 
                 cv.setLayoutParams(cvLp);
                 cv.addView(tv);
@@ -86,7 +90,10 @@ public class ScheduleView extends LinearLayout {
                 tv.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        Toast.makeText(getContext(), course.getName(), Toast.LENGTH_SHORT).show();
+                        if (mOnClickListener != null)
+                            mOnClickListener.onClick(courseTime, course);
+                        else
+                            Toast.makeText(getContext(), course.getName(), Toast.LENGTH_SHORT).show();
                     }
                 });
 
@@ -142,5 +149,9 @@ public class ScheduleView extends LinearLayout {
         mCurrentWeek = currentWeek;
         initDayView();
         initScheduleModels();
+    }
+
+    public interface OnClickListener {
+        void onClick(CourseTime courseTime, Course course);
     }
 }

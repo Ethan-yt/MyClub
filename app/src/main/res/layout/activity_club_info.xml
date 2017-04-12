@@ -7,201 +7,224 @@
 
     <data>
 
+        <import type="android.view.View"/>
+
         <variable
             name="viewModel"
             type="com.ethan.myclub.club.detail.viewmodel.ClubInfoViewModel"/>
     </data>
 
-    <android.support.v4.widget.SwipeRefreshLayout
-        android:id="@+id/swipe_refresh_layout"
+    <android.support.design.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <android.support.v4.widget.NestedScrollView
+        <android.support.v4.widget.SwipeRefreshLayout
+            android:id="@+id/swipe_refresh_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <android.support.constraint.ConstraintLayout
-                android:id="@+id/constraint_layout"
+            <android.support.v4.widget.NestedScrollView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="match_parent">
 
-                <ImageView
-                    android:id="@+id/iv_badge_bg"
-                    android:layout_width="0dp"
-                    android:layout_height="250dp"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/bg_user"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"/>
+                <android.support.constraint.ConstraintLayout
+                    android:id="@+id/constraint_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
-                <ImageView
-                    android:id="@+id/iv_club_badge"
-                    android:layout_width="70dp"
-                    android:layout_height="70dp"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginRight="8dp"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="80dp"
-                    app:image_url="@{viewModel.mClub.badge}"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    tools:src="@drawable/img_default_avatar"/>
+                    <ImageView
+                        android:id="@+id/iv_badge_bg"
+                        android:layout_width="0dp"
+                        android:layout_height="250dp"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/bg_user"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"/>
 
-                <TextView
-                    android:id="@+id/tv_club_name"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginRight="8dp"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="8dp"
-                    android:ellipsize="end"
-                    android:lines="1"
-                    android:text="@{viewModel.mClub.clubName}"
-                    android:textAlignment="center"
-                    android:textColor="@android:color/white"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/iv_club_badge"
-                    tools:text="德云社"/>
+                    <ImageView
+                        android:id="@+id/iv_club_badge"
+                        android:layout_width="70dp"
+                        android:layout_height="70dp"
+                        android:layout_marginEnd="8dp"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginRight="8dp"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="80dp"
+                        app:image_url="@{viewModel.mClub.badge}"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:src="@drawable/img_default_avatar"/>
 
-                <android.support.v7.widget.CardView
-                    android:id="@+id/cardView"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginRight="8dp"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="32dp"
-                    app:cardCornerRadius="10dp"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/tv_club_name">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
+                    <TextView
+                        android:id="@+id/tv_club_name"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:background="@drawable/bg_club_info"
-                        android:minHeight="120dp"
-                        android:orientation="vertical">
+                        android:layout_marginEnd="8dp"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginRight="8dp"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="8dp"
+                        android:ellipsize="end"
+                        android:lines="1"
+                        android:text="@{viewModel.mClub.clubName}"
+                        android:textAlignment="center"
+                        android:textColor="@android:color/white"
+                        app:layout_constraintHorizontal_bias="0.0"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/iv_club_badge"
+                        tools:text="德云社"/>
 
-                        <TextView
+                    <android.support.v7.widget.CardView
+                        android:id="@+id/cardView"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="8dp"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginRight="8dp"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="32dp"
+                        app:cardCornerRadius="10dp"
+                        app:layout_constraintHorizontal_bias="0.0"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/tv_club_name">
+
+                        <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="基本资料"
-                            android:textStyle="bold"/>
+                            android:background="@drawable/bg_club_info"
+                            android:minHeight="120dp"
+                            android:orientation="vertical">
 
-                        <TextView
-                            android:id="@+id/textView2"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:ellipsize="end"
-                            android:text="@{viewModel.mClub.briefIntroduce}"
-                            tools:text="噶的观点嘎达嘎三个法师嘎三个法师烦恼萨芬撒即可发货就开始发神经啊回复就开始"/>
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="基本资料"
+                                android:textStyle="bold"/>
 
-                        <com.google.android.flexbox.FlexboxLayout
-                            android:id="@+id/fl_tags"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="8dp"
-                            app:flexWrap="wrap">
-                        </com.google.android.flexbox.FlexboxLayout>
+                            <TextView
+                                android:id="@+id/textView2"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="10dp"
+                                android:ellipsize="end"
+                                android:text="@{viewModel.mClub.briefIntroduce}"
+                                tools:text="噶的观点嘎达嘎三个法师嘎三个法师烦恼萨芬撒即可发货就开始发神经啊回复就开始"/>
 
-                    </LinearLayout>
+                            <com.google.android.flexbox.FlexboxLayout
+                                android:id="@+id/fl_tags"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="8dp"
+                                app:flexWrap="wrap">
+                            </com.google.android.flexbox.FlexboxLayout>
+
+                        </LinearLayout>
 
 
-                </android.support.v7.widget.CardView>
+                    </android.support.v7.widget.CardView>
 
-                <android.support.v7.widget.CardView
-                    android:id="@+id/cardView2"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginRight="8dp"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="24dp"
-                    app:cardCornerRadius="10dp"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/cardView">
+                    <android.support.v7.widget.CardView
+                        android:id="@+id/cardView2"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="8dp"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginRight="8dp"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="24dp"
+                        app:cardCornerRadius="10dp"
+                        app:layout_constraintHorizontal_bias="0.0"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/cardView">
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:background="@drawable/bg_club_info"
-                        android:minHeight="120dp"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="联系方式"
-                            android:textStyle="bold"/>
-
-                        <TextView
+                        <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:layout_marginTop="10dp"
-                            android:ellipsize="end"
-                            android:text="@{viewModel.mClub.contact}"
-                            tools:text="噶的观点嘎达的嘎嘎三个法师烦恼萨芬撒即可发货就开始发神经啊回复就开始"/>
+                            android:background="@drawable/bg_club_info"
+                            android:minHeight="120dp"
+                            android:orientation="vertical">
 
-                    </LinearLayout>
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="联系方式"
+                                android:textStyle="bold"/>
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_marginTop="10dp"
+                                android:ellipsize="end"
+                                android:text="@{viewModel.mClub.contact}"
+                                tools:text="噶的观点嘎达的嘎嘎三个法师烦恼萨芬撒即可发货就开始发神经啊回复就开始"/>
+
+                        </LinearLayout>
 
 
-                </android.support.v7.widget.CardView>
+                    </android.support.v7.widget.CardView>
 
-                <android.support.v7.widget.CardView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginRight="8dp"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="24dp"
-                    app:cardCornerRadius="10dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/cardView2">
+                    <android.support.v7.widget.CardView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        android:layout_marginEnd="8dp"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginRight="8dp"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="24dp"
+                        app:cardCornerRadius="10dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintHorizontal_bias="0.0"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/cardView2">
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:background="@drawable/bg_club_info"
-                        android:minHeight="120dp"
-                        android:orientation="vertical">
-
-                        <TextView
+                        <LinearLayout
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="社团活动"
-                            android:textStyle="bold"/>
+                            android:layout_height="match_parent"
+                            android:background="@drawable/bg_club_info"
+                            android:minHeight="120dp"
+                            android:orientation="vertical">
 
-                        <android.support.v7.widget.RecyclerView
-                            android:id="@+id/list"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="20dp"/>
-                    </LinearLayout>
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="社团活动"
+                                android:textStyle="bold"/>
+
+                            <android.support.v7.widget.RecyclerView
+                                android:id="@+id/list"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="20dp"/>
+                        </LinearLayout>
 
 
-                </android.support.v7.widget.CardView>
+                    </android.support.v7.widget.CardView>
 
-            </android.support.constraint.ConstraintLayout>
-        </android.support.v4.widget.NestedScrollView>
-    </android.support.v4.widget.SwipeRefreshLayout>
+                </android.support.constraint.ConstraintLayout>
+            </android.support.v4.widget.NestedScrollView>
+        </android.support.v4.widget.SwipeRefreshLayout>
+
+        <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_margin="16dp"
+            android:onClick="@{()->viewModel.add()}"
+            android:src="@drawable/ic_create"
+            android:visibility="@{viewModel.mMyClub.titleId == null?View.VISIBLE:View.INVISIBLE}"
+            app:fab_colorNormal="#4DD0E1"
+            app:fab_colorPressed="#3da4b1"
+            app:fab_colorRipple="#308691"
+            app:layout_behavior="com.ethan.myclub.main.behavior.FloatingActionMenuBehavior"/>
+
+    </android.support.design.widget.CoordinatorLayout>
+
 </layout>

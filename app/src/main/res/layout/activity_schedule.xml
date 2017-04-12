@@ -5,18 +5,26 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".user.schedule.ScheduleActivity">
+    tools:context=".schedule.view.ScheduleActivity">
 
     <com.ethan.myclub.club.my.view.EmptyView
-        android:layout_marginTop="100dp"
         android:id="@+id/ev"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
-
-    <com.ethan.myclub.user.schedule.ScheduleView
-        android:id="@+id/scheduleView"
-        android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
+        android:layout_marginTop="100dp"/>
+
+    <android.support.v4.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <com.ethan.myclub.schedule.view.ScheduleView
+            android:id="@+id/scheduleView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+
+    </android.support.v4.widget.NestedScrollView>
+
 
 </android.support.design.widget.CoordinatorLayout>

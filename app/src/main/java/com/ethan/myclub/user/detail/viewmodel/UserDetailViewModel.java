@@ -71,7 +71,7 @@ public class UserDetailViewModel {
     }
 
     private void update() {
-        ApiHelper.getProxyWithoutToken(mActivity)
+        ApiHelper.getProxy(mActivity)
                 .getUserProfile(String.valueOf(mMemberResult.userAccount))
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<Profile>() {

@@ -70,7 +70,7 @@ public class UserCollectionViewModel {
     }
 
     public void update() {
-        ApiHelper.getProxyWithoutToken(mActivity)
+        ApiHelper.getProxy(mActivity)
                 .getMyCollection()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<List<ActivityResult>>() {

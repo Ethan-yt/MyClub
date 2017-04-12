@@ -1,4 +1,4 @@
-package com.ethan.myclub.user.schedule.service;
+package com.ethan.myclub.schedule.service;
 
 import io.reactivex.Observable;
 import okhttp3.ResponseBody;

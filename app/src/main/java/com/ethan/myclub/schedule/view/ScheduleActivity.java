@@ -1,4 +1,4 @@
-package com.ethan.myclub.user.schedule;
+package com.ethan.myclub.schedule.view;
 
 import android.app.Activity;
 import android.content.DialogInterface;
@@ -18,8 +18,7 @@ import android.widget.NumberPicker;
 import com.ethan.myclub.R;
 import com.ethan.myclub.club.my.view.EmptyView;
 import com.ethan.myclub.main.BaseActivity;
-import com.ethan.myclub.user.login.view.RegisterActivity;
-import com.ethan.myclub.user.schedule.model.Schedule;
+import com.ethan.myclub.schedule.model.Schedule;
 import com.ethan.myclub.util.Utils;
 
 import java.util.ArrayList;

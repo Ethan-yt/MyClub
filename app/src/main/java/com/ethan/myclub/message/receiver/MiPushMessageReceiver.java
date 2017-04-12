@@ -65,26 +65,24 @@ public class MiPushMessageReceiver extends PushMessageReceiver {
         final Message message = new Gson().fromJson(message1.getContent(), Message.class);
         MainActivity.needUpdateFlag.userUnreadCount = true;
 
-        switch (message.getItemType()) {
-            case 0:
-                Intent intent = new Intent(context, MessageListActivity.class);
-                //PendingIntent.FLAG_ONE_SHOT
-                PendingIntent pendingIntent = PendingIntent.getActivity(context, message.getItemType(), intent, 0);
+        Intent intent = new Intent(context, MessageListActivity.class);
 
-                NotificationCompat.Builder mBuilder =
-                        new NotificationCompat.Builder(context)
-                                .setSmallIcon(R.mipmap.ic_launcher)
-                                .setContentTitle(message.club + " 通知")
-                                .setContentText(message.title)
-                                .setContentIntent(pendingIntent)
-                                .setPriority(NotificationCompat.PRIORITY_MAX)
-                                .setDefaults(Notification.DEFAULT_VIBRATE);
+        PendingIntent pendingIntent = PendingIntent.getActivity(context, message.getItemType(), intent, 0);
 
-                NotificationManager mNotifyMgr =
-                        (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+        NotificationCompat.Builder mBuilder =
+                new NotificationCompat.Builder(context)
+                        .setSmallIcon(R.mipmap.ic_launcher)
+                        .setContentTitle(message.generateTitle())
+                        .setContentText(message.generateContent())
+                        .setContentIntent(pendingIntent)
+                        .setPriority(NotificationCompat.PRIORITY_MAX)
+                        .setDefaults(Notification.DEFAULT_VIBRATE);
 
-                mNotifyMgr.notify(message.id, mBuilder.build());
-        }
+        NotificationManager mNotifyMgr =
+                (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+
+        mNotifyMgr.notify(message.id, mBuilder.build());
+
 //        if (!TextUtils.isEmpty(message.getTopic())) {
 //            mTopic = message.getTopic();
 //        } else if (!TextUtils.isEmpty(message.getAlias())) {

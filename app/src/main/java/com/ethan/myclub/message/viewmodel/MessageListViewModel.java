@@ -3,6 +3,7 @@ package com.ethan.myclub.message.viewmodel;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.databinding.ObservableBoolean;
+import android.graphics.Color;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -11,13 +12,16 @@ import android.view.View;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.ethan.myclub.R;
+import com.ethan.myclub.club.member.view.ClubMemberListActivity;
 import com.ethan.myclub.club.my.model.MyClub;
 import com.ethan.myclub.club.my.view.EmptyView;
 import com.ethan.myclub.club.notification.view.ClubNotificationCreateActivity;
 import com.ethan.myclub.databinding.ActivityMessageListBinding;
+import com.ethan.myclub.main.BaseActivity;
 import com.ethan.myclub.main.MainActivity;
 import com.ethan.myclub.message.adapter.MessageAdapter;
 import com.ethan.myclub.message.model.Message;
+import com.ethan.myclub.message.view.MessageAnalysisActivity;
 import com.ethan.myclub.message.view.MessageListActivity;
 import com.ethan.myclub.network.ApiHelper;
 import com.ethan.myclub.util.Utils;
@@ -39,19 +43,25 @@ public class MessageListViewModel {
 
     private final EmptyView mEmptyView;
     final private MessageAdapter mAdapter;
+    private final BaseActivity.ToolbarWrapper mToolbar;
+
+    private boolean mAnalysisMode = false;
+    private boolean mDeleteMode = false;
 
     public ObservableBoolean mHasPermission = new ObservableBoolean(false);
 
-    public MessageListViewModel(MessageListActivity activity, ActivityMessageListBinding binding,@Nullable MyClub myClub) {
+    public MessageListViewModel(MessageListActivity activity, ActivityMessageListBinding binding, @Nullable MyClub myClub) {
         mActivity = activity;
         mBinding = binding;
         mBinding.setViewModel(this);
         mMyClub = myClub;
 
-        mActivity.getToolbarWrapper()
+        mToolbar = mActivity.getToolbarWrapper()
                 .setTitle(mMyClub == null ? "我的消息" : "社团通知")
-                .showBackIcon()
-                .show();
+                .showBackIcon();
+
+
+        mToolbar.show();
 
         mBinding.swipeLayout.setColorSchemeResources(R.color.colorAccent);
         mBinding.swipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -61,7 +71,7 @@ public class MessageListViewModel {
             }
         });
 
-        mAdapter = new MessageAdapter(null, mMyClub, mActivity,this);
+        mAdapter = new MessageAdapter(null, mMyClub, mActivity, this);
         mAdapter.openLoadAnimation(BaseQuickAdapter.ALPHAIN);
 
         mBinding.list.setLayoutManager(new LinearLayoutManager(mActivity));
@@ -70,8 +80,9 @@ public class MessageListViewModel {
         update();
         MainActivity.needUpdateFlag.userUnreadCount = true;
 
+        mBinding.fabMenu.setClosedOnTouchOutside(true);
 
-        if (mMyClub!= null && mMyClub.checkPermission(6))
+        if (mMyClub != null && mMyClub.checkPermission(6))
             mHasPermission.set(true);
     }
 
@@ -102,6 +113,7 @@ public class MessageListViewModel {
 
                     @Override
                     public void onNext(List<Message> messages) {
+                        mAnalysisMode = false;
                         if (messages == null || messages.size() == 0) {
                             mEmptyView.showEmptyView(mMyClub == null ? "没有消息" : "没有通知", mMyClub == null ? "您还没有接受到任何消息" : "当前社团还未发布任何通知");
                             mAdapter.setNewData(null);
@@ -132,8 +144,38 @@ public class MessageListViewModel {
                 });
     }
 
-    public void create()
-    {
-        ClubNotificationCreateActivity.start(mActivity,mMyClub);
+    public void create() {
+        mBinding.fabMenu.close(false);
+        ClubNotificationCreateActivity.start(mActivity, mMyClub);
+    }
+
+    public void analysis() {
+        mBinding.fabMenu.close(true);
+        mDeleteMode = false;
+        mAnalysisMode = !mAnalysisMode;
+
+        if (mAnalysisMode) {
+            mActivity.showSnackbar("请选择您要分析的通知");
+            mToolbar.changeColor(Color.YELLOW);
+        } else {
+            mToolbar.changeColor(Color.WHITE);
+        }
+        mAdapter.mAnalysisMode = mAnalysisMode;
+        mAdapter.mDeleteMode = mDeleteMode;
+    }
+
+    public void deleteMode() {
+        mBinding.fabMenu.close(true);
+        mAnalysisMode = false;
+        mDeleteMode = !mDeleteMode;
+
+        if (mDeleteMode) {
+            mActivity.showSnackbar("请选择您要删除的通知");
+            mToolbar.changeColor(Color.RED);
+        } else {
+            mToolbar.changeColor(Color.WHITE);
+        }
+        mAdapter.mAnalysisMode = mAnalysisMode;
+        mAdapter.mDeleteMode = mDeleteMode;
     }
 }
