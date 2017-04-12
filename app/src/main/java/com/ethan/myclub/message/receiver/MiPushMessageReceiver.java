@@ -77,7 +77,7 @@ public class MiPushMessageReceiver extends PushMessageReceiver {
                                 .setContentTitle(message.club + " 通知")
                                 .setContentText(message.title)
                                 .setContentIntent(pendingIntent)
-                                .setPriority(NotificationCompat.PRIORITY_HIGH)
+                                .setPriority(NotificationCompat.PRIORITY_MAX)
                                 .setDefaults(Notification.DEFAULT_VIBRATE);
 
                 NotificationManager mNotifyMgr =

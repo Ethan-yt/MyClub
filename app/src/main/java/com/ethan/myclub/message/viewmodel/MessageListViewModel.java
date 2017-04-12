@@ -70,8 +70,6 @@ public class MessageListViewModel {
         update();
         MainActivity.needUpdateFlag.userUnreadCount = true;
 
-        NotificationManager nm =(NotificationManager)mActivity.getSystemService(Context.NOTIFICATION_SERVICE);
-        nm.cancelAll();
 
         if (mMyClub!= null && mMyClub.checkPermission(6))
             mHasPermission.set(true);

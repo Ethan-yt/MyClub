@@ -1,5 +1,8 @@
 package com.ethan.myclub.message.viewmodel;
 
+import android.app.NotificationManager;
+import android.content.Context;
+
 import com.ethan.myclub.message.model.Message;
 import com.ethan.myclub.message.view.MessageDetailClubActivity;
 import com.ethan.myclub.databinding.ActivityMessageDetailClubBinding;
@@ -27,6 +30,8 @@ public class MessageDetailClubViewModel {
                 .show();
         if (!message.isChecked)
             setChecked();
+        NotificationManager nm = (NotificationManager) mActivity.getSystemService(Context.NOTIFICATION_SERVICE);
+        nm.cancel(message.id);
     }
 
     private void setChecked() {

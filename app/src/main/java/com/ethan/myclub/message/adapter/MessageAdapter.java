@@ -49,7 +49,7 @@ public class MessageAdapter extends BaseMultiItemQuickAdapter<Message, BaseViewH
     protected void convert(final BaseViewHolder helper, final Message item) {
         int typeId = item.getItemType();
         SwipeRevealLayout swipeRevealLayout = helper.getView(R.id.swipeLayout);
-        if(mMyClub != null)
+        if (mMyClub != null)
             swipeRevealLayout.setLockDrag(true);
 
         switch (typeId) {
@@ -57,13 +57,12 @@ public class MessageAdapter extends BaseMultiItemQuickAdapter<Message, BaseViewH
                 helper.setText(R.id.tv_clubname, item.club);
                 helper.setText(R.id.tv_time, item.standardTime);
                 helper.setText(R.id.tv_brief, item.title);
-                helper.setVisible(R.id.iv_not_read, !item.isChecked);
+                helper.getView(R.id.iv_not_read).setVisibility(item.isChecked ? View.INVISIBLE : View.VISIBLE);
                 ImageUtils.loadImageUrl((ImageView) helper.getView(R.id.iv_avatar), item.image);
                 binderHelper.bind(swipeRevealLayout, String.valueOf(item.id));
                 helper.getView(R.id.cv).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        helper.setVisible(R.id.iv_not_read, false);
                         MessageDetailClubActivity.start(mBaseActivity, item);
                     }
                 });

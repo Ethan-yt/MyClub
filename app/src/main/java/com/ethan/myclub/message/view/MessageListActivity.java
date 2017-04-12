@@ -1,6 +1,7 @@
 package com.ethan.myclub.message.view;
 
 import android.app.Activity;
+import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -41,6 +42,8 @@ public class MessageListActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        if (mViewModel != null)
+            mViewModel.update();
         if (receiver == null) {
             receiver = new MiPushMessageReceiver() {
                 @Override
@@ -66,5 +69,4 @@ public class MessageListActivity extends BaseActivity {
             receiver = null;
         }
     }
-
 }
