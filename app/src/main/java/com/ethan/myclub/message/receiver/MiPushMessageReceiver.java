@@ -69,13 +69,13 @@ public class MiPushMessageReceiver extends PushMessageReceiver {
             case 0:
                 Intent intent = new Intent(context, MessageListActivity.class);
                 //PendingIntent.FLAG_ONE_SHOT
-                PendingIntent pendingIntent = PendingIntent.getActivity(context,message.getItemType() , intent, 0);
+                PendingIntent pendingIntent = PendingIntent.getActivity(context, message.getItemType(), intent, 0);
 
                 NotificationCompat.Builder mBuilder =
                         new NotificationCompat.Builder(context)
                                 .setSmallIcon(R.mipmap.ic_launcher)
-                                .setContentTitle(message.title)
-                                .setContentText(message.content)
+                                .setContentTitle(message.club + " 通知")
+                                .setContentText(message.title)
                                 .setContentIntent(pendingIntent)
                                 .setPriority(NotificationCompat.PRIORITY_HIGH)
                                 .setDefaults(Notification.DEFAULT_VIBRATE);
