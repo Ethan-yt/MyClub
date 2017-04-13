@@ -110,10 +110,6 @@ public class UserViewModel {
     }
 
     public void updateUserUnreadNumberAttempt() {
-        if (!MyApplication.isLogin()) {
-            mFragment.mMainActivity.bottomNavigation.setNotification("", 2);
-            return;
-        }
         //获取用户消息数量
         if (MainActivity.needUpdateFlag.userUnreadCount || mUnreadNum.get() == -1) {
             Log.i(TAG, "updateUserProfileAttempt: 更新mUnreadNum");

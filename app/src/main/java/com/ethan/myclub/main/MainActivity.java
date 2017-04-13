@@ -205,9 +205,13 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        updateUserProfileAttempt();
         updateUserClubListAttempt();
-        updateUserUnreadNumberAttempt();
+        if (MyApplication.isLogin()) {
+            updateUserProfileAttempt();
+            updateUserUnreadNumberAttempt();
+        } else
+            bottomNavigation.setNotification("", 2);
+
         if (receiver == null) {
             receiver = new MiPushMessageReceiver() {
                 @Override
