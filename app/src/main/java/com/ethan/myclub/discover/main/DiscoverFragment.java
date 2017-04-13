@@ -138,20 +138,9 @@ public class DiscoverFragment extends BaseFragment {
                                         }
                                     });
                                     MenuItemCompat.setOnActionExpandListener(menu.findItem(R.id.action_search), new MenuItemCompat.OnActionExpandListener() {
-                                        //搜索前设定提示
+
                                         @Override
                                         public boolean onMenuItemActionExpand(MenuItem item) {
-                                            switch (mViewPager.getCurrentItem()) {
-                                                case 0:
-                                                    mSearchView.setQueryHint("搜索活动");
-                                                    break;
-                                                case 1:
-                                                    mSearchView.setQueryHint("搜索社团名称、简介或标签");
-                                                    break;
-                                                case 2:
-                                                    mSearchView.setQueryHint("搜索商家名称、赞助类型或赞助活动");
-                                                    break;
-                                            }
                                             return true;
                                         }
 
