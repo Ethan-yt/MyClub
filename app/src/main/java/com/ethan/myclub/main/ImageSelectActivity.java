@@ -135,9 +135,8 @@ public abstract class ImageSelectActivity extends BaseActivity {
         intent.putExtra(MediaStore.EXTRA_OUTPUT, mOutputUri);
         intent.putExtra("scaleUpIfNeeded", true); //黑边
         intent.putExtra("noFaceDetection", true); // no face detection
-        if (Build.VERSION.SDK_INT >= 24)
-            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION
-                    | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION
+                | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
         this.startActivityForResult(intent, ProfileEditActivity.REQUEST_CODE_CROP);
     }
 
