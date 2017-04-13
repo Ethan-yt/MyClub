@@ -76,7 +76,8 @@ public class ScheduleAnalysisViewModel {
         });
         if (mUsers == null || mUsers.length == 0) {
             new AlertDialog.Builder(mActivity)
-                    .setTitle("您没有选择要查询的成员")
+                    .setTitle("错误")
+                    .setMessage("您没有选择要查询的成员")
                     .setPositiveButton("确定", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
