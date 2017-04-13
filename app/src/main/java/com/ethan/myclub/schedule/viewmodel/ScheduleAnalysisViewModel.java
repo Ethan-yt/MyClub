@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.NumberPicker;
 
 import com.ethan.myclub.R;
+import com.ethan.myclub.club.model.MemberResult;
 import com.ethan.myclub.club.my.model.MyClub;
 import com.ethan.myclub.main.BaseActivity;
 import com.ethan.myclub.network.ApiHelper;
@@ -26,6 +27,8 @@ import com.ethan.myclub.schedule.view.ScheduleAnalysisActivity;
 import com.ethan.myclub.databinding.ActivityScheduleAnalysisBinding;
 import com.ethan.myclub.schedule.view.SchedulePickerView;
 import com.ethan.myclub.schedule.view.ScheduleView;
+import com.ethan.myclub.user.detail.view.UserDetailActivity;
+import com.ethan.myclub.user.detail.viewmodel.UserDetailViewModel;
 import com.ethan.myclub.util.Utils;
 
 import java.util.ArrayList;
@@ -153,7 +156,7 @@ public class ScheduleAnalysisViewModel {
                                 Course course = new Course.Builder()
                                         .time(courseTimes)
                                         .color(color)
-                                        .name(lastNum + "人有课\n" + rate + "%")
+                                        .name(lastNum + "人有事\n" + rate + "%")
                                         .build();
                                 courses.add(course);
                                 courseTimes = new ArrayList<>();
@@ -171,7 +174,7 @@ public class ScheduleAnalysisViewModel {
                             Course course = new Course.Builder()
                                     .time(courseTimes)
                                     .color(color)
-                                    .name(lastNum + "人有课\n" + rate + "%")
+                                    .name(lastNum + "人有事\n" + rate + "%")
                                     .build();
                             courses.add(course);
 
@@ -182,7 +185,7 @@ public class ScheduleAnalysisViewModel {
                         mBinding.scheduleView.setListener(new ScheduleView.OnClickListener() {
                             @Override
                             public void onClick(CourseTime courseTime, Course course) {
-                                ScheduleResult result = lists.get(courseTime.getDay() - 1).get(courseTime.getTimeBegin() - 1);
+                                final ScheduleResult result = lists.get(courseTime.getDay() - 1).get(courseTime.getTimeBegin() - 1);
                                 if (result.spareNumber == 0)
                                     return;
                                 List<String> names = new ArrayList<>();
@@ -190,7 +193,14 @@ public class ScheduleAnalysisViewModel {
                                     names.add(member.nickname);
                                 }
                                 new AlertDialog.Builder(mActivity)
-                                        .setItems(names.toArray(new String[0]), null)
+                                        .setItems(names.toArray(new String[0]), new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                MemberResult memberResult = new MemberResult();
+                                                memberResult.userAccount = String.valueOf(result.members.get(which).id);
+                                                UserDetailActivity.start(mActivity, memberResult);
+                                            }
+                                        })
                                         .setTitle("有事人员名单")
                                         .setNegativeButton("关闭", null)
                                         .show();

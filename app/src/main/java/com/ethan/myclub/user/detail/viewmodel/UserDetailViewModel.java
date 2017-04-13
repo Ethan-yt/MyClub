@@ -40,7 +40,7 @@ public class UserDetailViewModel {
     private UserDetailActivity mActivity;
     private ActivityUserDetailBinding mBinding;
 
-    public ObservableField<Uri> mImageUri = new ObservableField<>();
+    public ObservableField<String> mImageUrl = new ObservableField<>();
 
     public ObservableField<Profile> mProfile = new ObservableField<>();
 
@@ -51,9 +51,6 @@ public class UserDetailViewModel {
         mBinding = binding;
         mBinding.setViewModel(this);
         mMemberResult = memberResult;
-
-        if (!TextUtils.isEmpty(memberResult.avatar))
-            mImageUri.set(Uri.parse(memberResult.avatar));
 
         mActivity.getToolbarWrapper()
                 .setTitle("查看成员详情")
@@ -82,8 +79,10 @@ public class UserDetailViewModel {
 
                     @Override
                     public void onNext(Profile profile) {
+                        profile.avatar += "?imageView2/0/w/300/h/300";
                         profile.sex = profile.sex.equals("0") ? "男" : "女";
                         mProfile.set(profile);
+                        mImageUrl.set(profile.avatar);
                     }
 
                     @Override

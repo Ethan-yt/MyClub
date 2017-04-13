@@ -45,7 +45,6 @@
                         android:layout_width="100dp"
                         android:layout_height="100dp"
                         android:layout_centerHorizontal="true"
-                        android:src="@drawable/img_default_avatar"
                         android:transitionName="trans_iv_badge"
                         app:image_uri="@{viewModel.mImageUri}"/>
 

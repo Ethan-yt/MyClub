@@ -219,7 +219,6 @@
                             android:layout_width="160dp"
                             android:layout_height="240dp"
                             android:layout_centerHorizontal="true"
-                            android:src="@drawable/img_default_avatar"
                             app:image_uri_rect="@{viewModel.mImage2Uri}"
                             tools:scaleType="centerCrop"/>
 
