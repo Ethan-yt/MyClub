@@ -69,9 +69,9 @@ public class ScheduleView extends LinearLayout {
                 int itemHeight = getResources().getDimensionPixelSize(R.dimen.ScheduleCourseHeight);
 
                 CardView.LayoutParams cvLp = new CardView.LayoutParams(
-                        CardView.LayoutParams.MATCH_PARENT, (courseTime.getTimeEnd() - courseTime.getTimeBegin() + 1) * itemHeight);
+                        CardView.LayoutParams.MATCH_PARENT, (courseTime.getTimeEnd() - courseTime.getTimeBegin() + 1) * (itemHeight + 10) - 10);
 
-                cvLp.setMargins(5, mHeadHeight + 10 + (courseTime.getTimeBegin() - 1) * (itemHeight + 5), 5, 5);
+                cvLp.setMargins(5, mHeadHeight + 10 + (courseTime.getTimeBegin() - 1) * (itemHeight + 10), 5, 5);
 
                 TextView tv = new TextView(getContext());
                 tv.setGravity(Gravity.CENTER);
