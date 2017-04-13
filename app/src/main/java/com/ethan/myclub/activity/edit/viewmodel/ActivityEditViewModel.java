@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.databinding.ObservableField;
 import android.net.Uri;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.util.TimeUtils;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
@@ -25,6 +26,7 @@ import com.ethan.myclub.databinding.ActivityActivityEditBinding;
 import com.ethan.myclub.discover.activity.model.ActivityResult;
 import com.ethan.myclub.main.ImageSelectActivity;
 import com.ethan.myclub.network.ApiHelper;
+import com.ethan.myclub.util.Utils;
 
 import java.io.File;
 import java.text.ParsePosition;
@@ -179,15 +181,20 @@ public class ActivityEditViewModel {
                         }
                         originTags = tagStr;
                         mTags.set(tagStr);
+
+                        activity.activityTime = Utils.apiDate2StdDate(activity.activityTime);
                         mActivityDetail.set(activity);
 
-                        final SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+
                         if (activity.activityTime == null)
                             c.setTimeInMillis(System.currentTimeMillis());
                         else {
-                            Date date = formatter.parse(activity.activityTime, new ParsePosition(0));
+                            Date date = Utils.StdDate2Date(activity.activityTime);
                             c.setTime(date);
                         }
+
+
+
                         mBinding.etDatetime.setOnFocusChangeListener(new View.OnFocusChangeListener() {
                             @Override
                             public void onFocusChange(View v, boolean hasFocus) {
@@ -215,7 +222,7 @@ public class ActivityEditViewModel {
                                                             c.set(Calendar.MINUTE, minute);
                                                             c.set(Calendar.SECOND, 0); // 设为 0
                                                             c.set(Calendar.MILLISECOND, 0); // 设为 0
-                                                            mActivityDetail.get().setActivityTime(formatter.format(c.getTime()));
+                                                            mActivityDetail.get().setActivityTime(Utils.Date2StdDate(c.getTime()));
                                                             mActivityDetail.notifyChange();
                                                         }
                                                     }, mHour, mMinute, true).show();
@@ -391,7 +398,7 @@ public class ActivityEditViewModel {
 
     private void saveInfo() {
         ApiHelper.getProxy(mActivity)
-                .modifyActivity(String.valueOf(mActivityResult.id), mActivityDetail.get().getName(), mActivityDetail.get().getJoinMembersMax(), mActivityDetail.get().getActivityTime(), mActivityDetail.get().getBriefIntroduction(), mActivityDetail.get().getLocation())
+                .modifyActivity(String.valueOf(mActivityResult.id), mActivityDetail.get().getName(), mActivityDetail.get().getJoinMembersMax(), Utils.StdDate2ApiDate(mActivityDetail.get().getActivityTime()), mActivityDetail.get().getBriefIntroduction(), mActivityDetail.get().getLocation())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         new Observer<Object>() {

@@ -214,13 +214,36 @@ public class Utils {
         return result;
     }
 
-    public static String getStandardTime(String timeStr) {
+    public static String apiDate2StdDate(String apiDate) {
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-        Date date = formatter.parse(timeStr, new ParsePosition(0));
+        Date date = formatter.parse(apiDate, new ParsePosition(0));
         SimpleDateFormat formatter2 = new SimpleDateFormat("yyyy-MM-dd HH:mm");
         return formatter2.format(date.getTime());
     }
 
+    public static String Date2StdDate(Date date) {
+        SimpleDateFormat formatter2 = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        return formatter2.format(date.getTime());
+    }
+
+    public static Date ApiDate2Date(String apiDate) {
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+        return formatter.parse(apiDate, new ParsePosition(0));
+
+    }
+
+    public static Date StdDate2Date(String stdDate) {
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        return formatter.parse(stdDate, new ParsePosition(0));
+
+    }
+
+    public static String StdDate2ApiDate(String stdTime) {
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        Date date = formatter.parse(stdTime, new ParsePosition(0));
+        SimpleDateFormat formatter2 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+        return formatter2.format(date.getTime());
+    }
 
     /**
      * 将时间戳转为代表"距现在多久之前"的字符串
@@ -247,7 +270,7 @@ public class Utils {
         long day = (long) Math.ceil(time / 24 / 60 / 60 / 1000.0f);// 天前
 
         if (day > 10)
-            return getStandardTime(timeStr);
+            return apiDate2StdDate(timeStr);
         if (day - 1 > 0) {
             sb.append(day + "天");
         } else if (hour - 1 > 0) {

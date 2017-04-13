@@ -14,6 +14,7 @@ import com.ethan.myclub.club.model.Club;
 import com.ethan.myclub.club.my.model.MyClub;
 import com.ethan.myclub.databinding.ActivityActivityCreateBinding;
 import com.ethan.myclub.network.ApiHelper;
+import com.ethan.myclub.util.Utils;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -75,8 +76,7 @@ public class ActivityCreateViewModel {
                                             c.set(Calendar.MINUTE, minute);
                                             c.set(Calendar.SECOND, 0); // 设为 0
                                             c.set(Calendar.MILLISECOND, 0); // 设为 0
-                                            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-                                            mActivityDetail.setActivityTime(formatter.format(c.getTime()));
+                                            mActivityDetail.setActivityTime(Utils.Date2StdDate(c.getTime()));
                                         }
                                     }, mHour, mMinute, true).show();
                         }
@@ -91,7 +91,7 @@ public class ActivityCreateViewModel {
 
     public void createActivity() {
         ApiHelper.getProxy(mActivity)
-                .createActivity(String.valueOf(mMyClub.clubId), mActivityDetail.getName(), mActivityDetail.getJoinMembersMax(), mActivityDetail.getActivityTime(), mActivityDetail.getBriefIntroduction(), mActivityDetail.getLocation())
+                .createActivity(String.valueOf(mMyClub.clubId), mActivityDetail.getName(), mActivityDetail.getJoinMembersMax(), Utils.StdDate2ApiDate(mActivityDetail.getActivityTime()), mActivityDetail.getBriefIntroduction(), mActivityDetail.getLocation())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<Object>() {
                     @Override

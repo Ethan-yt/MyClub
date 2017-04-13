@@ -118,7 +118,7 @@ public class ActivityDetailViewModel {
         if (resultCode == GET_ACTIVITY_RESULT_OK) {
             mBinding.list.setLayoutFrozen(false);
 
-            ((TextView) mHeaderView.findViewById(R.id.tv_activity_time)).setText(Utils.getStandardTime(activity.activityTime));
+            ((TextView) mHeaderView.findViewById(R.id.tv_activity_time)).setText(Utils.apiDate2StdDate(activity.activityTime));
             ((TextView) mHeaderView.findViewById(R.id.tv_activtiy_location)).setText(activity.location);
 
             activity.club.badge += "?imageView2/0/w/300/h/300";
