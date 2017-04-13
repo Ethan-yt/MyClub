@@ -45,8 +45,6 @@ import static com.ethan.myclub.schedule.view.ScheduleActivity.FILE_NAME_SCHEDULE
 public class ScheduleAnalysisViewModel {
 
     private ArrayList<Schedule> mSchedules = new ArrayList<>();
-    private String mCurrentYear;
-    private String mCurrentTerm;
     private int mCurrentWeek = 1;
 
     private final MyClub mMyClub;
@@ -88,22 +86,7 @@ public class ScheduleAnalysisViewModel {
             return;
         }
 
-        read();
-        if (mSchedules.isEmpty()) {
-            new AlertDialog.Builder(mActivity)
-                    .setTitle("请先上传自己的课程表")
-                    .setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            mActivity.finish();
-                        }
-                    })
-                    .show();
-            return;
-        }
-        setCurrentSchedule();
-
-
+        setCurrentWeek();
     }
 
     private void update() {
@@ -115,9 +98,9 @@ public class ScheduleAnalysisViewModel {
             members.add(Integer.valueOf(user));
         }
         scheduleStatus.memberList = members;
-        scheduleStatus.term = mCurrentTerm;
+        scheduleStatus.term = "2";
         scheduleStatus.week = mCurrentWeek;
-        scheduleStatus.year = mCurrentYear;
+        scheduleStatus.year = "2016-2017";
 
         ApiHelper.getProxy(mActivity)
                 .analysisSchedule(String.valueOf(mMyClub.clubId), scheduleStatus)
@@ -219,45 +202,6 @@ public class ScheduleAnalysisViewModel {
                         mBinding.swipeLayout.setRefreshing(false);
                     }
                 });
-    }
-
-    public void read() {
-        try {
-            Parcel parcel = Utils.readParcelFromFile(mActivity, FILE_NAME_SCHEDULE);
-            if (parcel != null) {
-                parcel.readList(mSchedules, Schedule.class.getClassLoader());
-                parcel.recycle();
-            }
-        } catch (Exception ignored) {
-
-        }
-
-        SharedPreferences sharedPreferences = mActivity.getSharedPreferences("schedule", MODE_PRIVATE);
-
-        mCurrentYear = sharedPreferences.getString("CurrentYear", "");
-        mCurrentTerm = sharedPreferences.getString("CurrentTerm", "");
-        mCurrentWeek = sharedPreferences.getInt("CurrentWeek", 1);
-    }
-
-    private void setCurrentSchedule() {
-        final SchedulePickerView v = new SchedulePickerView(mActivity);
-        v.setSchedules(mSchedules);
-        v.setYear(mCurrentYear);
-        v.setTerm(mCurrentTerm);
-
-        new AlertDialog.Builder(mActivity)
-                .setTitle("请选择你想查询的学年学期")
-                .setView(v)
-                .setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        mCurrentYear = v.getYear();
-                        mCurrentTerm = v.getTerm();
-                        setCurrentWeek();
-                    }
-                })
-                .setNegativeButton("取消", null)
-                .show();
     }
 
     private void setCurrentWeek() {
