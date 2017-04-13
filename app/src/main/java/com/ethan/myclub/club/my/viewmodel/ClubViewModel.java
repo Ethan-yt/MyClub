@@ -23,7 +23,9 @@ import java.util.List;
 
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
 
 /**
  * Created by ethan on 2017/3/25.
@@ -101,15 +103,22 @@ public class ClubViewModel {
         }
         ApiHelper.getProxy(mFragment.mMainActivity)
                 .getMyClubs()
+                .doOnSubscribe(new Consumer<Disposable>() {
+                    @Override
+                    public void accept(@NonNull Disposable disposable) throws Exception {
+                        mEmptyView.showLoadingView();
+                        mAdapter.setNewData(null);
+                        mBinding.recyclerView.setLayoutFrozen(true);
+                        mAdapter.setEmptyView(mEmptyView);
+                    }
+                })
+                .subscribeOn(AndroidSchedulers.mainThread())
                 //.delay(1, TimeUnit.SECONDS)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<List<MyClub>>() {
                     @Override
                     public void onSubscribe(Disposable d) {
-                        mEmptyView.showLoadingView();
-                        mAdapter.setNewData(null);
-                        mBinding.recyclerView.setLayoutFrozen(true);
-                        mAdapter.setEmptyView(mEmptyView);
+
                     }
 
                     @Override
