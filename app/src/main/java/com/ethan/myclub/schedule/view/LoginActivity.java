@@ -18,6 +18,7 @@ import android.widget.TextView;
 
 import com.ethan.myclub.R;
 import com.ethan.myclub.network.ApiHelper;
+import com.ethan.myclub.schedule.color.RandomColor;
 import com.ethan.myclub.schedule.model.Course;
 import com.ethan.myclub.schedule.model.CourseTime;
 import com.ethan.myclub.schedule.model.Schedule;
@@ -492,8 +493,7 @@ public class LoginActivity extends BaseActivity {
         Elements rows = doc.getElementById("Table1").getElementsByTag("tr");
         if (rows.size() < 14)
             throw new Exception("课表结构出错");
-        Random random = new Random();
-
+        RandomColor randomColor = new RandomColor();
         for (int i = 2; i < 14; i++) {
             Element row = rows.get(i);
             Elements cells = row.getElementsByTag("td");
@@ -506,13 +506,7 @@ public class LoginActivity extends BaseActivity {
                 for (int j = 0; j < (info.length / 5); j++) {
                     Course course = scheduleMap.get(info[0]);
                     if (course == null) {
-                        int color = 0x88;
-                        color <<= 8;
-                        color |= random.nextInt(255);
-                        color <<= 8;
-                        color |= random.nextInt(255);
-                        color <<= 8;
-                        color |= random.nextInt(255);
+                        int color = randomColor.randomColor(0, RandomColor.SaturationType.RANDOM, RandomColor.Luminosity.LIGHT);
                         course = new Course.Builder()
                                 .name(info[j * 5 + 0])
                                 .teacher(info[j * 5 + 3])

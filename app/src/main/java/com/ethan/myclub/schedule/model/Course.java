@@ -28,7 +28,11 @@ public class Course implements Parcelable {
     @SerializedName("courses_time")
     final private List<CourseTime> time;//时间
 
-    final private int color;
+    public void setColor(int color) {
+        this.color = color;
+    }
+
+    private int color;
 
     private Course(Parcel in) {
         name = in.readString();
