@@ -31,10 +31,13 @@ public class MessageDetailClubViewModel {
                 .showBackIcon()
                 .show();
         if (!message.isChecked)
+        {
             setChecked();
+            MessageListActivity.needRefreshFlag = true;
+        }
         NotificationManager nm = (NotificationManager) mActivity.getSystemService(Context.NOTIFICATION_SERVICE);
         nm.cancel(message.id);
-        MessageListActivity.needRefreshFlag = true;
+
     }
 
     private void setChecked() {
