@@ -1,14 +1,20 @@
 package com.ethan.myclub.main;
 
 import android.content.ActivityNotFoundException;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.databinding.BindingAdapter;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.Build;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomSheetDialog;
+import android.support.v4.content.FileProvider;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -23,6 +29,7 @@ import com.ethan.myclub.user.edit.view.ProfileEditActivity;
 import com.ethan.myclub.util.Utils;
 
 import java.io.File;
+import java.util.List;
 
 import jp.wasabeef.glide.transformations.CropCircleTransformation;
 
@@ -35,6 +42,7 @@ public abstract class ImageSelectActivity extends BaseActivity {
     public static final int REQUEST_CODE_CAMERA = 1;
     public static final int REQUEST_CODE_PICK = 2;
     public static final int REQUEST_CODE_CROP = 3;
+    private static final String TAG = "ImageSelectActivity";
 
     public int mImageWidth = 500;
     public int mImageHeight = 500;
@@ -53,8 +61,18 @@ public abstract class ImageSelectActivity extends BaseActivity {
         mAspectY = aspectY;
 
         mOnFinishSelectImageListener = onFinishSelectImageListener;
-        mOutputFile = new File(getExternalCacheDir(), fileName);
-        mOutputUri = Uri.fromFile(mOutputFile);
+        File imagePath = new File(getCacheDir(), "images");
+        if (!imagePath.exists()) {
+            imagePath.mkdirs();
+        }
+        mOutputFile = new File(imagePath, fileName);
+
+        if (Build.VERSION.SDK_INT >= 24) {
+            mOutputUri = FileProvider.getUriForFile(this, "com.ethan.myclub.fileProvider", mOutputFile);
+        } else {
+            mOutputUri = Uri.fromFile(mOutputFile);
+        }
+
         final View view = LayoutInflater.from(this).inflate(R.layout.view_select_photo, null);
         final BottomSheetDialog mBottomSheetDialog = new BottomSheetDialog(this);
         mBottomSheetDialog.setContentView(view);
@@ -73,11 +91,15 @@ public abstract class ImageSelectActivity extends BaseActivity {
                     @Override
                     public void onClick(View v) {
                         Intent takeIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                        takeIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION
+                                | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+
                         //下面这句指定调用相机拍照后的照片存储的路径
                         takeIntent.putExtra(MediaStore.EXTRA_OUTPUT, mOutputUri);
                         try {
                             startActivityForResult(takeIntent, ProfileEditActivity.REQUEST_CODE_CAMERA);
                         } catch (ActivityNotFoundException e) {
+                            Log.e(TAG, "onClick: MediaStore.EXTRA_OUTPUT", e);
                             showSnackbar("您的系统不支持这个操作，请选择图片");
                         }
                         mBottomSheetDialog.dismiss();
@@ -113,6 +135,9 @@ public abstract class ImageSelectActivity extends BaseActivity {
         intent.putExtra(MediaStore.EXTRA_OUTPUT, mOutputUri);
         intent.putExtra("scaleUpIfNeeded", true); //黑边
         intent.putExtra("noFaceDetection", true); // no face detection
+        if (Build.VERSION.SDK_INT >= 24)
+            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION
+                    | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
         this.startActivityForResult(intent, ProfileEditActivity.REQUEST_CODE_CROP);
     }
 
