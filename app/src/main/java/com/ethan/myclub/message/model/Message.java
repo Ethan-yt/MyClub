@@ -93,7 +93,7 @@ public class Message implements MultiItemEntity, Serializable {
             case "0": //社团通知
                 return "[通知]" + club;
             case "1": //申请加入社团
-                return "[请求]" + club;
+                return "[申请]" + club;
             case "2": //加入通过或拒绝
                 switch (title) {
                     case "待审核":
