@@ -11,7 +11,7 @@ import android.widget.EditText;
 import com.ethan.myclub.R;
 import com.ethan.myclub.main.MyApplication;
 import com.ethan.myclub.network.OAuthHelper;
-import com.ethan.myclub.user.login.model.Token;
+import com.ethan.myclub.user.model.Token;
 import com.ethan.myclub.main.MainActivity;
 import com.ethan.myclub.main.BaseActivity;
 

@@ -5,12 +5,14 @@ import android.app.Application;
 import android.content.Context;
 import android.os.Parcel;
 import android.os.Process;
+import android.support.annotation.Nullable;
 import android.support.multidex.MultiDex;
 import android.text.TextUtils;
 import android.util.Log;
 
 import com.ethan.myclub.BuildConfig;
-import com.ethan.myclub.user.login.model.Token;
+import com.ethan.myclub.user.model.Token;
+import com.ethan.myclub.user.model.Profile;
 import com.ethan.myclub.util.Utils;
 import com.facebook.stetho.Stetho;
 import com.tencent.bugly.Bugly;
@@ -38,6 +40,8 @@ public class MyApplication extends Application {
     public static final String FILE_NAME_TOKEN = "Token.dat";
 
     static private Token sToken;
+    @Nullable
+    static public Profile sProfile;
 
     public static void setToken(Context context, Token token) {
         Parcel parcel = Parcel.obtain();

@@ -9,7 +9,7 @@ import com.ethan.myclub.BuildConfig;
 import com.ethan.myclub.databinding.ActivityLoginBinding;
 import com.ethan.myclub.main.MyApplication;
 import com.ethan.myclub.network.OAuthHelper;
-import com.ethan.myclub.user.login.model.Token;
+import com.ethan.myclub.user.model.Token;
 import com.ethan.myclub.user.login.view.LoginActivity;
 import com.ethan.myclub.user.login.view.RegisterActivity;
 

@@ -1,4 +1,4 @@
-package com.ethan.myclub.user.login.model;
+package com.ethan.myclub.user.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;

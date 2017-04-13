@@ -1,11 +1,10 @@
 package com.ethan.myclub.network.service;
 
-import com.ethan.myclub.user.login.model.Token;
+import com.ethan.myclub.user.model.Token;
 
 import io.reactivex.Observable;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
-import retrofit2.http.Header;
 import retrofit2.http.POST;
 
 /**

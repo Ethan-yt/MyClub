@@ -7,7 +7,6 @@ import android.databinding.ObservableField;
 import android.databinding.ObservableInt;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.util.Pair;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 
@@ -21,7 +20,6 @@ import com.ethan.myclub.network.ApiHelper;
 import com.ethan.myclub.network.OAuthHelper;
 import com.ethan.myclub.user.collection.view.UserCollectionActivity;
 import com.ethan.myclub.user.edit.view.ProfileEditActivity;
-import com.ethan.myclub.user.login.model.Token;
 import com.ethan.myclub.user.main.view.UserFragment;
 import com.ethan.myclub.user.model.Profile;
 import com.ethan.myclub.schedule.view.ScheduleActivity;
@@ -31,7 +29,6 @@ import com.xiaomi.mipush.sdk.MiPushClient;
 
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 
@@ -70,7 +67,7 @@ public class UserViewModel {
             ActivityOptionsCompat options = ActivityOptionsCompat
                     .makeSceneTransitionAnimation(mFragment.getActivity(),
                             Pair.create((View) mBinding.ivAvatar, "trans_iv_avatar"));
-            ProfileEditActivity.start(mFragment.getActivity(), mProfile.get(), options.toBundle());
+            ProfileEditActivity.start(mFragment.getActivity(), options.toBundle());
         } else
             mFragment.mMainActivity.showLoginSnackbar("您还没有登录！");
 
@@ -119,7 +116,7 @@ public class UserViewModel {
 
     public void updateUserProfileAttempt() {
         //获取用户基本资料
-        if (MainActivity.needUpdateFlag.userProfile || mProfile.get() == null) {
+        if (MainActivity.needUpdateFlag.userProfile || MyApplication.sProfile == null) {
             Log.i(TAG, "updateUserProfileAttempt: 更新userProfile");
             updateUserProfile();
         }
@@ -182,6 +179,8 @@ public class UserViewModel {
                         Log.i(TAG, "设置统计账号：" + id);
                         CrashReport.setUserId(id);
                         MainActivity.needUpdateFlag.userProfile = false;
+
+                        MyApplication.sProfile = profile;
                     }
 
                     @Override

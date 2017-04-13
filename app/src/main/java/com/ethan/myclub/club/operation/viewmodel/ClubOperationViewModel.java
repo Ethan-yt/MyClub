@@ -2,6 +2,7 @@ package com.ethan.myclub.club.operation.viewmodel;
 
 import android.databinding.BindingAdapter;
 import android.databinding.ObservableField;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.GridView;
 import android.widget.ImageView;
@@ -25,7 +26,10 @@ import com.ethan.myclub.club.operation.adapter.ViewPagerAdapter;
 import com.ethan.myclub.club.operation.model.Operation;
 import com.ethan.myclub.club.operation.view.ClubOperationActivity;
 import com.ethan.myclub.databinding.ActivityClubOperationBinding;
+import com.ethan.myclub.main.MyApplication;
 import com.ethan.myclub.message.view.MessageListActivity;
+import com.ethan.myclub.schedule.view.ScheduleActivity;
+import com.ethan.myclub.user.edit.view.ProfileEditActivity;
 import com.ethan.myclub.util.Utils;
 
 import java.util.ArrayList;
@@ -82,5 +86,19 @@ public class ClubOperationViewModel {
 
         mBinding.indicator.setViewPager(mBinding.viewPager);
 
+        if (MyApplication.sProfile != null && !MyApplication.sProfile.isUploadSchedule)
+            mActivity.showSnackbar("请尽快上传您的课程表", "上传", new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ScheduleActivity.startActivity(mActivity, null);
+                }
+            });
+        if (MyApplication.sProfile != null && TextUtils.isEmpty(MyApplication.sProfile.name))
+            mActivity.showSnackbar("请尽快设置您的真实姓名", "设置", new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ProfileEditActivity.start(mActivity, null);
+                }
+            });
     }
 }

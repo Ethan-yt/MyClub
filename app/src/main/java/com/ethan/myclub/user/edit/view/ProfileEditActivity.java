@@ -29,9 +29,8 @@ public class ProfileEditActivity extends ImageSelectActivity {
         mViewModel.onBackPressed();
     }
 
-    public static void start(Activity activity, Profile  profile, Bundle bundle) {
+    public static void start(Activity activity, Bundle bundle) {
         Intent intent = new Intent(activity, ProfileEditActivity.class);
-        intent.putExtra("profile", profile);
         ActivityCompat.startActivity(activity, intent, bundle);
     }
 }

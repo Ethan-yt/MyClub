@@ -7,7 +7,7 @@ import com.ethan.myclub.main.MyApplication;
 import com.ethan.myclub.network.exception.ApiException;
 import com.ethan.myclub.network.exception.ExceptionEngine;
 import com.ethan.myclub.main.BaseActivity;
-import com.ethan.myclub.user.login.model.Token;
+import com.ethan.myclub.user.model.Token;
 import com.jakewharton.retrofit2.adapter.rxjava2.HttpException;
 
 import java.lang.reflect.InvocationHandler;

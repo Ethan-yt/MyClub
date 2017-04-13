@@ -19,6 +19,7 @@ import com.ethan.myclub.R;
 import com.ethan.myclub.databinding.ActivityUserProfileEditBinding;
 import com.ethan.myclub.main.ImageSelectActivity;
 import com.ethan.myclub.main.MainActivity;
+import com.ethan.myclub.main.MyApplication;
 import com.ethan.myclub.network.ApiHelper;
 import com.ethan.myclub.user.edit.view.ProfileEditActivity;
 import com.ethan.myclub.user.model.Profile;
@@ -55,8 +56,8 @@ public class ProfileEditViewModel {
         mActivity = profileEditActivity;
         mBinding = binding;
         mBinding.setViewModel(this);
-        mProfile = (Profile) mActivity.getIntent().getSerializableExtra("profile");
 
+        mProfile = MyApplication.sProfile;
         if (!TextUtils.isEmpty(mProfile.avatar))
             mImageUri.set(Uri.parse(mProfile.avatar));
 

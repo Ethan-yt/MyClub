@@ -143,5 +143,10 @@ public class Profile extends BaseObservable implements Serializable {
     @SerializedName("avatar")
     @Expose
     public String avatar;
+    @SerializedName("is_upload_schedule")
+    @Expose
+    public Boolean isUploadSchedule;
+
+
 
 }
