@@ -23,6 +23,7 @@ import com.ethan.myclub.club.model.MemberResult;
 import com.ethan.myclub.club.my.model.MyClub;
 import com.ethan.myclub.main.BaseActivity;
 import com.ethan.myclub.main.MainActivity;
+import com.ethan.myclub.main.MyApplication;
 import com.ethan.myclub.network.ApiHelper;
 import com.ethan.myclub.user.detail.view.UserDetailActivity;
 import com.ethan.myclub.util.ImageUtils;
@@ -104,7 +105,12 @@ public class MemberAdapter extends BaseQuickAdapter<MemberResult, BaseViewHolder
 
         if (mMode == 2) {
             final SwipeRevealLayout swipeLayout = helper.getView(R.id.swipeLayout);
-            binderHelper.bind(swipeLayout, String.valueOf(item.userAccount));
+            if(item.userAccount.equals(MyApplication.getToken().uid)){
+                helper.getView(R.id.ic_drag).setVisibility(View.INVISIBLE);
+                swipeLayout.setLockDrag(true);
+            }
+            else
+                binderHelper.bind(swipeLayout, String.valueOf(item.userAccount));
             helper.getView(R.id.btn_give)
                     .setOnClickListener(new View.OnClickListener() {
                         @Override
