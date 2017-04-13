@@ -78,6 +78,18 @@ public class MiPushMessageReceiver extends PushMessageReceiver {
                         .setPriority(NotificationCompat.PRIORITY_MAX)
                         .setDefaults(Notification.DEFAULT_VIBRATE);
 
+        switch (message.type) {
+            case "2":
+                switch (message.title) {
+                    case "接受":
+                        MainActivity.needUpdateFlag.clubList = true;
+                        break;
+                }
+                break;
+
+        }
+
+
         NotificationManager mNotifyMgr =
                 (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 

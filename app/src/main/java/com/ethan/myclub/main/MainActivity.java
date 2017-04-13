@@ -214,6 +214,7 @@ public class MainActivity extends BaseActivity {
                 public void onReceivePassThroughMessage(Context context, MiPushMessage message1) {
                     super.onReceivePassThroughMessage(context, message1);
                     updateUserUnreadNumberAttempt();
+                    updateUserClubListAttempt();
                 }
             };
             IntentFilter intentFilter = new IntentFilter();
