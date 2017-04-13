@@ -17,38 +17,55 @@ def checkRelease() {
         if (task.contains("assemble") && !task.contains("Debug")) {
             return true
         }
-        if (task.contains("Release")) {
-            return true
-        }
     }
     return false
 }
 
 apply from: 'tinker-support.gradle'
 
-
 android {
     compileSdkVersion 25
     buildToolsVersion '25.0.2'
-    defaultConfig {
-        applicationId "com.ethan.myclub"
-        minSdkVersion 14
-        targetSdkVersion 25
-        versionCode 14
-        versionName "1.2.11 alpha"
 
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-        jackOptions {
-            //enabled true
+    //读入版本配置文件
+    def versionPropsFile = file('version.properties')
+
+    if (versionPropsFile.canRead()) {
+        def Properties versionProps = new Properties()
+
+        versionProps.load(new FileInputStream(versionPropsFile))
+        def code = versionProps['VERSION_CODE'].toInteger()
+        if (checkRelease()) {
+            code = code + 1
+            versionProps['VERSION_CODE'] = code.toString()
+            versionProps.store(versionPropsFile.newWriter(), null)
         }
-        vectorDrawables {
-            useSupportLibrary true
+
+        defaultConfig {
+            versionCode code
+            versionName "1.2." + code
+            applicationId "com.ethan.myclub"
+            minSdkVersion 14
+            targetSdkVersion 25
+
+            testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+            jackOptions {
+                //enabled true
+            }
+            vectorDrawables {
+                useSupportLibrary true
+            }
+            ndk {
+                //设置支持的SO库架构
+                abiFilters 'armeabi', 'armeabi-v7a', 'arm64-v8a', 'x86', 'x86_64'
+            }
+
         }
-        ndk {
-            //设置支持的SO库架构
-            abiFilters 'armeabi' //, 'x86', 'armeabi-v7a', 'x86_64', 'arm64-v8a'
-        }
+    } else {
+        throw new GradleException("Could not read version.properties!")
     }
+
+
     signingConfigs {
         release {
             storeFile file("key0.jks")
@@ -58,10 +75,12 @@ android {
         }
     }
     buildTypes {
+
         debug {
             signingConfig signingConfigs.release
         }
         release {
+            versionNameSuffix "-alpha"
             //是否优化zip
             zipAlignEnabled true
             // 移除无用的resource文件
