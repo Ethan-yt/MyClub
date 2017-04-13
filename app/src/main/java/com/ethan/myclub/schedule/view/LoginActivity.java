@@ -507,6 +507,8 @@ public class LoginActivity extends BaseActivity {
                     Course course = scheduleMap.get(info[0]);
                     if (course == null) {
                         int color = randomColor.randomColor(0, RandomColor.SaturationType.RANDOM, RandomColor.Luminosity.LIGHT);
+                        color &= 0x00FFFFFF; // 清空高位
+                        color |= 0xAA000000; // 设置高位
                         course = new Course.Builder()
                                 .name(info[j * 5 + 0])
                                 .teacher(info[j * 5 + 3])
