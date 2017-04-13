@@ -61,7 +61,7 @@ public class MessageAdapter extends BaseMultiItemQuickAdapter<Message, BaseViewH
             swipeRevealLayout.setLockDrag(true);
         else
             binderHelper.bind(swipeRevealLayout, String.valueOf(item.id));
-        String msgContent;
+
         helper.setText(R.id.tv_title, item.generateTitle());
         helper.setText(R.id.tv_content, item.generateContent());
         helper.setText(R.id.tv_time, item.standardTime);
@@ -101,32 +101,36 @@ public class MessageAdapter extends BaseMultiItemQuickAdapter<Message, BaseViewH
                 });
                 break;
             case "1": //申请加入社团
-
                 helper.getView(R.id.cv).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        helper.getView(R.id.iv_not_read).setVisibility(View.INVISIBLE);
-                        setChecked(item);
-                        NotificationManager nm = (NotificationManager) mBaseActivity.getSystemService(Context.NOTIFICATION_SERVICE);
-                        nm.cancel(item.id);
 
-                        new AlertDialog.Builder(mBaseActivity)
-                                .setTitle("请处理")
-                                .setMessage(item.generateContent())
-                                .setPositiveButton("通过", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialogInterface, int i) {
-                                        manageApply(String.valueOf(item.clubId), "1", String.valueOf(item.senderId));
-                                    }
-                                })
-                                .setNeutralButton("取消", null)
-                                .setNegativeButton("拒绝", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        manageApply(String.valueOf(item.clubId), "0", String.valueOf(item.senderId));
-                                    }
-                                })
-                                .show();
+                        if (item.title.equals("待审核"))
+                            new AlertDialog.Builder(mBaseActivity)
+                                    .setTitle("请处理")
+                                    .setMessage(item.generateContent())
+                                    .setPositiveButton("通过", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialogInterface, int i) {
+                                            manageApply(String.valueOf(item.clubId), "1", String.valueOf(item.senderId));
+                                            helper.getView(R.id.iv_not_read).setVisibility(View.INVISIBLE);
+                                            setChecked(item);
+                                            NotificationManager nm = (NotificationManager) mBaseActivity.getSystemService(Context.NOTIFICATION_SERVICE);
+                                            nm.cancel(item.id);
+                                        }
+                                    })
+                                    .setNeutralButton("取消", null)
+                                    .setNegativeButton("拒绝", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            manageApply(String.valueOf(item.clubId), "0", String.valueOf(item.senderId));
+                                            helper.getView(R.id.iv_not_read).setVisibility(View.INVISIBLE);
+                                            setChecked(item);
+                                            NotificationManager nm = (NotificationManager) mBaseActivity.getSystemService(Context.NOTIFICATION_SERVICE);
+                                            nm.cancel(item.id);
+                                        }
+                                    })
+                                    .show();
                     }
                 });
                 break;
