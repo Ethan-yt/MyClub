@@ -95,7 +95,6 @@ public class ScheduleAnalysisViewModel {
                         }
                     })
                     .show();
-            mActivity.finish();
             return;
         }
         setCurrentSchedule();
