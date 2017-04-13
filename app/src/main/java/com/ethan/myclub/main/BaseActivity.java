@@ -31,8 +31,11 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.TextView;
 
 import com.ethan.myclub.R;
+import com.ethan.myclub.schedule.view.ScheduleActivity;
 import com.ethan.myclub.user.login.view.LoginActivity;
 import com.umeng.analytics.MobclickAgent;
+
+import java.io.File;
 
 import io.reactivex.disposables.Disposable;
 
@@ -74,10 +77,19 @@ public abstract class BaseActivity extends AppCompatActivity {
                 MainActivity.needUpdateFlag.userProfile = true;
                 MainActivity.needUpdateFlag.clubList = true;
                 MainActivity.needUpdateFlag.userUnreadCount = true;
+
+                deleteSchedule();
             }
 
         }
     }
+
+    private void deleteSchedule() {
+        File file = new File(getFilesDir(), ScheduleActivity.FILE_NAME_SCHEDULE);
+        if (file.isFile() && file.exists())
+            file.delete();
+    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

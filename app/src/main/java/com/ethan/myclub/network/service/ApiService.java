@@ -298,5 +298,7 @@ public interface ApiService {
     @POST("api/club/{clubId}/spare-time/")
     Observable<List<List<ScheduleResult>>> analysisSchedule(@Path("clubId") String clubId, @Body ScheduleStatus scheduleStatus);
 
-
+    //下载课表
+    @GET("api/user/schedule/")
+    Observable<List<Schedule>> getSchedule();
 }
