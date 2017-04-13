@@ -13,6 +13,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.NumberPicker;
 
 import com.ethan.myclub.R;
@@ -192,7 +193,7 @@ public class ScheduleActivity extends BaseActivity {
         np.setMinValue(0);
         np.setMaxValue(week_id.length - 1);
         np.setValue(mCurrentWeek - 1);
-
+        np.setDescendantFocusability(ViewGroup.FOCUS_BLOCK_DESCENDANTS);
         mBottomSheetDialog = new BottomSheetDialog(this);
         mBottomSheetDialog.setContentView(np);
         mBottomSheetDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {

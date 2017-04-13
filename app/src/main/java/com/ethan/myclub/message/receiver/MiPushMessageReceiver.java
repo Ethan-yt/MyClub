@@ -62,7 +62,7 @@ public class MiPushMessageReceiver extends PushMessageReceiver {
     @Override
     public void onReceivePassThroughMessage(final Context context, MiPushMessage message1) {
         final Message message = new Gson().fromJson(message1.getContent(), Message.class);
-        Log.i(TAG, "onReceivePassThroughMessage: " + message);
+        Log.i(TAG, "onReceivePassThroughMessage: " + message1);
         MainActivity.needUpdateFlag.userUnreadCount = true;
 
         Intent intent = new Intent(context, MessageListActivity.class);

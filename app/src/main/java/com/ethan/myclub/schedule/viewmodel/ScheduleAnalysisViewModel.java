@@ -9,6 +9,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.ViewGroup;
 import android.widget.NumberPicker;
 
 import com.ethan.myclub.R;
@@ -242,6 +243,7 @@ public class ScheduleAnalysisViewModel {
         np.setMinValue(0);
         np.setMaxValue(week_id.length - 1);
         np.setValue(mCurrentWeek - 1);
+        np.setDescendantFocusability(ViewGroup.FOCUS_BLOCK_DESCENDANTS);
 
         new AlertDialog.Builder(mActivity)
                 .setTitle("请选择你想查询的周")
