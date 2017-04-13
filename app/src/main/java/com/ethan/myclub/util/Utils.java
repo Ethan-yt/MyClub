@@ -219,42 +219,64 @@ public class Utils {
     public static String apiDate2StdDate(String apiDate) {
         if (TextUtils.isEmpty(apiDate))
             return "";
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-        Date date = formatter.parse(apiDate, new ParsePosition(0));
-        SimpleDateFormat formatter2 = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-        return formatter2.format(date.getTime());
+        try {
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+            Date date = formatter.parse(apiDate, new ParsePosition(0));
+            SimpleDateFormat formatter2 = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+            return formatter2.format(date.getTime());
+        } catch (Exception ignored) {
+        }
+        return "";
+
     }
 
     public static String Date2StdDate(Date date) {
         if (date == null)
             return "";
-        SimpleDateFormat formatter2 = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-        return formatter2.format(date.getTime());
+        try {
+            SimpleDateFormat formatter2 = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+            return formatter2.format(date.getTime());
+        } catch (Exception ignored) {
+        }
+        return "";
+
     }
 
     public static Date ApiDate2Date(String apiDate) {
         if (TextUtils.isEmpty(apiDate))
             return new Date();
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-        return formatter.parse(apiDate, new ParsePosition(0));
+        try {
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+            return formatter.parse(apiDate, new ParsePosition(0));
+        } catch (Exception ignored) {
+        }
+        return new Date();
 
     }
 
     public static Date StdDate2Date(String stdDate) {
         if (TextUtils.isEmpty(stdDate))
             return new Date();
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-        return formatter.parse(stdDate, new ParsePosition(0));
-
+        try {
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+            return formatter.parse(stdDate, new ParsePosition(0));
+        } catch (Exception ignored) {
+        }
+        return new Date();
     }
 
     public static String StdDate2ApiDate(String stdTime) {
         if (TextUtils.isEmpty(stdTime))
             return "";
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-        Date date = formatter.parse(stdTime, new ParsePosition(0));
-        SimpleDateFormat formatter2 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-        return formatter2.format(date.getTime());
+        try {
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+            Date date = formatter.parse(stdTime, new ParsePosition(0));
+            SimpleDateFormat formatter2 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+            return formatter2.format(date.getTime());
+        } catch (Exception ignored) {
+        }
+        return "";
+
     }
 
     /**
