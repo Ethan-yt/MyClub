@@ -67,11 +67,8 @@ public abstract class ImageSelectActivity extends BaseActivity {
         }
         mOutputFile = new File(imagePath, fileName);
 
-        if (Build.VERSION.SDK_INT >= 24) {
             mOutputUri = FileProvider.getUriForFile(this, "com.ethan.myclub.fileProvider", mOutputFile);
-        } else {
-            mOutputUri = Uri.fromFile(mOutputFile);
-        }
+
 
         final View view = LayoutInflater.from(this).inflate(R.layout.view_select_photo, null);
         final BottomSheetDialog mBottomSheetDialog = new BottomSheetDialog(this);
@@ -120,6 +117,8 @@ public abstract class ImageSelectActivity extends BaseActivity {
 
     private void startPhotoCrop(Uri uri) {
         Intent intent = new Intent("com.android.camera.action.CROP");
+        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
         intent.setDataAndType(uri, "image/*");
         // crop=true是设置在开启的Intent中设置显示的VIEW可裁剪
         intent.putExtra("crop", true);
@@ -135,8 +134,12 @@ public abstract class ImageSelectActivity extends BaseActivity {
         intent.putExtra(MediaStore.EXTRA_OUTPUT, mOutputUri);
         intent.putExtra("scaleUpIfNeeded", true); //黑边
         intent.putExtra("noFaceDetection", true); // no face detection
-        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION
-                | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+
+        List<ResolveInfo> resInfoList = getPackageManager().queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY);
+        for (ResolveInfo resolveInfo : resInfoList) {
+            String packageName = resolveInfo.activityInfo.packageName;
+            grantUriPermission(packageName, mOutputUri , Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        }
         this.startActivityForResult(intent, ProfileEditActivity.REQUEST_CODE_CROP);
     }
 
