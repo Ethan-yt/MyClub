@@ -116,7 +116,16 @@ public class Message implements MultiItemEntity, Serializable {
             case "0": //社团通知
                 return title;
             case "1": //申请加入社团
-                return senderNickname + (TextUtils.isEmpty(senderName) ? "" : " (" + senderName + ")") + " 申请加入社团";
+                switch (title) {
+                    case "待审核":
+                        return senderNickname + (TextUtils.isEmpty(senderName) ? "" : " (" + senderName + ")") + " 申请加入社团";
+                    case "接受":
+                        return "已经批准了 " + senderNickname + (TextUtils.isEmpty(senderName) ? "" : " (" + senderName + ")") + " 的加入请求";
+                    case "拒绝":
+                        return "已经拒绝了 " + senderNickname + (TextUtils.isEmpty(senderName) ? "" : " (" + senderName + ")") + " 的加入请求";
+                    default:
+                        return "发生了内部错误：T2";
+                }
             case "2": //加入通过或拒绝
                 switch (title) {
                     case "待审核":

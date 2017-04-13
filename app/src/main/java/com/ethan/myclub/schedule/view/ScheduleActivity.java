@@ -73,7 +73,7 @@ public class ScheduleActivity extends BaseActivity {
                         }, new OnFinishCreateMenu() {
                             @Override
                             public void onFinish(Menu menu) {
-                                if(mSchedules.isEmpty()){
+                                if (mSchedules.isEmpty()) {
                                     menu.findItem(R.id.action_setCurrentWeek).setVisible(false);
                                     menu.findItem(R.id.action_settings).setVisible(false);
                                 }
@@ -161,16 +161,21 @@ public class ScheduleActivity extends BaseActivity {
     }
 
     public void read() {
-        Parcel parcel = Utils.readParcelFromFile(this, FILE_NAME_SCHEDULE);
-        if (parcel != null) {
-            parcel.readList(mSchedules, Schedule.class.getClassLoader());
-            parcel.recycle();
+        try {
+            Parcel parcel = Utils.readParcelFromFile(this, FILE_NAME_SCHEDULE);
+            if (parcel != null) {
+                parcel.readList(mSchedules, Schedule.class.getClassLoader());
+                parcel.recycle();
+            }
+        } catch (Exception ignored) {
+
         }
 
         SharedPreferences sharedPreferences = getSharedPreferences("schedule", MODE_PRIVATE);
 
         mCurrentYear = sharedPreferences.getString("CurrentYear", "");
         mCurrentTerm = sharedPreferences.getString("CurrentTerm", "");
+        mCurrentWeek = sharedPreferences.getInt("CurrentWeek", 1);
     }
 
     int mCurrentWeek = 1;
@@ -190,12 +195,14 @@ public class ScheduleActivity extends BaseActivity {
 
         mBottomSheetDialog = new BottomSheetDialog(this);
         mBottomSheetDialog.setContentView(np);
-
         mBottomSheetDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
             @Override
             public void onDismiss(DialogInterface dialog) {
-
                 mCurrentWeek = np.getValue() + 1;
+                SharedPreferences sharedPreferences = getSharedPreferences("schedule", MODE_PRIVATE);
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.putInt("CurrentWeek", mCurrentWeek);
+                editor.apply();
                 refreshScheduleView();
                 mBottomSheetDialog = null;
             }

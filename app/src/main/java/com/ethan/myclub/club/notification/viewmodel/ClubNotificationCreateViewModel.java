@@ -7,6 +7,7 @@ import android.support.v7.app.AlertDialog;
 import com.ethan.myclub.club.my.model.MyClub;
 import com.ethan.myclub.club.notification.view.ClubNotificationCreateActivity;
 import com.ethan.myclub.databinding.ActivityClubNotificationCreateBinding;
+import com.ethan.myclub.message.view.MessageListActivity;
 import com.ethan.myclub.network.ApiHelper;
 
 import java.util.concurrent.TimeUnit;
@@ -70,6 +71,7 @@ public class ClubNotificationCreateViewModel {
                     @Override
                     public void onNext(Object o) {
                         mActivity.showSnackbar("通知推送成功");
+                        MessageListActivity.needRefreshFlag = true;
                         Observable.timer(1, TimeUnit.SECONDS, AndroidSchedulers.mainThread())
                                 .subscribe(new Consumer<Long>() {
                                     @Override

@@ -82,6 +82,7 @@ public class UserDetailViewModel {
 
                     @Override
                     public void onNext(Profile profile) {
+                        profile.sex = profile.sex.equals("0") ? "男" : "女";
                         mProfile.set(profile);
                     }
 

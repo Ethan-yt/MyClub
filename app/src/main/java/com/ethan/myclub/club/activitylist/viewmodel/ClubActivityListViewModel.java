@@ -142,7 +142,7 @@ public class ClubActivityListViewModel {
 
     public void create() {
         mBinding.fabMenu.close(true);
-        ActivityCreateActivity.start(mActivity, mMyClub);
+        ActivityCreateActivity.startForResult(mActivity, mMyClub);
     }
 
     public void edit() {

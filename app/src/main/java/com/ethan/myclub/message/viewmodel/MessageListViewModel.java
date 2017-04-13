@@ -4,6 +4,7 @@ import android.app.NotificationManager;
 import android.content.Context;
 import android.databinding.ObservableBoolean;
 import android.graphics.Color;
+import android.service.vr.VrListenerService;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -41,6 +42,8 @@ public class MessageListViewModel {
     final private ActivityMessageListBinding mBinding;
     final private MyClub mMyClub;
 
+    final private int mMode;
+
     private final EmptyView mEmptyView;
     final private MessageAdapter mAdapter;
     private final BaseActivity.ToolbarWrapper mToolbar;
@@ -50,16 +53,30 @@ public class MessageListViewModel {
 
     public ObservableBoolean mHasPermission = new ObservableBoolean(false);
 
-    public MessageListViewModel(MessageListActivity activity, ActivityMessageListBinding binding, @Nullable MyClub myClub) {
+    public MessageListViewModel(MessageListActivity activity, ActivityMessageListBinding binding, @Nullable MyClub myClub, int mode) {
         mActivity = activity;
         mBinding = binding;
         mBinding.setViewModel(this);
         mMyClub = myClub;
+        mMode = mode;
+        String title;
+        switch (mode) {
+            case 1:
+                title = "社团通知";
+                if (mMyClub != null && mMyClub.checkPermission(2))
+                    mHasPermission.set(true);
+                break;
+            case 2:
+                title = "招新管理";
+                break;
+            default:
+                title = "我的消息";
+                break;
+        }
 
         mToolbar = mActivity.getToolbarWrapper()
-                .setTitle(mMyClub == null ? "我的消息" : "社团通知")
+                .setTitle(title)
                 .showBackIcon();
-
 
         mToolbar.show();
 
@@ -81,21 +98,24 @@ public class MessageListViewModel {
         MainActivity.needUpdateFlag.userUnreadCount = true;
 
         mBinding.fabMenu.setClosedOnTouchOutside(true);
-
-        if (mMyClub != null && mMyClub.checkPermission(6))
-            mHasPermission.set(true);
     }
 
     public void update() {
         Observable<List<Message>> observable;
-        if (mMyClub == null) {
-            observable = ApiHelper.getProxyWithoutToken(mActivity)
-                    .getMyMessage();
-        } else {
-            observable = ApiHelper.getProxyWithoutToken(mActivity)
-                    .getAllClubMessage(String.valueOf(mMyClub.clubId));
+        switch (mMode) {
+            case 1:
+                observable = ApiHelper.getProxyWithoutToken(mActivity)
+                        .getAllClubMessage(String.valueOf(mMyClub.clubId));
+                break;
+            case 2:
+                observable = ApiHelper.getProxyWithoutToken(mActivity)
+                        .getEnrollMessage(String.valueOf(mMyClub.clubId));
+                break;
+            default:
+                observable = ApiHelper.getProxyWithoutToken(mActivity)
+                        .getMyMessage();
+                break;
         }
-
         observable
                 .doOnSubscribe(new Consumer<Disposable>() {
                     @Override
@@ -128,7 +148,7 @@ public class MessageListViewModel {
                             mBinding.list.setLayoutFrozen(false);
                             mAdapter.setNewData(messages);
                         }
-
+                        MessageListActivity.needRefreshFlag = false;
                     }
 
                     @Override

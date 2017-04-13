@@ -50,7 +50,7 @@
                 android:id="@+id/et_username"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="用户名/手机号"
+                android:hint="手机号"
                 android:text="@={viewModel.userName}"
                 android:textColorHint="?android:attr/textColorHint"/>
 
@@ -75,6 +75,7 @@
             android:layout_marginTop="18dp"
             android:padding="5dp"
             android:text="找回密码"
+            android:visibility="invisible"
             app:layout_constraintLeft_toLeftOf="@+id/linearLayout"
             app:layout_constraintTop_toBottomOf="@+id/linearLayout"/>
 
@@ -83,14 +84,15 @@
             android:id="@+id/btn_register"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginRight="11dp"
-            android:layout_marginTop="-1dp"
+            android:layout_marginTop="24dp"
             android:onClick="@{()->viewModel.register()}"
             android:padding="5dp"
             android:text="立即注册"
-            app:layout_constraintRight_toRightOf="@+id/linearLayout"
-            app:layout_constraintTop_toTopOf="@+id/btn_findback"
-            />
+            android:layout_marginRight="8dp"
+            app:layout_constraintRight_toRightOf="parent"
+            android:layout_marginLeft="8dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btn_login"/>
 
         <TextView
             android:id="@+id/tv_3rdLogin"
@@ -102,6 +104,7 @@
             android:gravity="center"
             android:text="第三方登录"
             android:textSize="14sp"
+            android:visibility="invisible"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/btn_login"/>
@@ -117,6 +120,7 @@
             android:dividerPadding="2dp"
             android:orientation="horizontal"
             android:showDividers="middle"
+            android:visibility="invisible"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_3rdLogin">

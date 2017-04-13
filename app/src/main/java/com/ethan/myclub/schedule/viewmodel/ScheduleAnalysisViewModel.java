@@ -192,16 +192,21 @@ public class ScheduleAnalysisViewModel {
     }
 
     public void read() {
-        Parcel parcel = Utils.readParcelFromFile(mActivity, FILE_NAME_SCHEDULE);
-        if (parcel != null) {
-            parcel.readList(mSchedules, Schedule.class.getClassLoader());
-            parcel.recycle();
+        try {
+            Parcel parcel = Utils.readParcelFromFile(mActivity, FILE_NAME_SCHEDULE);
+            if (parcel != null) {
+                parcel.readList(mSchedules, Schedule.class.getClassLoader());
+                parcel.recycle();
+            }
+        } catch (Exception ignored) {
+
         }
 
         SharedPreferences sharedPreferences = mActivity.getSharedPreferences("schedule", MODE_PRIVATE);
 
         mCurrentYear = sharedPreferences.getString("CurrentYear", "");
         mCurrentTerm = sharedPreferences.getString("CurrentTerm", "");
+        mCurrentWeek = sharedPreferences.getInt("CurrentWeek", 1);
     }
 
     private void setCurrentSchedule() {

@@ -63,6 +63,11 @@ public interface ApiService {
     Observable<List<Message>>
     getAllClubMessage(@Path("clubId") String clubId);
 
+    //获取社团发布的通知
+    @GET("api/club/{clubId}/get-applicants/")
+    Observable<List<Message>>
+    getEnrollMessage(@Path("clubId") String clubId);
+
     //变更消息已阅状态
     @GET("api/message/{msgId}/read/")
     Observable<Object>
@@ -121,21 +126,15 @@ public interface ApiService {
     @GET("api/user/profile/{userId}/")
     Observable<Profile> getUserProfile(@Path("userId") String userId);
 
-
-    // 提交REGID
-    @POST("api/user/regid/")
-    @FormUrlEncoded
-    Observable<Object> submitRegId(@Field("regID") String regId);
-
     //============================社团============================
-
-    //解散社团
-    @DELETE("api/club/{clubId}/")
-    Observable<Object>
-    quitClub(@Path("clubId") String clubId);
 
     //退出社团
     @DELETE("api/club/{clubId}/my-club-list/")
+    Observable<Object>
+    quitClub(@Path("clubId") String clubId);
+
+    //解散社团
+    @DELETE("api/club/{clubId}/")
     Observable<Object>
     deleteClub(@Path("clubId") String clubId);
 
@@ -148,7 +147,7 @@ public interface ApiService {
     @POST("api/club/{clubId}/approval/{userId}/")
     @FormUrlEncoded
     Observable<Object>
-    manageApply(@Path("clubId") String clubId, @Path("userId") String userId,@Field("passed") String passed);
+    manageApply(@Path("clubId") String clubId, @Path("userId") String userId, @Field("passed") String passed);
 
     //获取社团搜索提示
     @GET("api/club/suggestion/")

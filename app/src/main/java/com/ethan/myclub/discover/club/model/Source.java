@@ -30,4 +30,6 @@ public class Source {
     @Expose
     public List<String> tags = null;
 
+    public String tagStr;
+
 }

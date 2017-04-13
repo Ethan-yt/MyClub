@@ -60,6 +60,16 @@ public class ClubFragment extends TabFragment {
                         mCurrentPage++;
                         for (Hit hit : clubResult.hits.hits) {
                             hit.source.badge += "?imageView2/0/w/300/h/300";
+                            hit.source.tagStr = "";
+                            if (hit.source.tags == null || hit.source.tags.isEmpty())
+                                hit.source.tagStr = "";
+                            else {
+                                for (String tag : hit.source.tags) {
+                                    hit.source.tagStr += tag + " ";
+                                }
+                            }
+
+
                         }
                         if (page == 1) {
                             if (clubResult.hits.hits.size() == 0) {

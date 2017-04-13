@@ -116,14 +116,14 @@ public class MessageAdapter extends BaseMultiItemQuickAdapter<Message, BaseViewH
                                 .setPositiveButton("通过", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialogInterface, int i) {
-                                        manageApply("1", String.valueOf(item.senderId));
+                                        manageApply(String.valueOf(item.clubId), "1", String.valueOf(item.senderId));
                                     }
                                 })
                                 .setNeutralButton("取消", null)
                                 .setNegativeButton("拒绝", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
-                                        manageApply("0", String.valueOf(item.senderId));
+                                        manageApply(String.valueOf(item.clubId), "0", String.valueOf(item.senderId));
                                     }
                                 })
                                 .show();
@@ -139,9 +139,9 @@ public class MessageAdapter extends BaseMultiItemQuickAdapter<Message, BaseViewH
         }
     }
 
-    private void manageApply(String i, String userId) {
+    private void manageApply(String clubId, String passed, String userId) {
         ApiHelper.getProxy(mBaseActivity)
-                .manageApply(String.valueOf(mMyClub.clubId), userId, i)
+                .manageApply(clubId, userId, passed)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<Object>() {
                     @Override

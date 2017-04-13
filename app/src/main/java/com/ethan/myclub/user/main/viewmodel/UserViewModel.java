@@ -7,6 +7,7 @@ import android.databinding.ObservableField;
 import android.databinding.ObservableInt;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.util.Pair;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 
@@ -26,6 +27,7 @@ import com.ethan.myclub.user.model.Profile;
 import com.ethan.myclub.schedule.view.ScheduleActivity;
 import com.tencent.bugly.crashreport.CrashReport;
 import com.umeng.analytics.MobclickAgent;
+import com.xiaomi.mipush.sdk.MiPushClient;
 
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -171,6 +173,8 @@ public class UserViewModel {
                     public void onNext(Profile profile) {
                         Log.i(TAG, "updateUserProfile: 更新UserInfo完成");
                         profile.avatar += "?imageView2/0/w/300/h/300";
+                        if (!String.valueOf(profile.userId).equals(MyApplication.getToken().uid))
+                            MiPushClient.setUserAccount(mFragment.mMainActivity, String.valueOf(profile.userId), null);
                         if (profile.sex.equals("0"))
                             profile.sex = "男";
                         else

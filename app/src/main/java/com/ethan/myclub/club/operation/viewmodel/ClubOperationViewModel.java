@@ -15,7 +15,9 @@ import com.ethan.myclub.club.member.view.ClubMemberListActivity;
 import com.ethan.myclub.club.my.model.MyClub;
 import com.ethan.myclub.club.my.model.Title;
 import com.ethan.myclub.club.notification.view.ClubNotificationCreateActivity;
+import com.ethan.myclub.club.operation.ClubMessage;
 import com.ethan.myclub.club.operation.DeleteClub;
+import com.ethan.myclub.club.operation.Enroll;
 import com.ethan.myclub.club.operation.QuitClub;
 import com.ethan.myclub.club.operation.ScheduleAnalysis;
 import com.ethan.myclub.club.operation.adapter.GridViewAdapter;
@@ -57,7 +59,7 @@ public class ClubOperationViewModel {
         operations.add(new Operation(ClubMemberListActivity.class, "成员列表", R.drawable.ic_club_op_member));
         operations.add(new Operation(ClubActivityListActivity.class, "活动列表", R.drawable.ic_club_op_activity));
         //operations.add(new Operation(null, "社团账单", R.drawable.ic_club_op_budget));
-        operations.add(new Operation(MessageListActivity.class, "社团通知", R.drawable.ic_club_op_notification));
+        operations.add(new Operation(ClubMessage.class, "社团通知", R.drawable.ic_club_op_notification));
         gridView.setAdapter(new GridViewAdapter(mActivity, operations, mClub));
         views.add(gridView);
 
@@ -65,7 +67,7 @@ public class ClubOperationViewModel {
         gridView = (GridView) View.inflate(mActivity, R.layout.item_club_operation_pager, null);
         operations = new ArrayList<>();
         if (mClub.checkPermission(5))
-            operations.add(new Operation(null, "招新管理", R.drawable.ic_club_op_freshmen));
+            operations.add(new Operation(Enroll.class, "招新管理", R.drawable.ic_club_op_freshmen));
         if (mClub.checkPermission(3))
             operations.add(new Operation(ScheduleAnalysis.class, "空课表", R.drawable.ic_club_op_schedule));
         if (mClub.isCreator)

@@ -61,8 +61,8 @@ public class MiPushMessageReceiver extends PushMessageReceiver {
 
     @Override
     public void onReceivePassThroughMessage(final Context context, MiPushMessage message1) {
-        Log.i(TAG, "onReceivePassThroughMessage: ");
         final Message message = new Gson().fromJson(message1.getContent(), Message.class);
+        Log.i(TAG, "onReceivePassThroughMessage: " + message);
         MainActivity.needUpdateFlag.userUnreadCount = true;
 
         Intent intent = new Intent(context, MessageListActivity.class);
@@ -124,45 +124,7 @@ public class MiPushMessageReceiver extends PushMessageReceiver {
         String cmdArg2 = ((arguments != null && arguments.size() > 1) ? arguments.get(1) : null);
         if (MiPushClient.COMMAND_REGISTER.equals(command)) {
             if (message.getResultCode() == ErrorCode.SUCCESS) {
-                if (MyApplication.isLogin() && MyApplication.sPushRegID.isEmpty())
-                    ApiHelper.getInstance()
-                            .submitRegId(cmdArg1)
-                            .subscribeOn(Schedulers.io())
-                            .retryWhen(new Function<Observable<Throwable>, ObservableSource<?>>() {
-                                @Override
-                                public ObservableSource<?> apply(@NonNull Observable<Throwable> throwableObservable) throws Exception {
-                                    return throwableObservable.zipWith(Observable.range(1, 3), new BiFunction<Throwable, Integer, Object>() {
-                                        @Override
-                                        public Object apply(@NonNull Throwable throwable, @NonNull Integer integer) throws Exception {
-                                            Log.e(TAG, "onNext: RegId submitted error! test" + integer, throwable);
-                                            return integer;
-                                        }
-                                    });
-                                }
-                            })
-                            .observeOn(Schedulers.io())
-                            .subscribe(new Observer<Object>() {
-                                @Override
-                                public void onSubscribe(Disposable d) {
-
-                                }
-
-                                @Override
-                                public void onNext(Object o) {
-                                    Log.d(TAG, "onNext: RegId has submitted!");
-                                }
-
-                                @Override
-                                public void onError(Throwable e) {
-                                }
-
-                                @Override
-                                public void onComplete() {
-
-                                }
-                            });
-                else
-                    MyApplication.sPushRegID = cmdArg1;
+                mRegId = cmdArg1;
             }
         } else if (MiPushClient.COMMAND_SET_ALIAS.equals(command)) {
             if (message.getResultCode() == ErrorCode.SUCCESS) {
@@ -184,6 +146,10 @@ public class MiPushMessageReceiver extends PushMessageReceiver {
             if (message.getResultCode() == ErrorCode.SUCCESS) {
                 mStartTime = cmdArg1;
                 mEndTime = cmdArg2;
+            }
+        } else if (MiPushClient.COMMAND_SET_ACCOUNT.equals(command)) {
+            if (message.getResultCode() == ErrorCode.SUCCESS) {
+                MyApplication.getToken().uid = cmdArg1;
             }
         }
     }

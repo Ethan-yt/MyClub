@@ -8,20 +8,17 @@ import android.support.annotation.Keep;
 import android.support.v4.app.ActivityCompat;
 
 import com.ethan.myclub.R;
+import com.ethan.myclub.activity.create.viewmodel.ActivityCreateViewModel;
+import com.ethan.myclub.club.activitylist.view.ClubActivityListActivity;
 import com.ethan.myclub.club.my.model.MyClub;
 import com.ethan.myclub.databinding.ActivityActivityCreateBinding;
 import com.ethan.myclub.main.BaseActivity;
-import com.ethan.myclub.activity.create.viewmodel.ActivityCreateViewModel;
+
+
 @Keep
 public class ActivityCreateActivity extends BaseActivity {
 
     private ActivityCreateViewModel mViewModel;
-
-    public static void start(Activity from, MyClub myClub) {
-        Intent intent = new Intent(from, ActivityCreateActivity.class);
-        intent.putExtra("MyClub",myClub);
-        ActivityCompat.startActivity(from, intent, null);
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,4 +30,10 @@ public class ActivityCreateActivity extends BaseActivity {
 
     }
 
+    public static void startForResult(Activity from, MyClub myClub) {
+        Intent intent = new Intent(from, ActivityCreateActivity.class);
+        intent.putExtra("MyClub", myClub);
+        ActivityCompat.startActivityForResult(from, intent, ClubActivityListActivity.REQUEST_CREATE_ACTIVITY, null);
+
+    }
 }

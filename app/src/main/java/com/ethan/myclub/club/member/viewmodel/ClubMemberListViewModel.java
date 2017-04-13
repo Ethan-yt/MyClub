@@ -42,7 +42,7 @@ public class ClubMemberListViewModel {
     private final EmptyView mEmptyView;
     private MemberAdapter mAdapter;
 
-    final private boolean mIsChooseMember;
+    final public boolean mIsChooseMember;
 
     public ClubMemberListViewModel(ClubMemberListActivity activity, ActivityClubMemberListBinding binding, MyClub myClub, boolean isChooseMember) {
         mActivity = activity;

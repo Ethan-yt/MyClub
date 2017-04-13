@@ -97,13 +97,13 @@ public class MainActivity extends BaseActivity {
                 bottomNavigation.setCurrentItem(0);
             }
         });
-        findViewById(R.id.fab_scan).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mFabMenu.close(true);
-                showSnackbar("愚人节快乐");
-            }
-        });
+//        findViewById(R.id.fab_scan).setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                mFabMenu.close(true);
+//                showSnackbar("愚人节快乐");
+//            }
+//        });
 
 
         bottomNavigation.setOnTabSelectedListener(new AHBottomNavigation.OnTabSelectedListener() {

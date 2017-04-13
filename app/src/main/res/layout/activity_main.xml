@@ -35,16 +35,16 @@
         fab:menu_labels_ellipsize="end"
         fab:menu_labels_singleLine="true">
 
-        <com.github.clans.fab.FloatingActionButton
-            android:id="@+id/fab_scan"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_scan"
-            app:fab_colorNormal="#4DD0E1"
-            app:fab_colorPressed="#3da4b1"
-            app:fab_colorRipple="#308691"
-            fab:fab_label="扫一扫"
-            fab:fab_size="mini"/>
+        <!--<com.github.clans.fab.FloatingActionButton-->
+            <!--android:id="@+id/fab_scan"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:src="@drawable/ic_scan"-->
+            <!--app:fab_colorNormal="#4DD0E1"-->
+            <!--app:fab_colorPressed="#3da4b1"-->
+            <!--app:fab_colorRipple="#308691"-->
+            <!--fab:fab_label="扫一扫"-->
+            <!--fab:fab_size="mini"/>-->
 
         <com.github.clans.fab.FloatingActionButton
             android:id="@+id/fab_join"

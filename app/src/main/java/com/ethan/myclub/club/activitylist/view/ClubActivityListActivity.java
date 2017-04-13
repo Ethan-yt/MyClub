@@ -12,6 +12,7 @@ import com.ethan.myclub.club.my.model.MyClub;
 import com.ethan.myclub.databinding.ActivityClubActivityListBinding;
 import com.ethan.myclub.main.BaseActivity;
 import com.ethan.myclub.club.activitylist.viewmodel.ClubActivityListViewModel;
+
 @Keep
 public class ClubActivityListActivity extends BaseActivity {
 
@@ -19,6 +20,7 @@ public class ClubActivityListActivity extends BaseActivity {
     public static final int RESULT_DELETED = 0x3223;
     private ClubActivityListViewModel mViewModel;
     static final public int REQUEST_EDIT_ACTIVITY = 0x2333;
+    static final public int REQUEST_CREATE_ACTIVITY = 0x2334;
 
     public static void start(Activity from, MyClub myClub) {
         Intent intent = new Intent(from, ClubActivityListActivity.class);
@@ -52,5 +54,14 @@ public class ClubActivityListActivity extends BaseActivity {
             }
 
         }
+        if (requestCode == REQUEST_CREATE_ACTIVITY) {
+            if (resultCode == RESULT_OK) {
+                showSnackbar("活动创建成功");
+                mViewModel.update();
+            }
+
+        }
     }
+
+
 }

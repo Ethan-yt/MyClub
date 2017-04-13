@@ -37,7 +37,6 @@ public class MyApplication extends Application {
 
     public static final String FILE_NAME_TOKEN = "Token.dat";
 
-    static public String sPushRegID = "";  // RegID只在登录时，注册时和刚更新时使用
     static private Token sToken;
 
     public static void setToken(Context context, Token token) {

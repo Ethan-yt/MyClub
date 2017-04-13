@@ -3,9 +3,11 @@ package com.ethan.myclub.message.viewmodel;
 import android.app.NotificationManager;
 import android.content.Context;
 
+import com.ethan.myclub.main.MainActivity;
 import com.ethan.myclub.message.model.Message;
 import com.ethan.myclub.message.view.MessageDetailClubActivity;
 import com.ethan.myclub.databinding.ActivityMessageDetailClubBinding;
+import com.ethan.myclub.message.view.MessageListActivity;
 import com.ethan.myclub.network.ApiHelper;
 
 import io.reactivex.Observer;
@@ -32,6 +34,7 @@ public class MessageDetailClubViewModel {
             setChecked();
         NotificationManager nm = (NotificationManager) mActivity.getSystemService(Context.NOTIFICATION_SERVICE);
         nm.cancel(message.id);
+        MessageListActivity.needRefreshFlag = true;
     }
 
     private void setChecked() {

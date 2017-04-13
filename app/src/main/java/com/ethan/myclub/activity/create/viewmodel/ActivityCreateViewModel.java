@@ -101,15 +101,7 @@ public class ActivityCreateViewModel {
 
                     @Override
                     public void onNext(Object o) {
-                        mActivity.dismissDialog();
-                        mActivity.showSnackbar("活动创建成功！");
-                        Observable.timer(1, TimeUnit.SECONDS, AndroidSchedulers.mainThread())
-                                .subscribe(new Consumer<Long>() {
-                                    @Override
-                                    public void accept(@NonNull Long aLong) throws Exception {
-                                        mActivity.finish();
-                                    }
-                                });
+                        mActivity.finish();
                     }
 
                     @Override

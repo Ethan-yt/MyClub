@@ -10,6 +10,9 @@ import com.google.gson.annotations.SerializedName;
  */
 
 public class Token implements Parcelable {
+
+    public String uid;
+
     @SerializedName("access_token")
     public String mAccessToken;
 

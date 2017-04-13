@@ -222,12 +222,12 @@ public class DiscoverFragment extends BaseFragment {
 
                                 }
                             })
-                    .showNavIcon(R.drawable.ic_toolbar_discover_location, new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-
-                        }
-                    })
+//                    .showNavIcon(R.drawable.ic_toolbar_discover_location, new View.OnClickListener() {
+//                        @Override
+//                        public void onClick(View v) {
+//
+//                        }
+//                    })
                     .show(R.layout.view_toolbar_discover);
 
         }

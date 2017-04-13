@@ -42,8 +42,8 @@
                         android:layout_height="wrap_content"
                         android:gravity="top"
                         android:hint="标题"
-                        android:inputType="textMultiLine"
-                        android:maxLines="1"
+                        android:inputType="textImeMultiLine"
+                        android:lines="1"
                         android:text="@={viewModel.mTitle}"/>
 
                 </android.support.design.widget.TextInputLayout>
