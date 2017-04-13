@@ -95,6 +95,12 @@ public class MemberAdapter extends BaseQuickAdapter<MemberResult, BaseViewHolder
 
         if (mMode == 1) {
             CheckBox checkBox = helper.getView(R.id.scroll_checkbox);
+
+            if (!item.isUploadSchedule) {
+                helper.getView(R.id.tv_notUpload).setVisibility(View.VISIBLE);
+                checkBox.setEnabled(false);
+            }
+
             checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -105,11 +111,10 @@ public class MemberAdapter extends BaseQuickAdapter<MemberResult, BaseViewHolder
 
         if (mMode == 2) {
             final SwipeRevealLayout swipeLayout = helper.getView(R.id.swipeLayout);
-            if(item.userAccount.equals(MyApplication.getToken().uid)){
+            if (item.userAccount.equals(MyApplication.getToken().uid)) {
                 helper.getView(R.id.ic_drag).setVisibility(View.INVISIBLE);
                 swipeLayout.setLockDrag(true);
-            }
-            else
+            } else
                 binderHelper.bind(swipeLayout, String.valueOf(item.userAccount));
             helper.getView(R.id.btn_give)
                     .setOnClickListener(new View.OnClickListener() {

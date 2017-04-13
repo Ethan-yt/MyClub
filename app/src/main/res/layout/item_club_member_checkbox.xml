@@ -21,6 +21,24 @@ app:cardUseCompatPadding="true">
     android:layout_alignParentStart="true"
     android:layout_alignParentTop="true">
 
+    <TextView
+        android:id="@+id/tv_notUpload"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_club_name"
+        android:layout_marginBottom="0dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="0dp"
+        android:ellipsize="end"
+        android:text="未上传课表"
+        android:textColor="#A1A1A1"
+        android:textSize="12sp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toLeftOf="@+id/checkbox_layout"
+        app:layout_constraintTop_toTopOf="parent"/>
+
     <LinearLayout
         android:id="@+id/checkbox_layout"
         android:layout_width="60dp"

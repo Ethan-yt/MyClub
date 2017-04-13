@@ -37,5 +37,9 @@ public class MemberResult implements Serializable{
     @Expose
     public Boolean isCreator;
 
+    @SerializedName("is_upload_schedule")
+    @Expose
+    public Boolean isUploadSchedule;
+
     public boolean selected = false;
 }

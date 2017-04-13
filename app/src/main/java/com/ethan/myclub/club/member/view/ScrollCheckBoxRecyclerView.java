@@ -199,7 +199,7 @@ public class ScrollCheckBoxRecyclerView extends RecyclerView {
             ViewGroup checkBoxContainer = (ViewGroup) child.findViewWithTag("checkbox_layout");
             if (null != checkBoxContainer) {
                 CheckBox checkBox = (CheckBox) checkBoxContainer.getChildAt(0);
-                if (null != checkBox && checkBox.getVisibility() == VISIBLE) {
+                if (null != checkBox && checkBox.getVisibility() == VISIBLE && checkBox.isEnabled()) {
                     checkBox.toggle();
                 }
             }
