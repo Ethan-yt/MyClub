@@ -2,6 +2,7 @@ package com.ethan.myclub.club.operation;
 
 import android.app.Activity;
 import android.content.DialogInterface;
+import android.support.annotation.Keep;
 import android.support.v7.app.AlertDialog;
 
 import com.ethan.myclub.club.my.model.MyClub;
@@ -16,7 +17,7 @@ import io.reactivex.disposables.Disposable;
 /**
  * Created by ethan on 2017/4/12.
  */
-
+@Keep
 public class QuitClub {
     static public void start(final Activity baseActivity, final MyClub myClub) {
         new AlertDialog.Builder(baseActivity)
