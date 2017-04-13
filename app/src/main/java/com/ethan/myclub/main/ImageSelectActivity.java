@@ -43,9 +43,6 @@ public abstract class ImageSelectActivity extends BaseActivity {
     public int mAspectY = 1;
 
 
-
-
-
     private Uri mOutputUri;
     private File mOutputFile;
 
@@ -135,9 +132,8 @@ public abstract class ImageSelectActivity extends BaseActivity {
                 startPhotoCrop(mOutputUri);
                 break;
             case ProfileEditActivity.REQUEST_CODE_CROP:// 取得裁剪后的图片
-
-                if (data != null && data.getExtras() != null)
-                    mOnFinishSelectImageListener.onFinish(mOutputFile, mOutputUri);
+                //if (data != null && data.getExtras() != null)
+                mOnFinishSelectImageListener.onFinish(mOutputFile, mOutputUri);
                 break;
         }
     }
