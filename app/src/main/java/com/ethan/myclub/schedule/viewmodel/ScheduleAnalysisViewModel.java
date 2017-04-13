@@ -129,33 +129,52 @@ public class ScheduleAnalysisViewModel {
 
                         List<Course> courses = new ArrayList<>();
                         for (int day = 0; day < 7; day++) {
+
+                            List<CourseTime> courseTimes = new ArrayList<>();
+
+                            CourseTime.Builder builder = new CourseTime.Builder()
+                                    .weekBegin(0)
+                                    .weekEnd(20)
+                                    .day(day + 1)
+                                    .timeBegin(1)
+                                    .weekFlag(3);
+
+                            int lastNum = lists.get(day).get(0).spareNumber;
                             for (int time = 0; time < 12; time++) {
-                                List<CourseTime> courseTimes = new ArrayList<>();
-                                CourseTime courseTime = new CourseTime.Builder()
-                                        .weekBegin(0)
-                                        .weekEnd(20)
-                                        .timeBegin(time + 1)
-                                        .timeEnd(time + 1)
-                                        .day(day + 1)
-                                        .weekFlag(3)
-                                        .build();
-                                courseTimes.add(courseTime);
-
                                 ScheduleResult result = lists.get(day).get(time);
-                                int rate = (int) (result.spareNumber * 100 / (float) mUsers.length);
-
-                                int color = (int) (255 * (1 - result.spareNumber / (float) mUsers.length));
+                                if (result.spareNumber.equals(lastNum) && time != 4 && time != 9)
+                                    continue;
+                                builder.timeEnd(time);
+                                courseTimes.add(builder.build());
+                                int rate = (int) (lastNum * 100 / (float) mUsers.length);
+                                int color = (int) (255 * (1 - lastNum / (float) mUsers.length));
                                 color |= color << 8;
-
                                 color |= 0xAAFF0000;
-
                                 Course course = new Course.Builder()
                                         .time(courseTimes)
                                         .color(color)
-                                        .name(result.spareNumber + "人有课\n" + rate + "%")
+                                        .name(lastNum + "人有课\n" + rate + "%")
                                         .build();
                                 courses.add(course);
+                                courseTimes = new ArrayList<>();
+                                builder.timeBegin(time + 1);
+                                lastNum = result.spareNumber;
+
                             }
+
+                            builder.timeEnd(12);
+                            courseTimes.add(builder.build());
+                            int rate = (int) (lastNum * 100 / (float) mUsers.length);
+                            int color = (int) (255 * (1 - lastNum / (float) mUsers.length));
+                            color |= color << 8;
+                            color |= 0xAAFF0000;
+                            Course course = new Course.Builder()
+                                    .time(courseTimes)
+                                    .color(color)
+                                    .name(lastNum + "人有课\n" + rate + "%")
+                                    .build();
+                            courses.add(course);
+
                         }
                         Schedule schedule = new Schedule.Builder().courses(courses).build();
                         mBinding.scheduleView.setSchedule(schedule, 1);
