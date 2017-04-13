@@ -1,6 +1,8 @@
 package com.ethan.myclub.user.edit.viewmodel;
 
 import android.app.Activity;
+import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.content.DialogInterface;
 import android.databinding.ObservableField;
 import android.net.Uri;
@@ -10,6 +12,8 @@ import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.DatePicker;
+import android.widget.TimePicker;
 
 import com.ethan.myclub.R;
 import com.ethan.myclub.databinding.ActivityUserProfileEditBinding;
@@ -20,6 +24,8 @@ import com.ethan.myclub.user.edit.view.ProfileEditActivity;
 import com.ethan.myclub.user.model.Profile;
 
 import java.io.File;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Observer;
@@ -42,6 +48,8 @@ public class ProfileEditViewModel {
     public ObservableField<Uri> mImageUri = new ObservableField<>();
 
     public Profile mProfile;
+
+    private Calendar c = Calendar.getInstance();
 
     public ProfileEditViewModel(ProfileEditActivity profileEditActivity, ActivityUserProfileEditBinding binding) {
         mActivity = profileEditActivity;
@@ -74,6 +82,31 @@ public class ProfileEditViewModel {
                 })
                 .show();
 
+
+        c.setTimeInMillis(System.currentTimeMillis());
+        mBinding.etBirthday.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus) {
+                    int mYear = c.get(Calendar.YEAR);
+                    int mMonth = c.get(Calendar.MONTH);
+                    int mDay = c.get(Calendar.DAY_OF_MONTH);
+
+                    new DatePickerDialog(mActivity, new DatePickerDialog.OnDateSetListener() {
+                        @Override
+                        public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                            c.set(Calendar.YEAR, year);
+                            c.set(Calendar.MONTH, month);
+                            c.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+                            mProfile.setBirthday(formatter.format(c.getTime()));
+                        }
+                    }, mYear, mMonth, mDay).show();
+
+                }
+
+            }
+        });
     }
 
     private File mAvatarFile;
