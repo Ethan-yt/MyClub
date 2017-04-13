@@ -135,7 +135,23 @@ public class MessageListViewModel {
                     public void onNext(List<Message> messages) {
                         mAnalysisMode = false;
                         if (messages == null || messages.size() == 0) {
-                            mEmptyView.showEmptyView(mMyClub == null ? "没有消息" : "没有通知", mMyClub == null ? "您还没有接受到任何消息" : "当前社团还未发布任何通知");
+                            String title;
+                            String content;
+                            switch (mMode) {
+                                case 1:
+                                    title = "没有通知";
+                                    content = "当前社团还未发布任何通知";
+                                    break;
+                                case 2:
+                                    title = "没有请求";
+                                    content = "暂时还没有加入请求";
+                                    break;
+                                default:
+                                    title = "没有消息";
+                                    content = "您还没有接受到任何消息";
+                                    break;
+                            }
+                            mEmptyView.showEmptyView(title, content);
                             mAdapter.setNewData(null);
                             mBinding.list.setLayoutFrozen(true);
                             mAdapter.setEmptyView(mEmptyView);
