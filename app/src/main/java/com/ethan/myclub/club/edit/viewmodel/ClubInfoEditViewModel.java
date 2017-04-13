@@ -255,7 +255,7 @@ public class ClubInfoEditViewModel {
     public void setClub(Club club) {
         mClub = club;
         if (!TextUtils.isEmpty(mClub.badge))
-            mImageUri.set(Uri.parse(mClub.badge + "?imageView2/0/w/300/h/300"));
+            mImageUri.set(Uri.parse(mClub.badge));
 
         String tagStr = "";
         for (Tag tag : mClub.tag) {
