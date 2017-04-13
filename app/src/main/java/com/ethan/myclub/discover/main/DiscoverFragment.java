@@ -67,13 +67,13 @@ public class DiscoverFragment extends BaseFragment {
                 if (mSearchView != null)
                     switch (position) {
                         case 0:
-                            mSearchView.setQueryHint("搜索活动");
+                            mSearchView.setQueryHint("活动名称、简介");
                             break;
                         case 1:
-                            mSearchView.setQueryHint("搜索社团名称、简介或标签");
+                            mSearchView.setQueryHint("社团名称、简介或标签");
                             break;
                         case 2:
-                            mSearchView.setQueryHint("搜索商家名称、赞助类型或赞助活动");
+                            mSearchView.setQueryHint("商家名称、赞助类型或对象");
                             break;
                     }
 
