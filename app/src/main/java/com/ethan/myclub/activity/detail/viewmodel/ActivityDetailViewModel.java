@@ -1,11 +1,9 @@
 package com.ethan.myclub.activity.detail.viewmodel;
 
-import android.databinding.BindingAdapter;
 import android.databinding.ObservableField;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -26,7 +24,6 @@ import com.ethan.myclub.main.MyApplication;
 import com.ethan.myclub.network.ApiHelper;
 import com.ethan.myclub.network.exception.ApiException;
 import com.ethan.myclub.user.collection.view.UserCollectionActivity;
-import com.ethan.myclub.util.ImageUtils;
 import com.ethan.myclub.util.Utils;
 import com.google.android.flexbox.FlexboxLayout;
 
@@ -40,11 +37,11 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
-import jp.wasabeef.glide.transformations.CropCircleTransformation;
 
 public class ActivityDetailViewModel {
 
     private final ActivityContentAdapter mAdapter;
+    private final ViewGroup mHeaderView;
     private final ViewGroup mTagsFlow;
     private EmptyView mEmptyView;
     private ActivityDetailActivity mActivity;
@@ -59,7 +56,7 @@ public class ActivityDetailViewModel {
         mBinding = binding;
         mBinding.setViewModel(this);
         mActivityResult.set(activityResult);
-        mTime.set(Utils.getStandardDate(activityResult.publishTime));
+        mTime.set(Utils.getDateCountdown(activityResult.publishTime));
         mBinding.toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -70,9 +67,9 @@ public class ActivityDetailViewModel {
         mAdapter = new ActivityContentAdapter(mActivity, null);
         mAdapter.openLoadAnimation();
         mBinding.list.setAdapter(mAdapter);
-        mTagsFlow = (ViewGroup) mActivity.getLayoutInflater().inflate(R.layout.view_tags_flow, (ViewGroup) mBinding.list.getParent(), false);
-        mAdapter.addHeaderView(mTagsFlow);
-
+        mHeaderView = (ViewGroup) mActivity.getLayoutInflater().inflate(R.layout.header_activity_detail, (ViewGroup) mBinding.list.getParent(), false);
+        mAdapter.addHeaderView(mHeaderView);
+        mTagsFlow = (ViewGroup) mHeaderView.findViewById(R.id.fl_tags);
 
         mEmptyView = new EmptyView(mActivity);
 
@@ -120,6 +117,9 @@ public class ActivityDetailViewModel {
 
         if (resultCode == GET_ACTIVITY_RESULT_OK) {
             mBinding.list.setLayoutFrozen(false);
+
+            ((TextView) mHeaderView.findViewById(R.id.tv_activity_time)).setText(Utils.getStandardTime(activity.activityTime));
+            ((TextView) mHeaderView.findViewById(R.id.tv_activtiy_location)).setText(activity.location);
 
             activity.club.badge += "?imageView2/0/w/300/h/300";
             mActivityDetail.set(activity);

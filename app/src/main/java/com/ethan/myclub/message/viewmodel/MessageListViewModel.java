@@ -1,19 +1,14 @@
 package com.ethan.myclub.message.viewmodel;
 
-import android.app.NotificationManager;
-import android.content.Context;
 import android.databinding.ObservableBoolean;
 import android.graphics.Color;
-import android.service.vr.VrListenerService;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.text.TextUtils;
-import android.view.View;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.ethan.myclub.R;
-import com.ethan.myclub.club.member.view.ClubMemberListActivity;
 import com.ethan.myclub.club.my.model.MyClub;
 import com.ethan.myclub.club.my.view.EmptyView;
 import com.ethan.myclub.club.notification.view.ClubNotificationCreateActivity;
@@ -22,7 +17,6 @@ import com.ethan.myclub.main.BaseActivity;
 import com.ethan.myclub.main.MainActivity;
 import com.ethan.myclub.message.adapter.MessageAdapter;
 import com.ethan.myclub.message.model.Message;
-import com.ethan.myclub.message.view.MessageAnalysisActivity;
 import com.ethan.myclub.message.view.MessageListActivity;
 import com.ethan.myclub.network.ApiHelper;
 import com.ethan.myclub.util.Utils;
@@ -158,7 +152,7 @@ public class MessageListViewModel {
                         } else {
                             for (Message message : messages) {
                                 message.image += "?imageView2/0/w/300/h/300";
-                                message.standardTime = Utils.getStandardDate(message.createdDate);
+                                message.standardTime = Utils.getDateCountdown(message.createdDate);
                                 message.senderStandardName = "发布者：" + (TextUtils.isEmpty(message.senderName) ? message.senderNickname : message.senderName);
                             }
                             mBinding.list.setLayoutFrozen(false);

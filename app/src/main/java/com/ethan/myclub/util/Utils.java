@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.os.Build;
 import android.os.Parcel;
+import android.text.TextUtils;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.Window;
@@ -212,28 +213,41 @@ public class Utils {
         }
         return result;
     }
+
+    public static String getStandardTime(String timeStr) {
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+        Date date = formatter.parse(timeStr, new ParsePosition(0));
+        SimpleDateFormat formatter2 = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        return formatter2.format(date.getTime());
+    }
+
+
     /**
      * 将时间戳转为代表"距现在多久之前"的字符串
-     * @param timeStr   时间戳
+     *
+     * @param timeStr 时间戳
      * @return
      */
 
-    public static String getStandardDate(String timeStr) {
-
+    public static String getDateCountdown(String timeStr) {
+        if (TextUtils.isEmpty(timeStr))
+            return "";
         StringBuffer sb = new StringBuffer();
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-        Date date = formatter.parse(timeStr,new ParsePosition(0));
+        Date date = formatter.parse(timeStr, new ParsePosition(0));
 
         long t = date.getTime();
         long time = System.currentTimeMillis() - t;
-        long mill = (long) Math.ceil(time /1000);//秒前
+        long mill = (long) Math.ceil(time / 1000);//秒前
 
-        long minute = (long) Math.ceil(time/60/1000.0f);// 分钟前
+        long minute = (long) Math.ceil(time / 60 / 1000.0f);// 分钟前
 
-        long hour = (long) Math.ceil(time/60/60/1000.0f);// 小时
+        long hour = (long) Math.ceil(time / 60 / 60 / 1000.0f);// 小时
 
-        long day = (long) Math.ceil(time/24/60/60/1000.0f);// 天前
+        long day = (long) Math.ceil(time / 24 / 60 / 60 / 1000.0f);// 天前
 
+        if (day > 10)
+            return getStandardTime(timeStr);
         if (day - 1 > 0) {
             sb.append(day + "天");
         } else if (hour - 1 > 0) {
@@ -265,7 +279,6 @@ public class Utils {
 
     /**
      * dp转px
-     *
      */
     public static int dp2px(Context context, float dpVal) {
         return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
@@ -274,7 +287,6 @@ public class Utils {
 
     /**
      * sp转px
-     *
      */
     public static int sp2px(Context context, float spVal) {
         return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP,
@@ -283,7 +295,6 @@ public class Utils {
 
     /**
      * px转dp
-     *
      */
     public static float px2dp(Context context, float pxVal) {
         final float scale = context.getResources().getDisplayMetrics().density;
@@ -292,21 +303,19 @@ public class Utils {
 
     /**
      * px转sp
-     *
      */
     public static float px2sp(Context context, float pxVal) {
         return (pxVal / context.getResources().getDisplayMetrics().scaledDensity);
     }
 
 
-    public static boolean isActivityRunning(Context context)
-    {
-        if(!(context instanceof Activity))
+    public static boolean isActivityRunning(Context context) {
+        if (!(context instanceof Activity))
             return false;
         final Activity activity = (Activity) context;
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-            if(activity.isDestroyed())
+            if (activity.isDestroyed())
                 return false;
         }
         return !activity.isFinishing();
