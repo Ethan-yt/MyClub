@@ -34,8 +34,8 @@ android {
         applicationId "com.ethan.myclub"
         minSdkVersion 14
         targetSdkVersion 25
-        versionCode 13
-        versionName "1.2.10 alpha"
+        versionCode 14
+        versionName "1.2.11 alpha"
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         jackOptions {
