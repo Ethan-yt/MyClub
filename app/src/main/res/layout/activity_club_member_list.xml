@@ -19,7 +19,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <android.support.v4.widget.SwipeRefreshLayout
+        <com.ethan.myclub.club.member.view.MySwipeRefreshLayout
             android:id="@+id/swipeLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -31,7 +31,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 tools:listitem="@layout/item_discover_activity_special"/>
-        </android.support.v4.widget.SwipeRefreshLayout>
+        </com.ethan.myclub.club.member.view.MySwipeRefreshLayout>
 
         <com.github.clans.fab.FloatingActionButton
             android:id="@+id/fab_ok"
