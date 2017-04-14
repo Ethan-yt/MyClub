@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
@@ -17,6 +18,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.ethan.myclub.R;
+import com.ethan.myclub.main.BaseActivity;
+import com.ethan.myclub.main.MainActivity;
 import com.ethan.myclub.network.ApiHelper;
 import com.ethan.myclub.schedule.color.RandomColor;
 import com.ethan.myclub.schedule.model.Course;
@@ -24,7 +27,6 @@ import com.ethan.myclub.schedule.model.CourseTime;
 import com.ethan.myclub.schedule.model.Schedule;
 import com.ethan.myclub.schedule.service.ScheduleService;
 import com.ethan.myclub.util.Utils;
-import com.ethan.myclub.main.BaseActivity;
 import com.jakewharton.retrofit2.adapter.rxjava2.HttpException;
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 
@@ -38,7 +40,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -83,8 +84,8 @@ public class LoginActivity extends BaseActivity {
                 .showBackIcon()
                 .show();
 
-        mPwView = (EditText) findViewById(R.id.pw);
-        mIdView = (EditText) findViewById(R.id.id);
+        mPwView = (TextInputEditText) findViewById(R.id.pw);
+        mIdView = (TextInputEditText) findViewById(R.id.id);
         mIdWrapper = (TextInputLayout) findViewById(R.id.idWrapper);
         mPwWrapper = (TextInputLayout) findViewById(R.id.pwWrapper);
 
@@ -417,7 +418,7 @@ public class LoginActivity extends BaseActivity {
 
                     @Override
                     public void onNext(Object o) {
-
+                        MainActivity.needUpdateFlag.userProfile = true;
                     }
 
                     @Override
