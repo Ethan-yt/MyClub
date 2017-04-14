@@ -105,6 +105,16 @@ public class Message implements MultiItemEntity, Serializable {
                     default:
                         return "发生了内部错误：T2";
                 }
+            case "3":
+                return "[通知]" + club;
+            case "4":
+                return "[通知]用户退出社团 " + club;
+            case "5":
+                return "[通知]社团已解散  " + club;
+            case "7":
+                return "[权限变更]" + club;
+            case "8":
+                return "[社团转让]" + club;
             default:
                 return "未知消息";
         }
@@ -112,17 +122,20 @@ public class Message implements MultiItemEntity, Serializable {
     }
 
     public String generateContent() {
+
+        String stdSenderName = senderNickname + (TextUtils.isEmpty(senderName) ? "" : " (" + senderName + ")");
+
         switch (type) {
             case "0": //社团通知
                 return title;
             case "1": //申请加入社团
                 switch (title) {
                     case "待审核":
-                        return senderNickname + (TextUtils.isEmpty(senderName) ? "" : " (" + senderName + ")") + " 申请加入社团";
+                        return stdSenderName + " 申请加入社团";
                     case "接受":
-                        return "已经批准了 " + senderNickname + (TextUtils.isEmpty(senderName) ? "" : " (" + senderName + ")") + " 的加入请求";
+                        return "已经批准了 " + stdSenderName + " 的加入请求";
                     case "拒绝":
-                        return "已经拒绝了 " + senderNickname + (TextUtils.isEmpty(senderName) ? "" : " (" + senderName + ")") + " 的加入请求";
+                        return "已经拒绝了 " + stdSenderName + " 的加入请求";
                     default:
                         return "发生了内部错误：T1";
                 }
@@ -137,6 +150,16 @@ public class Message implements MultiItemEntity, Serializable {
                     default:
                         return "发生了内部错误：T2";
                 }
+            case "3":
+                return "您已被社长请出社团";
+            case "4":
+                return stdSenderName + " 已经退出社团";
+            case "5":
+                return "社长已经解散社团";
+            case "7":
+                return "社长变更了你的权限：" + content;
+            case "8":
+                return "社长转让了社团：" + content;
             default:
                 return "当前版本还不支持显示这个消息，升级您的app即可查看";
         }

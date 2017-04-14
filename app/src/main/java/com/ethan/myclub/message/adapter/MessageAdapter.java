@@ -134,11 +134,18 @@ public class MessageAdapter extends BaseMultiItemQuickAdapter<Message, BaseViewH
                     }
                 });
                 break;
-            case "2": //加入通过或拒绝
-                NotificationManager nm = (NotificationManager) mBaseActivity.getSystemService(Context.NOTIFICATION_SERVICE);
-                nm.cancel(item.id);
-                helper.getView(R.id.iv_not_read).setVisibility(View.INVISIBLE);
-                setChecked(item);
+            case "2": //申请结果
+            case "3": //用户被踢
+            case "4": //有人退社团
+            case "5": //社长解散社团
+            case "7": //权限变更
+            case "8": //社团转让
+                if (!item.isChecked) {
+                    NotificationManager nm = (NotificationManager) mBaseActivity.getSystemService(Context.NOTIFICATION_SERVICE);
+                    nm.cancel(item.id);
+                    helper.getView(R.id.iv_not_read).setVisibility(View.INVISIBLE);
+                    setChecked(item);
+                }
                 break;
         }
     }

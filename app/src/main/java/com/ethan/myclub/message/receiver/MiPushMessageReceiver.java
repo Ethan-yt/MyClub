@@ -65,6 +65,11 @@ public class MiPushMessageReceiver extends PushMessageReceiver {
                         MainActivity.needUpdateFlag.clubList = true;
                         break;
                 }
+            case "3":
+            case "5":
+            case "7":
+            case "8":
+                MainActivity.needUpdateFlag.clubList = true;
                 break;
 
         }

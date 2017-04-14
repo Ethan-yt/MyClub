@@ -20,7 +20,7 @@ import com.xiaomi.mipush.sdk.MiPushMessage;
 public class MessageListActivity extends BaseActivity {
 
     private MessageListViewModel mViewModel;
-    static public boolean needRefreshFlag = true;
+    static public boolean needRefreshFlag = false;
 
     public static void start(Activity from, MyClub myClub) {
         Intent intent = new Intent(from, MessageListActivity.class);
