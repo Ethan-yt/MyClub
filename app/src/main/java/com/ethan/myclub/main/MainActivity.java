@@ -115,12 +115,12 @@ public class MainActivity extends BaseActivity {
                 }
                 //切换到个人页面前
                 if (position == 2) {
-                    Utils.StatusBarLightMode(MainActivity.this, false);
                     //检查是否已经登录
                     if (!MyApplication.isLogin()) {
                         showLoginSnackbar("您还没有登录哦");
                         return false;
                     }
+                    Utils.StatusBarLightMode(MainActivity.this, false);
                 } else {
                     Utils.StatusBarLightMode(MainActivity.this, true);
                 }
