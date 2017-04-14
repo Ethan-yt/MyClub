@@ -106,7 +106,7 @@ public class Message implements MultiItemEntity, Serializable {
                         return "发生了内部错误：T2";
                 }
             default:
-                return "发生了内部错误：T Unknown";
+                return "未知消息";
         }
 
     }
@@ -124,7 +124,7 @@ public class Message implements MultiItemEntity, Serializable {
                     case "拒绝":
                         return "已经拒绝了 " + senderNickname + (TextUtils.isEmpty(senderName) ? "" : " (" + senderName + ")") + " 的加入请求";
                     default:
-                        return "发生了内部错误：T2";
+                        return "发生了内部错误：T1";
                 }
             case "2": //加入通过或拒绝
                 switch (title) {
@@ -138,7 +138,7 @@ public class Message implements MultiItemEntity, Serializable {
                         return "发生了内部错误：T2";
                 }
             default:
-                return "发生了内部错误：T Unknown";
+                return "当前版本还不支持显示这个消息，升级您的app即可查看";
         }
 
 
