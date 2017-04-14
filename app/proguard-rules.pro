@@ -27,6 +27,10 @@
   **[] $VALUES;
   public *;
 }
+-keep class .R
+-keep class **.R$* {
+    <fields>;
+}
 
 ## for DexGuard only
 #-keepresourcexmlelements manifest/application/meta-data@value=GlideModule

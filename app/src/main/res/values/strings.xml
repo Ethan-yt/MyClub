@@ -1,6 +1,36 @@
 <resources>
     <string name="app_name">竹间社团</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="aboutLibraries_description_name">竹间社团</string>
+    <string name="aboutLibraries_description_showIcon">true</string>
+    <string name="aboutLibraries_description_showVersion">true</string>
+    <string name="aboutLibraries_description_text">
+        <![CDATA[
+        <br />
+        <b>竹间社团研发团队</b><br />
+        <br />
+        用户界面设计：周雯洁 袁泉<br />
+        <br />
+        服务端：胡勇 郭羽<br />
+        <br />
+        安卓客户端：阎覃 张雪<br />
+        <br />
+        <br />
+        <b> 特别感谢 </b><br />
+        <br />
+        指导教师：刘渊 廖曦<br />
+        <br />
+        测试组成员：周科宇 朱德培 杨林栋 等人<br />
+        <br />
+        以及使用的你<br />
+        <br />
+        <br />
+        <b>国家级大学生创新训练项目</b><br />
+        <br />
+        项目编号 201610295035<br />
+        <br />
+        <br />
+        以下是项目中使用的开源许可
+        ]]>
+    </string>
 </resources>

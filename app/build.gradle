@@ -141,6 +141,11 @@ dependencies {
     compile 'com.facebook.stetho:stetho-okhttp3:1.4.2'
     compile 'com.chauthai.swipereveallayout:swipe-reveal-layout:1.4.0'
     compile 'com.github.clans:fab:1.6.4'
+
+    compile 'com.android.support:preference-v14:25.3.1'
+    compile('com.mikepenz:aboutlibraries:5.9.5@aar') {
+        transitive = true
+    }
 }
 
 repositories {

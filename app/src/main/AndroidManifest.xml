@@ -141,6 +141,9 @@
         <activity android:name=".message.view.MessageDetailClubActivity"/>
         <activity android:name=".message.view.MessageAnalysisActivity"/>
         <activity android:name=".schedule.view.ScheduleAnalysisActivity"/>
+        <activity
+            android:name=".settings.SettingsActivity"
+            android:windowSoftInputMode="adjustPan"/>
     </application>
 
 </manifest>

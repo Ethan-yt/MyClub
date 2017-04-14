@@ -18,6 +18,7 @@ import com.ethan.myclub.message.model.UnreadNumber;
 import com.ethan.myclub.message.view.MessageListActivity;
 import com.ethan.myclub.network.ApiHelper;
 import com.ethan.myclub.network.OAuthHelper;
+import com.ethan.myclub.settings.SettingsActivity;
 import com.ethan.myclub.user.collection.view.UserCollectionActivity;
 import com.ethan.myclub.user.edit.view.ProfileEditActivity;
 import com.ethan.myclub.user.main.view.UserFragment;
@@ -75,32 +76,10 @@ public class UserViewModel {
     }
 
     public void settings() {
-        new AlertDialog.Builder(mFragment.mMainActivity)
-                .setMessage("确定要退出吗")
-                .setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        logout();
-                    }
-                })
-                .setNegativeButton("点错了", null)
-                .show();
-
+        SettingsActivity.start(mFragment.mMainActivity);
     }
 
-    private void logout() {
 
-        OAuthHelper.getProxy(mFragment.mMainActivity)
-                .revokeToken(MyApplication.getToken().mAccessToken)
-                .subscribe(new Consumer<Object>() {
-                    @Override
-                    public void accept(Object object) throws Exception {
-
-                    }
-                });
-        MyApplication.setToken(mFragment.mMainActivity, null);
-        MainActivity.startActivity(mFragment.getActivity(), BaseActivity.REQUEST_LOGOUT, Activity.RESULT_OK);
-    }
 
     public void collection() {
         UserCollectionActivity.start(mFragment.mMainActivity);

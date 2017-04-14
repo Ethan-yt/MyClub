@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.preference.PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <android.support.v7.preference.PreferenceCategory
+        android:title="账号设置">
+        <android.support.v7.preference.PreferenceScreen
+            android:key="logout"
+            android:title="退出登录">
+
+        </android.support.v7.preference.PreferenceScreen>
+
+    </android.support.v7.preference.PreferenceCategory>
+
+
+    <android.support.v7.preference.PreferenceCategory
+        android:title="关于和帮助">
+        <android.support.v7.preference.PreferenceScreen
+            android:key="about"
+            android:title="关于">
+
+        </android.support.v7.preference.PreferenceScreen>
+        <android.support.v7.preference.PreferenceScreen
+            android:key="check_update"
+            android:title="检查更新">
+
+        </android.support.v7.preference.PreferenceScreen>
+
+
+    </android.support.v7.preference.PreferenceCategory>
+
+</android.support.v7.preference.PreferenceScreen>

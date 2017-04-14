@@ -46,6 +46,7 @@ public class Token implements Parcelable {
         mExpiresIn = in.readInt();
         mRefreshToken = in.readString();
         mScope = in.readString();
+        uid = in.readString();
     }
 
     public static final Creator<Token> CREATOR = new Creator<Token>() {
@@ -72,5 +73,6 @@ public class Token implements Parcelable {
         dest.writeInt(mExpiresIn);
         dest.writeString(mRefreshToken);
         dest.writeString(mScope);
+        dest.writeString(uid);
     }
 }
