@@ -3,6 +3,7 @@ package com.ethan.myclub.user.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 /**
@@ -11,21 +12,28 @@ import com.google.gson.annotations.SerializedName;
 
 public class Token implements Parcelable {
 
+    @SerializedName("user_id")
+    @Expose
     public String uid;
 
     @SerializedName("access_token")
+    @Expose
     public String mAccessToken;
 
     @SerializedName("token_type")
+    @Expose
     public String mTokenType;
 
     @SerializedName("expires_in")
+    @Expose
     public int mExpiresIn;
 
     @SerializedName("refresh_token")
+    @Expose
     public String mRefreshToken;
 
     @SerializedName("scope")
+    @Expose
     public String mScope;
 
     public Token() {

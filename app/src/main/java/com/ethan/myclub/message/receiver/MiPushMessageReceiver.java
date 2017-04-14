@@ -5,23 +5,16 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.support.annotation.Keep;
 import android.support.v4.app.NotificationCompat;
 import android.text.TextUtils;
 import android.util.Log;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestListener;
-import com.bumptech.glide.request.animation.GlideAnimation;
-import com.bumptech.glide.request.target.SimpleTarget;
-import com.bumptech.glide.request.target.Target;
 import com.ethan.myclub.R;
 import com.ethan.myclub.main.MainActivity;
 import com.ethan.myclub.main.MyApplication;
 import com.ethan.myclub.message.model.Message;
 import com.ethan.myclub.message.view.MessageListActivity;
-import com.ethan.myclub.network.ApiHelper;
 import com.google.gson.Gson;
 import com.xiaomi.mipush.sdk.ErrorCode;
 import com.xiaomi.mipush.sdk.MiPushClient;
@@ -30,19 +23,6 @@ import com.xiaomi.mipush.sdk.MiPushMessage;
 import com.xiaomi.mipush.sdk.PushMessageReceiver;
 
 import java.util.List;
-
-import io.reactivex.Observable;
-import io.reactivex.ObservableEmitter;
-import io.reactivex.ObservableOnSubscribe;
-import io.reactivex.ObservableSource;
-import io.reactivex.Observer;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.annotations.NonNull;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.BiFunction;
-import io.reactivex.functions.Consumer;
-import io.reactivex.functions.Function;
-import io.reactivex.schedulers.Schedulers;
 
 
 @Keep
@@ -137,15 +117,20 @@ public class MiPushMessageReceiver extends PushMessageReceiver {
         if (MiPushClient.COMMAND_REGISTER.equals(command)) {
             if (message.getResultCode() == ErrorCode.SUCCESS) {
                 mRegId = cmdArg1;
+                MyApplication.resetUID(context);
             }
         } else if (MiPushClient.COMMAND_SET_ALIAS.equals(command)) {
             if (message.getResultCode() == ErrorCode.SUCCESS) {
-                mAlias = cmdArg1;
+                if (message.getResultCode() == ErrorCode.SUCCESS) {
+                    Log.e(TAG, "onCommandResult: SET UID FINISHED! " + cmdArg1);
+                } else
+                    Log.e(TAG, "onCommandResult: SET UID FAILED! " + cmdArg1);
             }
         } else if (MiPushClient.COMMAND_UNSET_ALIAS.equals(command)) {
             if (message.getResultCode() == ErrorCode.SUCCESS) {
-                mAlias = cmdArg1;
-            }
+                Log.e(TAG, "onCommandResult: UNSET UID FINISHED! " + cmdArg1);
+            } else
+                Log.e(TAG, "onCommandResult: UNSET UID FAILED! " + cmdArg1);
         } else if (MiPushClient.COMMAND_SUBSCRIBE_TOPIC.equals(command)) {
             if (message.getResultCode() == ErrorCode.SUCCESS) {
                 mTopic = cmdArg1;
@@ -158,10 +143,6 @@ public class MiPushMessageReceiver extends PushMessageReceiver {
             if (message.getResultCode() == ErrorCode.SUCCESS) {
                 mStartTime = cmdArg1;
                 mEndTime = cmdArg2;
-            }
-        } else if (MiPushClient.COMMAND_SET_ACCOUNT.equals(command)) {
-            if (message.getResultCode() == ErrorCode.SUCCESS) {
-                MyApplication.getToken().uid = cmdArg1;
             }
         }
     }

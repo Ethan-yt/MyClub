@@ -39,6 +39,8 @@ public class MyApplication extends Application {
 
     public static final String FILE_NAME_TOKEN = "Token.dat";
 
+    public static String sOldUID = "";
+
     static private Token sToken;
     @Nullable
     static public Profile sProfile;
@@ -48,7 +50,26 @@ public class MyApplication extends Application {
         if (token != null)
             token.writeToParcel(parcel, 0);// 保存token
         Utils.saveParcelToFile(context, FILE_NAME_TOKEN, parcel);
+        if (sToken != null)
+            sOldUID = sToken.uid;
+        else
+            sOldUID = "anonymous";
         sToken = token;
+
+        resetUID(context);
+    }
+
+    public static void resetUID(Context context) {
+        if (isLogin()) {
+            Log.i(TAG, "readToken: Finished!: token is: " + sToken.mAccessToken);
+            MiPushClient.unsetAlias(context, sOldUID, null);
+            MiPushClient.setAlias(context, sToken.uid, null);
+            Log.e(TAG, "Try to unset UID: " + sOldUID + " set UID: " + sToken.uid);
+        } else {
+            MiPushClient.unsetAlias(context, sOldUID, null);
+            MiPushClient.setAlias(context, "anonymous", null);
+            Log.e(TAG, "Try to unset UID: " + sOldUID + " set UID: anonymous");
+        }
     }
 
     public static Token getToken() {
@@ -56,7 +77,7 @@ public class MyApplication extends Application {
     }
 
     public static boolean isLogin() {
-        return (sToken != null && !TextUtils.isEmpty(sToken.mAccessToken));
+        return (sToken != null && !TextUtils.isEmpty(sToken.uid));
     }
 
 
@@ -68,8 +89,7 @@ public class MyApplication extends Application {
         }
         sToken = Token.CREATOR.createFromParcel(parcel);
         parcel.recycle();
-        if (isLogin())
-            Log.i(TAG, "readToken: Finished!: token is: " + sToken.mAccessToken);
+        Log.i(TAG, "readToken: Finished!: token is: " + sToken.mAccessToken);
     }
 
     @Override
@@ -81,6 +101,7 @@ public class MyApplication extends Application {
             Bugly.init(this, "ff50329b00", false); //若非Debug模式记录Bugly日志
         }
         super.onCreate();
+
         readToken(getApplicationContext());//读取登录状态
 
         initMiPush();//初始化小米推送

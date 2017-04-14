@@ -166,8 +166,6 @@ public class UserViewModel {
                     public void onNext(Profile profile) {
                         Log.i(TAG, "updateUserProfile: 更新UserInfo完成");
                         profile.avatar += "?imageView2/0/w/300/h/300";
-                        if (!String.valueOf(profile.userId).equals(MyApplication.getToken().uid))
-                            MiPushClient.setUserAccount(mFragment.mMainActivity, String.valueOf(profile.userId), null);
                         if (profile.sex.equals("0"))
                             profile.sex = "男";
                         else
