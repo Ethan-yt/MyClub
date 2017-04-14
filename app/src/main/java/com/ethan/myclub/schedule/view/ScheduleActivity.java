@@ -150,6 +150,7 @@ public class ScheduleActivity extends BaseActivity {
             mCurrentYear = data.getStringExtra("Year");
             mCurrentTerm = data.getStringExtra("Term");
             save();
+            savePreferences();
             refreshScheduleView();
         }
 
@@ -161,7 +162,6 @@ public class ScheduleActivity extends BaseActivity {
         Parcel parcel = Parcel.obtain();
         parcel.writeList(mSchedules);
         Utils.saveParcelToFile(this, FILE_NAME_SCHEDULE, parcel);
-        savePreferences();
     }
 
     public void savePreferences() {
@@ -214,6 +214,7 @@ public class ScheduleActivity extends BaseActivity {
                         }
 
                         mSchedules = schedules;
+                        save();
                         setCurrentSchedule();
                     }
 
