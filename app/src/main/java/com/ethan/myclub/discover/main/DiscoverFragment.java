@@ -64,18 +64,7 @@ public class DiscoverFragment extends BaseFragment {
 
             @Override
             public void onPageSelected(int position) {
-                if (mSearchView != null)
-                    switch (position) {
-                        case 0:
-                            mSearchView.setQueryHint("活动名称、简介");
-                            break;
-                        case 1:
-                            mSearchView.setQueryHint("社团名称、简介或标签");
-                            break;
-                        case 2:
-                            mSearchView.setQueryHint("商家名称、赞助类型或对象");
-                            break;
-                    }
+                setSearchHint(position);
 
             }
 
@@ -86,6 +75,22 @@ public class DiscoverFragment extends BaseFragment {
         });
         return view;
     }
+
+    private void setSearchHint(int position) {
+        if (mSearchView != null)
+            switch (position) {
+                case 0:
+                    mSearchView.setQueryHint("活动名称、简介");
+                    break;
+                case 1:
+                    mSearchView.setQueryHint("社团名称、简介或标签");
+                    break;
+                case 2:
+                    mSearchView.setQueryHint("商家名称、赞助类型或对象");
+                    break;
+            }
+    }
+
 
     public void setCurrentTab(int index) {
         mViewPager.setCurrentItem(index);
@@ -208,6 +213,7 @@ public class DiscoverFragment extends BaseFragment {
                                             return true;
                                         }
                                     });
+                                    setSearchHint(0);
 
                                 }
                             })
