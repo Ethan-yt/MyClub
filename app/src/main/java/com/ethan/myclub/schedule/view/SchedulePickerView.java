@@ -26,19 +26,17 @@ public class SchedulePickerView extends LinearLayout {
     private NumberPicker np2 = new NumberPicker(this.getContext());
 
     public void setTerm(String term) {
-        mTerm = term;
-
         for (int i = 0; i < mTerms.length; i++) {
             String s = mTerms[i];
             if (s.equals(term)) {
                 setTerm(i);
-                return ;
+                return;
             }
         }
+        setTerm(mTerms.length - 1);
     }
 
-    public void setTerm(int termIndex)
-    {
+    public void setTerm(int termIndex) {
         np2.setValue(termIndex);
         mTerm = mTerms[termIndex];
     }
@@ -51,6 +49,7 @@ public class SchedulePickerView extends LinearLayout {
                 return;
             }
         }
+        setYear(mYears.length - 1);
     }
 
     public void setYear(int yearIndex) {

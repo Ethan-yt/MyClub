@@ -10,6 +10,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -41,6 +42,7 @@ public class ScheduleActivity extends BaseActivity {
     List<Schedule> mSchedules = new ArrayList<>();
     String mCurrentYear;
     String mCurrentTerm;
+    int mCurrentWeek = 1;
     EmptyView mEmptyView;
 
     @Override
@@ -66,8 +68,11 @@ public class ScheduleActivity extends BaseActivity {
                 initToolbar();
             }
         } else {
-            refreshScheduleView();
-            initToolbar();
+            if(TextUtils.isEmpty(mCurrentTerm) || TextUtils.isEmpty(mCurrentYear))
+                setCurrentSchedule();
+            else {
+                refreshScheduleView();
+            }
         }
 
 
@@ -128,12 +133,6 @@ public class ScheduleActivity extends BaseActivity {
                         refreshScheduleView();
                     }
                 })
-                .setNegativeButton("取消", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-
-                    }
-                })
                 .show();
     }
 
@@ -180,11 +179,13 @@ public class ScheduleActivity extends BaseActivity {
                 mEmptyView.setVisibility(View.INVISIBLE);
                 mScheduleView.setVisibility(View.VISIBLE);
                 mScheduleView.setSchedule(schedule, mCurrentWeek);
+                initToolbar();
                 return;
             }
         }
         mScheduleView.setVisibility(View.INVISIBLE);
         mEmptyView.setVisibility(View.VISIBLE);
+        initToolbar();
     }
 
     private void getSchedule() {
@@ -213,21 +214,7 @@ public class ScheduleActivity extends BaseActivity {
                         }
 
                         mSchedules = schedules;
-
-                        final SchedulePickerView v = new SchedulePickerView(ScheduleActivity.this);
-                        v.setSchedules(mSchedules);
-                        new AlertDialog.Builder(ScheduleActivity.this)
-                                .setTitle("请选择当前的学年学期")
-                                .setView(v)
-                                .setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialogInterface, int i) {
-                                        mCurrentYear = v.getYear();
-                                        mCurrentTerm = v.getTerm();
-                                    }
-                                });
-                        save();
-                        refreshScheduleView();
+                        setCurrentSchedule();
                     }
 
                     @Override
@@ -263,7 +250,7 @@ public class ScheduleActivity extends BaseActivity {
         mCurrentWeek = sharedPreferences.getInt("CurrentWeek", 1);
     }
 
-    int mCurrentWeek = 1;
+
 
     private void setCurrentWeek() {
 
