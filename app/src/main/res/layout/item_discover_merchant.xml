@@ -90,10 +90,8 @@
             app:layout_constraintRight_toRightOf="parent"
             tools:text="赞助活动：任何活动"/>
 
-        <view
+        <View
             android:id="@+id/view3"
-            class="android.support.v4.view.ViewPager"
-            id="@+id/view2"
             android:layout_width="0dp"
             android:layout_height="1dp"
             android:layout_marginBottom="8dp"
