@@ -30,7 +30,11 @@
         项目编号 201610295035<br />
         <br />
         <br />
+        由于目前软件还处于测试阶段，所以会自动收集系统日志并上传，不包括您的隐私，敬请谅解。
+        <br />
+        <br />
         以下是项目中使用的开源框架
         ]]>
     </string>
+    <string name="alphabet_and_number">abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789</string>
 </resources>
