@@ -18,13 +18,6 @@
         <item name="android:windowDrawsSystemBarBackgrounds" tools:targetApi="lollipop">true</item>
     </style>
 
-    <style name="dot_style">
-        <item name="android:layout_width">5dip</item>
-        <item name="android:layout_height">5dip</item>
-        <item name="android:background">@drawable/dot_normal</item>
-        <item name="android:layout_marginLeft">1.5dip</item>
-        <item name="android:layout_marginRight">1.5dip</item>
-    </style>
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.ActionBar">
         <item name="colorControlNormal">@color/toolbarTitleText</item>
