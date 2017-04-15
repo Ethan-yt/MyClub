@@ -69,7 +69,8 @@
             android:name=".user.login.view.RegisterActivity2"
             android:theme="@style/AppTheme.Dark"/>
         <activity android:name=".user.edit.view.ProfileEditActivity"/>
-        <activity android:name=".club.create.view.ClubCreateActivity"/>
+        <activity android:name=".club.create.view.ClubCreateActivity"
+                  android:windowSoftInputMode="adjustResize"/>
         <activity android:name=".club.operation.view.ClubOperationActivity"/>
         <activity android:name=".club.detail.view.ClubInfoActivity"/>
         <activity android:name=".club.edit.view.ClubInfoEditActivity"/>
@@ -127,22 +128,25 @@
         <!-- ==================MiPush End================== -->
         <activity android:name=".activity.detail.view.ActivityDetailActivity"/>
         <activity android:name=".club.activitylist.view.ClubActivityListActivity"/>
-        <activity android:name=".activity.edit.view.ActivityEditActivity"/>
-        <activity android:name=".activity.create.view.ActivityCreateActivity"/>
+        <activity android:name=".activity.edit.view.ActivityEditActivity"
+                  android:windowSoftInputMode="adjustResize"/>
+        <activity android:name=".activity.create.view.ActivityCreateActivity"
+            android:windowSoftInputMode="adjustResize"/>
         <activity android:name=".activity.edit.view.ActivityEditContentActivity"/>
         <activity android:name=".user.collection.view.UserCollectionActivity"/>
-        <activity android:name=".club.notification.view.ClubNotificationCreateActivity"/>
+        <activity android:name=".club.notification.view.ClubNotificationCreateActivity"
+                  android:windowSoftInputMode="adjustResize"/>
         <activity android:name=".club.member.view.ClubMemberListActivity"/>
         <activity android:name=".user.detail.view.UserDetailActivity"/>
         <activity
             android:name=".message.view.MessageListActivity"
+            android:windowSoftInputMode="adjustResize"
             android:launchMode="singleTask"/>
         <activity android:name=".message.view.MessageDetailClubActivity"/>
         <activity android:name=".message.view.MessageAnalysisActivity"/>
         <activity android:name=".schedule.view.ScheduleAnalysisActivity"/>
         <activity
-            android:name=".settings.SettingsActivity"
-            android:windowSoftInputMode="adjustPan"/>
+            android:name=".settings.SettingsActivity"/>
     </application>
 
 </manifest>
