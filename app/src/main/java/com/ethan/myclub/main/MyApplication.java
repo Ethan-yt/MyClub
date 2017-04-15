@@ -149,9 +149,8 @@ public class MyApplication extends Application {
     @Override
     protected void attachBaseContext(Context base) {
         super.attachBaseContext(base);
+        MultiDex.install(base);
         if (!BuildConfig.DEBUG) {
-            // you must install multiDex whatever tinker is installed!
-            MultiDex.install(base);
             // 安装tinker
             Beta.installTinker();
         }
