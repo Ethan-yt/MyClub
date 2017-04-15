@@ -110,7 +110,7 @@ public class Message implements MultiItemEntity, Serializable {
             case "4":
                 return "[通知]用户退出社团 " + club;
             case "5":
-                return "[通知]社团已解散  " + club;
+                return "[通知]社团已解散  " + content;
             case "7":
                 return "[权限变更]" + club;
             case "8":
