@@ -1,14 +1,17 @@
 package com.ethan.myclub.club.detail.viewmodel;
 
+import android.content.DialogInterface;
 import android.databinding.ObservableField;
 import android.graphics.Color;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -25,6 +28,7 @@ import com.ethan.myclub.discover.activity.model.ActivityResult;
 import com.ethan.myclub.main.StatusBarCompat;
 import com.ethan.myclub.main.ToolbarWrapper;
 import com.ethan.myclub.network.ApiHelper;
+import com.ethan.myclub.util.Utils;
 import com.google.android.flexbox.FlexboxLayout;
 
 import java.util.List;
@@ -50,7 +54,7 @@ public class ClubInfoViewModel {
         mBinding = binding;
         mBinding.setViewModel(this);
         mMyClub = myclub;
-        StatusBarCompat.translucentStatusBar(mActivity,true);
+        StatusBarCompat.translucentStatusBar(mActivity, true);
 
         ToolbarWrapper.Builder builder = new ToolbarWrapper.Builder(mActivity)
                 .setTitle("社团简介", true)
@@ -199,8 +203,33 @@ public class ClubInfoViewModel {
     }
 
     public void add() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(mActivity);
+        builder.setTitle("请填写申请理由");
+
+        final EditText input = new EditText(mActivity);
+        input.setMinLines(2);
+        input.setGravity(Gravity.TOP);
+        builder.setView(input);
+
+        builder.setPositiveButton("提交", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                submit(input.getText().toString());
+            }
+        });
+        builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+        builder.show();
+    }
+
+    private void submit(String s) {
+
         ApiHelper.getProxy(mActivity)
-                .joinClub(String.valueOf(mClub.get().id))
+                .joinClub(String.valueOf(mClub.get().id), s)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<Object>() {
                     @Override
@@ -223,6 +252,5 @@ public class ClubInfoViewModel {
 
                     }
                 });
-
     }
 }

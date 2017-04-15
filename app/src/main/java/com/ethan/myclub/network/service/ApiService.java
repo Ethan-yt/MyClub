@@ -140,8 +140,9 @@ public interface ApiService {
 
     //申请加入社团
     @POST("api/club/{clubId}/enroll/")
+    @FormUrlEncoded
     Observable<Object>
-    joinClub(@Path("clubId") String clubId);
+    joinClub(@Path("clubId") String clubId , @Field("content") String content);
 
     //处理加入申请
     @POST("api/club/{clubId}/approval/{userId}/")

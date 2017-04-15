@@ -108,9 +108,9 @@ public class Message implements MultiItemEntity, Serializable {
             case "3":
                 return "[通知]" + club;
             case "4":
-                return "[通知]用户退出社团 " + club;
+                return "[通知]用户退出社团";
             case "5":
-                return "[通知]社团已解散  " + content;
+                return "[通知]社团已解散";
             case "7":
                 return "[权限变更]" + club;
             case "8":
@@ -131,7 +131,7 @@ public class Message implements MultiItemEntity, Serializable {
             case "1": //申请加入社团
                 switch (title) {
                     case "待审核":
-                        return stdSenderName + " 申请加入社团";
+                        return stdSenderName + " 申请加入社团：" + content;
                     case "接受":
                         return "已经批准了 " + stdSenderName + " 的加入请求";
                     case "拒绝":
@@ -153,9 +153,9 @@ public class Message implements MultiItemEntity, Serializable {
             case "3":
                 return "您已被社长请出社团";
             case "4":
-                return stdSenderName + " 已经退出社团";
+                return stdSenderName + " 已经退出社团 "+ club;
             case "5":
-                return "社长已经解散社团";
+                return "社长已经解散社团 "+content;
             case "7":
                 return "社长变更了你的权限：" + content;
             case "8":
