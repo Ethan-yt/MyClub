@@ -13,6 +13,7 @@ import com.ethan.myclub.activity.model.Activity;
 import com.ethan.myclub.club.model.Club;
 import com.ethan.myclub.club.my.model.MyClub;
 import com.ethan.myclub.databinding.ActivityActivityCreateBinding;
+import com.ethan.myclub.main.ToolbarWrapper;
 import com.ethan.myclub.network.ApiHelper;
 import com.ethan.myclub.util.Utils;
 
@@ -44,7 +45,7 @@ public class ActivityCreateViewModel {
         mBinding.setViewModel(this);
         mMyClub = myClub;
         mActivityDetail = new Activity();
-        mActivity.getToolbarWrapper()
+        new ToolbarWrapper.Builder(mActivity)
                 .setTitle("创建活动")
                 .showBackIcon()
                 .show();

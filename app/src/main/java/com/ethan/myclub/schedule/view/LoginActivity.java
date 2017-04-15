@@ -20,6 +20,7 @@ import android.widget.TextView;
 import com.ethan.myclub.R;
 import com.ethan.myclub.main.BaseActivity;
 import com.ethan.myclub.main.MainActivity;
+import com.ethan.myclub.main.ToolbarWrapper;
 import com.ethan.myclub.network.ApiHelper;
 import com.ethan.myclub.schedule.color.RandomColor;
 import com.ethan.myclub.schedule.model.Course;
@@ -79,7 +80,7 @@ public class LoginActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_schedule_login);
 
-        getToolbarWrapper()
+        new ToolbarWrapper.Builder(this)
                 .setTitle("导入课程")
                 .showBackIcon()
                 .show();

@@ -18,6 +18,7 @@ import com.ethan.myclub.databinding.ActivityClubActivityListBinding;
 import com.ethan.myclub.discover.activity.adapter.ActivityAdapter;
 import com.ethan.myclub.discover.activity.model.ActivityResult;
 import com.ethan.myclub.main.BaseActivity;
+import com.ethan.myclub.main.ToolbarWrapper;
 import com.ethan.myclub.network.ApiHelper;
 import com.ethan.myclub.user.collection.view.UserCollectionActivity;
 import com.ethan.myclub.databinding.ActivityUserCollectionBinding;
@@ -40,7 +41,7 @@ public class UserCollectionViewModel {
         mActivity = activity;
         mBinding = binding;
         mBinding.setViewModel(this);
-        mActivity.getToolbarWrapper()
+        new ToolbarWrapper.Builder(mActivity)
                 .setTitle("我的收藏")
                 .showBackIcon()
                 .show();

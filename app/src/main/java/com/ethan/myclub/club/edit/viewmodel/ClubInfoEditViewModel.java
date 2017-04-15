@@ -19,6 +19,7 @@ import com.ethan.myclub.club.model.Tag2;
 import com.ethan.myclub.databinding.ActivityClubInfoEditBinding;
 import com.ethan.myclub.main.ImageSelectActivity;
 import com.ethan.myclub.main.MainActivity;
+import com.ethan.myclub.main.ToolbarWrapper;
 import com.ethan.myclub.network.ApiHelper;
 
 import java.io.File;
@@ -49,7 +50,7 @@ public class ClubInfoEditViewModel {
         mBinding = binding;
         mBinding.setViewModel(this);
 
-        mActivity.getToolbarWrapper()
+        new ToolbarWrapper.Builder(mActivity)
                 .setTitle("修改社团资料")
                 .showBackIcon()
                 .setMenu(R.menu.toolbar_user_info, new Toolbar.OnMenuItemClickListener() {

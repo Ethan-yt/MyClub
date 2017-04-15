@@ -4,6 +4,7 @@ import android.app.NotificationManager;
 import android.content.Context;
 
 import com.ethan.myclub.main.MainActivity;
+import com.ethan.myclub.main.ToolbarWrapper;
 import com.ethan.myclub.message.model.Message;
 import com.ethan.myclub.message.view.MessageDetailClubActivity;
 import com.ethan.myclub.databinding.ActivityMessageDetailClubBinding;
@@ -26,7 +27,7 @@ public class MessageDetailClubViewModel {
         mBinding = binding;
         mBinding.setViewModel(this);
         mMessage = message;
-        mActivity.getToolbarWrapper()
+        new ToolbarWrapper.Builder(mActivity)
                 .setTitle("消息详情")
                 .showBackIcon()
                 .show();

@@ -7,6 +7,7 @@ import android.support.v7.app.AlertDialog;
 import com.ethan.myclub.club.my.model.MyClub;
 import com.ethan.myclub.club.notification.view.ClubNotificationCreateActivity;
 import com.ethan.myclub.databinding.ActivityClubNotificationCreateBinding;
+import com.ethan.myclub.main.ToolbarWrapper;
 import com.ethan.myclub.message.view.MessageListActivity;
 import com.ethan.myclub.network.ApiHelper;
 
@@ -37,7 +38,7 @@ public class ClubNotificationCreateViewModel {
         mBinding.setViewModel(this);
         mMyClub = myClub;
 
-        mActivity.getToolbarWrapper()
+        new ToolbarWrapper.Builder(mActivity)
                 .setTitle("发布通知")
                 .showBackIcon()
                 .show();

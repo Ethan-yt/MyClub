@@ -31,6 +31,7 @@ import com.ethan.myclub.databinding.ActivityClubInfoBinding;
 import com.ethan.myclub.discover.activity.adapter.ActivityAdapter;
 import com.ethan.myclub.discover.activity.model.ActivityResult;
 import com.ethan.myclub.main.BaseActivity;
+import com.ethan.myclub.main.ToolbarWrapper;
 import com.ethan.myclub.network.ApiHelper;
 import com.ethan.myclub.util.Utils;
 import com.google.android.flexbox.FlexboxLayout;
@@ -61,21 +62,21 @@ public class ClubInfoViewModel {
         mBinding = binding;
         mBinding.setViewModel(this);
         mMyClub = myclub;
-        BaseActivity.ToolbarWrapper toolbar = mActivity.getToolbarWrapper()
+        ToolbarWrapper.Builder builder = new ToolbarWrapper.Builder(mActivity)
                 .setTitle("社团简介", true)
                 .setColor(Color.WHITE)
                 .transparent()
                 .showBackIcon()
                 .target(mBinding.constraintLayout);
         if (myclub.checkPermission(1))
-            toolbar.setMenu(R.menu.toolbar_edit_white, new Toolbar.OnMenuItemClickListener() {
+            builder.setMenu(R.menu.toolbar_edit_white, new Toolbar.OnMenuItemClickListener() {
                 @Override
                 public boolean onMenuItemClick(MenuItem item) {
                     ClubInfoEditActivity.startForResult(mActivity, mClub.get(), ClubInfoActivity.REQUEST_EDIT_CLUB_INFO);
                     return false;
                 }
             });
-        toolbar.show();
+        builder.show();
 
         mBinding.swipeRefreshLayout.setColorSchemeResources(R.color.colorAccent);
         mBinding.swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {

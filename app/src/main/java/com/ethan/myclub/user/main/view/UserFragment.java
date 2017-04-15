@@ -42,7 +42,8 @@ public class UserFragment extends BaseFragment {
     public void willBeDisplayed() {
         super.willBeDisplayed();
         if (mMainActivity != null) {
-            mMainActivity.getToolbarWrapper().changeScrollable(true).close();
+            mMainActivity.getToolbarWrapper().changeScrollable(true);
+            mMainActivity.getToolbarWrapper().close();
         }
     }
 }

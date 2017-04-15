@@ -16,6 +16,7 @@ import com.ethan.myclub.R;
 import com.ethan.myclub.club.model.MemberResult;
 import com.ethan.myclub.club.my.model.MyClub;
 import com.ethan.myclub.main.BaseActivity;
+import com.ethan.myclub.main.ToolbarWrapper;
 import com.ethan.myclub.network.ApiHelper;
 import com.ethan.myclub.schedule.model.Course;
 import com.ethan.myclub.schedule.model.CourseTime;
@@ -60,7 +61,7 @@ public class ScheduleAnalysisViewModel {
         mMyClub = myClub;
         mUsers = users;
 
-        mActivity.getToolbarWrapper()
+        new ToolbarWrapper.Builder(mActivity)
                 .setTitle("空课表")
                 .showBackIcon()
                 .show();

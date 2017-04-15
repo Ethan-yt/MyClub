@@ -10,6 +10,7 @@ import com.ethan.myclub.club.member.adapter.MemberAdapter;
 import com.ethan.myclub.club.model.MemberResult;
 import com.ethan.myclub.club.my.model.MyClub;
 import com.ethan.myclub.club.my.view.EmptyView;
+import com.ethan.myclub.main.ToolbarWrapper;
 import com.ethan.myclub.message.adapter.UnreadMemberAdapter;
 import com.ethan.myclub.message.model.Message;
 import com.ethan.myclub.message.view.MessageAnalysisActivity;
@@ -45,7 +46,7 @@ public class MessageAnalysisViewModel {
         mBinding.setViewModel(this);
         mMyClub = myClub;
         mMessage = message;
-        mActivity.getToolbarWrapper()
+        new ToolbarWrapper.Builder(mActivity)
                 .setTitle("消息阅读情况")
                 .showBackIcon()
                 .show();

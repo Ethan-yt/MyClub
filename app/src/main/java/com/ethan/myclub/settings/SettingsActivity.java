@@ -7,6 +7,7 @@ import android.support.v4.app.ActivityCompat;
 
 import com.ethan.myclub.R;
 import com.ethan.myclub.main.BaseActivity;
+import com.ethan.myclub.main.ToolbarWrapper;
 
 /**
  * Created by ethan on 2017/4/14.
@@ -24,7 +25,7 @@ public class SettingsActivity extends BaseActivity {
                 .add(R.id.frag_setting, new SettingsFragment())
                 .commit();
 
-        getToolbarWrapper()
+        new ToolbarWrapper.Builder(this)
                 .showBackIcon()
                 .setTitle("设置")
                 .show();

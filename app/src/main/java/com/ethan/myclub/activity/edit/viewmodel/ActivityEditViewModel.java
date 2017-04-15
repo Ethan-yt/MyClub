@@ -25,6 +25,7 @@ import com.ethan.myclub.club.model.Tag2;
 import com.ethan.myclub.databinding.ActivityActivityEditBinding;
 import com.ethan.myclub.discover.activity.model.ActivityResult;
 import com.ethan.myclub.main.ImageSelectActivity;
+import com.ethan.myclub.main.ToolbarWrapper;
 import com.ethan.myclub.network.ApiHelper;
 import com.ethan.myclub.util.Utils;
 
@@ -73,7 +74,7 @@ public class ActivityEditViewModel {
         mBinding = binding;
         mBinding.setViewModel(this);
 
-        mActivity.getToolbarWrapper()
+        new ToolbarWrapper.Builder(mActivity)
                 .setTitle("修改活动")
                 .setMenu(R.menu.toolbar_user_info, new Toolbar.OnMenuItemClickListener() {
                     @Override

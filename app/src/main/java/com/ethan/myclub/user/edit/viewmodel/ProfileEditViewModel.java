@@ -20,6 +20,7 @@ import com.ethan.myclub.databinding.ActivityUserProfileEditBinding;
 import com.ethan.myclub.main.ImageSelectActivity;
 import com.ethan.myclub.main.MainActivity;
 import com.ethan.myclub.main.MyApplication;
+import com.ethan.myclub.main.ToolbarWrapper;
 import com.ethan.myclub.network.ApiHelper;
 import com.ethan.myclub.user.edit.view.ProfileEditActivity;
 import com.ethan.myclub.user.model.Profile;
@@ -61,7 +62,7 @@ public class ProfileEditViewModel {
         if (!TextUtils.isEmpty(mProfile.avatar))
             mImageUri.set(Uri.parse(mProfile.avatar));
 
-        mActivity.getToolbarWrapper()
+        new ToolbarWrapper.Builder(mActivity)
                 .setTitle("编辑个人资料")
                 .setMenu(R.menu.toolbar_user_info, new Toolbar.OnMenuItemClickListener() {
                     @Override

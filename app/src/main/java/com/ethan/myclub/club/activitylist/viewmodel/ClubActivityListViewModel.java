@@ -4,8 +4,6 @@ import android.databinding.ObservableBoolean;
 import android.graphics.Color;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.Toolbar;
-import android.view.MenuItem;
 import android.view.View;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -19,7 +17,7 @@ import com.ethan.myclub.club.my.view.EmptyView;
 import com.ethan.myclub.databinding.ActivityClubActivityListBinding;
 import com.ethan.myclub.discover.activity.adapter.ActivityAdapter;
 import com.ethan.myclub.discover.activity.model.ActivityResult;
-import com.ethan.myclub.main.BaseActivity;
+import com.ethan.myclub.main.ToolbarWrapper;
 import com.ethan.myclub.network.ApiHelper;
 
 import java.util.List;
@@ -31,7 +29,6 @@ import io.reactivex.disposables.Disposable;
 public class ClubActivityListViewModel {
 
     private final EmptyView mEmptyView;
-    private final BaseActivity.ToolbarWrapper mToolbar;
     private ClubActivityListActivity mActivity;
     private ActivityClubActivityListBinding mBinding;
     private ActivityAdapter mAdapter;
@@ -45,11 +42,10 @@ public class ClubActivityListViewModel {
         mBinding = binding;
         mBinding.setViewModel(this);
         mMyClub = myClub;
-        mToolbar = mActivity.getToolbarWrapper()
+        new ToolbarWrapper.Builder(mActivity)
                 .setTitle("社团活动列表")
-                .showBackIcon();
-
-        mToolbar.show();
+                .showBackIcon()
+                .show();
 
         mBinding.swipeLayout.setColorSchemeResources(R.color.colorAccent);
         mBinding.swipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -149,10 +145,10 @@ public class ClubActivityListViewModel {
         mBinding.fabMenu.close(true);
         if (mEditMode) {
             mActivity.showSnackbar("退出编辑模式，您可以查看活动详情");
-            mToolbar.changeColor(Color.WHITE);
+            mActivity.getToolbarWrapper().changeColor(Color.WHITE);
         } else {
             mActivity.showSnackbar("进入编辑模式，请选择你想修改的活动");
-            mToolbar.changeColor(Color.YELLOW);
+            mActivity.getToolbarWrapper().changeColor(Color.YELLOW);
         }
         mEditMode = !mEditMode;
 

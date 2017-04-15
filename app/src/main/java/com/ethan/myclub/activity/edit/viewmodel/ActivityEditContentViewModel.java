@@ -19,6 +19,7 @@ import com.ethan.myclub.activity.model.Content;
 import com.ethan.myclub.databinding.ActivityActivityEditContentBinding;
 import com.ethan.myclub.main.ImageSelectActivity;
 import com.ethan.myclub.main.MainActivity;
+import com.ethan.myclub.main.ToolbarWrapper;
 import com.ethan.myclub.network.ApiHelper;
 import com.ethan.myclub.util.ImageUtils;
 import com.ethan.myclub.util.Utils;
@@ -58,7 +59,7 @@ public class ActivityEditContentViewModel {
         mActivityId = activityId;
         mBinding.setViewModel(this);
 
-        mActivity.getToolbarWrapper()
+        new ToolbarWrapper.Builder(mActivity)
                 .setTitle("上传活动内容")
                 .showBackIcon()
                 .setMenu(R.menu.toolbar_user_info, new Toolbar.OnMenuItemClickListener() {

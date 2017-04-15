@@ -18,6 +18,7 @@ import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.ethan.myclub.R;
 import com.ethan.myclub.club.model.MemberResult;
+import com.ethan.myclub.main.ToolbarWrapper;
 import com.ethan.myclub.network.ApiHelper;
 import com.ethan.myclub.user.detail.view.UserDetailActivity;
 import com.ethan.myclub.databinding.ActivityUserDetailBinding;
@@ -52,7 +53,7 @@ public class UserDetailViewModel {
         mBinding.setViewModel(this);
         mMemberResult = memberResult;
 
-        mActivity.getToolbarWrapper()
+        new ToolbarWrapper.Builder(mActivity)
                 .setTitle("查看成员详情")
                 .showBackIcon()
                 .show();

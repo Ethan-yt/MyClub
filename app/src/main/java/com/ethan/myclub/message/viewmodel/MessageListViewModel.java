@@ -13,8 +13,8 @@ import com.ethan.myclub.club.my.model.MyClub;
 import com.ethan.myclub.club.my.view.EmptyView;
 import com.ethan.myclub.club.notification.view.ClubNotificationCreateActivity;
 import com.ethan.myclub.databinding.ActivityMessageListBinding;
-import com.ethan.myclub.main.BaseActivity;
 import com.ethan.myclub.main.MainActivity;
+import com.ethan.myclub.main.ToolbarWrapper;
 import com.ethan.myclub.message.adapter.MessageAdapter;
 import com.ethan.myclub.message.model.Message;
 import com.ethan.myclub.message.view.MessageListActivity;
@@ -40,7 +40,6 @@ public class MessageListViewModel {
 
     private final EmptyView mEmptyView;
     final private MessageAdapter mAdapter;
-    private final BaseActivity.ToolbarWrapper mToolbar;
 
     private boolean mAnalysisMode = false;
     private boolean mDeleteMode = false;
@@ -68,11 +67,10 @@ public class MessageListViewModel {
                 break;
         }
 
-        mToolbar = mActivity.getToolbarWrapper()
+        new ToolbarWrapper.Builder(mActivity)
                 .setTitle(title)
-                .showBackIcon();
-
-        mToolbar.show();
+                .showBackIcon()
+                .show();
 
         mBinding.swipeLayout.setColorSchemeResources(R.color.colorAccent);
         mBinding.swipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -186,9 +184,9 @@ public class MessageListViewModel {
 
         if (mAnalysisMode) {
             mActivity.showSnackbar("请选择您要分析的通知");
-            mToolbar.changeColor(Color.YELLOW);
+            mActivity.getToolbarWrapper().changeColor(Color.YELLOW);
         } else {
-            mToolbar.changeColor(Color.WHITE);
+            mActivity.getToolbarWrapper().changeColor(Color.WHITE);
         }
         mAdapter.mAnalysisMode = mAnalysisMode;
         mAdapter.mDeleteMode = mDeleteMode;
@@ -201,9 +199,9 @@ public class MessageListViewModel {
 
         if (mDeleteMode) {
             mActivity.showSnackbar("请选择您要删除的通知");
-            mToolbar.changeColor(Color.RED);
+            mActivity.getToolbarWrapper().changeColor(Color.RED);
         } else {
-            mToolbar.changeColor(Color.WHITE);
+            mActivity.getToolbarWrapper().changeColor(Color.WHITE);
         }
         mAdapter.mAnalysisMode = mAnalysisMode;
         mAdapter.mDeleteMode = mDeleteMode;

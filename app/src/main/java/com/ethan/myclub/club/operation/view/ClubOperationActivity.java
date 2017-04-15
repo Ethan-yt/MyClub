@@ -12,6 +12,7 @@ import com.ethan.myclub.club.my.model.MyClub;
 import com.ethan.myclub.databinding.ActivityClubOperationBinding;
 import com.ethan.myclub.main.BaseActivity;
 import com.ethan.myclub.club.operation.viewmodel.ClubOperationViewModel;
+import com.ethan.myclub.main.ToolbarWrapper;
 import com.ethan.myclub.schedule.view.ScheduleAnalysisActivity;
 
 public class ClubOperationActivity extends BaseActivity {
@@ -33,7 +34,8 @@ public class ClubOperationActivity extends BaseActivity {
 
         mViewModel = new ClubOperationViewModel(this, binding, club);
 
-        getToolbarWrapper().showBackIcon()
+        new ToolbarWrapper.Builder(this)
+                .showBackIcon()
                 .transparent()
                 .show();
     }

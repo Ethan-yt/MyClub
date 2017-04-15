@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.View;
 
 import com.ethan.myclub.databinding.ActivityLoginRegisterBinding;
+import com.ethan.myclub.main.ToolbarWrapper;
 import com.ethan.myclub.network.ApiHelper;
 import com.ethan.myclub.user.login.model.Valid;
 import com.ethan.myclub.user.login.view.RegisterActivity;
@@ -60,7 +61,7 @@ public class RegisterViewModel {
         mBinding = binding;
         mBinding.setViewModel(this);
 
-        mActivity.getToolbarWrapper()
+        new ToolbarWrapper.Builder(mActivity)
                 .setTitle("验证手机号")
                 .showBackIcon()
                 .show();

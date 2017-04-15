@@ -10,6 +10,7 @@ import android.widget.EditText;
 
 import com.ethan.myclub.R;
 import com.ethan.myclub.main.MyApplication;
+import com.ethan.myclub.main.ToolbarWrapper;
 import com.ethan.myclub.network.OAuthHelper;
 import com.ethan.myclub.user.model.Token;
 import com.ethan.myclub.main.MainActivity;
@@ -31,7 +32,7 @@ public class RegisterActivity2 extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login_register2);
 
-        getToolbarWrapper()
+        new ToolbarWrapper.Builder(this)
                 .setTitle("注册")
                 .showBackIcon()
                 .show();

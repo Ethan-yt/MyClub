@@ -21,6 +21,7 @@ import com.ethan.myclub.R;
 import com.ethan.myclub.club.my.view.EmptyView;
 import com.ethan.myclub.main.BaseActivity;
 import com.ethan.myclub.main.MyApplication;
+import com.ethan.myclub.main.ToolbarWrapper;
 import com.ethan.myclub.network.ApiHelper;
 import com.ethan.myclub.schedule.color.RandomColor;
 import com.ethan.myclub.schedule.model.Course;
@@ -79,8 +80,7 @@ public class ScheduleActivity extends BaseActivity {
     }
 
     private void initToolbar() {
-        getToolbarWrapper()
-                .dismiss()
+        new ToolbarWrapper.Builder(this)
                 .setTitle("时间管理")
                 .showBackIcon()
                 .setMenu(R.menu.toolbar_user_schedule,

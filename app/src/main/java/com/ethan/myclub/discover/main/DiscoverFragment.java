@@ -23,6 +23,7 @@ import android.view.ViewGroup;
 import com.ethan.myclub.R;
 import com.ethan.myclub.main.BaseActivity;
 import com.ethan.myclub.main.BaseFragment;
+import com.ethan.myclub.main.ToolbarWrapper;
 import com.ethan.myclub.util.Utils;
 
 import java.util.List;
@@ -101,8 +102,7 @@ public class DiscoverFragment extends BaseFragment {
     public void willBeDisplayed() {
         super.willBeDisplayed();
         if (mMainActivity != null) {
-            mMainActivity.getToolbarWrapper()
-                    .dismiss()
+            new ToolbarWrapper.Builder(mMainActivity)
                     .setScrollable()
                     .withAnimate()
                     .setTitle("")

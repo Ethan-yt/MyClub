@@ -16,6 +16,7 @@ import com.ethan.myclub.main.MyApplication;
 import com.ethan.myclub.main.BaseActivity;
 import com.ethan.myclub.main.BaseFragment;
 import com.ethan.myclub.main.MainActivity;
+import com.ethan.myclub.main.ToolbarWrapper;
 import com.ethan.myclub.util.Utils;
 
 
@@ -45,8 +46,7 @@ public class MyClubFragment extends BaseFragment {
     public void willBeDisplayed() {
         super.willBeDisplayed();
         if (mMainActivity != null) {
-            mMainActivity.getToolbarWrapper()
-                    .dismiss()
+            new ToolbarWrapper.Builder(mMainActivity)
                     .withAnimate()
                     .setTitle("我的社团", true)
                     .show();

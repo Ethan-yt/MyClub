@@ -10,6 +10,7 @@ import com.ethan.myclub.R;
 import com.ethan.myclub.databinding.ActivityClubCreateBinding;
 import com.ethan.myclub.main.BaseActivity;
 import com.ethan.myclub.club.create.viewmodel.ClubCreateViewModel;
+import com.ethan.myclub.main.ToolbarWrapper;
 
 public class ClubCreateActivity extends BaseActivity {
 
@@ -29,7 +30,7 @@ public class ClubCreateActivity extends BaseActivity {
         ActivityClubCreateBinding binding =
                 DataBindingUtil.setContentView(this, R.layout.activity_club_create);
         mViewModel = new ClubCreateViewModel(this, binding);
-        getToolbarWrapper()
+        new ToolbarWrapper.Builder(this)
                 .setTitle("创建社团")
                 .showBackIcon()
                 .show();

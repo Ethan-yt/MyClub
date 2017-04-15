@@ -23,6 +23,7 @@ import com.ethan.myclub.databinding.ActivityClubMemberListBinding;
 import com.ethan.myclub.discover.activity.adapter.ActivityAdapter;
 import com.ethan.myclub.discover.activity.model.ActivityResult;
 import com.ethan.myclub.main.BaseActivity;
+import com.ethan.myclub.main.ToolbarWrapper;
 import com.ethan.myclub.network.ApiHelper;
 import com.ethan.myclub.user.detail.view.UserDetailActivity;
 import com.ethan.myclub.user.detail.viewmodel.UserDetailViewModel;
@@ -50,7 +51,7 @@ public class ClubMemberListViewModel {
         mBinding.setViewModel(this);
         mMyClub = myClub;
         mIsChooseMember = isChooseMember;
-        mActivity.getToolbarWrapper()
+        new ToolbarWrapper.Builder(mActivity)
                 .setTitle(mIsChooseMember ? "请选择社团成员" : "社团通讯录")
                 .showBackIcon()
                 .show();
