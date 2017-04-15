@@ -120,9 +120,6 @@ public class MainActivity extends BaseActivity {
                         showLoginSnackbar("您还没有登录哦");
                         return false;
                     }
-                    Utils.StatusBarLightMode(MainActivity.this, false);
-                } else {
-                    Utils.StatusBarLightMode(MainActivity.this, true);
                 }
                 //切换到社团列表前
                 if (position == 1) {
@@ -155,6 +152,8 @@ public class MainActivity extends BaseActivity {
 
         adapter = new BaseViewPagerAdapter(getSupportFragmentManager());
         viewPager.setAdapter(adapter);
+
+        StatusBarCompat.translucentStatusBar(this,true);
     }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

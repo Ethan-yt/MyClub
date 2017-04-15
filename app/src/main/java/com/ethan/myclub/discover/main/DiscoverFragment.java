@@ -104,6 +104,7 @@ public class DiscoverFragment extends BaseFragment {
         if (mMainActivity != null) {
             new ToolbarWrapper.Builder(mMainActivity)
                     .setScrollable()
+                    .setToolbarFitsSystemWindows()
                     .withAnimate()
                     .setTitle("")
                     .setMenu(R.menu.toolbar_discover,

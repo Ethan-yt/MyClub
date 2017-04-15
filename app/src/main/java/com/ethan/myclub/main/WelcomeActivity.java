@@ -19,14 +19,12 @@ public class WelcomeActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome);
-        //程序初始化操作
 
-        //读取配置项
-        int delay = 0;
+        int delay = 2;
         if (!BuildConfig.DEBUG) {
             delay = 2;
         }
-
+        StatusBarCompat.translucentStatusBar(this, false);
         Observable.timer(delay, TimeUnit.SECONDS, AndroidSchedulers.mainThread())
                 .subscribe(new Consumer<Long>() {
                     @Override

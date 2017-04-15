@@ -1,22 +1,16 @@
 package com.ethan.myclub.club.detail.viewmodel;
 
-import android.databinding.BindingAdapter;
 import android.databinding.ObservableField;
 import android.graphics.Color;
-import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.Toolbar;
-import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextClock;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.ethan.myclub.R;
 import com.ethan.myclub.activity.detail.view.ActivityDetailActivity;
@@ -26,24 +20,18 @@ import com.ethan.myclub.club.model.Club;
 import com.ethan.myclub.club.model.Tag;
 import com.ethan.myclub.club.detail.view.ClubInfoActivity;
 import com.ethan.myclub.club.my.model.MyClub;
-import com.ethan.myclub.club.my.view.EmptyView;
 import com.ethan.myclub.databinding.ActivityClubInfoBinding;
-import com.ethan.myclub.discover.activity.adapter.ActivityAdapter;
 import com.ethan.myclub.discover.activity.model.ActivityResult;
-import com.ethan.myclub.main.BaseActivity;
+import com.ethan.myclub.main.StatusBarCompat;
 import com.ethan.myclub.main.ToolbarWrapper;
 import com.ethan.myclub.network.ApiHelper;
-import com.ethan.myclub.util.Utils;
 import com.google.android.flexbox.FlexboxLayout;
-
-import org.w3c.dom.Text;
 
 import java.util.List;
 
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
-import jp.wasabeef.glide.transformations.CropCircleTransformation;
 
 public class ClubInfoViewModel {
 
@@ -62,10 +50,13 @@ public class ClubInfoViewModel {
         mBinding = binding;
         mBinding.setViewModel(this);
         mMyClub = myclub;
+        StatusBarCompat.translucentStatusBar(mActivity,true);
+
         ToolbarWrapper.Builder builder = new ToolbarWrapper.Builder(mActivity)
                 .setTitle("社团简介", true)
-                .setColor(Color.WHITE)
+                .setTextColor(Color.WHITE)
                 .transparent()
+                .setToolbarFitsSystemWindows()
                 .showBackIcon()
                 .target(mBinding.constraintLayout);
         if (myclub.checkPermission(1))

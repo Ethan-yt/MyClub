@@ -49,8 +49,8 @@
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="69dp"
                 android:transitionName="trans_iv_avatar"
-                tools:src="@drawable/img_default_avatar"
-                app:image_url="@{viewModel.mProfile.avatar ?? null}"/>
+                app:image_url="@{viewModel.mProfile.avatar ?? null}"
+                tools:src="@drawable/img_default_avatar"/>
 
 
             <TextView
@@ -60,7 +60,6 @@
                 android:layout_below="@id/iv_avatar"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="10dp"
-                android:visibility="gone"
                 android:text="@{viewModel.mProfile.username}"
                 android:textColor="#fff"
                 android:textSize="16sp"

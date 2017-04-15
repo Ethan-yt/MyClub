@@ -99,8 +99,9 @@ public class ToolbarWrapper {
         private boolean mIsAnimate = false;
         private boolean mIsScroll = false;
         private boolean mIsTransparent = false;
-        private int mColor;
+        private int mTextColor;
         private boolean mIsUseColor = false;
+        private boolean mIsToolbarFitsSystemWindows = false;
         private ViewGroup mTarget;
         private Drawable mNavIcon;
         private BaseActivity mBaseActivity;
@@ -142,6 +143,11 @@ public class ToolbarWrapper {
             return this;
         }
 
+        public Builder setToolbarFitsSystemWindows() {
+            mIsToolbarFitsSystemWindows = true;
+            return this;
+        }
+
         public Builder setMenu(@MenuRes int resId, Toolbar.OnMenuItemClickListener onMenuItemClickListener) {
             return setMenu(resId, onMenuItemClickListener, null);
         }
@@ -170,9 +176,9 @@ public class ToolbarWrapper {
             return this;
         }
 
-        public Builder setColor(int color) {
+        public Builder setTextColor(int color) {
             mIsUseColor = true;
-            mColor = color;
+            mTextColor = color;
             return this;
         }
 
@@ -181,30 +187,32 @@ public class ToolbarWrapper {
         }
 
         public void show(@LayoutRes int layoutResId) {
-            if(mBaseActivity.getToolbarWrapper() != null)
+            if (mBaseActivity.getToolbarWrapper() != null)
                 mBaseActivity.getToolbarWrapper().dismiss();
             if (layoutResId == -1)
                 layoutResId = R.layout.view_toolbar;
             if (mTarget == null)
                 mTarget = mBaseActivity.mRootLayout;
-            ViewGroup v = (ViewGroup) View.inflate(mBaseActivity, layoutResId, mTarget);
-            ViewCompat.requestApplyInsets(mBaseActivity.mRootLayout);
-            mToolbar = (Toolbar) v.findViewById(R.id.toolbar);
 
+            ViewGroup v = (ViewGroup) View.inflate(mBaseActivity, layoutResId, mTarget);
+
+            mToolbar = (Toolbar) v.findViewById(R.id.toolbar);
             mAppBarLayout = (AppBarLayout) v.findViewById(R.id.app_bar_layout);
+
+            //标题居中
             if (mIsTitleInCenter) {
                 TextView tv = (TextView) v.findViewById(R.id.center_title);
                 tv.setText(mTitle);
                 mToolbar.setTitle("");
                 if (mIsUseColor)
-                    tv.setTextColor(mColor);
+                    tv.setTextColor(mTextColor);
             } else {
                 mToolbar.setTitle(mTitle);
                 if (mIsUseColor) {
-                    mToolbar.setTitleTextColor(mColor);
+                    mToolbar.setTitleTextColor(mTextColor);
                 }
             }
-
+            //背景全透明
             if (mIsTransparent) {
                 mAppBarLayout.setBackgroundColor(Color.TRANSPARENT);
                 mToolbar.setBackgroundColor(Color.TRANSPARENT);
@@ -215,27 +223,37 @@ public class ToolbarWrapper {
                     mAppBarLayout.setStateListAnimator(stateListAnimator);
 
                 }
-
             }
-
-            mBaseActivity.setSupportActionBar(mToolbar);
-
+            //可以被CoordinatorLayout控制滑动
             if (mIsScroll) {
                 AppBarLayout.LayoutParams params =
                         (AppBarLayout.LayoutParams) mToolbar.getLayoutParams();
                 params.setScrollFlags(AppBarLayout.LayoutParams.SCROLL_FLAG_SCROLL
                         | AppBarLayout.LayoutParams.SCROLL_FLAG_ENTER_ALWAYS);
             }
-            if (mMenuResId != -1 && mOnMenuItemClickListener != null) {
-                mToolbar.setOnMenuItemClickListener(mOnMenuItemClickListener);
+            //设定toolbar的padding，留出状态栏的高度
+            if (mIsToolbarFitsSystemWindows) {
+                mToolbar.setFitsSystemWindows(true);
+                mBaseActivity.setSupportActionBar(mToolbar);
+                ViewCompat.requestApplyInsets(mBaseActivity.mRootLayout);
             }
-
+            //设置菜单
+            if (mMenuResId != -1 && mOnMenuItemClickListener != null) {
+                if (mIsToolbarFitsSystemWindows) {
+                    mToolbar.setOnMenuItemClickListener(mOnMenuItemClickListener);
+                } else {
+                    mToolbar.inflateMenu(mMenuResId);
+                    mToolbar.setOnMenuItemClickListener(mOnMenuItemClickListener);
+                }
+            }
+            //左上角按钮
             if (mNavIcon != null) {
                 if (mIsUseColor)
-                    mNavIcon.setColorFilter(mColor, PorterDuff.Mode.SRC_ATOP);
+                    mNavIcon.setColorFilter(mTextColor, PorterDuff.Mode.SRC_ATOP);
                 mToolbar.setNavigationIcon(mNavIcon);
                 mToolbar.setNavigationOnClickListener(mNavOnClickListener);
             }
+            //带动画进入
             if (mIsAnimate) {
                 Animation in = AnimationUtils.loadAnimation(mBaseActivity, android.R.anim.fade_in);
                 mAppBarLayout.startAnimation(in);

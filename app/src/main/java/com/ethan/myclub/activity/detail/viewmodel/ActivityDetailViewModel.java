@@ -21,6 +21,7 @@ import com.ethan.myclub.club.my.view.EmptyView;
 import com.ethan.myclub.databinding.ActivityActivityDetailBinding;
 import com.ethan.myclub.discover.activity.model.ActivityResult;
 import com.ethan.myclub.main.MyApplication;
+import com.ethan.myclub.main.StatusBarCompat;
 import com.ethan.myclub.network.ApiHelper;
 import com.ethan.myclub.network.exception.ApiException;
 import com.ethan.myclub.user.collection.view.UserCollectionActivity;
@@ -57,12 +58,6 @@ public class ActivityDetailViewModel {
         mBinding.setViewModel(this);
         mActivityResult.set(activityResult);
         mTime.set(Utils.getDateCountdown(activityResult.publishTime));
-        mBinding.toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mActivity.onBackPressed();
-            }
-        });
         mBinding.list.setLayoutManager(new LinearLayoutManager(mActivity));
         mAdapter = new ActivityContentAdapter(mActivity, null);
         mAdapter.openLoadAnimation();
@@ -106,6 +101,14 @@ public class ActivityDetailViewModel {
                                 .into(mBinding.ivActivityLogo);
                     }
                 });
+        mBinding.toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mActivity.onBackPressed();
+            }
+        });
+        //StatusBarCompat.setStatusBarColorForCollapsingToolbar(mActivity, mBinding.appbar, mBinding.collapsingToolbar, mBinding.toolbar);
+        StatusBarCompat.translucentStatusBar(mActivity,false);
     }
 
     private static final int GET_ACTIVITY_RESULT_OK = -1;

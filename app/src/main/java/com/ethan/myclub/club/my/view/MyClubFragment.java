@@ -48,6 +48,7 @@ public class MyClubFragment extends BaseFragment {
         if (mMainActivity != null) {
             new ToolbarWrapper.Builder(mMainActivity)
                     .withAnimate()
+                    .setToolbarFitsSystemWindows()
                     .setTitle("我的社团", true)
                     .show();
 
