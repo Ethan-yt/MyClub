@@ -1,8 +1,10 @@
 package com.ethan.myclub.util;
 
+import android.app.Activity;
 import android.content.Context;
 import android.databinding.BindingAdapter;
 import android.net.Uri;
+import android.os.Build;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -14,6 +16,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
+import com.ethan.myclub.R;
 
 import jp.wasabeef.glide.transformations.CropCircleTransformation;
 
@@ -60,6 +63,15 @@ public class ImageUtils {
     }
 
     private static void loadImage(ImageView target, Object resource, boolean isCircle, boolean isSkipCache) {
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            if (target.getContext() instanceof Activity) {
+                Activity activity = (Activity) target.getContext();
+                if (activity != null && activity.isDestroyed()) {
+                    return;
+                }
+            }
+        }
 
         Boolean skipMemoryCache = true;
         DiskCacheStrategy diskCacheStrategy = DiskCacheStrategy.NONE;
