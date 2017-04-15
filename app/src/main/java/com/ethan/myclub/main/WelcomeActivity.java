@@ -20,7 +20,7 @@ public class WelcomeActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome);
 
-        int delay = 2;
+        int delay = 0;
         if (!BuildConfig.DEBUG) {
             delay = 2;
         }
