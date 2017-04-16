@@ -63,18 +63,20 @@
                 android:text="@{viewModel.mProfile.username}"
                 android:textColor="#fff"
                 android:textSize="16sp"
+                android:visibility="gone"
                 tools:text="你好"/>
 
             <TextView
                 android:id="@+id/tv_nickname"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/tv_username"
+                android:layout_below="@id/iv_avatar"
                 android:layout_centerHorizontal="true"
                 android:layout_margin="20dp"
                 android:text="@{viewModel.mProfile.nickname}"
                 android:textColor="#fff"
                 android:textSize="20sp"
+                android:visibility="visible"
                 tools:text="你好"/>
 
         </RelativeLayout>
